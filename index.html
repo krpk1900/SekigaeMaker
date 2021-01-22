@@ -1,0 +1,88 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<div id="app">
+  <h1>席替えメーカー</h1>
+  <li v-for="(seats, indexRow) in seatsTable">
+    <span v-for="(seat, indexCol) in seats" :class="getColor(testSeat)" @click="toggeleTestSeat"> {{ indexRow }} {{ indexCol}} ({{ testSeat }}) </span>
+  </li>
+</div>
+
+<script>
+  const app = new Vue({
+    el: "#app",
+    data: {
+      displaySizeY: 6,
+      displaySizeX: 6,
+      /* 座席テーブル
+         -1 座れない座席, 1 座れる座席 */
+      seatsTable: [],
+      testSeat: -1
+    },
+    methods: {
+      // 座席の種類に応じた色を返す
+      getColor(seat) {
+        if(seat === -1)  return 'gray'
+        else if (seat === 1) return 'green'
+      },
+      toggleSeat(seat) {
+        seat = seat * -1
+      },
+      // seatsTableを作成
+      makeTable() {
+        this.seatsTable = []
+        for(let i = 0; i < this.displaySizeY; i++) {
+          this.seatsTable.push( Array(this.displaySizeX).fill(-1) )
+        }
+      },
+      toggeleTestSeat() {
+        this.testSeat = this.testSeat * -1
+      }
+    },
+    mounted() {
+      // 最初にseatsTableを作成
+      this.makeTable()
+    }
+  });
+</script>
+
+<style>
+  h1 {
+    text-align: center;
+  }
+  li {
+    text-align: center;
+	list-style: none;
+	height: 80px;
+  }
+  .green {
+    background: linear-gradient(45deg, #389406, transparent);
+  }
+  .red {
+    background: linear-gradient(45deg, #ee3f3f, transparent);
+  }
+  .blue {
+    background: linear-gradient(45deg, #1a5dec, transparent);
+  }
+  .gray{
+    background: gainsboro;
+  }
+  span {
+    height: 80px;
+    width: 80px;
+    display: inline-block;
+    background: gainsboro;
+    border: 1px solid white;
+    box-sizing: border-box;
+  }
+  .seat{
+    height: 80px;
+    width: 80px;
+    display: inline-block;
+    background: gainsboro;
+    border: 1px solid white;
+    box-sizing: border-box;
+  }
+  #seatArrange input:checked + label {
+      background-color: #f56565;
+  }
+</style>
