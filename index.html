@@ -31,9 +31,11 @@
     </select>
   </div>
 
+  {{ seats_num }}
+
   <div id="seatArrange">
     <li v-for="( seats, indexRow ) in seatsTable">
-      <span v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )" @click="toggleSeat( indexRow, indexCol )"
+      <span v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )" @click="toggleSeat( indexRow, indexCol ); countSeats()"
       :key="indexRow.toString() + indexCol.toString()"> {{ indexRow }} {{ indexCol}} ({{ seat }})</span>
     </li>
   </div>
@@ -46,6 +48,7 @@
       seatsSizeY: 6, // デフォルト値は6
       seatsSizeX: 6, // デフォルト値は6
       seatsTable: [], // 座席テーブル 座れない座席 -1, 座れる座席 1
+      seats_num: 0 // 有効な座席数
     },
     methods: {
       // 座席の種類に応じた色を返す
@@ -54,7 +57,7 @@
         else if (seat === 1) return 'green'
       },
       toggleSeat(indexRow, indexCol) {
-        temp = this.seatsTable[indexRow][indexCol]
+        let temp = this.seatsTable[indexRow][indexCol]
         this.seatsTable[indexRow].splice(indexCol, 1, temp * -1)
         console.log(`${indexRow}${indexCol}がクリックされたよー`);
         console.log(`${this.seatsTable[indexRow][indexCol]}`);
@@ -65,8 +68,18 @@
         for(let i = 0; i < this.seatsSizeY; i++) {
           this.seatsTable.push( Array(this.seatsSizeX).fill(1) )
         }
+        this.countSeats();
         console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
       },
+      countSeats() {
+        this.seats_num = 0;
+        this.seatsTable.forEach(seats => {
+          seats.forEach(seat => {
+            if (seat === 1) this.seats_num += 1
+          })
+        })
+        console.log(this.seats_num);
+      }
     },
     mounted() {
       // 最初にseatsTableを作成
