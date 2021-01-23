@@ -3,8 +3,8 @@
 <div id="app">
   <h1>席替えメーカー</h1>
 
-  <div class="input inputX">
-    よこの座席数を選んでください
+  <div class="input">
+    よこの座席数
     <select v-model.number="seatsSizeX" @change="makeTable()">
       <option value="1">1</option>
       <option value="2">2</option>
@@ -17,8 +17,8 @@
     </select>
   </div>
 
-  <div class="input inputX">
-    たての座席数を選んでください
+  <div class="input">
+    たての座席数
     <select v-model.number="seatsSizeY" @change="makeTable()">
       <option value="1">1</option>
       <option value="2">2</option>
@@ -31,13 +31,16 @@
     </select>
   </div>
 
+  現在の座席数：{{ seats_num }}
+
   <div id="seatArrange">
     <li v-for="( seats, indexRow ) in seatsTable">
-      <span v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )" @click="toggleSeat( indexRow, indexCol )"
-      :key="indexRow.toString() + indexCol.toString()"> {{ indexRow }} {{ indexCol}} ({{ seat }})</span>
+      <input type="text" v-for="( seat, indexCol ) in seats" class="seat" :class="getColor( seatsTable[indexRow][indexCol] )" @input="activeSeat( indexRow, indexCol ); countSeats()"
+      :key="indexRow.toString() + indexCol.toString()">
     </li>
   </div>
 </div>
+
 
 <script>
   const app = new Vue({
@@ -45,38 +48,39 @@
     data: {
       seatsSizeY: 6, // デフォルト値は6
       seatsSizeX: 6, // デフォルト値は6
-      /* 座席テーブル
-         -1 座れない座席, 1 座れる座席 */
-      seatsTable: [],
-      testSeat: -1
+      seatsTable: [], // 座席テーブル 座れない座席 -1, 座れる座席 1
+      seats_num: 0 // 有効な座席数
     },
     methods: {
-      // 座席の種類に応じた色を返す
-      getColor(seat) {
+      getColor(seat) { // 座席の種類に応じた色を返す
         if(seat === -1)  return 'gray'
         else if (seat === 1) return 'green'
       },
-      toggleSeat(indexRow, indexCol) {
-        temp = this.seatsTable[indexRow][indexCol]
-        this.seatsTable[indexRow].splice(indexCol, 1, temp * -1)
-        console.log(`${indexRow}${indexCol}がクリックされたよー`);
+      activeSeat(indexRow, indexCol) { // 引数で受け取った座席の有効、無効を切り替える
+        this.seatsTable[indexRow].splice(indexCol, 1, 1)
+        console.log(`${indexRow}${indexCol}が入力されたよー`);
         console.log(`${this.seatsTable[indexRow][indexCol]}`);
       },
-      // seatsTableを作成
-      makeTable() {
+      makeTable() { // seatsTableを作成
         this.seatsTable = []
         for(let i = 0; i < this.seatsSizeY; i++) {
-          this.seatsTable.push( Array(this.seatsSizeX).fill(1) )
+          this.seatsTable.push( Array(this.seatsSizeX).fill(-1) ) // すべての席に名前が未入力な状態でテーブルを作成
         }
+        this.countSeats();
         console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
       },
-      toggeleTestSeat() {
-        this.testSeat = this.testSeat * -1
+      countSeats() { // 有効な座席数をカウント
+        this.seats_num = 0;
+        this.seatsTable.forEach(seats => {
+          seats.forEach(seat => {
+            if (seat === 1) this.seats_num += 1
+          })
+        })
+        console.log(this.seats_num);
       }
     },
     mounted() {
-      // 最初にseatsTableを作成
-      this.makeTable()
+      this.makeTable() // 最初にseatsTableを作成
     }
   });
 </script>
@@ -96,21 +100,13 @@
   .gray{
     background: gainsboro;
   }
-  span {
-    height: 80px;
-    width: 80px;
-    display: inline-block;
-    background: gainsboro;
-    border: 1px solid white;
-    box-sizing: border-box;
-  }
   .seat{
     height: 80px;
     width: 80px;
     display: inline-block;
-    background: gainsboro;
     border: 1px solid white;
     box-sizing: border-box;
+    text-align: center;
   }
   .input {
     text-align: center;
