@@ -2,8 +2,9 @@
 
 <div id="app">
   <h1>席替えメーカー</h1>
-  <li v-for="(seats, indexRow) in seatsTable">
-    <span v-for="(seat, indexCol) in seats" :class="getColor(testSeat)" @click="toggeleTestSeat" :key="indexRow.toString() + indexCol.toString()"> {{ indexRow }} {{ indexCol}} ({{ testSeat }})</span>
+  <li v-for="( seats, indexRow ) in seatsTable">
+    <span v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )" @click="toggleSeat( indexRow, indexCol )"
+    :key="indexRow.toString() + indexCol.toString()"> {{ indexRow }} {{ indexCol}} ({{ seat }})</span>
   </li>
 </div>
 
@@ -24,14 +25,17 @@
         if(seat === -1)  return 'gray'
         else if (seat === 1) return 'green'
       },
-      toggleSeat(seat) {
-        seat = seat * -1
+      toggleSeat(indexRow, indexCol) {
+        temp = this.seatsTable[indexRow][indexCol]
+        this.seatsTable[indexRow].splice(indexCol, 1, temp * -1)
+        console.log(`${indexRow}${indexCol}がクリックされたよー`);
+        console.log(`${this.seatsTable[indexRow][indexCol]}`);
       },
       // seatsTableを作成
       makeTable() {
         this.seatsTable = []
         for(let i = 0; i < this.displaySizeY; i++) {
-          this.seatsTable.push( Array(this.displaySizeX).fill(-1) )
+          this.seatsTable.push( Array(this.displaySizeX).fill(1) )
         }
       },
       toggeleTestSeat() {
@@ -55,13 +59,7 @@
 	height: 80px;
   }
   .green {
-    background: linear-gradient(45deg, #389406, transparent);
-  }
-  .red {
-    background: linear-gradient(45deg, #ee3f3f, transparent);
-  }
-  .blue {
-    background: linear-gradient(45deg, #1a5dec, transparent);
+    background: mediumaquamarine;
   }
   .gray{
     background: gainsboro;
