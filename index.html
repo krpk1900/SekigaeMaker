@@ -45,10 +45,7 @@
     data: {
       seatsSizeY: 6, // デフォルト値は6
       seatsSizeX: 6, // デフォルト値は6
-      /* 座席テーブル
-         -1 座れない座席, 1 座れる座席 */
-      seatsTable: [],
-      testSeat: -1
+      seatsTable: [], // 座席テーブル 座れない座席 -1, 座れる座席 1
     },
     methods: {
       // 座席の種類に応じた色を返す
@@ -70,9 +67,6 @@
         }
         console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
       },
-      toggeleTestSeat() {
-        this.testSeat = this.testSeat * -1
-      }
     },
     mounted() {
       // 最初にseatsTableを作成
