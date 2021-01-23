@@ -2,17 +2,49 @@
 
 <div id="app">
   <h1>席替えメーカー</h1>
-  <li v-for="(seats, indexRow) in seatsTable">
-    <span v-for="(seat, indexCol) in seats" :class="getColor(testSeat)" @click="toggeleTestSeat"> {{ indexRow }} {{ indexCol}} ({{ testSeat }}) </span>
-  </li>
+
+  <div class="input inputX">
+    よこの座席数を選んでください
+    <select v-model.number="seatsSizeX" @change="makeTable()">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+    </select>
+  </div>
+
+  <div class="input inputX">
+    たての座席数を選んでください
+    <select v-model.number="seatsSizeY" @change="makeTable()">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+    </select>
+  </div>
+
+  <div id="seatArrange">
+    <li v-for="( seats, indexRow ) in seatsTable">
+      <span v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )" @click="toggleSeat( indexRow, indexCol )"
+      :key="indexRow.toString() + indexCol.toString()"> {{ indexRow }} {{ indexCol}} ({{ seat }})</span>
+    </li>
+  </div>
 </div>
 
 <script>
   const app = new Vue({
     el: "#app",
     data: {
-      displaySizeY: 6,
-      displaySizeX: 6,
+      seatsSizeY: 6, // デフォルト値は6
+      seatsSizeX: 6, // デフォルト値は6
       /* 座席テーブル
          -1 座れない座席, 1 座れる座席 */
       seatsTable: [],
@@ -24,15 +56,19 @@
         if(seat === -1)  return 'gray'
         else if (seat === 1) return 'green'
       },
-      toggleSeat(seat) {
-        seat = seat * -1
+      toggleSeat(indexRow, indexCol) {
+        temp = this.seatsTable[indexRow][indexCol]
+        this.seatsTable[indexRow].splice(indexCol, 1, temp * -1)
+        console.log(`${indexRow}${indexCol}がクリックされたよー`);
+        console.log(`${this.seatsTable[indexRow][indexCol]}`);
       },
       // seatsTableを作成
       makeTable() {
         this.seatsTable = []
-        for(let i = 0; i < this.displaySizeY; i++) {
-          this.seatsTable.push( Array(this.displaySizeX).fill(-1) )
+        for(let i = 0; i < this.seatsSizeY; i++) {
+          this.seatsTable.push( Array(this.seatsSizeX).fill(1) )
         }
+        console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
       },
       toggeleTestSeat() {
         this.testSeat = this.testSeat * -1
@@ -51,17 +87,11 @@
   }
   li {
     text-align: center;
-	list-style: none;
-	height: 80px;
+	  list-style: none;
+	  height: 80px;
   }
   .green {
-    background: linear-gradient(45deg, #389406, transparent);
-  }
-  .red {
-    background: linear-gradient(45deg, #ee3f3f, transparent);
-  }
-  .blue {
-    background: linear-gradient(45deg, #1a5dec, transparent);
+    background: mediumaquamarine;
   }
   .gray{
     background: gainsboro;
@@ -82,7 +112,7 @@
     border: 1px solid white;
     box-sizing: border-box;
   }
-  #seatArrange input:checked + label {
-      background-color: #f56565;
+  .input {
+    text-align: center;
   }
 </style>
