@@ -3,7 +3,7 @@
 <div id="app">
   <h1>席替えメーカー</h1>
   <li v-for="(seats, indexRow) in seatsTable">
-    <span v-for="(seat, indexCol) in seats" :class="getColor(testSeat)" @click="toggeleTestSeat"> {{ indexRow }} {{ indexCol}} ({{ testSeat }}) </span>
+    <span v-for="(seat, indexCol) in seats" :class="getColor(testSeat)" @click="toggeleTestSeat" :key="indexRow.toString() + indexCol.toString()"> {{ indexRow }} {{ indexCol}} ({{ testSeat }})</span>
   </li>
 </div>
 
