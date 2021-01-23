@@ -3,7 +3,7 @@
 <div id="app">
   <h1>席替えメーカー</h1>
 
-  <div class="input inputX">
+  <div class="input">
     よこの座席数
     <select v-model.number="seatsSizeX" @change="makeTable()">
       <option value="1">1</option>
@@ -17,7 +17,7 @@
     </select>
   </div>
 
-  <div class="input inputX">
+  <div class="input">
     たての座席数
     <select v-model.number="seatsSizeY" @change="makeTable()">
       <option value="1">1</option>
@@ -100,20 +100,13 @@
   .gray{
     background: gainsboro;
   }
-  span {
-    height: 80px;
-    width: 80px;
-    display: inline-block;
-    background: gainsboro;
-    border: 1px solid white;
-    box-sizing: border-box;
-  }
   .seat{
     height: 80px;
     width: 80px;
     display: inline-block;
     border: 1px solid white;
     box-sizing: border-box;
+    text-align: center;
   }
   .input {
     text-align: center;
