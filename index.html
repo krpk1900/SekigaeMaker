@@ -3,21 +3,31 @@
 <div id="app">
   <h1>席替えメーカー</h1>
 
-  <div id="inputX">
+  <div class="input inputX">
     よこの座席数を選んでください
     <select v-model.number="seatsSizeX" @change="makeTable()">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
       <option value="4">4</option>
       <option value="5">5</option>
       <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
     </select>
   </div>
 
-  <div id="inputX">
+  <div class="input inputX">
     たての座席数を選んでください
     <select v-model.number="seatsSizeY" @change="makeTable()">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
       <option value="4">4</option>
       <option value="5">5</option>
       <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
     </select>
   </div>
 
@@ -33,8 +43,8 @@
   const app = new Vue({
     el: "#app",
     data: {
-      seatsSizeY: 6,
-      seatsSizeX: 6,
+      seatsSizeY: 6, // デフォルト値は6
+      seatsSizeX: 6, // デフォルト値は6
       /* 座席テーブル
          -1 座れない座席, 1 座れる座席 */
       seatsTable: [],
@@ -101,5 +111,8 @@
     background: gainsboro;
     border: 1px solid white;
     box-sizing: border-box;
+  }
+  .input {
+    text-align: center;
   }
 </style>
