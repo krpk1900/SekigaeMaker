@@ -10,7 +10,7 @@
 
     <div id="app">
       <v-app>
-        <v-container>
+        <v-container fluid>
           <v-row>
             <v-col>
               <h1 class="text-center">席替えメーカー</h1>
@@ -19,7 +19,7 @@
 
           <v-row>
             <!-- 座席テーブル -->
-            <v-col cols="7" style="background-color: lightskyblue">
+            <v-col cols="6" style="background-color: lightskyblue">
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <input type="text" v-for="( seat, indexCol ) in seats" class="seat"
@@ -29,8 +29,8 @@
               </div>
             </v-col>
 
-            <v-col cols="5">
-              <v-row style="height: 70px;">
+            <v-col cols="6">
+              <v-row>
                 <!-- よこの座席数入力フォーム -->
                 <v-col cols="6" style="background-color: turquoise">
                   <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX"
@@ -49,30 +49,44 @@
                   hide-details></v-checkbox>
                 </v-col>
 
-                <!-- 近づける生徒の入力フォーム -->
+                <!-- 近づける生徒のエクスパンションパネル -->
                 <v-col cols="12" style="background-color: burlywood">
-                  近づける生徒
-                  <div>
-                    <v-select :items="studentName" label="Aさん" outlined style="width:110px; display: inline-block"></v-select>
-                    と
-                    <v-select :items="studentName" label="Bさん" outlined style="width:110px; display: inline-block"></v-select>
-                    の距離を
-                    <v-select :items="distanceOptions" label="2" outlined style="width:60px; display: inline-block"></v-select>
-                    以下にする
-                  </div>
+                  <v-expansion-panels accordion>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>近づける生徒を入力する</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <!-- 近づける生徒の入力フォーム -->
+                        <div>
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"></v-select>
+                          と
+                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"></v-select>
+                          の間を
+                          <v-select :items="distanceOptions"  outlined style="width:70px; display: inline-block"></v-select>
+                          以下にする
+                        </div>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
                 </v-col>
 
-                <!-- 離す生徒の入力フォーム -->
+                <!-- 離す生徒のエクスパンションパネル -->
                 <v-col cols="12" style="background-color: lightgreen">
-                  離す生徒
-                  <div>
-                    <v-select :items="studentName" label="Cさん" outlined style="width:110px; display: inline-block"></v-select>
-                    と
-                    <v-select :items="studentName" label="Dさん" outlined style="width:110px; display: inline-block"></v-select>
-                    の距離を
-                    <v-select :items="distanceOptions" label="4" outlined style="width:60px; display: inline-block"></v-select>
-                    以上にする
-                  </div>
+                  <v-expansion-panels accordion>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>離す生徒を入力する</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <!-- 離す生徒の入力フォーム -->
+                        <div>
+                          <v-select :items="studentName" laceholder="Cさん" outlined style="width:200px; display: inline-block"></v-select>
+                          と
+                          <v-select :items="studentName" laceholder="Dさん" outlined style="width:200px; display: inline-block"></v-select>
+                          の間を
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"></v-select>
+                          以上にする
+                        </div>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
                 </v-col>
 
 
@@ -107,7 +121,8 @@
           seats_num: 0, // 有効な座席数
           seatsOptionsX: [2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
           seatsOptionsY: [2,3,4,5,6,7,8], //たての座席数入力フォームの選択肢
-          distanceOptions: [1,2,3,4,5,6,7,8] //近づける・離す距離の選択肢
+          distanceOptions: [1,2,3,4,5,6,7,8], //近づける・離す距離の選択肢
+          studentsName: ["てらいしょうご", "さいとうだいち", "きくもとひさじゅ"]
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
