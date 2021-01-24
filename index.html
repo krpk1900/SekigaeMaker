@@ -22,24 +22,34 @@
             <v-col cols="7" style="background-color: lightskyblue">
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <input type="text" v-for="( seat, indexCol ) in seats" class="seat" :class="getColor( seatsTable[indexRow][indexCol] )" @input="activeSeat( indexRow, indexCol ); countSeats()"
+                  <input type="text" v-for="( seat, indexCol ) in seats" class="seat"
+                  :class="getColor( seatsTable[indexRow][indexCol] )" @input="activeSeat( indexRow, indexCol ); countSeats()"
                   :key="indexRow.toString() + indexCol.toString()">
                 </li>
               </div>
             </v-col>
 
             <v-col cols="5">
-              <v-row style="height: 100px;">
+              <v-row style="height: 70px;">
                 <!-- よこの座席数入力フォーム -->
                 <v-col cols="6" style="background-color: turquoise">
-                  <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX" @change="makeTable()"></v-select>
+                  <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX"
+                  @change="makeTable()"></v-select>
                 </v-col>
 
                 <!-- たての座席数入力フォーム -->
                 <v-col cols="6" style="background-color: lightseagreen">
-                  <v-select :items="seatsOptionsY" label="たての座席数" outlined　v-model.number="seatsSizeY" @change="makeTable()"></v-select>
+                  <v-select :items="seatsOptionsY" label="たての座席数" outlined　v-model.number="seatsSizeY"
+                  @change="makeTable()"></v-select>
                 </v-col>
 
+                <!-- 同じ席にしないかどうかのチェックボックス -->
+                <v-col cols="12" style="background-color: orange">
+                  <v-checkbox label="全員現在の席と違う席にする" color="indigo darken-3" value="indigo darken-3"
+                  hide-details></v-checkbox>
+                </v-col>
+
+                <!-- 現在の有効な座席数を表示 -->
                 <v-col cols="12" style="background-color: violet">
                   （デバッグ用）現在の座席数：{{ seats_num }}
                 </v-col>
