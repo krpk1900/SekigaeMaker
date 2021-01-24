@@ -19,7 +19,7 @@
 
           <v-row>
             <!-- 座席テーブル -->
-            <v-col cols="7" style="background-color: #FFCDD2">
+            <v-col cols="7" style="background-color: lightskyblue">
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <input type="text" v-for="( seat, indexCol ) in seats" class="seat" :class="getColor( seatsTable[indexRow][indexCol] )" @input="activeSeat( indexRow, indexCol ); countSeats()"
@@ -28,20 +28,24 @@
               </div>
             </v-col>
 
-            <v-row>
-              <!-- よこの座席数入力フォーム -->
-              <v-col cols="auto" style="background-color: #F8BBD0">
-                <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX" @change="makeTable()"></v-select>
-              </v-col>
+            <v-col cols="5">
+              <v-row style="height: 100px;">
+                <!-- よこの座席数入力フォーム -->
+                <v-col cols="6" style="background-color: turquoise">
+                  <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX" @change="makeTable()"></v-select>
+                </v-col>
 
-              <!-- たての座席数入力フォーム -->
-              <v-col cols="auto" style="background-color: #E1BEE7">
-                <v-select :items="seatsOptionsY" label="たての座席数" outlined　v-model.number="seatsSizeY" @change="makeTable()"></v-select>
-              </v-col>
+                <!-- たての座席数入力フォーム -->
+                <v-col cols="6" style="background-color: lightseagreen">
+                  <v-select :items="seatsOptionsY" label="たての座席数" outlined　v-model.number="seatsSizeY" @change="makeTable()"></v-select>
+                </v-col>
 
+                <v-col cols="12" style="background-color: violet">
+                  （デバッグ用）現在の座席数：{{ seats_num }}
+                </v-col>
+              </v-row>
+            </v-col>
 
-            </v-row>
-            現在の座席数：{{ seats_num }}
           </v-row>
         </v-container>
       </v-app>
@@ -59,8 +63,8 @@
           seatsSizeX: 6, // デフォルト値は6
           seatsTable: [], // 座席テーブル 座れない座席 -1, 座れる座席 1
           seats_num: 0, // 有効な座席数
-          seatsOptionsX: [2,3,4,5,6,7,8],
-          seatsOptionsY: [2,3,4,5,6,7,8]
+          seatsOptionsX: [2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
+          seatsOptionsY: [2,3,4,5,6,7,8]  //たての座席数入力フォームの選択肢
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
