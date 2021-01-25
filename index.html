@@ -22,9 +22,9 @@
             <v-col cols="6" style="background-color: lightskyblue">
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <input type="text" v-for="( seat, indexCol ) in seats" class="seat"
+                  <textarea v-for="( seat, indexCol ) in seats" class="seat"
                   :class="getColor( seatsTable[indexRow][indexCol] )" @input="activeSeat( indexRow, indexCol ); countSeats()"
-                  :key="indexRow.toString() + indexCol.toString()">
+                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none;　word-break: keep-all"></textarea>
                 </li>
               </div>
             </v-col>
@@ -77,9 +77,9 @@
                       <v-expansion-panel-content>
                         <!-- 離す生徒の入力フォーム -->
                         <div>
-                          <v-select :items="studentName" laceholder="Cさん" outlined style="width:200px; display: inline-block"></v-select>
+                          <v-select :items="studentsName" laceholder="Cさん" outlined style="width:200px; display: inline-block"></v-select>
                           と
-                          <v-select :items="studentName" laceholder="Dさん" outlined style="width:200px; display: inline-block"></v-select>
+                          <v-select :items="studentsName" laceholder="Dさん" outlined style="width:200px; display: inline-block"></v-select>
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"></v-select>
                           以上にする
