@@ -44,6 +44,8 @@
           <v-row>
             <!-- 座席テーブル -->
             <v-col cols="6" style="background-color: lightskyblue">
+              <p style="text-align: center">生徒の名前を入力してください</p>
+              <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" class="seat"
@@ -70,7 +72,7 @@
 
                 <!-- 同じ席にしないかどうかのチェックボックス -->
                 <v-col cols="12" style="background-color: orange">
-                  <v-checkbox label="全員現在の席と違う席にする" color="indigo darken-3" value="indigo darken-3"
+                  <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" value="indigo darken-3"
                   hide-details></v-checkbox>
                 </v-col>
 
