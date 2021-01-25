@@ -23,8 +23,9 @@
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" class="seat"
-                  :class="getColor( seatsTable[indexRow][indexCol] )" @input="activeSeat( indexRow, indexCol ); countSeats()"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"></textarea>
+                  :class="getColor( seatsTable[indexRow][indexCol] )" @input="activateSeat( indexRow, indexCol, $event.target.value ); countSeats()"
+                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all">
+                  </textarea>
                 </li>
               </div>
             </v-col>
@@ -101,8 +102,14 @@
                 </v-col>
               </v-row>
             </v-col>
-
           </v-row>
+
+          <v-row>
+            <div>
+              <p v-for="seats in seatsTable">{{ seats }}</p>
+            </div>
+          </v-row>
+
         </v-container>
       </v-app>
     </div>
@@ -122,22 +129,24 @@
           seatsOptionsX: [2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
           seatsOptionsY: [2,3,4,5,6,7,8], //たての座席数入力フォームの選択肢
           distanceOptions: [1,2,3,4,5,6,7,8], //近づける・離す距離の選択肢
-          studentsName: ["てらいしょうご", "さいとうだいち", "きくもとひさじゅ"]
+          studentsName: ["てらいしょうご", "さいとうだいち", "きくもとひさじゅ"],
+          name: ''
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
-            if(seat === -1)  return 'gray'
-            else if (seat === 1) return 'green'
+            if (seat === null) return 'gray'
+            else return 'green'
           },
-          activeSeat(indexRow, indexCol) { // 引数で受け取った座席の有効、無効を切り替える
-            this.seatsTable[indexRow].splice(indexCol, 1, 1)
+          activateSeat(indexRow, indexCol, name) { // 引数で受け取った座席の有効、無効を切り替える
+            this.seatsTable[indexRow].splice(indexCol, 1, name)
             console.log(`${indexRow}${indexCol}が入力されたよー`);
+            console.log(name);
             console.log(`${this.seatsTable[indexRow][indexCol]}`);
           },
           makeTable() { // seatsTableを作成
             this.seatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
-              this.seatsTable.push( Array(this.seatsSizeX).fill(-1) ) // すべての席に名前が未入力な状態でテーブルを作成
+              this.seatsTable.push( Array(this.seatsSizeX).fill(null) ) // すべての席に名前が未入力な状態でテーブルを作成
             }
             this.countSeats();
             console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
@@ -146,7 +155,7 @@
             this.seats_num = 0;
             this.seatsTable.forEach(seats => {
               seats.forEach(seat => {
-                if (seat === 1) this.seats_num += 1
+                if (seat !== null) this.seats_num += 1
               })
             })
             console.log(this.seats_num);
