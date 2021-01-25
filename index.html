@@ -5,16 +5,39 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <style>
+      li {
+        text-align: center;
+        list-style: none;
+        height: 80px;
+      }
+      .green {
+        background: mediumaquamarine;
+      }
+      .gray{
+        background: gainsboro;
+      }
+      .seat{
+        height: 80px;
+        width: 80px;
+        display: inline-block;
+        border: 2px solid white;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      [v-cloak] {
+        display: none;
+      }
+    </style>
   </head>
   <body>
-
-    <div id="app">
+    <div id="app" v-cloak>
       <v-app>
         <v-container fluid>
           <v-row>
             <!-- タイトル -->
             <v-col>
-              <h1 class="text-center">席替えメーカー</h1>
+              <h1 class="text-center">席替えメーカー（実装３日目）</h1>
             </v-col>
           </v-row>
 
@@ -183,24 +206,3 @@
 </html>
 
 
-<style>
-  li {
-    text-align: center;
-	  list-style: none;
-	  height: 80px;
-  }
-  .green {
-    background: mediumaquamarine;
-  }
-  .gray{
-    background: gainsboro;
-  }
-  .seat{
-    height: 80px;
-    width: 80px;
-    display: inline-block;
-    border: 2px solid white;
-    box-sizing: border-box;
-    text-align: center;
-  }
-</style>
