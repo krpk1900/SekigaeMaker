@@ -135,7 +135,7 @@
           seatsOptionsX: [2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
           seatsOptionsY: [2,3,4,5,6,7,8], //たての座席数入力フォームの選択肢
           distanceOptions: [1,2,3,4,5,6,7,8], //近づける・離す距離の選択肢
-          studentsName: ["てらいしょうご", "さいとうだいち", "きくもとひさじゅ"]
+          studentsName: []
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -160,7 +160,7 @@
             this.seats_num = 0;
             this.seatsTable.forEach(seats => {
               seats.forEach(seat => {
-                if (seat !== null) this.seats_num += 1
+                if (seat !== '') this.seats_num += 1
               })
             })
             console.log(this.seats_num);
@@ -201,9 +201,6 @@
     display: inline-block;
     border: 2px solid white;
     box-sizing: border-box;
-    text-align: center;
-  }
-  .input {
     text-align: center;
   }
 </style>
