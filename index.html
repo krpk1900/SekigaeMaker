@@ -24,7 +24,7 @@
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" class="seat"
                   :class="getColor( seatsTable[indexRow][indexCol] )" @input="activeSeat( indexRow, indexCol ); countSeats()"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none;　word-break: keep-all"></textarea>
+                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"></textarea>
                 </li>
               </div>
             </v-col>
