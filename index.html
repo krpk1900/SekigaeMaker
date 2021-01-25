@@ -106,9 +106,14 @@
           </v-row>
 
           <v-row>
-            <div>
-              <p v-for="seats in seatsTable">{{ seats }}</p>
-            </div>
+            <v-col cols="6">
+              <div>
+                <p v-for="seats in seatsTable">{{ seats }}</p>
+              </div>
+            </v-col>
+            <v-col cols="6">
+              {{ studentsName }}
+            </v-col>
           </v-row>
 
         </v-container>
@@ -134,7 +139,7 @@
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
-            if (seat === null) return 'gray'
+            if (seat === '') return 'gray'
             else return 'green'
           },
           writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効、無効を切り替える
@@ -146,7 +151,7 @@
           makeTable() { // seatsTableを作成
             this.seatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
-              this.seatsTable.push( Array(this.seatsSizeX).fill(null) ) // すべての席に名前が未入力な状態でテーブルを作成
+              this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
             this.countSeats();
             console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
@@ -163,6 +168,14 @@
         },
         mounted() {
           this.makeTable() // 最初にseatsTableを作成
+        },
+        watch: {
+          seatsTable: {
+            handler: function(){
+              this.studentsName = Array.prototype.concat.apply([], this.seatsTable);
+            },
+            deep: true
+          }
         }
       });
     </script>
