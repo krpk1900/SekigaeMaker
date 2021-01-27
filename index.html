@@ -86,20 +86,25 @@
                         <!-- 近づける生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change=""></v-select>
+                          @change="setNearConditionOption1"></v-select>
                           と
-                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"></v-select>
+                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"
+                          @change="setNearConditionOption2"></v-select>
                           の間を
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block" @change="addTests"></v-select>
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addNearConditions"></v-select>
                           以下にする
                         </div>
                         <!-- 近づける生徒の入力フォーム（追加表示のための２つ目以降） -->
-                        <div v-for="test in tests">
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"></v-select>
+                        <div v-for="nearCondition in nearConditions">
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="setNearConditionOption1"></v-select>
                           と
-                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"></v-select>
+                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"
+                          @change="setNearConditionOption2"></v-select>
                           の間を
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block" @change="addTests"></v-select>
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addNearConditions"></v-select>
                           以下にする
                         </div>
                       </v-expansion-panel-content>
@@ -113,14 +118,29 @@
                     <v-expansion-panel>
                       <v-expansion-panel-header>離す生徒を入力する</v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <!-- 離す生徒の入力フォーム -->
+                        <!-- 離す生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
-                          <v-select :items="studentsName" laceholder="Cさん" outlined style="width:200px; display: inline-block"></v-select>
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="setFarConditionOption1"></v-select>
                           と
-                          <v-select :items="studentsName" laceholder="Dさん" outlined style="width:200px; display: inline-block"></v-select>
+                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"
+                          @change="setFarConditionOption2"></v-select>
                           の間を
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"></v-select>
-                          以上にする
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addFarConditions"></v-select>
+                          以下にする
+                        </div>
+                        <!-- 離す生徒の入力フォーム（追加表示のための２つ目以降） -->
+                        <div v-for="farCondition in farConditions">
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="setFarConditionOption1"></v-select>
+                          と
+                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"
+                          @change="setFarConditionOption2"></v-select>
+                          の間を
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addFarConditions"></v-select>
+                          以下にする
                         </div>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -142,11 +162,17 @@
           </v-row>
 
           <v-row>
-            <v-col cols="6">
+            <v-col cols="3">
               <div>
                 <p>現在の座席記憶用テーブル</p>
                 <p v-for="seats in seatsTable">{{ seats }}</p>
               </div>
+            </v-col>
+            <v-col cols="3">
+              <p>近づける条件用配列</p>
+              {{ nearConditions }}
+              <p>離す条件用配列</p>
+              {{ farConditions }}
             </v-col>
             <v-col cols="6">
               <p>生徒の名前用配列</p>
@@ -168,13 +194,18 @@
         data: {
           seatsSizeY: 6, // デフォルト値は6
           seatsSizeX: 6, // デフォルト値は6
-          seatsTable: [], // 座席テーブル 座れない座席 -1, 座れる座席 1
+          seatsTable: [], // 座席テーブル
           seats_num: 0, // 有効な座席数
           seatsOptionsX: [1,2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], //たての座席数入力フォームの選択肢
           distanceOptions: [1,2,3,4,5,6,7,8], //近づける・離す距離の選択肢
-          studentsName: [],
-          tests: []
+          studentsName: [], //生徒の名前を格納
+          nearConditions: [],
+          nearConditionOption1: '',
+          nearConditionOption2: '',
+          farConditions: [],
+          farConditionOption1: '',
+          farConditionOption2: ''
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -210,9 +241,31 @@
             })
             console.log(this.seats_num);
           },
-          addTests() {
-            this.tests.push(1);
-            console.log('addTestsが実行されたよー')
+          setNearConditionOption1(nearConditionOption1) {
+            this.nearConditionOption1 = nearConditionOption1;
+            console.log(nearConditionOption1);
+          },
+          setNearConditionOption2(nearConditionOption2) {
+            this.nearConditionOption2 = nearConditionOption2;
+            console.log(nearConditionOption2);
+          },
+          addNearConditions(distance) {
+            this.nearConditions.push({nearConditionOption1: this.nearConditionOption1,
+                                      nearConditionOption2: this.nearConditionOption2,
+                                      distance: distance})
+          },
+          setFarConditionOption1(farConditionOption1) {
+            this.farConditionOption1 = farConditionOption1;
+            console.log(farConditionOption1);
+          },
+          setFarConditionOption2(farConditionOption2) {
+            this.farConditionOption2 = farConditionOption2;
+            console.log(farConditionOption2);
+          },
+          addFarConditions(distance) {
+            this.farConditions.push({farConditionOption1: this.farConditionOption1,
+                                      farConditionOption2: this.farConditionOption2,
+                                      distance: distance})
           }
         },
         mounted() {
