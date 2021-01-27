@@ -86,7 +86,7 @@
                         <!-- 近づける生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change=""></v-select>
+                          @change="setConditionOption1"></v-select>
                           と
                           <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"></v-select>
                           の間を
@@ -142,11 +142,15 @@
           </v-row>
 
           <v-row>
-            <v-col cols="6">
+            <v-col cols="3">
               <div>
                 <p>現在の座席記憶用テーブル</p>
                 <p v-for="seats in seatsTable">{{ seats }}</p>
               </div>
+            </v-col>
+            <v-col cols="3">
+              <p>条件の選択肢１</p>
+              {{ conditionOption1 }}
             </v-col>
             <v-col cols="6">
               <p>生徒の名前用配列</p>
@@ -168,13 +172,15 @@
         data: {
           seatsSizeY: 6, // デフォルト値は6
           seatsSizeX: 6, // デフォルト値は6
-          seatsTable: [], // 座席テーブル 座れない座席 -1, 座れる座席 1
+          seatsTable: [], // 座席テーブル
           seats_num: 0, // 有効な座席数
           seatsOptionsX: [1,2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], //たての座席数入力フォームの選択肢
           distanceOptions: [1,2,3,4,5,6,7,8], //近づける・離す距離の選択肢
-          studentsName: [],
-          tests: []
+          studentsName: [], //生徒の名前を格納
+          tests: [],
+          nearConditions: [],
+          conditionOption1: ''
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -213,6 +219,10 @@
           addTests() {
             this.tests.push(1);
             console.log('addTestsが実行されたよー')
+          },
+          setConditionOption1(conditionOption1) {
+            this.conditionOption1 = conditionOption1;
+            console.log(conditionOption1);
           }
         },
         mounted() {
