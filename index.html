@@ -36,7 +36,7 @@
         <v-container fluid>
           <v-row>
             <!-- タイトル -->
-            <v-col>
+            <v-col cols="12" style="background-color: wheat">
               <h1 class="text-center">席替えメーカー（実装５日目）</h1>
             </v-col>
           </v-row>
@@ -62,19 +62,39 @@
                 <!-- よこの座席数入力フォーム -->
                 <v-col cols="6" style="background-color: turquoise">
                   <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX"
-                  @change="makeTable()" style="width:100px"></v-select>
+                  @change="makeSeatsTable()" style="width:100px"></v-select>
                 </v-col>
 
                 <!-- たての座席数入力フォーム -->
                 <v-col cols="6" style="background-color: lightseagreen">
                   <v-select :items="seatsOptionsY" label="たての座席数" outlined　v-model.number="seatsSizeY"
-                  @change="makeTable()" style="width:100px"></v-select>
+                  @change="makeSeatsTable()" style="width:100px"></v-select>
                 </v-col>
 
                 <!-- 同じ席にしないかどうかのチェックボックス -->
                 <v-col cols="12" style="background-color: orange">
                   <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" value="indigo darken-3"
                   hide-details></v-checkbox>
+                </v-col>
+
+                <!-- 最前列に固定する生徒のエクスパンションパネル -->
+                <v-col cols="12" style="background-color: hotpink">
+                  <v-expansion-panels accordion>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>最前列に固定する生徒を入力する</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <!-- 最前列に固定する生徒の入力フォーム（初期表示のための１つ目） -->
+                        <span>
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="addFrontConditions"></v-select>
+                        </span>
+                        <span v-for="frontCondition in frontConditions">
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="addFrontConditions"></v-select>
+                        </span>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
                 </v-col>
 
                 <!-- 近づける生徒のエクスパンションパネル -->
@@ -161,22 +181,55 @@
             </v-col>
           </v-row>
 
+
+          <!-- 以下デバッグ用表示 -->
           <v-row>
-            <v-col cols="3">
-              <div>
-                <p>現在の座席記憶用テーブル</p>
-                <p v-for="seats in seatsTable">{{ seats }}</p>
+            <v-col cols="12" style="background-color: palevioletred">
+              <h1 class="text-center">以下デバッグ用</h1>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <!-- 席替え後の座席テーブル -->
+            <v-col cols="6" style="background-color: lightsteelblue">
+              <div id="nextSeatArrange">
+                <p style="text-align: center">席替え後の座席</p>
+                <li v-for="( nextSeats, indexRow ) in nextSeatsTable">
+                  <textarea v-for="( seat, indexCol ) in nextSeats" class="seat"
+                  :class="getColor( nextSeatsTable[indexRow][indexCol] )"
+                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
+                  :value="nextSeatsTable[indexRow][indexCol]">
+                  </textarea>
+                </li>
               </div>
             </v-col>
-            <v-col cols="3">
-              <p>近づける条件用配列</p>
-              {{ nearConditions }}
-              <p>離す条件用配列</p>
-              {{ farConditions }}
-            </v-col>
             <v-col cols="6">
-              <p>生徒の名前用配列</p>
-              {{ studentsName }}
+              <v-row>
+                <v-col cols="6"  style="background-color: lightsalmon">
+                  <div>
+                    <p>現在の座席記憶用テーブル</p>
+                    <p v-for="seats in seatsTable">{{ seats }}</p>
+                  </div>
+                </v-col>
+                <v-col cols="6"  style="background-color: palegreen">
+                  <div>
+                    <p>席替え後の座席記憶用テーブル</p>
+                    <p v-for="nextSeats in nextSeatsTable">{{ nextSeats }}</p>
+                  </div>
+                </v-col>
+                <v-col cols="6" style="background-color: plum">
+                  <p>最前列に固定する生徒</p>
+                  {{ frontConditions }}
+                  <p>近づける条件用配列</p>
+                  {{ nearConditions }}
+                  <p>離す条件用配列</p>
+                  {{ farConditions }}
+                </v-col>
+                <v-col cols="6" style="background-color: paleturquoise">
+                  <p>生徒の名前用配列</p>
+                  {{ studentsName }}
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
 
@@ -196,16 +249,18 @@
           seatsSizeX: 6, // デフォルト値は6
           seatsTable: [], // 座席テーブル
           seats_num: 0, // 有効な座席数
-          seatsOptionsX: [1,2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
-          seatsOptionsY: [1,2,3,4,5,6,7,8], //たての座席数入力フォームの選択肢
-          distanceOptions: [1,2,3,4,5,6,7,8], //近づける・離す距離の選択肢
-          studentsName: [], //生徒の名前を格納
-          nearConditions: [],
-          nearConditionOption1: '',
-          nearConditionOption2: '',
-          farConditions: [],
-          farConditionOption1: '',
-          farConditionOption2: ''
+          seatsOptionsX: [1,2,3,4,5,6,7,8], // よこの座席数入力フォームの選択肢
+          seatsOptionsY: [1,2,3,4,5,6,7,8], // たての座席数入力フォームの選択肢
+          distanceOptions: [1,2,3,4,5,6,7,8], // 近づける・離す距離の選択肢
+          studentsName: [], // 生徒の名前を格納
+          nearConditions: [], // 近づける条件
+          nearConditionOption1: '', // 近づける生徒1
+          nearConditionOption2: '', // 近づける生徒2
+          farConditions: [], // 離す条件
+          farConditionOption1: '', // 離す生徒1
+          farConditionOption2: '', // 離す生徒2
+          frontConditions: [], // 最前列に固定する生徒
+          nextSeatsTable: [] // 席替え後の座席テーブル
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -218,7 +273,7 @@
             console.log(name);
             console.log(`${this.seatsTable[indexRow][indexCol]}`);
           },
-          makeTable() { // seatsTableを作成
+          makeSeatsTable() { // seatsTableを作成
             this.seatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
@@ -230,7 +285,7 @@
             this.seatsTable.splice(3, 1, ['', '', '', '平尾さん', '', 'かんぬ\nさん']);
             /* ここまで */
             this.countSeats();
-            console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
+            console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeSeatsTableを実行したよー`);
           },
           countSeats() { // 有効な座席数をカウント
             this.seats_num = 0;
@@ -241,35 +296,45 @@
             })
             console.log(this.seats_num);
           },
-          setNearConditionOption1(nearConditionOption1) {
+          setNearConditionOption1(nearConditionOption1) { // 近づける条件で指定する生徒1を登録
             this.nearConditionOption1 = nearConditionOption1;
             console.log(nearConditionOption1);
           },
-          setNearConditionOption2(nearConditionOption2) {
+          setNearConditionOption2(nearConditionOption2) {　// 近づける条件で指定する生徒2を登録
             this.nearConditionOption2 = nearConditionOption2;
             console.log(nearConditionOption2);
           },
-          addNearConditions(distance) {
+          addNearConditions(distance) { // 生徒1と生徒2を近づける条件を登録
             this.nearConditions.push({nearConditionOption1: this.nearConditionOption1,
                                       nearConditionOption2: this.nearConditionOption2,
                                       distance: distance})
           },
-          setFarConditionOption1(farConditionOption1) {
+          setFarConditionOption1(farConditionOption1) { // 離す条件で指定する生徒1を登録
             this.farConditionOption1 = farConditionOption1;
             console.log(farConditionOption1);
           },
-          setFarConditionOption2(farConditionOption2) {
+          setFarConditionOption2(farConditionOption2) { // 離す条件で指定する生徒2を登録
             this.farConditionOption2 = farConditionOption2;
             console.log(farConditionOption2);
           },
-          addFarConditions(distance) {
+          addFarConditions(distance) { // 生徒1と生徒2を離す条件を登録
             this.farConditions.push({farConditionOption1: this.farConditionOption1,
                                       farConditionOption2: this.farConditionOption2,
                                       distance: distance})
+          },
+          addFrontConditions(studentName) {
+            this.frontConditions.push(studentName);
+          },
+          makeNextSeatsTable() { // nextSeatsTableを作成
+            this.nextSeatsTable = []
+            for(let i = 0; i < this.seatsSizeY; i++) {
+              this.nextSeatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
+            }
           }
         },
         mounted() {
-          this.makeTable() // 最初にseatsTableを作成
+          this.makeSeatsTable() // 最初にseatsTableを作成
+          this.makeNextSeatsTable() // 席替え後用のnextSeatsTableを空白で作成
         },
         watch: {
           seatsTable: {
