@@ -222,7 +222,7 @@
           seatsTable: {
             handler: function(){
               this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
-              this.studentsName = this.studentsName.filter(function(studentName) {
+              this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
                 return studentName !== '';
               })
             },
