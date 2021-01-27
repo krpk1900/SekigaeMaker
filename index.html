@@ -36,7 +36,7 @@
         <v-container fluid>
           <v-row>
             <!-- タイトル -->
-            <v-col cols="12">
+            <v-col cols="12" style="background-color: wheat">
               <h1 class="text-center">席替えメーカー（実装５日目）</h1>
             </v-col>
           </v-row>
@@ -184,7 +184,7 @@
 
           <!-- 以下デバッグ用表示 -->
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" style="background-color: palevioletred">
               <h1 class="text-center">以下デバッグ用</h1>
             </v-col>
           </v-row>
@@ -205,19 +205,19 @@
             </v-col>
             <v-col cols="6">
               <v-row>
-                <v-col cols="6">
+                <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
                     <p>現在の座席記憶用テーブル</p>
                     <p v-for="seats in seatsTable">{{ seats }}</p>
                   </div>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="6"  style="background-color: palegreen">
                   <div>
                     <p>席替え後の座席記憶用テーブル</p>
                     <p v-for="nextSeats in nextSeatsTable">{{ nextSeats }}</p>
                   </div>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="6" style="background-color: plum">
                   <p>最前列に固定する生徒</p>
                   {{ frontConditions }}
                   <p>近づける条件用配列</p>
@@ -225,7 +225,7 @@
                   <p>離す条件用配列</p>
                   {{ farConditions }}
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="6" style="background-color: paleturquoise">
                   <p>生徒の名前用配列</p>
                   {{ studentsName }}
                 </v-col>
