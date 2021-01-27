@@ -50,7 +50,8 @@
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" class="seat"
                   :class="getColor( seatsTable[indexRow][indexCol] )" @input="writeStudentName( indexRow, indexCol, $event.target.value ); countSeats()"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all">
+                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
+                  :value="seatsTable[indexRow][indexCol]">
                   </textarea>
                 </li>
               </div>
@@ -84,7 +85,8 @@
                       <v-expansion-panel-content>
                         <!-- 近づける生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"></v-select>
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change=""></v-select>
                           と
                           <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"></v-select>
                           の間を
@@ -190,6 +192,12 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
+            /* テストのため始めから入力 */
+            this.seatsTable.splice(0, 1, ['菊本さん', '', '', '', '大地さん', '']);
+            this.seatsTable.splice(1, 1, ['', '', 'たかこ\nさん', '', '', '']);
+            this.seatsTable.splice(2, 1, ['', '廣瀬さん', '', '', 'ののか\nさん', '']);
+            this.seatsTable.splice(3, 1, ['', '', '', '平尾さん', '', 'かんぬ\nさん']);
+            /* ここまで */
             this.countSeats();
             console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
           },
