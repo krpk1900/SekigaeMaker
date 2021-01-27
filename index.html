@@ -181,7 +181,7 @@
             if (seat === '') return 'gray'
             else return 'green'
           },
-          writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効、無効を切り替える
+          writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効・無効を切り替える
             this.seatsTable[indexRow].splice(indexCol, 1, name)
             console.log(`${indexRow}${indexCol}が入力されたよー`);
             console.log(name);
@@ -221,7 +221,10 @@
         watch: {
           seatsTable: {
             handler: function(){
-              this.studentsName = Array.prototype.concat.apply([], this.seatsTable);
+              this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
+              this.studentsName = this.studentsName.filter(function(studentName) {
+                return studentName !== '';
+              })
             },
             deep: true
           }
