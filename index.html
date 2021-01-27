@@ -37,7 +37,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col>
-              <h1 class="text-center">席替えメーカー（実装３日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装５日目）</h1>
             </v-col>
           </v-row>
 
@@ -50,7 +50,8 @@
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" class="seat"
                   :class="getColor( seatsTable[indexRow][indexCol] )" @input="writeStudentName( indexRow, indexCol, $event.target.value ); countSeats()"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all">
+                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
+                  :value="seatsTable[indexRow][indexCol]">
                   </textarea>
                 </li>
               </div>
@@ -82,13 +83,23 @@
                     <v-expansion-panel>
                       <v-expansion-panel-header>近づける生徒を入力する</v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <!-- 近づける生徒の入力フォーム -->
+                        <!-- 近づける生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change=""></v-select>
+                          と
+                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"></v-select>
+                          の間を
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block" @change="addTests"></v-select>
+                          以下にする
+                        </div>
+                        <!-- 近づける生徒の入力フォーム（追加表示のための２つ目以降） -->
+                        <div v-for="test in tests">
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"></v-select>
                           と
                           <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"></v-select>
                           の間を
-                          <v-select :items="distanceOptions"  outlined style="width:70px; display: inline-block"></v-select>
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block" @change="addTests"></v-select>
                           以下にする
                         </div>
                       </v-expansion-panel-content>
@@ -162,14 +173,15 @@
           seatsOptionsX: [1,2,3,4,5,6,7,8], //よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], //たての座席数入力フォームの選択肢
           distanceOptions: [1,2,3,4,5,6,7,8], //近づける・離す距離の選択肢
-          studentsName: []
+          studentsName: [],
+          tests: []
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
             if (seat === '') return 'gray'
             else return 'green'
           },
-          writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効、無効を切り替える
+          writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効・無効を切り替える
             this.seatsTable[indexRow].splice(indexCol, 1, name)
             console.log(`${indexRow}${indexCol}が入力されたよー`);
             console.log(name);
@@ -180,6 +192,12 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
+            /* テストのため始めから入力 */
+            this.seatsTable.splice(0, 1, ['菊本さん', '', '', '', '大地さん', '']);
+            this.seatsTable.splice(1, 1, ['', '', 'たかこ\nさん', '', '', '']);
+            this.seatsTable.splice(2, 1, ['', '廣瀬さん', '', '', 'ののか\nさん', '']);
+            this.seatsTable.splice(3, 1, ['', '', '', '平尾さん', '', 'かんぬ\nさん']);
+            /* ここまで */
             this.countSeats();
             console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeTableを実行したよー`);
           },
@@ -191,6 +209,10 @@
               })
             })
             console.log(this.seats_num);
+          },
+          addTests() {
+            this.tests.push(1);
+            console.log('addTestsが実行されたよー')
           }
         },
         mounted() {
@@ -199,7 +221,10 @@
         watch: {
           seatsTable: {
             handler: function(){
-              this.studentsName = Array.prototype.concat.apply([], this.seatsTable);
+              this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
+              this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
+                return studentName !== '';
+              })
             },
             deep: true
           }
