@@ -49,7 +49,8 @@
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" class="seat"
-                  :class="getColor( seatsTable[indexRow][indexCol] )" @input="writeStudentName( indexRow, indexCol, $event.target.value ); countSeats()"
+                  :class="getColor( seatsTable[indexRow][indexCol] )" @input="writeStudentName( indexRow, indexCol, $event.target.value ); countSeats();"
+                  @input.once="pushSeatsTableIndex(indexRow, indexCol);"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="seatsTable[indexRow][indexCol]">
                   </textarea>
@@ -229,6 +230,10 @@
                   <p>生徒の名前用配列</p>
                   {{ studentsName }}
                 </v-col>
+                <v-col cols="6" style="background-color: khaki">
+                  <p>有効な座席のインデックス配列</p>
+                  {{ seatsTableIndex }}
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -261,7 +266,8 @@
           farConditionOption2: '', // 離す生徒2
           frontConditions: [], // 最前列に固定する生徒
           nextSeatsTable: [], // 席替え後の座席テーブル
-          tempRow: '' // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
+          tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
+          seatsTableIndex: [] // 座席テーブル上の有効な座席のインデックス
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -345,6 +351,9 @@
                 changedSeatsNum++;
               }
             }
+          },
+          pushSeatsTableIndex(indexRow, indexCol) {
+            this.seatsTableIndex.push([indexRow, indexCol]);
           }
         },
         mounted() {
