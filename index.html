@@ -270,9 +270,6 @@
           },
           writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効・無効を切り替える
             this.seatsTable[indexRow].splice(indexCol, 1, name)
-            console.log(`${indexRow}${indexCol}が入力されたよー`);
-            console.log(name);
-            console.log(`${this.seatsTable[indexRow][indexCol]}`);
           },
           makeSeatsTable() { // seatsTableを作成
             this.seatsTable = []
@@ -286,7 +283,6 @@
             this.seatsTable.splice(3, 1, ['', '', '', '平尾さん', '', 'かんぬ\nさん']);
             /* ここまで */
             this.countSeats();
-            console.log(`${this.seatsSizeX}x${this.seatsSizeY}でmakeSeatsTableを実行したよー`);
           },
           countSeats() { // 有効な座席数をカウント
             this.seats_num = 0;
@@ -295,15 +291,12 @@
                 if (seat !== '') this.seats_num += 1
               })
             })
-            console.log(this.seats_num);
           },
           setNearConditionOption1(nearConditionOption1) { // 近づける条件で指定する生徒1を登録
             this.nearConditionOption1 = nearConditionOption1;
-            console.log(nearConditionOption1);
           },
           setNearConditionOption2(nearConditionOption2) {　// 近づける条件で指定する生徒2を登録
             this.nearConditionOption2 = nearConditionOption2;
-            console.log(nearConditionOption2);
           },
           addNearConditions(distance) { // 生徒1と生徒2を近づける条件を登録
             this.nearConditions.push({nearConditionOption1: this.nearConditionOption1,
@@ -312,11 +305,9 @@
           },
           setFarConditionOption1(farConditionOption1) { // 離す条件で指定する生徒1を登録
             this.farConditionOption1 = farConditionOption1;
-            console.log(farConditionOption1);
           },
           setFarConditionOption2(farConditionOption2) { // 離す条件で指定する生徒2を登録
             this.farConditionOption2 = farConditionOption2;
-            console.log(farConditionOption2);
           },
           addFarConditions(distance) { // 生徒1と生徒2を離す条件を登録
             this.farConditions.push({farConditionOption1: this.farConditionOption1,
@@ -332,20 +323,25 @@
               this.nextSeatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
           },
+          resetNextSeatsTable() {
+            for(let i = 0; i < this.seatsSizeY; i++) {
+              this.nextSeatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
+            }
+          },
           changeSeats() {
+            this.resetNextSeatsTable();
             this.changeFrontSeats();
           },
           changeFrontSeats() { // 最前列に固定する生徒を席替え
             let changedFrontSeatsIndex = [] // すでに配置した座席のインデックス
             let changedSeatsNum = 0; // すでに配置した座席の数
-            while(changedSeatsNum < this.frontConditions.length) {
+            while(changedSeatsNum < this.frontConditions.length) {　// 最前列に固定する生徒を一人ずつ配置
               let changeIndex = Math.random() * this.seatsSizeX | 0 // 0からseatsSizeXまでの整数
               if (!changedFrontSeatsIndex.includes(changeIndex)) { // まだ選ばれていない座席のインデックスであれば
                 this.tempRow = this.nextSeatsTable[0]; // 最前列をtempRowに退避
                 this.tempRow.splice(changeIndex, 1, this.frontConditions[changedSeatsNum]); // 席替え後の座席テーブルに設定
                 this.nextSeatsTable.splice(0, 1, this.tempRow);
                 changedFrontSeatsIndex.push(changeIndex); // チェック用配列に、配置済みの座席のインデックスをプッシュ
-                console.log(`changedFrontSeatsIndex = ${changedFrontSeatsIndex}`);
                 changedSeatsNum++;
               }
             }
