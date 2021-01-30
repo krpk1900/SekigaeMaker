@@ -48,8 +48,8 @@
               <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <textarea v-for="( seat, indexCol ) in seats" class="seat"
-                  :class="getColor( seatsTable[indexRow][indexCol] )" @input="writeStudentName( indexRow, indexCol, $event.target.value ); countSeats();"
+                  <textarea v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )"
+                  class="seat" @input="writeStudentName( indexRow, indexCol, $event.target.value ); countSeats();"
                   @input.once="pushSeatsTableIndex(indexRow, indexCol);"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="seatsTable[indexRow][indexCol]">
@@ -209,6 +209,8 @@
                 <v-col cols="12" style="background-color: khaki">
                   <p>有効な座席のインデックス配列</p>
                   {{ seatsTableIndex }}
+                  <p>有効な座席のインデックス配列の複製</p>
+                  {{ dupSeatsTableIndex }}
                 </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
@@ -267,7 +269,8 @@
           frontConditions: [], // 最前列に固定する生徒
           nextSeatsTable: [], // 席替え後の座席テーブル
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
-          seatsTableIndex: [] // 座席テーブル上の有効な座席のインデックス
+          seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
+          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -282,12 +285,12 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
-            /* テストのため始めから入力 */
+            /* テストのため始めから入力
             this.seatsTable.splice(0, 1, ['菊本さん', '', '', '', '大地さん', '']);
             this.seatsTable.splice(1, 1, ['', '', 'たかこ\nさん', '', '', '']);
             this.seatsTable.splice(2, 1, ['', '廣瀬さん', '', '', 'ののか\nさん', '']);
             this.seatsTable.splice(3, 1, ['', '', '', '平尾さん', '', 'かんぬ\nさん']);
-            /* ここまで */
+             ここまで */
             this.countSeats();
           },
           countSeats() { // 有効な座席数をカウント
@@ -336,6 +339,7 @@
           },
           changeSeats() {
             this.resetNextSeatsTable();
+            this.dupSeatsTableIndex = this.seatsTableIndex.slice(0);
             // this.changeFrontSeats();
             this.shuffleSeats();
           },
@@ -356,10 +360,14 @@
           pushSeatsTableIndex(indexRow, indexCol) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexRow, indexCol]);
           },
-          shuffleSeats() {
-            this.shuffle(this.seatsTableIndex);
+          shuffleSeats() { // 制限のない生徒を席替え
+            this.shuffle(this.dupSeatsTableIndex);
+            this.studentsName.forEach(studentName => {
+              let topIndex = this.dupSeatsTableIndex.shift();
+              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, studentName);
+            })
           },
-          shuffle(array) {
+          shuffle(array) { // 配列をランダムにシャッフル
             for (let i = array.length - 1; i >= 0; i--) {
               const j = Math.floor(Math.random() * (i + 1));
               const tempValue = array[i];
