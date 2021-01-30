@@ -11,17 +11,17 @@
         list-style: none;
         height: 80px;
       }
-      .green {
+      .on-seats {
         background: mediumaquamarine;
       }
-      .gray{
+      .off-seats {
         background: gainsboro;
       }
       .seat{
         height: 80px;
         width: 80px;
         display: inline-block;
-        border: 2px solid white;
+        border: 3px solid white;
         box-sizing: border-box;
         text-align: center;
       }
@@ -37,7 +37,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装７日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装８日目）</h1>
             </v-col>
           </v-row>
 
@@ -274,8 +274,8 @@
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
-            if (seat === '') return 'gray'
-            else return 'green'
+            if (seat === '') return 'off-seats'
+            else return 'on-seats'
           },
           writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効・無効を切り替える
             this.seatsTable[indexRow].splice(indexCol, 1, name)
