@@ -206,6 +206,10 @@
             </v-col>
             <v-col cols="6">
               <v-row>
+                <v-col cols="12" style="background-color: khaki">
+                  <p>有効な座席のインデックス配列</p>
+                  {{ seatsTableIndex }}
+                </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
                     <p>現在の座席記憶用テーブル</p>
@@ -229,10 +233,6 @@
                 <v-col cols="6" style="background-color: paleturquoise">
                   <p>生徒の名前用配列</p>
                   {{ studentsName }}
-                </v-col>
-                <v-col cols="6" style="background-color: khaki">
-                  <p>有効な座席のインデックス配列</p>
-                  {{ seatsTableIndex }}
                 </v-col>
               </v-row>
             </v-col>
@@ -336,7 +336,8 @@
           },
           changeSeats() {
             this.resetNextSeatsTable();
-            this.changeFrontSeats();
+            // this.changeFrontSeats();
+            this.shuffleSeats();
           },
           changeFrontSeats() { // 最前列に固定する生徒を席替え
             let changedFrontSeatsIndex = [] // すでに配置した座席のインデックス
@@ -352,8 +353,19 @@
               }
             }
           },
-          pushSeatsTableIndex(indexRow, indexCol) {
+          pushSeatsTableIndex(indexRow, indexCol) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexRow, indexCol]);
+          },
+          shuffleSeats() {
+            this.shuffle(this.seatsTableIndex);
+          },
+          shuffle(array) {
+            for (let i = array.length - 1; i >= 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              const tempValue = array[i];
+              array.splice(i, 1, array[j]);
+              array.splice(j, 1, tempValue);
+            }
           }
         },
         mounted() {
