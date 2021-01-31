@@ -332,16 +332,16 @@
               this.nextSeatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
           },
-          resetNextSeatsTable() {
+          resetNextSeatsTable() { // nextSeatsTableを空白で初期化
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.nextSeatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
             }
           },
-          changeSeats() {
+          changeSeats() { // 席替え処理
             this.resetNextSeatsTable();
-            this.dupSeatsTableIndex = this.seatsTableIndex.slice(0);
+            this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製
             // this.changeFrontSeats();
-            this.shuffleSeats();
+            this.shuffleSeats(); // 条件のない生徒を席替え
           },
           changeFrontSeats() { // 最前列に固定する生徒を席替え
             let changedFrontSeatsIndex = [] // すでに配置した座席のインデックス
@@ -360,7 +360,7 @@
           pushSeatsTableIndex(indexRow, indexCol) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexRow, indexCol]);
           },
-          shuffleSeats() { // 制限のない生徒を席替え
+          shuffleSeats() { // 条件のない生徒を席替え
             this.shuffle(this.dupSeatsTableIndex);
             this.studentsName.forEach(studentName => {
               let topIndex = this.dupSeatsTableIndex.shift();
