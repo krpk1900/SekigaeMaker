@@ -211,6 +211,8 @@
                   {{ seatsTableIndex }}
                   <p>有効な座席のインデックス配列の複製</p>
                   {{ dupSeatsTableIndex }}
+                  <p>最前列の座席のインデックス配列</p>
+                  {{ frontSeatsIndex }}
                 </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
@@ -271,6 +273,7 @@
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
           seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
           dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製
+          frontSeatsIndex: [], // 最前列のインデックス
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -339,6 +342,7 @@
           },
           changeSeats() { // 席替え処理
             this.resetNextSeatsTable();
+            this.makeFrontSeatsIndex(); // 仮にここに配置
             this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製
             // this.changeFrontSeats();
             this.shuffleSeats(); // 条件のない生徒を席替え
@@ -361,10 +365,10 @@
             this.seatsTableIndex.push([indexRow, indexCol]);
           },
           shuffleSeats() { // 条件のない生徒を席替え
-            this.shuffle(this.dupSeatsTableIndex);
+            this.shuffle(this.dupSeatsTableIndex);// インデックスをシャッフル
             this.studentsName.forEach(studentName => {
-              let topIndex = this.dupSeatsTableIndex.shift();
-              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, studentName);
+              let topIndex = this.dupSeatsTableIndex.shift();// シャッフルしたインデックスを格納した配列の先頭を取り出す
+              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, studentName);// 取り出したインデックスの位置に生徒名を保存
             })
           },
           shuffle(array) { // 配列をランダムにシャッフル
@@ -374,6 +378,14 @@
               array.splice(i, 1, array[j]);
               array.splice(j, 1, tempValue);
             }
+          },
+          makeFrontSeatsIndex() {
+            this.seatsTableIndex.forEach(indexArray => {
+              if(indexArray[0] === 0) { // 最前列なら
+                this.frontSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
+              }
+            })
+            //this.frontSeatsIndex
           }
         },
         mounted() {
