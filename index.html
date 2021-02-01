@@ -345,6 +345,7 @@
           },
           changeSeats() { // 席替え処理
             this.resetNextSeatsTable();
+            this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
             this.makeFrontSeatsIndex(); // 仮にここに配置
             this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製
             this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製
@@ -391,6 +392,9 @@
                 changedSeatsNum++;
               }
             }
+          },
+          resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
+            this.frontSeatsIndex.splice(0);
           }
         },
         mounted() {
