@@ -213,6 +213,8 @@
                   {{ dupSeatsTableIndex }}
                   <p>最前列の座席のインデックス配列</p>
                   {{ frontSeatsIndex }}
+                  <p>最前列の座席のインデックス配列の複製</p>
+                  {{ dupFrontSeatsIndex }}
                 </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
@@ -274,6 +276,7 @@
           seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
           dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製
           frontSeatsIndex: [], // 最前列のインデックス
+          dupFrontSeatsIndex: [], // 最前列のインデックスの複製
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -344,22 +347,10 @@
             this.resetNextSeatsTable();
             this.makeFrontSeatsIndex(); // 仮にここに配置
             this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製
+            this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製
+
             // this.changeFrontSeats();
             this.shuffleSeats(); // 条件のない生徒を席替え
-          },
-          changeFrontSeats() { // 最前列に固定する生徒を席替え
-            let changedFrontSeatsIndex = [] // すでに配置した座席のインデックス
-            let changedSeatsNum = 0; // すでに配置した座席の数
-            while(changedSeatsNum < this.frontConditions.length) {　// 最前列に固定する生徒を一人ずつ配置
-              let changeIndex = Math.random() * this.seatsSizeX | 0 // 0からseatsSizeXまでの整数
-              if (!changedFrontSeatsIndex.includes(changeIndex)) { // まだ選ばれていない座席のインデックスであれば
-                this.tempRow = this.nextSeatsTable[0]; // 最前列をtempRowに退避
-                this.tempRow.splice(changeIndex, 1, this.frontConditions[changedSeatsNum]); // 席替え後の座席テーブルに設定
-                this.nextSeatsTable.splice(0, 1, this.tempRow);
-                changedFrontSeatsIndex.push(changeIndex); // チェック用配列に、配置済みの座席のインデックスをプッシュ
-                changedSeatsNum++;
-              }
-            }
           },
           pushSeatsTableIndex(indexRow, indexCol) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexRow, indexCol]);
@@ -386,6 +377,20 @@
               }
             })
             //this.frontSeatsIndex
+          },
+          changeFrontSeats() { // 最前列に固定する生徒を席替え
+            let changedFrontSeatsIndex = [] // すでに配置した座席のインデックス
+            let changedSeatsNum = 0; // すでに配置した座席の数
+            while(changedSeatsNum < this.frontConditions.length) {　// 最前列に固定する生徒を一人ずつ配置
+              let changeIndex = Math.random() * this.seatsSizeX | 0 // 0からseatsSizeXまでの整数
+              if (!changedFrontSeatsIndex.includes(changeIndex)) { // まだ選ばれていない座席のインデックスであれば
+                this.tempRow = this.nextSeatsTable[0]; // 最前列をtempRowに退避
+                this.tempRow.splice(changeIndex, 1, this.frontConditions[changedSeatsNum]); // 席替え後の座席テーブルに設定
+                this.nextSeatsTable.splice(0, 1, this.tempRow);
+                changedFrontSeatsIndex.push(changeIndex); // チェック用配列に、配置済みの座席のインデックスをプッシュ
+                changedSeatsNum++;
+              }
+            }
           }
         },
         mounted() {
