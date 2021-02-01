@@ -239,6 +239,8 @@
                 <v-col cols="6" style="background-color: paleturquoise">
                   <p>生徒の名前用配列</p>
                   {{ studentsName }}
+                  <p>生徒の名前用配列の複製</p>
+                  {{ dupStudentsName }}
                 </v-col>
               </v-row>
             </v-col>
@@ -263,7 +265,8 @@
           seatsOptionsX: [1,2,3,4,5,6,7,8], // よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], // たての座席数入力フォームの選択肢
           distanceOptions: [1,2,3,4,5,6,7,8], // 近づける・離す距離の選択肢
-          studentsName: [], // 生徒の名前を格納
+          studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
+          dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
           nearConditions: [], // 近づける条件
           nearConditionOption1: '', // 近づける生徒1
           nearConditionOption2: '', // 近づける生徒2
@@ -274,9 +277,9 @@
           nextSeatsTable: [], // 席替え後の座席テーブル
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
           seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
-          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製
+          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           frontSeatsIndex: [], // 最前列のインデックス
-          dupFrontSeatsIndex: [], // 最前列のインデックスの複製
+          dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -347,20 +350,20 @@
             this.resetNextSeatsTable();
             this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
             this.makeFrontSeatsIndex(); // 仮にここに配置
-            this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製
-            this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製
-
-            // this.changeFrontSeats();
+            this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際に破壊的にデータを取り出していく
+            this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際に破壊的にデータを取り出していく
+            this.dupStudentsName = this.studentsName.slice(0); // 最前列の座席のインデックスを複製、席替えの際に破壊的にデータを取り出していく
+            this.changeFrontSeats(); // 最前列に固定する生徒を席替え
             this.shuffleSeats(); // 条件のない生徒を席替え
           },
           pushSeatsTableIndex(indexRow, indexCol) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexRow, indexCol]);
           },
           shuffleSeats() { // 条件のない生徒を席替え
-            this.shuffle(this.dupSeatsTableIndex);// インデックスをシャッフル
-            this.studentsName.forEach(studentName => {
-              let topIndex = this.dupSeatsTableIndex.shift();// シャッフルしたインデックスを格納した配列の先頭を取り出す
-              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, studentName);// 取り出したインデックスの位置に生徒名を保存
+            this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
+            this.dupStudentsName.forEach(dupStudentName => {
+              let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
           shuffle(array) { // 配列をランダムにシャッフル
@@ -380,18 +383,17 @@
             //this.frontSeatsIndex
           },
           changeFrontSeats() { // 最前列に固定する生徒を席替え
-            let changedFrontSeatsIndex = [] // すでに配置した座席のインデックス
-            let changedSeatsNum = 0; // すでに配置した座席の数
-            while(changedSeatsNum < this.frontConditions.length) {　// 最前列に固定する生徒を一人ずつ配置
-              let changeIndex = Math.random() * this.seatsSizeX | 0 // 0からseatsSizeXまでの整数
-              if (!changedFrontSeatsIndex.includes(changeIndex)) { // まだ選ばれていない座席のインデックスであれば
-                this.tempRow = this.nextSeatsTable[0]; // 最前列をtempRowに退避
-                this.tempRow.splice(changeIndex, 1, this.frontConditions[changedSeatsNum]); // 席替え後の座席テーブルに設定
-                this.nextSeatsTable.splice(0, 1, this.tempRow);
-                changedFrontSeatsIndex.push(changeIndex); // チェック用配列に、配置済みの座席のインデックスをプッシュ
-                changedSeatsNum++;
-              }
-            }
+            this.shuffle(this.dupFrontSeatsIndex);
+            this.frontConditions.forEach(frontStudentName => {
+              let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
+
+              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // changeFrontSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+            })
           },
           resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
             this.frontSeatsIndex.splice(0);
