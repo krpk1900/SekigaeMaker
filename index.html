@@ -410,8 +410,13 @@
             let y_abs = Math.abs( p1[1] - p2[1] );
             return Math.min(x_abs, y_abs);
           },
+          max_distance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
+            let x_abs = Math.abs( p1[0] - p2[0] );
+            let y_abs = Math.abs( p1[1] - p2[1] );
+            return Math.max(x_abs, y_abs);
+          },
           testMethod() { // デバッグ用。後で消す。
-            console.log(this.min_distance( [0,0], [1,2] ));
+            console.log(this.max_distance( [0,0], [1,2] ));
           },
         },
         mounted() {
