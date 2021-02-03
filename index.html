@@ -206,11 +206,18 @@
             </v-col>
             <v-col cols="6">
               <v-row>
-                <v-col cols="12" style="background-color: khaki">
+                <!-- testボタン -->
+                <v-col cols="12" style="background-color: darkgray">
+                  <v-btn elevation="2" outlined @click="testMethod">テスト！</v-btn>
+                </v-col>
+
+                <v-col cols="6" style="background-color: khaki">
                   <p>有効な座席のインデックス配列</p>
                   {{ seatsTableIndex }}
                   <p>有効な座席のインデックス配列の複製</p>
                   {{ dupSeatsTableIndex }}
+                </v-col>
+                <v-col cols="6" style="background-color: lightsteelblue">
                   <p>最前列の座席のインデックス配列</p>
                   {{ frontSeatsIndex }}
                   <p>最前列の座席のインデックス配列の複製</p>
@@ -397,7 +404,15 @@
           },
           resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
             this.frontSeatsIndex.splice(0);
-          }
+          },
+          min_distance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
+            let x_abs = Math.abs( p1[0] - p2[0] );
+            let y_abs = Math.abs( p1[1] - p2[1] );
+            return Math.min(x_abs, y_abs);
+          },
+          testMethod() { // デバッグ用。後で消す。
+            console.log(this.min_distance( [0,0], [1,2] ));
+          },
         },
         mounted() {
           this.makeSeatsTable() // 最初にseatsTableを作成
