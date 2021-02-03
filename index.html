@@ -274,7 +274,8 @@
           distanceOptions: [1,2,3,4,5,6,7,8], // 近づける・離す距離の選択肢
           studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
           dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
-          nearConditions: [], // 近づける条件
+          nearConditions: [], // 近づける条件配列
+          //nearCondition: [], // 近づける条件
           nearConditionOption1: '', // 近づける生徒1
           nearConditionOption2: '', // 近づける生徒2
           farConditions: [], // 離す条件
@@ -324,9 +325,7 @@
             this.nearConditionOption2 = nearConditionOption2;
           },
           addNearConditions(distance) { // 生徒1と生徒2を近づける条件を登録
-            this.nearConditions.push({nearConditionOption1: this.nearConditionOption1,
-                                      nearConditionOption2: this.nearConditionOption2,
-                                      distance: distance})
+            this.nearConditions.push( [this.nearConditionOption1, this.nearConditionOption2, distance] );
           },
           setFarConditionOption1(farConditionOption1) { // 離す条件で指定する生徒1を登録
             this.farConditionOption1 = farConditionOption1;
@@ -335,9 +334,7 @@
             this.farConditionOption2 = farConditionOption2;
           },
           addFarConditions(distance) { // 生徒1と生徒2を離す条件を登録
-            this.farConditions.push({farConditionOption1: this.farConditionOption1,
-                                      farConditionOption2: this.farConditionOption2,
-                                      distance: distance})
+            this.farConditions.push( [this.farConditionOption1, this.farConditionOption2, distance] )
           },
           addFrontConditions(studentName) { // 最前列に固定する条件を要録
             this.frontConditions.push(studentName);
@@ -370,6 +367,8 @@
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => {
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+
+              //debugger
               this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
@@ -416,7 +415,14 @@
             return Math.max(x_abs, y_abs);
           },
           testMethod() { // デバッグ用。後で消す。
-            console.log(this.max_distance( [0,0], [1,2] ));
+            this.nearConditions.forEach(nearConditionArray => {
+              if( nearConditionArray.includes('aaa') ){
+                console.log('trueです〜')
+              }else{
+                console.log('falseです〜')
+              }
+            })
+            // console.log(this.nearConditions.includes('aaa'));
           },
         },
         mounted() {
