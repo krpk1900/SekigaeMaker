@@ -275,7 +275,6 @@
           studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
           dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
           nearConditions: [], // 近づける条件配列
-          //nearCondition: [], // 近づける条件
           nearConditionOption1: '', // 近づける生徒1
           nearConditionOption2: '', // 近づける生徒2
           farConditions: [], // 離す条件
@@ -312,8 +311,8 @@
           },
           countSeats() { // 有効な座席数をカウント
             this.seats_num = 0;
-            this.seatsTable.forEach(seats => {
-              seats.forEach(seat => {
+            this.seatsTable.forEach(seatsRow => {
+              seatsRow.forEach(seat => {
                 if (seat !== '') this.seats_num += 1
               })
             })
@@ -365,7 +364,7 @@
           },
           shuffleSeats() { // 条件のない生徒を席替え
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
-            this.dupStudentsName.forEach(dupStudentName => {
+            this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
 
               //debugger
@@ -415,14 +414,34 @@
             return Math.max(x_abs, y_abs);
           },
           testMethod() { // デバッグ用。後で消す。
+            this.getPositionFromNextSeatsTable('aaa');
+          },
+          checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
             this.nearConditions.forEach(nearConditionArray => {
-              if( nearConditionArray.includes('aaa') ){
-                console.log('trueです〜')
-              }else{
-                console.log('falseです〜')
+              if( nearConditionArray.includes(studentName) ){ // もし引数の生徒が、近づける条件にいれば
+                if( nearConditionArray.indexOf(studentName) == 0 ){
+                  console.log(`${nearConditionArray[1]}と、距離${nearConditionArray[2]}以下にする`) //あとで消す
+                  let nearStudentName = nearConditionArray[1];
+                  let distance = nearConditionArray[2];
+
+                }else if( nearConditionArray.indexOf(studentName) == 1 ){
+                  console.log(`${nearConditionArray[0]}と、距離${nearConditionArray[2]}以下にする`)
+                  let nearStudentName = nearConditionArray[0];
+                  let distance = nearConditionArray[2];
+                }
               }
             })
-            // console.log(this.nearConditions.includes('aaa'));
+          },
+          getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を返す
+            let nextSeatsRowNum = 0; // 行インデックス。y座標。
+            this.nextSeatsTable.forEach(nextSeatsRow => {
+              if( nextSeatsRow.includes(studentName) ){
+                let nextSeatsColNum = nextSeatsRow.indexOf(studentName);
+                console.log(`x座標は${nextSeatsColNum}`)
+                console.log(`y座標は${nextSeatsRowNum}`)
+              }
+              nextSeatsRowNum += 1;
+            })
           },
         },
         mounted() {
