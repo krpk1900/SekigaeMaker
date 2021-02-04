@@ -437,11 +437,12 @@
             this.nextSeatsTable.forEach(nextSeatsRow => {
               if( nextSeatsRow.includes(studentName) ){
                 let nextSeatsColNum = nextSeatsRow.indexOf(studentName);
-                console.log(`x座標は${nextSeatsColNum}`)
-                console.log(`y座標は${nextSeatsRowNum}`)
+                console.log([nextSeatsColNum, nextSeatsRowNum]); //あとで消す
+                return [nextSeatsColNum, nextSeatsRowNum];
               }
               nextSeatsRowNum += 1;
             })
+            return false;
           },
         },
         mounted() {
