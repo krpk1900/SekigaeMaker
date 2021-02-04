@@ -366,7 +366,7 @@
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-
+              // console.log(this.checkNear(dupStudentName, topIndex));
               this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
@@ -416,7 +416,8 @@
             console.log(this.checkNear('aaa', [0,0]))
           },
           checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
-            let return_value = this.nearConditions.some(nearConditionArray => {
+            let return_value = true
+            this.nearConditions.forEach(nearConditionArray => {
               if( nearConditionArray.includes(studentName) ){ // もし引数の生徒が、近づける条件にいれば
                 /* ----近づけたい生徒の名前を取得---- */
                 let nearStudentName
@@ -428,12 +429,11 @@
                 /* ----ここまで---- */
                 let distance = nearConditionArray[2]; // 距離
                 let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
-                // debugger
-                if(!nearStudentPosition){ return true} // まだ配置されていないときは条件を満たすので、trueを返す
                 console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
                 console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
-                // console.log(this.max_distance(p, nearStudentPosition) <= distance)
-                return (this.max_distance(p, nearStudentPosition) <= distance); // 距離のmaxが条件distance以下ならばtrueを、そうでなければfalseを返す
+                if( this.max_distance(p, nearStudentPosition) > distance ){ // 距離のmaxが条件distanceより上なら返り値をfalseに更新
+                  return_value = false;
+                }
               }
             })
             return return_value;
@@ -444,7 +444,6 @@
             this.nextSeatsTable.forEach(nextSeatsRow => {
               if( nextSeatsRow.includes(studentName) ){
                 let nextSeatsColNum = nextSeatsRow.indexOf(studentName);
-                console.log([nextSeatsColNum, nextSeatsRowNum]); //あとで消す
                 return_value = [nextSeatsColNum, nextSeatsRowNum]; // 返す値を座標で更新
               }
               nextSeatsRowNum += 1;
