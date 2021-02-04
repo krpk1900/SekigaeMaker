@@ -413,22 +413,30 @@
             return Math.max(x_abs, y_abs);
           },
           testMethod() { // デバッグ用。最後に消す。
-            this.checkNear('aaa', [0,1])
+            console.log(this.checkNear('aaa', [0,0]))
           },
           checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
-            this.nearConditions.forEach(nearConditionArray => {
+            let return_value = this.nearConditions.some(nearConditionArray => {
               if( nearConditionArray.includes(studentName) ){ // もし引数の生徒が、近づける条件にいれば
+                /* ----近づけたい生徒の名前を取得---- */
                 let nearStudentName
                 if( nearConditionArray.indexOf(studentName) == 0 ){
                   nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
                 }else if( nearConditionArray.indexOf(studentName) == 1 ){
-                  nearStudentName = nearConditionArray[0];
+                  nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
                 }
+                /* ----ここまで---- */
                 let distance = nearConditionArray[2]; // 距離
                 let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+                // debugger
+                if(!nearStudentPosition){ return true} // まだ配置されていないときは条件を満たすので、trueを返す
                 console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
+                console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
+                // console.log(this.max_distance(p, nearStudentPosition) <= distance)
+                return (this.max_distance(p, nearStudentPosition) <= distance); // 距離のmaxが条件distance以下ならばtrueを、そうでなければfalseを返す
               }
             })
+            return return_value;
           },
           getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
             let nextSeatsRowNum = 0; // 行インデックス、y座標
