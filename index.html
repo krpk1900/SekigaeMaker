@@ -418,28 +418,26 @@
           checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
             this.nearConditions.forEach(nearConditionArray => {
               if( nearConditionArray.includes(studentName) ){ // もし引数の生徒が、近づける条件にいれば
+                let nearStudentName
                 if( nearConditionArray.indexOf(studentName) == 0 ){
-                  let nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
-                  let distance = nearConditionArray[2]; // 距離
-                  let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName);
-                  console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
+                  nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
                 }else if( nearConditionArray.indexOf(studentName) == 1 ){
-                  let nearStudentName = nearConditionArray[0];
-                  let distance = nearConditionArray[2];
-                  let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName);
-                  console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
+                  nearStudentName = nearConditionArray[0];
                 }
+                let distance = nearConditionArray[2]; // 距離
+                let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+                console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
               }
             })
           },
-          getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を返す
-            let nextSeatsRowNum = 0; // 行インデックス。y座標。
-            let return_value = false;
+          getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
+            let nextSeatsRowNum = 0; // 行インデックス、y座標
+            let return_value = false; // 返す値の初期値をfalse
             this.nextSeatsTable.forEach(nextSeatsRow => {
               if( nextSeatsRow.includes(studentName) ){
                 let nextSeatsColNum = nextSeatsRow.indexOf(studentName);
                 console.log([nextSeatsColNum, nextSeatsRowNum]); //あとで消す
-                return_value = [nextSeatsColNum, nextSeatsRowNum];
+                return_value = [nextSeatsColNum, nextSeatsRowNum]; // 返す値を座標で更新
               }
               nextSeatsRowNum += 1;
             })
