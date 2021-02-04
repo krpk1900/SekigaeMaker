@@ -49,8 +49,8 @@
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )"
-                  class="seat" @input="writeStudentName( indexRow, indexCol, $event.target.value ); countSeats();"
-                  @input.once="pushSeatsTableIndex(indexRow, indexCol);"
+                  class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                  @input.once="pushSeatsTableIndex(indexCol, indexRow);"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="seatsTable[indexRow][indexCol]">
                   </textarea>
@@ -293,7 +293,7 @@
             if (seat === '') return 'off-seats'
             else return 'on-seats'
           },
-          writeStudentName(indexRow, indexCol, name) { // 引数で受け取った座席の有効・無効を切り替える
+          writeStudentName(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
             this.seatsTable[indexRow].splice(indexCol, 1, name)
           },
           makeSeatsTable() { // seatsTableを作成
@@ -350,7 +350,7 @@
             }
           },
           changeSeats() { // 席替え処理
-            this.resetNextSeatsTable();
+            this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
             this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
             this.makeFrontSeatsIndex(); // 仮にここに配置
             this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際に破壊的にデータを取り出していく
@@ -359,15 +359,15 @@
             this.changeFrontSeats(); // 最前列に固定する生徒を席替え
             this.shuffleSeats(); // 条件のない生徒を席替え
           },
-          pushSeatsTableIndex(indexRow, indexCol) { // 座席テーブルの有効な座席のインデックスをプッシュ
-            this.seatsTableIndex.push([indexRow, indexCol]);
+          pushSeatsTableIndex(indexCol, indexRow) { // 座席テーブルの有効な座席のインデックスをプッシュ
+            this.seatsTableIndex.push([indexCol, indexRow]);
           },
           shuffleSeats() { // 条件のない生徒を席替え
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // console.log(this.checkNear(dupStudentName, topIndex));
-              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
+              console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)}`);
+              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
           shuffle(array) { // 配列をランダムにシャッフル
@@ -380,7 +380,7 @@
           },
           makeFrontSeatsIndex() {
             this.seatsTableIndex.forEach(indexArray => {
-              if(indexArray[0] === 0) { // 最前列なら
+              if(indexArray[1] === 0) { // 最前列なら
                 this.frontSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
               }
             })
@@ -390,7 +390,7 @@
             this.shuffle(this.dupFrontSeatsIndex);
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              this.nextSeatsTable[topIndex[0]].splice(topIndex[1], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
+              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
 
               let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // changeFrontSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
@@ -413,7 +413,8 @@
             return Math.max(x_abs, y_abs);
           },
           testMethod() { // デバッグ用。最後に消す。
-            console.log(this.checkNear('aaa', [0,0]))
+            // console.log(this.checkNear('aaa', [0,0]))
+            console.log('---------')
           },
           checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
             let return_value = true
@@ -429,8 +430,8 @@
                 /* ----ここまで---- */
                 let distance = nearConditionArray[2]; // 距離
                 let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
-                console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
-                console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
+                // console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
+                // console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
                 if( this.max_distance(p, nearStudentPosition) > distance ){ // 距離のmaxが条件distanceより上なら返り値をfalseに更新
                   return_value = false;
                 }
