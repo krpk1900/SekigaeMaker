@@ -37,7 +37,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装9日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装12日目）</h1>
             </v-col>
           </v-row>
 
@@ -287,6 +287,7 @@
           dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+          calcNum: 0 // 計算回数、無限ループに入ったときに抜け出す用
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -367,6 +368,12 @@
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)}`);
+              while( !this.checkNear(dupStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
+
+                this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)}`);
+              }
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
