@@ -367,13 +367,16 @@
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)}`);
+              console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)} (${this.calcNum}回目の計算)`);
+              /* 近づける処理
               while( !this.checkNear(dupStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
-
+                if(this.calcNum > 100){ throw '計算量が100を超えました'}
                 this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
                 topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)}`);
+                console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)} (${this.calcNum}回目の計算)`);
+                this.calcNum += 1;
               }
+              */
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
@@ -473,7 +476,7 @@
             },
             deep: true
           }
-        }
+        },
       });
     </script>
   </body>
