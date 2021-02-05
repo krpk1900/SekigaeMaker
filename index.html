@@ -236,12 +236,20 @@
                   </div>
                 </v-col>
                 <v-col cols="6" style="background-color: plum">
-                  <p>最前列に固定する生徒</p>
-                  {{ frontConditions }}
                   <p>近づける条件用配列</p>
                   {{ nearConditions }}
+                  <p>近づける名前用配列</p>
+                  {{ nearStudentsName }}
+                </v-col>
+                <v-col cols="6" style="background-color: lightcyan">
                   <p>離す条件用配列</p>
                   {{ farConditions }}
+                  <p>離す条件用配列</p>
+                  {{ farStudentsName }}
+                </v-col>
+                <v-col cols="6" style="background-color: palegreen">
+                  <p>最前列に固定する生徒</p>
+                  {{ frontConditions }}
                 </v-col>
                 <v-col cols="6" style="background-color: paleturquoise">
                   <p>生徒の名前用配列</p>
@@ -277,9 +285,11 @@
           nearConditions: [], // 近づける条件配列
           nearConditionOption1: '', // 近づける生徒1
           nearConditionOption2: '', // 近づける生徒2
+          nearStudentsName: [], // 近づける生徒の名前
           farConditions: [], // 離す条件
           farConditionOption1: '', // 離す生徒1
           farConditionOption2: '', // 離す生徒2
+          farStudentsName: [], // 離す生徒の名前
           frontConditions: [], // 最前列に固定する生徒
           nextSeatsTable: [], // 席替え後の座席テーブル
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
@@ -475,8 +485,24 @@
               })
             },
             deep: true
+          },
+          nearConditions: {
+            handler: function(){
+              this.nearStudentsName.splice(-this.nearStudentsName.length);
+              this.nearConditions.forEach( nearCondition => {
+                this.nearStudentsName.push(nearCondition[0], nearCondition[1]);
+              })
+            }
+          },
+          farConditions: {
+            handler: function(){
+              this.farStudentsName.splice(-this.farStudentsName.length);
+              this.farConditions.forEach( farCondition => {
+                this.farStudentsName.push(farCondition[0], farCondition[1]);
+              })
+            }
           }
-        },
+        }
       });
     </script>
   </body>
