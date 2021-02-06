@@ -448,6 +448,9 @@
 
               let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、changeNearSeats()で配置する必要がないため
+              this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
             })
           },
           changeNearSeats() { // 近づける生徒を席替え
