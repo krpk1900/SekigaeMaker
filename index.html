@@ -538,6 +538,29 @@
             })
             return return_value;
           },
+          checkFar(studentName, p) { // 引数の生徒を座標pに配置しても、離す条件を満たすならtrue、満たさないならfalseを返す
+            let return_value = true
+            this.farConditions.forEach(farConditionArray => {
+              if( farConditionArray.includes(studentName) ){ // もし引数の生徒が、離す条件にいれば
+                /* ----離す生徒の名前を取得---- */
+                let farStudentName
+                if( farConditionArray.indexOf(studentName) == 0 ){
+                  farStudentName = farConditionArray[1]; // 引数の生徒と離す生徒
+                }else if( farConditionArray.indexOf(studentName) == 1 ){
+                  farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
+                }
+                /* ----ここまで---- */
+                let distance = farConditionArray[2]; // 距離
+                let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+                // console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
+                // console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
+                if( this.min_distance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
+                  return_value = false;
+                }
+              }
+            })
+            return return_value;
+          },
           getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
             let nextSeatsRowNum = 0; // 行インデックス、y座標
             let return_value = false; // 返す値の初期値をfalse
