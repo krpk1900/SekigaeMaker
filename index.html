@@ -37,7 +37,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装13日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装14日目）</h1>
             </v-col>
           </v-row>
 
@@ -551,10 +551,11 @@
           },
           farConditions: {
             handler: function(){
-              this.farStudentsName.splice(-this.farStudentsName.length);
+              this.farStudentsName.splice(-this.farStudentsName.length); // 配列を初期化
               this.farConditions.forEach( farCondition => {
                 this.farStudentsName.push(farCondition[0], farCondition[1]);
               })
+              this.farStudentsName = Array.from(new Set(this.farStudentsName)) // 重複している名前を削除
             }
           }
         }
