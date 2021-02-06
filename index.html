@@ -369,6 +369,7 @@
             this.dupStudentsName = this.studentsName.slice(0); // 最前列の座席のインデックスを複製、席替えの際に破壊的にデータを取り出していく
             this.changeFrontSeats(); // 最前列に固定する生徒を席替え
             this.shuffleSeats(); // 条件のない生徒を席替え
+            console.log('---------------');
           },
           pushSeatsTableIndex(indexCol, indexRow) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexCol, indexRow]);
@@ -410,6 +411,19 @@
             this.shuffle(this.dupFrontSeatsIndex);
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              console.log(`${frontStudentName} を ${topIndex} に入れるのは ${this.checkNear(frontStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
+              /* ----近づける処理---- */
+              while( !this.checkNear(frontStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
+                if(this.calcNum > 100){
+                  window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+                  throw '計算量が100を超えました'
+                }
+                this.dupFrontSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupFrontSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                console.log(`${frontStudentName} を ${topIndex} に入れるのは ${this.checkNear(frontStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
+                this.calcNum += 1;
+              }
+              /* ----ここまで---- */
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
 
               let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // changeFrontSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
