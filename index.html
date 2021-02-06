@@ -399,19 +399,6 @@
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)} (${this.calcNum}回目の計算)`);
-              /* ----近づける処理----
-              while( !this.checkNear(dupStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
-                if(this.calcNum > 100){
-                  window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
-                  throw '計算量が100を超えました'
-                }
-                this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
-                topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                console.log(`${dupStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
-                this.calcNum += 1;
-              }
-              ----ここまで----*/
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
@@ -555,10 +542,11 @@
           },
           nearConditions: {
             handler: function(){
-              this.nearStudentsName.splice(-this.nearStudentsName.length);
+              this.nearStudentsName.splice(-this.nearStudentsName.length); // 配列を初期化
               this.nearConditions.forEach( nearCondition => {
                 this.nearStudentsName.push(nearCondition[0], nearCondition[1]);
               })
+              this.nearStudentsName = Array.from(new Set(this.nearStudentsName)) // 重複している名前を削除
             }
           },
           farConditions: {
