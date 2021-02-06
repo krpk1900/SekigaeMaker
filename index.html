@@ -149,7 +149,7 @@
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
                           @change="addFarConditions"></v-select>
-                          以下にする
+                          以上にする
                         </div>
                         <!-- 離す生徒の入力フォーム（追加表示のための２つ目以降） -->
                         <div v-for="farCondition in farConditions">
@@ -161,7 +161,7 @@
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
                           @change="addFarConditions"></v-select>
-                          以下にする
+                          以上にする
                         </div>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -376,19 +376,24 @@
             this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
             this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
             this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
-            console.log(`席替え前のdupNearStudentsNameは${this.dupNearStudentsName}`)
+            console.log(`席替え前のdupFarStudentsNameは${this.dupFarStudentsName}`)
             this.changeFrontSeats(); // 最前列に固定する生徒を席替え
             console.log(`changeFrontSeats()後のdupSeatsTableIndexは${this.dupSeatsTableIndex}`);
             console.log(`changeFrontSeats()後のdupStudentsNameは${this.dupStudentsName}`);
-            console.log(`changeFrontSeats()後のdupNearStudentsNameは${this.dupNearStudentsName}`)
+            console.log(`changeFrontSeats()後のdupFarStudentsNameは${this.dupFarStudentsName}`)
             this.changeNearSeats(); // 近づける生徒を席替え
             console.log(`changeNearSeats()後のdupSeatsTableIndexは${this.dupSeatsTableIndex}`);
             console.log(`changeNearSeats()後のdupStudentsNameは${this.dupStudentsName}`);
-            console.log(`changeNearSeats()後のdupNearStudentsNameは${this.dupNearStudentsName}`)
+            console.log(`changeNearSeats()後のdupFarStudentsNameは${this.dupFarStudentsName}`)
+            this.changeFarSeats(); // 離す生徒を席替え
+            console.log(`changeFarSeats()後のdupSeatsTableIndexは${this.dupSeatsTableIndex}`);
+            console.log(`changeFarSeats()後のdupStudentsNameは${this.dupStudentsName}`);
+            console.log(`changeFarSeats()後のdupFarStudentsNameは${this.dupFarStudentsName}`)
+
             this.shuffleSeats(); // 条件のない生徒を席替え
             console.log(`shuffleSeats()後のdupSeatsTableIndexは${this.dupSeatsTableIndex}`);
             console.log(`shuffleSeats()後のdupStudentsNameは${this.dupStudentsName}`);
-            console.log(`shuffleSeats()後のdupNearStudentsNameは${this.dupNearStudentsName}`)
+            console.log(`shuffleSeats()後のdupFarStudentsNameは${this.dupFarStudentsName}`)
             console.log('---------------');
 
           },
@@ -462,7 +467,7 @@
                 }
                 this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
                 topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
+                // console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
                 this.calcNum += 1;
               }
               /* ----ここまで---- */
@@ -481,13 +486,13 @@
               /* ----離す処理---- */
               console.log(`dupFarStudentsName = ${this.dupFarStudentsName}`)
               while( !this.checkFar(dupFarStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
-                if(this.calcNum > 100){
+                if(this.calcNum > 1000){
                   window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
-                  throw '計算量が100を超えました'
+                  throw '計算量が1000を超えました'
                 }
                 this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
                 topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
+                console.log(`${dupFarStudentName} を ${topIndex} に入れるのは ${this.checkFar(dupFarStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
                 this.calcNum += 1;
               }
               /* ----ここまで---- */
@@ -512,7 +517,7 @@
             return Math.max(x_abs, y_abs);
           },
           testMethod() { // デバッグ用。最後に消す。
-            // console.log(this.checkNear('aaa', [0,0]))
+            console.log(this.checkFar('aaa', [0,0]))
             console.log('---------')
           },
           checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
@@ -554,7 +559,7 @@
                 let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
                 // console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
                 // console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
-                if( this.min_distance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
+                if( this.max_distance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
                   return_value = false;
                 }
               }
