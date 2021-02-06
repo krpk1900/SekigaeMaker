@@ -473,6 +473,31 @@
               console.log(`${dupNearStudentName}を配置した`)
             })
           },
+          changeFarSeats() { // 離す生徒を席替え
+            this.shuffle(this.dupSeatsTableIndex);
+            this.dupFarStudentsName.forEach(dupFarStudentName => {
+              let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (${this.calcNum}回目の計算)`);
+              /* ----離す処理---- */
+              console.log(`dupFarStudentsName = ${this.dupFarStudentsName}`)
+              while( !this.checkFar(dupFarStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
+                if(this.calcNum > 100){
+                  window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+                  throw '計算量が100を超えました'
+                }
+                this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
+                this.calcNum += 1;
+              }
+              /* ----ここまで---- */
+              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupFarStudentName); // 取り出したインデックスの位置に生徒名を保存
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(dupFarStudentName); // changeNearSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+              console.log(`${dupFarStudentName}を配置した`)
+            })
+          },
           resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
             this.frontSeatsIndex.splice(0);
           },
