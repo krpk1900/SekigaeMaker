@@ -451,6 +451,11 @@
               if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
                 this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
               }
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
             })
           },
           changeNearSeats() { // 近づける生徒を席替え
