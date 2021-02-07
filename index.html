@@ -453,7 +453,7 @@
               }
 
               let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
                 this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
               }
             })
@@ -481,6 +481,11 @@
               let deleteStudentNameIndex = this.dupStudentsName.indexOf(dupNearStudentName); // changeNearSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
               console.log(`${dupNearStudentName}を配置した`)
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(dupNearStudentName); // changeNearSeats()で配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
             })
           },
           changeFarSeats() { // 離す生徒を席替え
