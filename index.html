@@ -427,8 +427,8 @@
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               //console.log(`${frontStudentName} を ${topIndex} に入れるのは ${this.checkNear(frontStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
-              /* ----近づける処理---- */
-              while( !this.checkNear(frontStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
+              /* ----近づける/離す処理---- */
+              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) ){ // 条件を満たさない間、繰り返す
                 if(this.calcNum > 100){
                   window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
                   throw '計算量が100を超えました'
