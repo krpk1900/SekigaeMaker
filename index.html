@@ -331,7 +331,6 @@
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
-            this.toggleGender(this.genderTable, 0, 1);
             console.log('---------')
           },
           /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
@@ -377,12 +376,6 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
-            /* テストのため始めから入力
-            this.seatsTable.splice(0, 1, ['菊本さん', '', '', '', '大地さん', '']);
-            this.seatsTable.splice(1, 1, ['', '', 'たかこ\nさん', '', '', '']);
-            this.seatsTable.splice(2, 1, ['', '廣瀬さん', '', '', 'ののか\nさん', '']);
-            this.seatsTable.splice(3, 1, ['', '', '', '平尾さん', '', 'かんぬ\nさん']);
-             ここまで */
             this.countSeats();
           },
           countSeats() { // 有効な座席数をカウント
@@ -429,7 +422,7 @@
             let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
             do {
               loopNum += 1;
-              console.log(`${loopNum}回目のループを開始します`);
+              console.log(`----${loopNum}回目のループを開始します----`);
               this.restartFlag = false;
               this.calcNum = 0 // エラー用計算量を初期化
               this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
@@ -447,8 +440,9 @@
               //this.changeFarSeats(); // 離す生徒を席替え
               this.changeNearFarSeats(); // 近づける/離す生徒を席替え
               this.shuffleSeats(); // 条件のない生徒を席替え
-              console.log('---------------');
+              console.log(`----${loopNum}回目のループ終了----`);
             } while(this.restartFlag && loopNum <= 100)
+            console.log(`====終了====`);
             if(loopNum > 100){
               window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
             }
@@ -460,6 +454,17 @@
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              while( !this.checkGender(dupStudentName, topIndex) ){ // 征伐の条件を満たさない間、繰り返す
+                if(this.calcNum > this.seatsNum){
+                  // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+                  // throw '計算量が100を超えました'
+                  this.restartFlag = true;
+                  break;
+                }
+                this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                this.calcNum += 1;
+              }
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
             })
           },
@@ -482,16 +487,16 @@
             this.shuffle(this.dupFrontSeatsIndex);
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              //console.log(`${frontStudentName} を ${topIndex} に入れるのは ${this.checkNear(frontStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
               /* ----近づける/離す処理---- */
-              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) ){ // どちらかの条件を満たさない間、繰り返す
-                if(this.calcNum > 100){
-                  window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
-                  throw '計算量が100を超えました'
+              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || !this.checkGender(frontStudentName, topIndex) ){ // どちらかの条件を満たさない間、繰り返す
+                if(this.calcNum > this.seatsNum){
+                  // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+                  // throw '計算量が100を超えました'
+                  this.restartFlag = true;
+                  break;
                 }
                 this.dupFrontSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
                 topIndex = this.dupFrontSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                //console.log(`${frontStudentName} を ${topIndex} に入れるのは ${this.checkNear(frontStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
                 this.calcNum += 1;
               }
               /* ----ここまで---- */
@@ -517,6 +522,7 @@
               if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
                 this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
               }
+              // console.log(`${frontStudentName}を配置した`)
             })
           },
           /*
@@ -584,7 +590,7 @@
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (${this.calcNum}回目の計算)`);
               /* ----近づける/離す処理---- */
-              while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) ){ // どちらかの条件を満たさない間、繰り返す
+              while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || !this.checkGender(dupNearFarStudentName, topIndex) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
                   this.restartFlag = true;
@@ -601,7 +607,7 @@
 
               let deleteStudentNameIndex = this.dupStudentsName.indexOf(dupNearFarStudentName); // changeNearSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-              console.log(`${dupNearFarStudentName}を配置した`)
+              // console.log(`${dupNearFarStudentName}を配置した`)
             })
           },
           resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
@@ -662,6 +668,16 @@
               }
             })
             return return_value;
+          },
+          checkGender(studentName, p) { // 引数の生徒を座標pに配置しても、性別の条件を満たすならtrue、満たさないならfalseを返す
+            let genderIndex = this.studentsName.indexOf(studentName);
+            let currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
+            let nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
+            if(currentGender === nextGender){
+              return true
+            }else{
+              return false
+            }
           },
           getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
             let nextSeatsRowNum = 0; // 行インデックス、y座標
