@@ -52,11 +52,12 @@
             <v-col cols="6" style="background-color: #c8fac8">
               <p style="text-align: center">生徒の名前を入力してください</p>
               <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
+              <p style="text-align: center">クリックで性別を変更できます</p>
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" :class="getColor(indexCol,indexRow)"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  @input.once="pushSeatsTableIndex(indexCol, indexRow);"
+                  @input.once="pushSeatsTableIndex(indexCol, indexRow); toggleGender(indexCol,indexRow)"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
                   </textarea>
@@ -268,8 +269,12 @@
                   {{ dupStudentsName }}
                 </v-col>
                 <v-col cols="6" style="background-color: aliceblue">
-                  <p>性別用配列</p>
+                  <p>性別用テーブル</p>
                   <p v-for="seats in genderTable">{{ seats }}</p>
+                </v-col>
+                <v-col cols="6" style="background-color: #faf2c8">
+                  <p>性別用配列</p>
+                  {{ genderArray }}
                 </v-col>
               </v-row>
             </v-col>
@@ -317,7 +322,8 @@
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
-          genderTable: [], // 生徒の性別配列
+          genderTable: [], // 生徒の性別テーブル
+          genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -687,7 +693,16 @@
               })
               this.farStudentsName = Array.from(new Set(this.farStudentsName)) // 重複している名前を削除
             }
-          }
+          },
+          genderTable: {
+            handler: function(){
+              this.genderArray = Array.prototype.concat.apply([], this.genderTable); //genderTableを展開
+              this.genderArray = this.genderArray.filter(function(genderArray) { //空白を削除
+                return genderArray !== '';
+              })
+            },
+            deep: true
+          },
         }
       });
     </script>
