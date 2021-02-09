@@ -14,6 +14,12 @@
       .on-seats {
         background: mediumaquamarine;
       }
+      .male-seats {
+        background: lightskyblue;
+      }
+      .female-seats {
+        background: plum;
+      }
       .off-seats {
         background: gainsboro;
       }
@@ -43,16 +49,16 @@
 
           <v-row>
             <!-- 座席テーブル -->
-            <v-col cols="6" style="background-color: lightskyblue">
+            <v-col cols="6" style="background-color: #c8fac8">
               <p style="text-align: center">生徒の名前を入力してください</p>
               <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <textarea v-for="( seat, indexCol ) in seats" :class="getColor(seatsTable,indexCol,indexRow)"
+                  <textarea v-for="( seat, indexCol ) in seats" :class="getColor(indexCol,indexRow)"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   @input.once="pushSeatsTableIndex(indexCol, indexRow);"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
-                  :value="seatsTable[indexRow][indexCol]">
+                  :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
                   </textarea>
                 </li>
               </div>
@@ -197,7 +203,7 @@
                 <p style="text-align: center">席替え後の座席</p>
                 <li v-for="( nextSeats, indexRow ) in nextSeatsTable">
                   <textarea v-for="( seat, indexCol ) in nextSeats" class="seat"
-                  :class="getColor( nextSeatsTable, indexCol, indexRow )"
+                  :class="getColor(indexCol, indexRow)"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="nextSeatsTable[indexRow][indexCol]">
                   </textarea>
@@ -318,18 +324,22 @@
             this.toggleGender(this.genderTable, 0, 1);
             console.log('---------')
           },
-          getColor(table, col, row) { // 座席の種類に応じた色を返す
-            if(table[row][col] === '') {
+          getColor(col, row) { // 座席の種類に応じた色を返す
+            if(this.genderTable[row][col] === '') {
               return 'off-seats'
-            } else return 'on-seats'
+            }else if(this.genderTable[row][col] === 'male'){
+              return 'male-seats'
+            }else if(this.genderTable[row][col] === 'female'){
+              return 'female-seats'
+            }else return 'on-seats'
           },
-          toggleGender(table, col, row) {
-            if(table[col][row] === 'male'){
-              console.log('maleです')
-              table[col].splice(row, 1, 'female')
-            }else if(table[col][row] === 'female'){
-              console.log('femaleです')
-              table[col].splice(row, 1, 'male')
+          toggleGender(col, row) {
+            if(this.genderTable[row][col] === ''){
+              this.genderTable[row].splice(col, 1, 'male')
+            }else if(this.genderTable[row][col] === 'male'){
+              this.genderTable[row].splice(col, 1, 'female')
+            }else if(this.genderTable[row][col] === 'female'){
+              this.genderTable[row].splice(col, 1, 'male')
             }
           },
           writeStudentName(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
