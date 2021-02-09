@@ -315,8 +315,17 @@
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
-            if (seat === '') return 'off-seats'
+            if(seat === '') return 'off-seats'
             else return 'on-seats'
+          },
+          toggleGender(table, col, row) {
+            if(table[col][row] === 'male'){
+              console.log('maleです')
+              table[row].splice(col, 1, 'female')
+            }else if(table[col][row] === 'female'){
+              console.log('femaleです')
+              table[row].splice(col, 1, 'male')
+            }
           },
           writeStudentName(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
             this.seatsTable[indexRow].splice(indexCol, 1, name)
@@ -567,6 +576,7 @@
             return Math.max(x_abs, y_abs);
           },
           testMethod() { // デバッグ用。最後に消す。
+            this.toggleGender(this.genderTable, 0, 0);
             console.log('---------')
           },
           checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
