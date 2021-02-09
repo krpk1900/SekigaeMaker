@@ -261,6 +261,10 @@
                   <p>生徒の名前用配列の複製</p>
                   {{ dupStudentsName }}
                 </v-col>
+                <v-col cols="6" style="background-color: aliceblue">
+                  <p>性別用配列</p>
+                  <p v-for="seats in genderTable">{{ seats }}</p>
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -306,7 +310,8 @@
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
-          restartFlag: false // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
+          restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
+          genderTable: [], // 生徒の性別配列
         },
         methods: {
           getColor(seat) { // 座席の種類に応じた色を返す
@@ -622,10 +627,17 @@
             })
             return return_value;
           },
+          makeGenderTable() { // genderTableを作成
+            this.genderTable = []
+            for(let i = 0; i < this.seatsSizeY; i++) {
+              this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
+            }
+          },
         },
         mounted() {
           this.makeSeatsTable() // 最初にseatsTableを作成
           this.makeNextSeatsTable() // 席替え後用のnextSeatsTableを空白で作成
+          this.makeGenderTable() // genderTableを作成
         },
         watch: {
           seatsTable: {
