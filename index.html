@@ -43,7 +43,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装15日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装16日目）</h1>
             </v-col>
           </v-row>
 
@@ -57,7 +57,7 @@
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" :class="getColorByName(seatsTable[indexRow][indexCol])"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  @input.once="pushSeatsTableIndex(indexCol, indexRow); toggleGender(indexCol,indexRow)"
+                  @input.once="pushSeatsTableIndex(indexCol, indexRow);"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
                   </textarea>
@@ -81,7 +81,9 @@
 
                 <!-- 同じ席にしないかどうかのチェックボックス -->
                 <v-col cols="12" style="background-color: orange">
-                  <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" value="indigo darken-3"
+                  <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" v-model="isAllDifferent"
+                  hide-details></v-checkbox>
+                  <v-checkbox label="男女の座席を固定する" color="indigo darken-3" v-model="isFixGender"
                   hide-details></v-checkbox>
                 </v-col>
 
@@ -324,6 +326,8 @@
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
           genderTable: [], // 生徒の性別テーブル
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
+          isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
+          isFixGender: true, // 性別を固定するかどうかの制御フラグ
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -356,9 +360,7 @@
             }else return 'on-seats'
           },
           toggleGender(col, row) {
-            if(this.genderTable[row][col] === ''){
-              this.genderTable[row].splice(col, 1, 'male')
-            }else if(this.genderTable[row][col] === 'male'){
+            if(this.genderTable[row][col] === 'male'){
               this.genderTable[row].splice(col, 1, 'female')
             }else if(this.genderTable[row][col] === 'female'){
               this.genderTable[row].splice(col, 1, 'male')
@@ -366,6 +368,9 @@
           },
           writeStudentName(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
             this.seatsTable[indexRow].splice(indexCol, 1, name)
+            if(this.genderTable[indexRow][indexCol] === ''){
+              this.genderTable[indexRow].splice(indexCol, 1, 'male')
+            }
           },
           makeSeatsTable() { // seatsTableを作成
             this.seatsTable = []
