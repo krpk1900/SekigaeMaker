@@ -43,7 +43,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装16日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装17日目）</h1>
             </v-col>
           </v-row>
 
@@ -418,7 +418,7 @@
               this.nextSeatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
             }
           },
-          changeSeats() { // 席替え処理
+          changeSeats() { // メイン処理
             let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
             do {
               loopNum += 1;
@@ -454,7 +454,7 @@
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              while( !this.checkGender(dupStudentName, topIndex) ){ // 征伐の条件を満たさない間、繰り返す
+              while( this.isFixGender && !this.checkGender(dupStudentName, topIndex) ){ // 征伐の条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
                   // throw '計算量が100を超えました'
@@ -488,7 +488,7 @@
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               /* ----近づける/離す処理---- */
-              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || !this.checkGender(frontStudentName, topIndex) ){ // どちらかの条件を満たさない間、繰り返す
+              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
                   // throw '計算量が100を超えました'
@@ -590,7 +590,7 @@
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (${this.calcNum}回目の計算)`);
               /* ----近づける/離す処理---- */
-              while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || !this.checkGender(dupNearFarStudentName, topIndex) ){ // どちらかの条件を満たさない間、繰り返す
+              while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || (this.isFixGender && !this.checkGender(dupNearFarStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
                   this.restartFlag = true;
