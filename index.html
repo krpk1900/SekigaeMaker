@@ -48,7 +48,7 @@
               <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <textarea v-for="( seat, indexCol ) in seats" :class="getColor( seatsTable[indexRow][indexCol] )"
+                  <textarea v-for="( seat, indexCol ) in seats" :class="getColor(seatsTable,indexCol,indexRow)"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   @input.once="pushSeatsTableIndex(indexCol, indexRow);"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
@@ -197,7 +197,7 @@
                 <p style="text-align: center">席替え後の座席</p>
                 <li v-for="( nextSeats, indexRow ) in nextSeatsTable">
                   <textarea v-for="( seat, indexCol ) in nextSeats" class="seat"
-                  :class="getColor( nextSeatsTable[indexRow][indexCol] )"
+                  :class="getColor( nextSeatsTable, indexCol, indexRow )"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="nextSeatsTable[indexRow][indexCol]">
                   </textarea>
@@ -318,9 +318,10 @@
             this.toggleGender(this.genderTable, 0, 1);
             console.log('---------')
           },
-          getColor(seat) { // 座席の種類に応じた色を返す
-            if(seat === '') return 'off-seats'
-            else return 'on-seats'
+          getColor(table, col, row) { // 座席の種類に応じた色を返す
+            if(table[row][col] === '') {
+              return 'off-seats'
+            } else return 'on-seats'
           },
           toggleGender(table, col, row) {
             if(table[col][row] === 'male'){
