@@ -55,7 +55,7 @@
               <p style="text-align: center">クリックで性別を変更できます</p>
               <div id="seatArrange">
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <textarea v-for="( seat, indexCol ) in seats" :class="getColor(indexCol,indexRow)"
+                  <textarea v-for="( seat, indexCol ) in seats" :class="getColorByName(seatsTable[indexRow][indexCol])"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   @input.once="pushSeatsTableIndex(indexCol, indexRow); toggleGender(indexCol,indexRow)"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
@@ -204,7 +204,7 @@
                 <p style="text-align: center">席替え後の座席</p>
                 <li v-for="( nextSeats, indexRow ) in nextSeatsTable">
                   <textarea v-for="( seat, indexCol ) in nextSeats" class="seat"
-                  :class="getColor(indexCol, indexRow)"
+                  :class="getColorByName(nextSeatsTable[indexRow][indexCol])"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="nextSeatsTable[indexRow][indexCol]">
                   </textarea>
@@ -330,12 +330,28 @@
             this.toggleGender(this.genderTable, 0, 1);
             console.log('---------')
           },
-          getColor(col, row) { // 座席の種類に応じた色を返す
+          /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
             if(this.genderTable[row][col] === '') {
               return 'off-seats'
             }else if(this.genderTable[row][col] === 'male'){
               return 'male-seats'
             }else if(this.genderTable[row][col] === 'female'){
+              return 'female-seats'
+            }else return 'on-seats'
+          },*/
+          getColorByName(studentName) { // 座席の種類に応じた色を返す
+            let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
+            let gender
+            if(genderIndex === -1){ //
+              gender = ''
+            }else{
+              gender = this.genderArray[genderIndex];
+            }
+            if(gender === '') {
+              return 'off-seats'
+            }else if(gender === 'male'){
+              return 'male-seats'
+            }else if(gender === 'female'){
               return 'female-seats'
             }else return 'on-seats'
           },
