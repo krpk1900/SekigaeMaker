@@ -507,6 +507,7 @@
               this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
               this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
               this.makeFrontSeatsIndex(); // 最前列インデックスを作成
+              this.resetBackSeatsIndex(); // 最後列インデックス配列を空にする
               this.makeBackSeatsIndex(); // 最後列インデックスを作成
 
               this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
@@ -518,6 +519,7 @@
               this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
               this.changeFrontSeats(); // 最前列に固定する生徒を席替え
+              this.changeBackSeats(); // 最後列に固定する生徒を席替え
               //this.changeNearSeats(); // 近づける生徒を席替え
               //this.changeFarSeats(); // 離す生徒を席替え
               this.changeNearFarSeats(); // 近づける/離す生徒を席替え
@@ -565,12 +567,18 @@
               }
             })
           },
+          resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
+            this.frontSeatsIndex.splice(0);
+          },
           makeBackSeatsIndex() {
             this.seatsTableIndex.forEach(indexArray => {
               if(indexArray[1] === this.seatsSizeY-1) { // 最後列なら
                 this.backSeatsIndex.push(indexArray); // 最後列インデックス配列にインデックスをプッシュ
               }
             })
+          },
+          resetBackSeatsIndex() { // 最後列インデックス配列を空にする
+            this.backSeatsIndex.splice(0);
           },
           changeFrontSeats() { // 最前列に固定する生徒を席替え
             this.shuffle(this.dupFrontSeatsIndex);
@@ -612,6 +620,48 @@
                 this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
               }
               // console.log(`${frontStudentName}を配置した`)
+            })
+          },
+          changeBackSeats() { // 最後列に固定する生徒を席替え
+            this.shuffle(this.dupBackSeatsIndex);
+            this.backConditions.forEach(backStudentName => {
+              let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              /* ----近づける/離す処理---- */
+              while( !this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+                if(this.calcNum > this.seatsNum){
+                  // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+                  // throw '計算量が100を超えました'
+                  this.restartFlag = true;
+                  break;
+                }
+                this.dupBackSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupBackSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                this.calcNum += 1;
+              }
+              /* ----ここまで---- */
+              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
+
+              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // changeBackSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(backStudentName); // changeBackSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(backStudentName); // changeBackSeats()で配置した生徒は、changeNearSeats()で配置する必要がないため
+              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(backStudentName); // changeBackSeats()で配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
+
+              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(backStudentName); // changeNearBackSeats()で配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
+                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
+              }
+              // console.log(`${backStudentName}を配置した`)
             })
           },
           /*
@@ -698,9 +748,6 @@
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
               // console.log(`${dupNearFarStudentName}を配置した`)
             })
-          },
-          resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
-            this.frontSeatsIndex.splice(0);
           },
           min_distance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
             let x_abs = Math.abs( p1[0] - p2[0] );
