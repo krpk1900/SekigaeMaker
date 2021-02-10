@@ -153,12 +153,12 @@
                               <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
                               <span>
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
+                                @change="addBackConditions"></v-select>
                               </span>
                               <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                              <span v-for="frontCondition in frontConditions">
+                              <span v-for="backCondition in backConditions">
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
+                                @change="addBackConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
@@ -326,6 +326,10 @@
                   <p>最前列に固定する生徒</p>
                   {{ frontConditions }}
                 </v-col>
+                <v-col cols="6" style="background-color: #b1a6ed">
+                  <p>最後列に固定する生徒</p>
+                  {{ backConditions }}
+                </v-col>
                 <v-col cols="6" style="background-color: paleturquoise">
                   <p>生徒の名前用配列</p>
                   {{ studentsName }}
@@ -359,6 +363,8 @@
           seatsSizeY: 6, // デフォルト値は6
           seatsSizeX: 6, // デフォルト値は6
           seatsTable: [], // 座席テーブル
+          seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
+          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           seatsNum: 0, // 有効な座席数
           seatsOptionsX: [1,2,3,4,5,6,7,8], // よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], // たての座席数入力フォームの選択肢
@@ -378,12 +384,14 @@
           nearFarStudentsName: [], // 近づける/離す生徒の名前
           dupNearFarStudentsName: [], // 近づける/離す生徒の名前の複製
           frontConditions: [], // 最前列に固定する生徒
-          nextSeatsTable: [], // 席替え後の座席テーブル
-          tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
-          seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
-          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+          backConditions: [], // 最後列に固定する生徒
+          backSeatsIndex: [], // 最前列のインデックス
+          dupBackSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+
+          nextSeatsTable: [], // 席替え後の座席テーブル
+          tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
           calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
           genderTable: [], // 生徒の性別テーブル
@@ -469,6 +477,9 @@
           addFrontConditions(studentName) { // 最前列に固定する条件を要録
             this.frontConditions.push(studentName);
           },
+          addBackConditions(studentName) { // 最後列に固定する条件を要録
+            this.backConditions.push(studentName);
+          },
           makeNextSeatsTable() { // nextSeatsTableを作成
             this.nextSeatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
@@ -490,8 +501,11 @@
               this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
               this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
               this.makeFrontSeatsIndex(); // 最前列インデックスを作成
+              this.makeBackSeatsIndex(); // 最後列インデックスを作成
+
               this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
@@ -542,6 +556,13 @@
             this.seatsTableIndex.forEach(indexArray => {
               if(indexArray[1] === 0) { // 最前列なら
                 this.frontSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
+              }
+            })
+          },
+          makeBackSeatsIndex() {
+            this.seatsTableIndex.forEach(indexArray => {
+              if(indexArray[1] === this.seatsSizeY) { // 最後列なら
+                this.backSeatsIndex.push(indexArray); // 最後列インデックス配列にインデックスをプッシュ
               }
             })
           },
