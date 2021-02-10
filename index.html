@@ -136,12 +136,12 @@
                               <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
                               <span>
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
+                                @change="addBackTwoRowsConditions"></v-select>
                               </span>
                               <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                              <span v-for="frontCondition in frontConditions">
+                              <span v-for="backTwoRowsCondition in backTwoRowsConditions">
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
+                                @change="addBackTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
@@ -312,6 +312,12 @@
                   <p>前2列の座席のインデックス配列の複製</p>
                   {{ dupFrontTwoRowsSeatsIndex }}
                 </v-col>
+                <v-col cols="6" style="background-color: #a3cccc">
+                  <p>後ろ2列の座席のインデックス配列</p>
+                  {{ backTwoRowsSeatsIndex }}
+                  <p>後ろ2列の座席のインデックス配列の複製</p>
+                  {{ dupBackTwoRowsSeatsIndex }}
+                </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
                     <p>現在の座席記憶用テーブル</p>
@@ -351,6 +357,10 @@
                 <v-col cols="6" style="background-color: #ede7d5">
                   <p>前2列に固定する生徒</p>
                   {{ frontTwoRowsConditions }}
+                </v-col>
+                <v-col cols="6" style="background-color: #a3cccc">
+                  <p>後ろ2列に固定する生徒</p>
+                  {{ backTwoRowsConditions }}
                 </v-col>
                 <v-col cols="6" style="background-color: aliceblue">
                   <p>性別用テーブル</p>
@@ -402,13 +412,15 @@
           frontConditions: [], // 最前列に固定する生徒
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-
           frontTwoRowsConditions: [], // 前2列に固定する生徒
           frontTwoRowsSeatsIndex: [], // 前2列のインデックス
           dupFrontTwoRowsSeatsIndex: [], // 前2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           backConditions: [], // 最後列に固定する生徒
-          backSeatsIndex: [], // 最前列のインデックス
+          backSeatsIndex: [], // 最後列のインデックス
           dupBackSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+          backTwoRowsConditions: [], // 後ろ2列に固定する生徒
+          backTwoRowsSeatsIndex: [], // 後ろ2列のインデックス
+          dupBackTwoRowsSeatsIndex: [], // 後ろ2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
 
           nextSeatsTable: [], // 席替え後の座席テーブル
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
@@ -503,6 +515,9 @@
           addBackConditions(studentName) { // 最後列に固定する条件を要録
             this.backConditions.push(studentName);
           },
+          addBackTwoRowsConditions(studentName) { // 後ろ2列に固定する条件を要録
+            this.backTwoRowsConditions.push(studentName);
+          },
           makeNextSeatsTable() { // nextSeatsTableを作成
             this.nextSeatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
@@ -525,14 +540,16 @@
               this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
               this.resetFrontTwoRowsSeatsIndex(); // 前2列インデックス配列を空にする
               this.resetBackSeatsIndex(); // 最後列インデックス配列を空にする
+              this.resetBackTwoRowsSeatsIndex(); // 後ろ2列インデックス配列を空にする
               this.makeFrontSeatsIndex(); // 最前列インデックスを作成
               this.makeFrontTwoRowsSeatsIndex(); // 前2列インデックスを作成
               this.makeBackSeatsIndex(); // 最後列インデックスを作成
-
+              this.makeBackTwoRowsSeatsIndex(); // 後ろ2列インデックスを作成
               this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              this.dupBackTwoRowsSeatsIndex = this.backTwoRowsSeatsIndex.slice(0); // 後ろ2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
@@ -610,6 +627,16 @@
           },
           resetBackSeatsIndex() { // 最後列インデックス配列を空にする
             this.backSeatsIndex.splice(0);
+          },
+          makeBackTwoRowsSeatsIndex() {
+            this.seatsTableIndex.forEach(indexArray => {
+              if(indexArray[1] >= this.seatsSizeY-2) { // 後ろ2列なら
+                this.backTwoRowsSeatsIndex.push(indexArray); // 後ろ2列インデックス配列にインデックスをプッシュ
+              }
+            })
+          },
+          resetBackTwoRowsSeatsIndex() { // 後ろ2列インデックス配列を空にする
+            this.backTwoRowsSeatsIndex.splice(0);
           },
           changeFrontSeats() { // 最前列に固定する生徒を席替え
             this.shuffle(this.dupFrontSeatsIndex);
