@@ -306,6 +306,12 @@
                   <p>最後列の座席のインデックス配列の複製</p>
                   {{ dupBackSeatsIndex }}
                 </v-col>
+                <v-col cols="6" style="background-color: #ede7d5">
+                  <p>前2列の座席のインデックス配列</p>
+                  {{ frontTwoRowsSeatsIndex }}
+                  <p>前2列の座席のインデックス配列の複製</p>
+                  {{ dupFrontTwoRowsSeatsIndex }}
+                </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
                     <p>現在の座席記憶用テーブル</p>
@@ -341,6 +347,10 @@
                 <v-col cols="6" style="background-color: #b1a6ed">
                   <p>最後列に固定する生徒</p>
                   {{ backConditions }}
+                </v-col>
+                <v-col cols="6" style="background-color: #ede7d5">
+                  <p>前2列に固定する生徒</p>
+                  {{ frontTwoRowsConditions }}
                 </v-col>
                 <v-col cols="6" style="background-color: aliceblue">
                   <p>性別用テーブル</p>
@@ -392,6 +402,10 @@
           frontConditions: [], // 最前列に固定する生徒
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+
+          frontTwoRowsConditions: [], // 前2列に固定する生徒
+          frontTwoRowsSeatsIndex: [], // 前2列のインデックス
+          dupFrontTwoRowsSeatsIndex: [], // 前2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           backConditions: [], // 最後列に固定する生徒
           backSeatsIndex: [], // 最前列のインデックス
           dupBackSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
@@ -483,6 +497,9 @@
           addFrontConditions(studentName) { // 最前列に固定する条件を要録
             this.frontConditions.push(studentName);
           },
+          addFrontTwoRowsConditions(studentName) { // 前2列に固定する条件を要録
+            this.frontTwoRowsConditions.push(studentName);
+          },
           addBackConditions(studentName) { // 最後列に固定する条件を要録
             this.backConditions.push(studentName);
           },
@@ -506,12 +523,15 @@
               this.calcNum = 0 // エラー用計算量を初期化
               this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
               this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
-              this.makeFrontSeatsIndex(); // 最前列インデックスを作成
+              this.resetFrontTwoRowsSeatsIndex(); // 前2列インデックス配列を空にする
               this.resetBackSeatsIndex(); // 最後列インデックス配列を空にする
+              this.makeFrontSeatsIndex(); // 最前列インデックスを作成
+              this.makeFrontTwoRowsSeatsIndex(); // 前2列インデックスを作成
               this.makeBackSeatsIndex(); // 最後列インデックスを作成
 
               this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
@@ -569,6 +589,16 @@
           },
           resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
             this.frontSeatsIndex.splice(0);
+          },
+          makeFrontTwoRowsSeatsIndex() {
+            this.seatsTableIndex.forEach(indexArray => {
+              if(indexArray[1] <= 1) { // 前2列なら
+                this.frontTwoRowsSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
+              }
+            })
+          },
+          resetFrontTwoRowsSeatsIndex() { // 前2列インデックス配列を空にする
+            this.frontTwoRowsSeatsIndex.splice(0);
           },
           makeBackSeatsIndex() {
             this.seatsTableIndex.forEach(indexArray => {
