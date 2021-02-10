@@ -67,15 +67,15 @@
 
             <v-col cols="6">
               <v-row>
-                <!-- よこの座席数入力フォーム -->
+                <!-- 横の座席数入力フォーム -->
                 <v-col cols="6" style="background-color: turquoise">
-                  <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX"
+                  <v-select :items="seatsOptionsX" label="横の座席数" outlined　v-model.number="seatsSizeX"
                   @change="makeSeatsTable()" style="width:100px"></v-select>
                 </v-col>
 
-                <!-- たての座席数入力フォーム -->
+                <!-- 縦の座席数入力フォーム -->
                 <v-col cols="6" style="background-color: lightseagreen">
-                  <v-select :items="seatsOptionsY" label="たての座席数" outlined　v-model.number="seatsSizeY"
+                  <v-select :items="seatsOptionsY" label="縦の座席数" outlined　v-model.number="seatsSizeY"
                   @change="makeSeatsTable()" style="width:100px"></v-select>
                 </v-col>
 
@@ -91,7 +91,7 @@
                 <v-col cols="12" style="background-color: hotpink">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
-                      <v-expansion-panel-header>列で固定する</v-expansion-panel-header>
+                      <v-expansion-panel-header>横の列で固定する</v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <!-- ネストされたエクスパンションパネル -->
                         <v-expansion-panels accordion>
@@ -173,7 +173,7 @@
                 <v-col cols="12" style="background-color: burlywood">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
-                      <v-expansion-panel-header>生徒を近づける</v-expansion-panel-header>
+                      <v-expansion-panel-header>生徒同士を近づける</v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <!-- 近づける生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
@@ -208,7 +208,7 @@
                 <v-col cols="12" style="background-color: lightgreen">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
-                      <v-expansion-panel-header>生徒を離す</v-expansion-panel-header>
+                      <v-expansion-panel-header>生徒同士を離す</v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <!-- 離す生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
