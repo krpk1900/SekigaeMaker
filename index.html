@@ -50,7 +50,7 @@
           <v-row>
             <!-- 座席テーブル -->
             <v-col cols="6" style="background-color: #c8fac8">
-              <p style="text-align: center">生徒の名前を入力してください</p>
+              <p style="text-align: center">名前を入力してください</p>
               <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
               <p style="text-align: center">クリックで性別を変更できます</p>
               <div id="seatArrange">
@@ -67,15 +67,15 @@
 
             <v-col cols="6">
               <v-row>
-                <!-- よこの座席数入力フォーム -->
+                <!-- 横の座席数入力フォーム -->
                 <v-col cols="6" style="background-color: turquoise">
-                  <v-select :items="seatsOptionsX" label="よこの座席数" outlined　v-model.number="seatsSizeX"
+                  <v-select :items="seatsOptionsX" label="横の座席数" outlined　v-model.number="seatsSizeX"
                   @change="makeSeatsTable()" style="width:100px"></v-select>
                 </v-col>
 
-                <!-- たての座席数入力フォーム -->
+                <!-- 縦の座席数入力フォーム -->
                 <v-col cols="6" style="background-color: lightseagreen">
-                  <v-select :items="seatsOptionsY" label="たての座席数" outlined　v-model.number="seatsSizeY"
+                  <v-select :items="seatsOptionsY" label="縦の座席数" outlined　v-model.number="seatsSizeY"
                   @change="makeSeatsTable()" style="width:100px"></v-select>
                 </v-col>
 
@@ -87,21 +87,83 @@
                   hide-details></v-checkbox>
                 </v-col>
 
-                <!-- 最前列に固定する生徒のエクスパンションパネル -->
+                <!-- 列で固定するエクスパンションパネル -->
                 <v-col cols="12" style="background-color: hotpink">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
-                      <v-expansion-panel-header>最前列に固定する生徒を入力する</v-expansion-panel-header>
+                      <v-expansion-panel-header>横の列で固定する</v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <!-- 最前列に固定する生徒の入力フォーム（初期表示のための１つ目） -->
-                        <span>
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="addFrontConditions"></v-select>
-                        </span>
-                        <span v-for="frontCondition in frontConditions">
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="addFrontConditions"></v-select>
-                        </span>
+                        <!-- ネストされたエクスパンションパネル -->
+                        <v-expansion-panels accordion>
+                          <!-- 最前列のエクスパンションパネル -->
+                          <v-expansion-panel>
+                            <v-expansion-panel-header>最前列</v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
+                              <span>
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addFrontConditions"></v-select>
+                              </span>
+                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
+                              <span v-for="frontCondition in frontConditions">
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addFrontConditions"></v-select>
+                              </span>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+
+                          <!-- 前2列のエクスパンションパネル -->
+                          <v-expansion-panel>
+                            <v-expansion-panel-header>前2列</v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
+                              <span>
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addFrontTwoRowsConditions"></v-select>
+                              </span>
+                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
+                              <span v-for="frontTwoRowsCondition in frontTwoRowsConditions">
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addFrontTwoRowsConditions"></v-select>
+                              </span>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+
+                          <!-- 後ろ2列のエクスパンションパネル -->
+                          <v-expansion-panel>
+                            <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
+                              <span>
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addBackTwoRowsConditions"></v-select>
+                              </span>
+                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
+                              <span v-for="backTwoRowsCondition in backTwoRowsConditions">
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addBackTwoRowsConditions"></v-select>
+                              </span>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+
+                          <!-- 最後列のエクスパンションパネル -->
+                          <v-expansion-panel>
+                            <v-expansion-panel-header>最後列</v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
+                              <span>
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addBackConditions"></v-select>
+                              </span>
+                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
+                              <span v-for="backCondition in backConditions">
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addBackConditions"></v-select>
+                              </span>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+
+                        </v-expansion-panels>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                   </v-expansion-panels>
@@ -111,7 +173,7 @@
                 <v-col cols="12" style="background-color: burlywood">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
-                      <v-expansion-panel-header>近づける生徒を入力する</v-expansion-panel-header>
+                      <v-expansion-panel-header>生徒同士を近づける</v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <!-- 近づける生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
@@ -146,7 +208,7 @@
                 <v-col cols="12" style="background-color: lightgreen">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
-                      <v-expansion-panel-header>離す生徒を入力する</v-expansion-panel-header>
+                      <v-expansion-panel-header>生徒同士を離す</v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <!-- 離す生徒の入力フォーム（初期表示のための１つ目） -->
                         <div>
@@ -226,11 +288,35 @@
                   <p>有効な座席のインデックス配列の複製</p>
                   {{ dupSeatsTableIndex }}
                 </v-col>
+                <v-col cols="6" style="background-color: paleturquoise">
+                  <p>生徒の名前用配列</p>
+                  {{ studentsName }}
+                  <p>生徒の名前用配列の複製</p>
+                  {{ dupStudentsName }}
+                </v-col>
                 <v-col cols="6" style="background-color: lightsteelblue">
                   <p>最前列の座席のインデックス配列</p>
                   {{ frontSeatsIndex }}
                   <p>最前列の座席のインデックス配列の複製</p>
                   {{ dupFrontSeatsIndex }}
+                </v-col>
+                <v-col cols="6" style="background-color: #edbee6">
+                  <p>最後列の座席のインデックス配列</p>
+                  {{ backSeatsIndex }}
+                  <p>最後列の座席のインデックス配列の複製</p>
+                  {{ dupBackSeatsIndex }}
+                </v-col>
+                <v-col cols="6" style="background-color: #ede7d5">
+                  <p>前2列の座席のインデックス配列</p>
+                  {{ frontTwoRowsSeatsIndex }}
+                  <p>前2列の座席のインデックス配列の複製</p>
+                  {{ dupFrontTwoRowsSeatsIndex }}
+                </v-col>
+                <v-col cols="6" style="background-color: #a3cccc">
+                  <p>後ろ2列の座席のインデックス配列</p>
+                  {{ backTwoRowsSeatsIndex }}
+                  <p>後ろ2列の座席のインデックス配列の複製</p>
+                  {{ dupBackTwoRowsSeatsIndex }}
                 </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
@@ -264,11 +350,17 @@
                   <p>最前列に固定する生徒</p>
                   {{ frontConditions }}
                 </v-col>
-                <v-col cols="6" style="background-color: paleturquoise">
-                  <p>生徒の名前用配列</p>
-                  {{ studentsName }}
-                  <p>生徒の名前用配列の複製</p>
-                  {{ dupStudentsName }}
+                <v-col cols="6" style="background-color: #b1a6ed">
+                  <p>最後列に固定する生徒</p>
+                  {{ backConditions }}
+                </v-col>
+                <v-col cols="6" style="background-color: #ede7d5">
+                  <p>前2列に固定する生徒</p>
+                  {{ frontTwoRowsConditions }}
+                </v-col>
+                <v-col cols="6" style="background-color: #a3cccc">
+                  <p>後ろ2列に固定する生徒</p>
+                  {{ backTwoRowsConditions }}
                 </v-col>
                 <v-col cols="6" style="background-color: aliceblue">
                   <p>性別用テーブル</p>
@@ -297,6 +389,8 @@
           seatsSizeY: 6, // デフォルト値は6
           seatsSizeX: 6, // デフォルト値は6
           seatsTable: [], // 座席テーブル
+          seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
+          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           seatsNum: 0, // 有効な座席数
           seatsOptionsX: [1,2,3,4,5,6,7,8], // よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], // たての座席数入力フォームの選択肢
@@ -316,12 +410,19 @@
           nearFarStudentsName: [], // 近づける/離す生徒の名前
           dupNearFarStudentsName: [], // 近づける/離す生徒の名前の複製
           frontConditions: [], // 最前列に固定する生徒
-          nextSeatsTable: [], // 席替え後の座席テーブル
-          tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
-          seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
-          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+          frontTwoRowsConditions: [], // 前2列に固定する生徒
+          frontTwoRowsSeatsIndex: [], // 前2列のインデックス
+          dupFrontTwoRowsSeatsIndex: [], // 前2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+          backConditions: [], // 最後列に固定する生徒
+          backSeatsIndex: [], // 最後列のインデックス
+          dupBackSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+          backTwoRowsConditions: [], // 後ろ2列に固定する生徒
+          backTwoRowsSeatsIndex: [], // 後ろ2列のインデックス
+          dupBackTwoRowsSeatsIndex: [], // 後ろ2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+          nextSeatsTable: [], // 席替え後の座席テーブル
+          tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
           calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
           genderTable: [], // 生徒の性別テーブル
@@ -407,6 +508,15 @@
           addFrontConditions(studentName) { // 最前列に固定する条件を要録
             this.frontConditions.push(studentName);
           },
+          addFrontTwoRowsConditions(studentName) { // 前2列に固定する条件を要録
+            this.frontTwoRowsConditions.push(studentName);
+          },
+          addBackConditions(studentName) { // 最後列に固定する条件を要録
+            this.backConditions.push(studentName);
+          },
+          addBackTwoRowsConditions(studentName) { // 後ろ2列に固定する条件を要録
+            this.backTwoRowsConditions.push(studentName);
+          },
           makeNextSeatsTable() { // nextSeatsTableを作成
             this.nextSeatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
@@ -427,15 +537,28 @@
               this.calcNum = 0 // エラー用計算量を初期化
               this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
               this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
+              this.resetFrontTwoRowsSeatsIndex(); // 前2列インデックス配列を空にする
+              this.resetBackSeatsIndex(); // 最後列インデックス配列を空にする
+              this.resetBackTwoRowsSeatsIndex(); // 後ろ2列インデックス配列を空にする
               this.makeFrontSeatsIndex(); // 最前列インデックスを作成
+              this.makeFrontTwoRowsSeatsIndex(); // 前2列インデックスを作成
+              this.makeBackSeatsIndex(); // 最後列インデックスを作成
+              this.makeBackTwoRowsSeatsIndex(); // 後ろ2列インデックスを作成
               this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              this.dupBackTwoRowsSeatsIndex = this.backTwoRowsSeatsIndex.slice(0); // 後ろ2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
+
               this.changeFrontSeats(); // 最前列に固定する生徒を席替え
+              this.changeBackSeats(); // 最後列に固定する生徒を席替え
+              this.changeFrontTwoRowsSeats(); // 前2列に固定する生徒を席替え
+              this.changeBackTwoRowsSeats(); // 後ろ2列に固定する生徒を席替え
               //this.changeNearSeats(); // 近づける生徒を席替え
               //this.changeFarSeats(); // 離す生徒を席替え
               this.changeNearFarSeats(); // 近づける/離す生徒を席替え
@@ -483,15 +606,46 @@
               }
             })
           },
+          resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
+            this.frontSeatsIndex.splice(0);
+          },
+          makeFrontTwoRowsSeatsIndex() {
+            this.seatsTableIndex.forEach(indexArray => {
+              if(indexArray[1] <= 1) { // 前2列なら
+                this.frontTwoRowsSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
+              }
+            })
+          },
+          resetFrontTwoRowsSeatsIndex() { // 前2列インデックス配列を空にする
+            this.frontTwoRowsSeatsIndex.splice(0);
+          },
+          makeBackSeatsIndex() {
+            this.seatsTableIndex.forEach(indexArray => {
+              if(indexArray[1] === this.seatsSizeY-1) { // 最後列なら
+                this.backSeatsIndex.push(indexArray); // 最後列インデックス配列にインデックスをプッシュ
+              }
+            })
+          },
+          resetBackSeatsIndex() { // 最後列インデックス配列を空にする
+            this.backSeatsIndex.splice(0);
+          },
+          makeBackTwoRowsSeatsIndex() {
+            this.seatsTableIndex.forEach(indexArray => {
+              if(indexArray[1] >= this.seatsSizeY-2) { // 後ろ2列なら
+                this.backTwoRowsSeatsIndex.push(indexArray); // 後ろ2列インデックス配列にインデックスをプッシュ
+              }
+            })
+          },
+          resetBackTwoRowsSeatsIndex() { // 後ろ2列インデックス配列を空にする
+            this.backTwoRowsSeatsIndex.splice(0);
+          },
           changeFrontSeats() { // 最前列に固定する生徒を席替え
             this.shuffle(this.dupFrontSeatsIndex);
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              /* ----近づける/離す処理---- */
+              /* ----近づける/離す/性別チェック---- */
               while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
-                  // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
-                  // throw '計算量が100を超えました'
                   this.restartFlag = true;
                   break;
                 }
@@ -502,27 +656,147 @@
               /* ----ここまで---- */
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
 
-              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // changeFrontSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
+              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
 
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
 
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、changeNearSeats()で配置する必要がないため
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
               if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
                 this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
               }
 
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(frontStudentName); // changeFrontSeats()で配置した生徒は、changeFarSeats()で配置する必要がないため
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
               if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
                 this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
               }
 
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(frontStudentName); // changeNearFrontSeats()で配置した生徒は、changeFarSeats()で配置する必要がないため
+              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
               if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
                 this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
               }
               // console.log(`${frontStudentName}を配置した`)
+            })
+          },
+          changeFrontTwoRowsSeats() { // 前2列に固定する生徒を席替え
+            this.shuffle(this.dupFrontTwoRowsSeatsIndex);
+            this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
+              let topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              /* ----近づける/離す/性別チェック---- */
+              while( !this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+                if(this.calcNum > this.seatsNum){
+                  this.restartFlag = true;
+                  break;
+                }
+                this.dupFrontTwoRowsSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                this.calcNum += 1;
+              }
+              /* ----ここまで---- */
+              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
+
+              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
+
+              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
+              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
+                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
+              }
+              // console.log(`${frontStudentName}を配置した`)
+            })
+          },
+          changeBackSeats() { // 最後列に固定する生徒を席替え
+            this.shuffle(this.dupBackSeatsIndex);
+            this.backConditions.forEach(backStudentName => {
+              let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              /* ----近づける/離す/性別チェック---- */
+              while( !this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+                if(this.calcNum > this.seatsNum){
+                  this.restartFlag = true;
+                  break;
+                }
+                this.dupBackSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupBackSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                this.calcNum += 1;
+              }
+              /* ----ここまで---- */
+              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
+
+              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(backStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
+
+              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
+              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
+                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
+              }
+              // console.log(`${backStudentName}を配置した`)
+            })
+          },
+          changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
+            this.shuffle(this.dupBackTwoRowsSeatsIndex);
+            this.backTwoRowsConditions.forEach(backTwoRowsStudentName => {
+              let topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+              /* ----近づける/離す/性別チェック---- */
+              while( !this.checkNear(backTwoRowsStudentName, topIndex) || !this.checkFar(backTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backTwoRowsStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+                if(this.calcNum > this.seatsNum){
+                  this.restartFlag = true;
+                  break;
+                }
+                this.dupBackTwoRowsSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+                topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+                this.calcNum += 1;
+              }
+              /* ----ここまで---- */
+              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
+
+              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
+
+              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
+              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
+                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
+              }
+              // console.log(`${backStudentName}を配置した`)
             })
           },
           /*
@@ -609,9 +883,6 @@
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
               // console.log(`${dupNearFarStudentName}を配置した`)
             })
-          },
-          resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
-            this.frontSeatsIndex.splice(0);
           },
           min_distance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
             let x_abs = Math.abs( p1[0] - p2[0] );
