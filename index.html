@@ -91,17 +91,26 @@
                 <v-col cols="12" style="background-color: hotpink">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
-                      <v-expansion-panel-header>最前列に固定する生徒を入力する</v-expansion-panel-header>
+                      <v-expansion-panel-header>生徒を列で固定する</v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <!-- 最前列に固定する生徒の入力フォーム（初期表示のための１つ目） -->
-                        <span>
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="addFrontConditions"></v-select>
-                        </span>
-                        <span v-for="frontCondition in frontConditions">
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="addFrontConditions"></v-select>
-                        </span>
+                        <!-- test -->
+                        <v-expansion-panels accordion>
+                          <v-expansion-panel>
+                            <v-expansion-panel-header>最前列に固定する生徒を入力する</v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <!-- 最前列に固定する生徒の入力フォーム（初期表示のための１つ目） -->
+                              <span>
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addFrontConditions"></v-select>
+                              </span>
+                              <span v-for="frontCondition in frontConditions">
+                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                @change="addFrontConditions"></v-select>
+                              </span>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                   </v-expansion-panels>
