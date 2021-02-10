@@ -288,11 +288,23 @@
                   <p>有効な座席のインデックス配列の複製</p>
                   {{ dupSeatsTableIndex }}
                 </v-col>
+                <v-col cols="6" style="background-color: paleturquoise">
+                  <p>生徒の名前用配列</p>
+                  {{ studentsName }}
+                  <p>生徒の名前用配列の複製</p>
+                  {{ dupStudentsName }}
+                </v-col>
                 <v-col cols="6" style="background-color: lightsteelblue">
                   <p>最前列の座席のインデックス配列</p>
                   {{ frontSeatsIndex }}
                   <p>最前列の座席のインデックス配列の複製</p>
                   {{ dupFrontSeatsIndex }}
+                </v-col>
+                <v-col cols="6" style="background-color: #edbee6">
+                  <p>最後列の座席のインデックス配列</p>
+                  {{ backSeatsIndex }}
+                  <p>最後列の座席のインデックス配列の複製</p>
+                  {{ dupBackSeatsIndex }}
                 </v-col>
                 <v-col cols="6"  style="background-color: lightsalmon">
                   <div>
@@ -329,12 +341,6 @@
                 <v-col cols="6" style="background-color: #b1a6ed">
                   <p>最後列に固定する生徒</p>
                   {{ backConditions }}
-                </v-col>
-                <v-col cols="6" style="background-color: paleturquoise">
-                  <p>生徒の名前用配列</p>
-                  {{ studentsName }}
-                  <p>生徒の名前用配列の複製</p>
-                  {{ dupStudentsName }}
                 </v-col>
                 <v-col cols="6" style="background-color: aliceblue">
                   <p>性別用テーブル</p>
@@ -561,7 +567,7 @@
           },
           makeBackSeatsIndex() {
             this.seatsTableIndex.forEach(indexArray => {
-              if(indexArray[1] === this.seatsSizeY) { // 最後列なら
+              if(indexArray[1] === this.seatsSizeY-1) { // 最後列なら
                 this.backSeatsIndex.push(indexArray); // 最後列インデックス配列にインデックスをプッシュ
               }
             })
