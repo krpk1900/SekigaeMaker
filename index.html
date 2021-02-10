@@ -119,12 +119,12 @@
                               <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
                               <span>
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
+                                @change="addFrontTwoRowsConditions"></v-select>
                               </span>
                               <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                              <span v-for="frontCondition in frontConditions">
+                              <span v-for="frontTwoRowsCondition in frontTwoRowsConditions">
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
+                                @change="addFrontTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
