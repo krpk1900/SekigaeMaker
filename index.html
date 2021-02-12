@@ -429,7 +429,8 @@
     <script>
       Array.prototype.originalIndexOf = function(target) { // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
         let indexNum = this.length;
-        let temp = this.reverse().some(array => {
+        let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
+        let temp = dupThis.reverse().some(array => {
           indexNum -= 1;
           return (array.toString() == target.toString());
         })
@@ -972,14 +973,14 @@
 
               let fixIndex = [fixConditionCol, fixConditionRow]
 
-              let deleteIndex = this.dupSeatsTableIndex.indexOf(fixIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              let deleteIndex = this.dupSeatsTableIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
 
               let deleteStudentNameIndex = this.dupStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
 
               // todo frontIndexからも消す
-              let deleteFrontSeatsIndex = this.dupFrontSeatsIndex.indexOf(fixIndex); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              let deleteFrontSeatsIndex = this.dupFrontSeatsIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
               console.log(`dupFrontSeatsIndex = ${this.dupFrontSeatsIndex}`);
               console.log(`fixIndex = ${fixIndex}`);
               console.log(`deleteFrontSeatsIndex = ${deleteFrontSeatsIndex}`);
