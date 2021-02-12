@@ -611,6 +611,7 @@
               this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              this.dupFixStudentsName = this.fixStudentsName.slice(0); // 固定する生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
 
@@ -1069,6 +1070,15 @@
               })
             },
             deep: true
+          },
+          fixConditions: {
+            handler: function(){
+              this.fixStudentsName.splice(-this.farStudentsName.length); // 配列を初期化
+              this.fixConditions.forEach( fixCondition => {
+                this.fixStudentsName.push(fixCondition[0]);
+              })
+              this.fixStudentsName = Array.from(new Set(this.fixStudentsName)) // 重複している名前を削除
+            }
           },
         }
       });
