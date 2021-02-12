@@ -427,14 +427,13 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 
     <script>
-      Array.prototype.originalIndexOf = function(target) {
-        let indexNum = -1;
-        this.some(array => {
-          // console.log(array)
-          // console.log(array.toString() == target.toString())
-          indexNum += 1;
+      Array.prototype.originalIndexOf = function(target) { // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
+        let indexNum = this.length;
+        let temp = this.reverse().some(array => {
+          indexNum -= 1;
           return (array.toString() == target.toString());
         })
+        if(!temp){ indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
         return indexNum;
       }
       const app = new Vue({
@@ -496,7 +495,7 @@
             let testArray2 = [[0,0], [1,1], [2,2]]
 
             console.log(testArray1.originalIndexOf("ccc"))
-            console.log(testArray2.originalIndexOf([1,1]))
+            console.log(testArray2.originalIndexOf([1,2]))
 
             console.log('---------')
           },
