@@ -87,7 +87,7 @@
                   hide-details></v-checkbox>
                 </v-col>
 
-                <!-- 列で固定するエクスパンションパネル -->
+                <!-- 横の列で固定するエクスパンションパネル -->
                 <v-col cols="12" style="background-color: hotpink">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
@@ -168,6 +168,43 @@
                     </v-expansion-panel>
                   </v-expansion-panels>
                 </v-col>
+
+
+                <!-- 特定の席に固定する生徒のエクスパンションパネル -->
+                <v-col cols="12" style="background-color: #8fcccc">
+                  <v-expansion-panels accordion>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>特定の席に固定する</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
+                        <div>
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="setFixConditionOption1"></v-select>
+                          を、前から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="setFixConditionOption2"></v-select>
+                          列目、左から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addFixConditions"></v-select>
+                          列目に固定する
+                        </div>
+                        <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
+                        <div v-for="fixCondition in fixConditions">
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="setFixConditionOption1"></v-select>
+                          を、前から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="setFixConditionOption2"></v-select>
+                          列目、左から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addFixConditions"></v-select>
+                          列目に固定する
+                        </div>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                </v-col>
+
 
                 <!-- 近づける生徒のエクスパンションパネル -->
                 <v-col cols="12" style="background-color: burlywood">
@@ -370,6 +407,14 @@
                   <p>性別用配列</p>
                   {{ genderArray }}
                 </v-col>
+                <v-col cols="6" style="background-color: plum">
+                  <p>固定する条件用配列</p>
+                  {{ fixConditions }}
+                  <p>近づける名前用配列</p>
+                  {{ fixStudentsName }}
+                  <p>近づける名前用配列の複製</p>
+                  {{ dupFixStudentsName }}
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -429,6 +474,11 @@
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
+          fixConditions: [], // 近づける条件配列
+          fixConditionOption1: '', // 近づける生徒1
+          fixConditionOption2: '', // 近づける生徒2
+          fixStudentsName: [], // 近づける生徒の名前
+          dupFixStudentsName: [], // 近づける生徒の名前の複製
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -516,6 +566,15 @@
           },
           addBackTwoRowsConditions(studentName) { // 後ろ2列に固定する条件を要録
             this.backTwoRowsConditions.push(studentName);
+          },
+          setFixConditionOption1(fixConditionOption1) { // 近づける条件で指定する生徒1を登録
+            this.fixConditionOption1 = fixConditionOption1;
+          },
+          setFixConditionOption2(fixConditionOption2) {　// 近づける条件で指定する生徒2を登録
+            this.fixConditionOption2 = fixConditionOption2;
+          },
+          addFixConditions(fixConditionOption3) { // 生徒1と生徒2を近づける条件を登録
+            this.fixConditions.push( [this.fixConditionOption1, this.fixConditionOption2, fixConditionOption3] );
           },
           makeNextSeatsTable() { // nextSeatsTableを作成
             this.nextSeatsTable = []
