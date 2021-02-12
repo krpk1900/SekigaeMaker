@@ -53,7 +53,7 @@
               <p style="text-align: center">名前を入力してください</p>
               <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
               <p style="text-align: center">クリックで性別を変更できます</p>
-              <div id="seatArrange">
+              <div>
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" :class="getColorByName(seatsTable[indexRow][indexCol])"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
@@ -427,6 +427,16 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 
     <script>
+      Array.prototype.originalIndexOf = function(target) {
+        let indexNum = -1;
+        this.some(array => {
+          // console.log(array)
+          // console.log(array.toString() == target.toString())
+          indexNum += 1;
+          return (array.toString() == target.toString());
+        })
+        return indexNum;
+      }
       const app = new Vue({
         el: "#app",
         vuetify: new Vuetify(),
@@ -482,6 +492,12 @@
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
+            let testArray1 = ["aaa", "bbb", "ccc"]
+            let testArray2 = [[0,0], [1,1], [2,2]]
+
+            console.log(testArray1.originalIndexOf("ccc"))
+            console.log(testArray2.originalIndexOf([1,1]))
+
             console.log('---------')
           },
           /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
@@ -615,6 +631,7 @@
               this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
 
+              this.placeFixedSeats(); // 固定する生徒を配置
               this.changeFrontSeats(); // 最前列に固定する生徒を席替え
               this.changeBackSeats(); // 最後列に固定する生徒を席替え
               this.changeFrontTwoRowsSeats(); // 前2列に固定する生徒を席替え
@@ -717,6 +734,9 @@
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
 
               let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              console.log(`topIndex = ${topIndex}`)
+              console.log(`dupSeatsTableIndex = ${this.dupSeatsTableIndex}`)
+              console.log(`deleteIndex = ${deleteIndex}`)
               this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
 
               let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
@@ -944,6 +964,48 @@
               // console.log(`${dupNearFarStudentName}を配置した`)
             })
           },
+          placeFixedSeats() { // 固定する生徒を配置
+            this.fixConditions.forEach(fixCondition => {
+              let fixConditionName = fixCondition[0];
+              let fixConditionRow = fixCondition[1]-1; // 入力された値とインデックスのずれを補正
+              let fixConditionCol = fixCondition[2]-1; // 入力された値とインデックスのずれを補正
+              this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
+
+              let fixIndex = [fixConditionCol, fixConditionRow]
+
+              let deleteIndex = this.dupSeatsTableIndex.indexOf(fixIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+
+              // todo frontIndexからも消す
+              let deleteFrontSeatsIndex = this.dupFrontSeatsIndex.indexOf(fixIndex); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              console.log(`dupFrontSeatsIndex = ${this.dupFrontSeatsIndex}`);
+              console.log(`fixIndex = ${fixIndex}`);
+              console.log(`deleteFrontSeatsIndex = ${deleteFrontSeatsIndex}`);
+              if(deleteFrontSeatsIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupFrontSeatsIndex.splice(deleteFrontSeatsIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
+
+              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
+              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
+                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
+              }
+
+            })
+          },
           min_distance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
             let x_abs = Math.abs( p1[0] - p2[0] );
             let y_abs = Math.abs( p1[1] - p2[1] );
@@ -1027,7 +1089,7 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
             }
-          },
+          }
         },
         mounted() {
           this.makeSeatsTable() // 最初にseatsTableを作成
