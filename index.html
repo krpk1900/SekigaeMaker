@@ -410,10 +410,6 @@
                 <v-col cols="6" style="background-color: plum">
                   <p>固定する条件用配列</p>
                   {{ fixConditions }}
-                  <p>近づける名前用配列</p>
-                  {{ fixStudentsName }}
-                  <p>近づける名前用配列の複製</p>
-                  {{ dupFixStudentsName }}
                 </v-col>
               </v-row>
             </v-col>
@@ -487,8 +483,6 @@
           fixConditions: [], // 近づける条件配列
           fixConditionOption1: '', // 近づける生徒1
           fixConditionOption2: '', // 近づける生徒2
-          fixStudentsName: [], // 近づける生徒の名前
-          dupFixStudentsName: [], // 近づける生徒の名前の複製
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -627,7 +621,6 @@
               this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupFixStudentsName = this.fixStudentsName.slice(0); // 固定する生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
 
@@ -651,13 +644,12 @@
             this.seatsTableIndex.push([indexCol, indexRow]);
           },
           shuffleSeats() { // 条件のない生徒を席替え
+            // console.log(`dupSeatsTableIndex = ${this.dupSeatsTableIndex}`)
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               while( this.isFixGender && !this.checkGender(dupStudentName, topIndex) ){ // 征伐の条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
-                  // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
-                  // throw '計算量が100を超えました'
                   this.restartFlag = true;
                   break;
                 }
@@ -734,9 +726,6 @@
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
 
               let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              console.log(`topIndex = ${topIndex}`)
-              console.log(`dupSeatsTableIndex = ${this.dupSeatsTableIndex}`)
-              console.log(`deleteIndex = ${deleteIndex}`)
               this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
 
               let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
@@ -974,16 +963,15 @@
               let fixIndex = [fixConditionCol, fixConditionRow]
 
               let deleteIndex = this.dupSeatsTableIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+              if(deleteIndex =! -1){
+                this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+              }
 
               let deleteStudentNameIndex = this.dupStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
               this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
 
               // todo frontIndexからも消す
               let deleteFrontSeatsIndex = this.dupFrontSeatsIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              console.log(`dupFrontSeatsIndex = ${this.dupFrontSeatsIndex}`);
-              console.log(`fixIndex = ${fixIndex}`);
-              console.log(`deleteFrontSeatsIndex = ${deleteFrontSeatsIndex}`);
               if(deleteFrontSeatsIndex != -1){ // dupNearStudentsNameにあれば削除する
                 this.dupFrontSeatsIndex.splice(deleteFrontSeatsIndex, 1); // dupNearStudentsNameから削除する
               }
@@ -1132,15 +1120,6 @@
               })
             },
             deep: true
-          },
-          fixConditions: {
-            handler: function(){
-              this.fixStudentsName.splice(-this.farStudentsName.length); // 配列を初期化
-              this.fixConditions.forEach( fixCondition => {
-                this.fixStudentsName.push(fixCondition[0]);
-              })
-              this.fixStudentsName = Array.from(new Set(this.fixStudentsName)) // 重複している名前を削除
-            }
           },
         }
       });
