@@ -53,7 +53,7 @@
               <p style="text-align: center">名前を入力してください</p>
               <p style="text-align: center">現在の座席に名前を入力することで、全員移動させることもできます</p>
               <p style="text-align: center">クリックで性別を変更できます</p>
-              <div id="seatArrange">
+              <div>
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" :class="getColorByName(seatsTable[indexRow][indexCol])"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
@@ -87,7 +87,7 @@
                   hide-details></v-checkbox>
                 </v-col>
 
-                <!-- 列で固定するエクスパンションパネル -->
+                <!-- 横の列で固定するエクスパンションパネル -->
                 <v-col cols="12" style="background-color: hotpink">
                   <v-expansion-panels accordion>
                     <v-expansion-panel>
@@ -168,6 +168,43 @@
                     </v-expansion-panel>
                   </v-expansion-panels>
                 </v-col>
+
+
+                <!-- 特定の席に固定する生徒のエクスパンションパネル -->
+                <v-col cols="12" style="background-color: #8fcccc">
+                  <v-expansion-panels accordion>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>特定の席に固定する</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
+                        <div>
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="setFixConditionOption1"></v-select>
+                          を、前から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="setFixConditionOption2"></v-select>
+                          列目、左から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addFixConditions"></v-select>
+                          列目に固定する
+                        </div>
+                        <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
+                        <div v-for="fixCondition in fixConditions">
+                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                          @change="setFixConditionOption1"></v-select>
+                          を、前から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="setFixConditionOption2"></v-select>
+                          列目、左から
+                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          @change="addFixConditions"></v-select>
+                          列目に固定する
+                        </div>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                </v-col>
+
 
                 <!-- 近づける生徒のエクスパンションパネル -->
                 <v-col cols="12" style="background-color: burlywood">
@@ -370,6 +407,10 @@
                   <p>性別用配列</p>
                   {{ genderArray }}
                 </v-col>
+                <v-col cols="6" style="background-color: plum">
+                  <p>固定する条件用配列</p>
+                  {{ fixConditions }}
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -382,6 +423,16 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 
     <script>
+      Array.prototype.originalIndexOf = function(target) { // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
+        let indexNum = this.length;
+        let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
+        let temp = dupThis.reverse().some(array => {
+          indexNum -= 1;
+          return (array.toString() == target.toString());
+        })
+        if(!temp){ indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
+        return indexNum;
+      }
       const app = new Vue({
         el: "#app",
         vuetify: new Vuetify(),
@@ -429,9 +480,18 @@
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
+          fixConditions: [], // 近づける条件配列
+          fixConditionOption1: '', // 近づける生徒1
+          fixConditionOption2: '', // 近づける生徒2
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
+            let testArray1 = ["aaa", "bbb", "ccc"]
+            let testArray2 = [[0,0], [1,1], [2,2]]
+
+            console.log(testArray1.originalIndexOf("ccc"))
+            console.log(testArray2.originalIndexOf([1,2]))
+
             console.log('---------')
           },
           /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
@@ -517,6 +577,15 @@
           addBackTwoRowsConditions(studentName) { // 後ろ2列に固定する条件を要録
             this.backTwoRowsConditions.push(studentName);
           },
+          setFixConditionOption1(fixConditionOption1) { // 近づける条件で指定する生徒1を登録
+            this.fixConditionOption1 = fixConditionOption1;
+          },
+          setFixConditionOption2(fixConditionOption2) {　// 近づける条件で指定する生徒2を登録
+            this.fixConditionOption2 = fixConditionOption2;
+          },
+          addFixConditions(fixConditionOption3) { // 生徒1と生徒2を近づける条件を登録
+            this.fixConditions.push( [this.fixConditionOption1, this.fixConditionOption2, fixConditionOption3] );
+          },
           makeNextSeatsTable() { // nextSeatsTableを作成
             this.nextSeatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
@@ -555,6 +624,7 @@
               this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
 
+              this.placeFixedSeats(); // 固定する生徒を配置
               this.changeFrontSeats(); // 最前列に固定する生徒を席替え
               this.changeBackSeats(); // 最後列に固定する生徒を席替え
               this.changeFrontTwoRowsSeats(); // 前2列に固定する生徒を席替え
@@ -574,13 +644,12 @@
             this.seatsTableIndex.push([indexCol, indexRow]);
           },
           shuffleSeats() { // 条件のない生徒を席替え
+            // console.log(`dupSeatsTableIndex = ${this.dupSeatsTableIndex}`)
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               while( this.isFixGender && !this.checkGender(dupStudentName, topIndex) ){ // 征伐の条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
-                  // window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
-                  // throw '計算量が100を超えました'
                   this.restartFlag = true;
                   break;
                 }
@@ -884,6 +953,47 @@
               // console.log(`${dupNearFarStudentName}を配置した`)
             })
           },
+          placeFixedSeats() { // 固定する生徒を配置
+            this.fixConditions.forEach(fixCondition => {
+              let fixConditionName = fixCondition[0];
+              let fixConditionRow = fixCondition[1]-1; // 入力された値とインデックスのずれを補正
+              let fixConditionCol = fixCondition[2]-1; // 入力された値とインデックスのずれを補正
+              this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
+
+              let fixIndex = [fixConditionCol, fixConditionRow]
+
+              let deleteIndex = this.dupSeatsTableIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              if(deleteIndex =! -1){
+                this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
+              }
+
+              let deleteStudentNameIndex = this.dupStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
+              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
+
+              // todo frontIndexからも消す
+              let deleteFrontSeatsIndex = this.dupFrontSeatsIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              if(deleteFrontSeatsIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupFrontSeatsIndex.splice(deleteFrontSeatsIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+
+              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
+              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
+                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
+              }
+
+              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
+              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
+                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
+              }
+
+              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
+              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
+                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
+              }
+
+            })
+          },
           min_distance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
             let x_abs = Math.abs( p1[0] - p2[0] );
             let y_abs = Math.abs( p1[1] - p2[1] );
@@ -967,7 +1077,7 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
             }
-          },
+          }
         },
         mounted() {
           this.makeSeatsTable() // 最初にseatsTableを作成
