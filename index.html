@@ -886,36 +886,9 @@
 
               let fixIndex = [fixConditionCol, fixConditionRow]
 
-              let deleteIndex = this.dupSeatsTableIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              if(deleteIndex != -1){
-                this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
-              }
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-
-              // todo frontIndexからも消す
-              let deleteFrontSeatsIndex = this.dupFrontSeatsIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteFrontSeatsIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupFrontSeatsIndex.splice(deleteFrontSeatsIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
-                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
-              }
-
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
-              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
-                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
-              }
-
+              this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           min_distance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
