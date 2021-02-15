@@ -43,7 +43,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装20日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装21日目）</h1>
             </v-col>
           </v-row>
 
@@ -619,8 +619,8 @@
               this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupBackTwoRowsSeatsIndex = this.backTwoRowsSeatsIndex.slice(0); // 後ろ2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              //this.dupNearStudentsName = this.nearStudentsName.slice(0); // 近づける生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
+              //this.dupFarStudentsName = this.farStudentsName.slice(0); // 離す生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
 
@@ -712,7 +712,7 @@
             this.shuffle(this.dupFrontSeatsIndex);
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              /* ----近づける/離す/性別チェック---- */
+              // ----近づける/離す/性別チェック----
               while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
@@ -722,37 +722,18 @@
                 topIndex = this.dupFrontSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
                 this.calcNum += 1;
               }
-              /* ----ここまで---- */
+              // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
-
-              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
-                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
-              }
-
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(frontStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
-              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
-                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
-              }
-              // console.log(`${frontStudentName}を配置した`)
+              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.delete(frontStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(frontStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           changeFrontTwoRowsSeats() { // 前2列に固定する生徒を席替え
             this.shuffle(this.dupFrontTwoRowsSeatsIndex);
             this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
               let topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              /* ----近づける/離す/性別チェック---- */
+              // ----近づける/離す/性別チェック----
               while( !this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
@@ -762,37 +743,18 @@
                 topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
                 this.calcNum += 1;
               }
-              /* ----ここまで---- */
+              // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
-
-              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
-                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
-              }
-
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(frontTwoRowsStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
-              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
-                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
-              }
-              // console.log(`${frontStudentName}を配置した`)
+              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.delete(frontTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(frontTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           changeBackSeats() { // 最後列に固定する生徒を席替え
             this.shuffle(this.dupBackSeatsIndex);
             this.backConditions.forEach(backStudentName => {
               let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              /* ----近づける/離す/性別チェック---- */
+              // ----近づける/離す/性別チェック----
               while( !this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
@@ -802,37 +764,21 @@
                 topIndex = this.dupBackSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
                 this.calcNum += 1;
               }
-              /* ----ここまで---- */
+              // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
-
-              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(backStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
-                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
-              }
-
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
-              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
-                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
-              }
-              // console.log(`${backStudentName}を配置した`)
+              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.delete(backStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(backStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
             this.shuffle(this.dupBackTwoRowsSeatsIndex);
             this.backTwoRowsConditions.forEach(backTwoRowsStudentName => {
+              if(!this.dupBackTwoRowsSeatsIndex.length){
+                // todo エラーを表示してbreak
+              }
               let topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              /* ----近づける/離す/性別チェック---- */
+              // ----近づける/離す/性別チェック----
               while( !this.checkNear(backTwoRowsStudentName, topIndex) || !this.checkFar(backTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backTwoRowsStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
@@ -842,30 +788,11 @@
                 topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
                 this.calcNum += 1;
               }
-              /* ----ここまで---- */
+              // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
-
-              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
-                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
-              }
-
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(backTwoRowsStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
-              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
-                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
-              }
-              // console.log(`${backStudentName}を配置した`)
+              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除
+              this.delete(backTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除
+              this.delete(backTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           /*
@@ -931,26 +858,19 @@
             this.shuffle(this.dupSeatsTableIndex);
             this.dupNearFarStudentsName.forEach(dupNearFarStudentName => {
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (${this.calcNum}回目の計算)`);
-              /* ----近づける/離す処理---- */
+              // ----近づける/離す処理----
               while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || (this.isFixGender && !this.checkGender(dupNearFarStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
-                  //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
                   this.restartFlag = true;
-                  //window.alert('restartFlagをtrueにしました。');
                   break;
                 }
                 this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
                 topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                //console.log(`${dupNearFarStudentName} を ${topIndex} に入れるとき、checkNearは ${this.checkNear(dupNearFarStudentName, topIndex)}、checkFarは ${this.checkFar(dupNearFarStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
                 this.calcNum += 1;
               }
-              /* ----ここまで---- */
+              // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupNearFarStudentName); // 取り出したインデックスの位置に生徒名を保存
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(dupNearFarStudentName); // changeNearSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-              // console.log(`${dupNearFarStudentName}を配置した`)
+              this.delete(dupNearFarStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           placeFixedSeats() { // 固定する生徒を配置
@@ -961,45 +881,17 @@
               this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
 
               let fixIndex = [fixConditionCol, fixConditionRow]
-
-              let deleteIndex = this.dupSeatsTableIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              if(deleteIndex != -1){
-                this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
-              }
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-
-              // todo frontIndexからも消す
-              let deleteFrontSeatsIndex = this.dupFrontSeatsIndex.originalIndexOf(fixIndex); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteFrontSeatsIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupFrontSeatsIndex.splice(deleteFrontSeatsIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
-                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
-              }
-
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(fixConditionName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
-              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
-                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
-              }
-
+              this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
             })
           },
-          min_distance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
+          minDistance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
             let x_abs = Math.abs( p1[0] - p2[0] );
             let y_abs = Math.abs( p1[1] - p2[1] );
             return Math.min(x_abs, y_abs);
           },
-          max_distance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
+          maxDistance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
             let x_abs = Math.abs( p1[0] - p2[0] );
             let y_abs = Math.abs( p1[1] - p2[1] );
             return Math.max(x_abs, y_abs);
@@ -1008,19 +900,17 @@
             let return_value = true
             this.nearConditions.forEach(nearConditionArray => {
               if( nearConditionArray.includes(studentName) ){ // もし引数の生徒が、近づける条件にいれば
-                /* ----近づけたい生徒の名前を取得---- */
+                // ----近づけたい生徒の名前を取得----
                 let nearStudentName
                 if( nearConditionArray.indexOf(studentName) == 0 ){
                   nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
                 }else if( nearConditionArray.indexOf(studentName) == 1 ){
                   nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
                 }
-                /* ----ここまで---- */
+                // ----ここまで----
                 let distance = nearConditionArray[2]; // 距離
                 let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
-                // console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
-                // console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
-                if( this.max_distance(p, nearStudentPosition) > distance ){ // 距離のmaxが条件distanceより上なら返り値をfalseに更新
+                if( this.maxDistance(p, nearStudentPosition) > distance ){ // 距離のmaxが条件distanceより上なら返り値をfalseに更新
                   return_value = false;
                 }
               }
@@ -1031,19 +921,17 @@
             let return_value = true
             this.farConditions.forEach(farConditionArray => {
               if( farConditionArray.includes(studentName) ){ // もし引数の生徒が、離す条件にいれば
-                /* ----離す生徒の名前を取得---- */
+                // ----離す生徒の名前を取得----
                 let farStudentName
                 if( farConditionArray.indexOf(studentName) == 0 ){
                   farStudentName = farConditionArray[1]; // 引数の生徒と離す生徒
                 }else if( farConditionArray.indexOf(studentName) == 1 ){
                   farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
                 }
-                /* ----ここまで---- */
+                // ----ここまで----
                 let distance = farConditionArray[2]; // 距離
                 let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
-                // console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
-                // console.log(`距離は${this.max_distance(p, nearStudentPosition)}`);
-                if( this.max_distance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
+                if( this.maxDistance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
                   return_value = false;
                 }
               }
@@ -1077,7 +965,13 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
             }
-          }
+          },
+          delete(target, array){
+            let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
+            if(deleteIndex != -1){ // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
+              array.splice(deleteIndex, 1); // arrayからtargetを削除する
+            }
+          },
         },
         mounted() {
           this.makeSeatsTable() // 最初にseatsTableを作成
