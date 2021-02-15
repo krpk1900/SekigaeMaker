@@ -43,7 +43,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装20日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装21日目）</h1>
             </v-col>
           </v-row>
 
@@ -774,7 +774,7 @@
             this.shuffle(this.dupBackSeatsIndex);
             this.backConditions.forEach(backStudentName => {
               let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              /* ----近づける/離す/性別チェック---- */
+              // ----近づける/離す/性別チェック----
               while( !this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
@@ -784,7 +784,7 @@
                 topIndex = this.dupBackSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
                 this.calcNum += 1;
               }
-              /* ----ここまで---- */
+              // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
 
               let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
@@ -807,7 +807,6 @@
               if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
                 this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
               }
-              // console.log(`${backStudentName}を配置した`)
             })
           },
           changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
@@ -968,14 +967,14 @@
             let return_value = true
             this.nearConditions.forEach(nearConditionArray => {
               if( nearConditionArray.includes(studentName) ){ // もし引数の生徒が、近づける条件にいれば
-                /* ----近づけたい生徒の名前を取得---- */
+                // ----近づけたい生徒の名前を取得----
                 let nearStudentName
                 if( nearConditionArray.indexOf(studentName) == 0 ){
                   nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
                 }else if( nearConditionArray.indexOf(studentName) == 1 ){
                   nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
                 }
-                /* ----ここまで---- */
+                // ----ここまで----
                 let distance = nearConditionArray[2]; // 距離
                 let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
                 // console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
@@ -991,14 +990,14 @@
             let return_value = true
             this.farConditions.forEach(farConditionArray => {
               if( farConditionArray.includes(studentName) ){ // もし引数の生徒が、離す条件にいれば
-                /* ----離す生徒の名前を取得---- */
+                // ----離す生徒の名前を取得----
                 let farStudentName
                 if( farConditionArray.indexOf(studentName) == 0 ){
                   farStudentName = farConditionArray[1]; // 引数の生徒と離す生徒
                 }else if( farConditionArray.indexOf(studentName) == 1 ){
                   farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
                 }
-                /* ----ここまで---- */
+                // ----ここまで----
                 let distance = farConditionArray[2]; // 距離
                 let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
                 // console.log(`${nearStudentName} の場所は ${nearStudentPosition}`);
