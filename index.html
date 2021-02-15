@@ -787,26 +787,9 @@
               // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
 
-              let deleteIndex = this.dupSeatsTableIndex.indexOf(topIndex); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupSeatsTableIndex.splice(deleteIndex, 1); // dupSeatsTableIndexから削除する
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(backStudentName); // ここで配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-
-              let deleteNearStudentNameIndex = this.dupNearStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeNearSeats()で配置する必要がないため
-              if(deleteNearStudentNameIndex != -1){ // dupNearStudentsNameにあれば削除する
-                this.dupNearStudentsName.splice(deleteNearStudentNameIndex, 1); // dupNearStudentsNameから削除する
-              }
-
-              let deleteFarStudentNameIndex = this.dupFarStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeFarSeats()で配置する必要がないため
-              if(deleteFarStudentNameIndex != -1){ // dupFarStudentsNameにあれば削除する
-                this.dupFarStudentsName.splice(deleteFarStudentNameIndex, 1); // dupFarStudentsNameから削除する
-              }
-
-              let deleteNearFarStudentNameIndex = this.dupNearFarStudentsName.indexOf(backStudentName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため
-              if(deleteNearFarStudentNameIndex != -1){ // dupNearFarStudentsNameにあれば削除する
-                this.dupNearFarStudentsName.splice(deleteNearFarStudentNameIndex, 1); // dupNearFarStudentsNameから削除する
-              }
+              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.delete(backStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(backStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
