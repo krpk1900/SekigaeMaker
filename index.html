@@ -932,25 +932,19 @@
             this.dupNearFarStudentsName.forEach(dupNearFarStudentName => {
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
               //console.log(`${dupNearStudentName} を ${topIndex} に入れるのは ${this.checkNear(dupNearStudentName, topIndex)} (${this.calcNum}回目の計算)`);
-              /* ----近づける/離す処理---- */
+              // ----近づける/離す処理----
               while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || (this.isFixGender && !this.checkGender(dupNearFarStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
-                  //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
                   this.restartFlag = true;
-                  //window.alert('restartFlagをtrueにしました。');
                   break;
                 }
                 this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
                 topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                //console.log(`${dupNearFarStudentName} を ${topIndex} に入れるとき、checkNearは ${this.checkNear(dupNearFarStudentName, topIndex)}、checkFarは ${this.checkFar(dupNearFarStudentName, topIndex)} (while内${this.calcNum}回目の計算)`);
                 this.calcNum += 1;
               }
-              /* ----ここまで---- */
+              // ----ここまで----
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupNearFarStudentName); // 取り出したインデックスの位置に生徒名を保存
-
-              let deleteStudentNameIndex = this.dupStudentsName.indexOf(dupNearFarStudentName); // changeNearSeats()で配置した生徒は、shuffleSeats()で配置する必要がないため
-              this.dupStudentsName.splice(deleteStudentNameIndex, 1); // dupStudentsNameから削除する
-              // console.log(`${dupNearFarStudentName}を配置した`)
+              this.delete(dupNearFarStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
             })
           },
           placeFixedSeats() { // 固定する生徒を配置
@@ -1077,7 +1071,13 @@
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
             }
-          }
+          },
+          delete(target, array){
+            let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
+            if(deleteIndex != -1){ // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
+              array.splice(deleteIndex, 1); // arrayからtargetを削除する
+            }
+          },
         },
         mounted() {
           this.makeSeatsTable() // 最初にseatsTableを作成
