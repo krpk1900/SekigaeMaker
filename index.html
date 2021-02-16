@@ -176,28 +176,16 @@
                     <v-expansion-panel>
                       <v-expansion-panel-header>特定の席に固定する</v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
-                        <div>
+                        <!-- 生徒の入力フォーム -->
+                        <div v-for="(fixCondition, fixIndex) in fixConditions">
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="setFixConditionOption1"></v-select>
+                          v-model="fixConditions[fixIndex][0]"></v-select>
                           を、前から
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
-                          @change="setFixConditionOption2"></v-select>
+                          v-model="fixConditions[fixIndex][1]"></v-select>
                           列目、左から
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
-                          @change="addFixConditions"></v-select>
-                          列目に固定する
-                        </div>
-                        <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                        <div v-for="fixCondition in fixConditions">
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="setFixConditionOption1"></v-select>
-                          を、前から
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
-                          @change="setFixConditionOption2"></v-select>
-                          列目、左から
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
-                          @change="addFixConditions"></v-select>
+                          v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
                           列目に固定する
                         </div>
                       </v-expansion-panel-content>
@@ -456,7 +444,7 @@
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
-          fixConditions: [], // 近づける条件配列
+          fixConditions: [['', '', '']], // 近づける条件配列
           fixConditionOption1: '', // 近づける生徒1
           fixConditionOption2: '', // 近づける生徒2
         },
@@ -475,6 +463,9 @@
           },
           createNewFarConditions(){
             this.farConditions.push(['', '', '']);
+          },
+          createNewFixConditions(){
+            this.fixConditions.push(['', '', '']);
           },
           /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
             if(this.genderTable[row][col] === '') {
@@ -857,15 +848,20 @@
           },
           placeFixedSeats() { // 固定する生徒を配置
             this.fixConditions.forEach(fixCondition => {
-              let fixConditionName = fixCondition[0];
-              let fixConditionRow = fixCondition[1]-1; // 入力された値とインデックスのずれを補正
-              let fixConditionCol = fixCondition[2]-1; // 入力された値とインデックスのずれを補正
-              this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
+              if(fixCondition[0] != ''){ // フォーム表示のため最後に['', '', '']が入ってしまっているので、そのときは処理しない
+                console.log(`fixCondition = ${fixCondition}`)
+                console.log(`fixCondition[0] = ${fixCondition[0]}`)
 
-              let fixIndex = [fixConditionCol, fixConditionRow]
-              this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-              this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-              this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+                let fixConditionName = fixCondition[0];
+                let fixConditionRow = fixCondition[1]-1; // 入力された値とインデックスのずれを補正
+                let fixConditionCol = fixCondition[2]-1; // 入力された値とインデックスのずれを補正
+                this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
+
+                let fixIndex = [fixConditionCol, fixConditionRow]
+                this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+                this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+                this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+              }
             })
           },
           minDistance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
