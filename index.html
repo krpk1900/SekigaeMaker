@@ -213,15 +213,15 @@
                       <v-expansion-panel-header>生徒同士を近づける</v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <!-- 近づける生徒の入力フォーム -->
-                        <div v-for="(nearCondition, index) in nearConditions">
+                        <div v-for="(nearCondition, nearIndex) in nearConditions">
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          v-model="nearConditions[index][0]"></v-select>
+                          v-model="nearConditions[nearIndex][0]"></v-select>
                           と
                           <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"
-                          v-model="nearConditions[index][1]"></v-select>
+                          v-model="nearConditions[nearIndex][1]"></v-select>
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
-                          v-model="nearConditions[index][2]" @change.once="createNewForms"></v-select>
+                          v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
                           以下にする
                         </div>
                       </v-expansion-panel-content>
@@ -235,28 +235,16 @@
                     <v-expansion-panel>
                       <v-expansion-panel-header>生徒同士を離す</v-expansion-panel-header>
                       <v-expansion-panel-content>
-                        <!-- 離す生徒の入力フォーム（初期表示のための１つ目） -->
-                        <div>
+                        <!-- 離す生徒の入力フォーム -->
+                        <div v-for="(farCondition, farIndex) in farConditions">
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="setFarConditionOption1"></v-select>
+                          v-model="farConditions[farIndex][0]"></v-select>
                           と
                           <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"
-                          @change="setFarConditionOption2"></v-select>
+                          v-model="farConditions[farIndex][1]"></v-select>
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
-                          @change="addFarConditions"></v-select>
-                          以上にする
-                        </div>
-                        <!-- 離す生徒の入力フォーム（追加表示のための２つ目以降） -->
-                        <div v-for="farCondition in farConditions">
-                          <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                          @change="setFarConditionOption1"></v-select>
-                          と
-                          <v-select :items="studentsName" placeholder="Bさん" outlined style="width:200px; display: inline-block"
-                          @change="setFarConditionOption2"></v-select>
-                          の間を
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
-                          @change="addFarConditions"></v-select>
+                          v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
                           以上にする
                         </div>
                       </v-expansion-panel-content>
@@ -441,7 +429,7 @@
           nearConditionOption2: '', // 近づける生徒2
           nearStudentsName: [], // 近づける生徒の名前
           dupNearStudentsName: [], // 近づける生徒の名前の複製
-          farConditions: [], // 離す条件
+          farConditions: [['', '', '']], // 離す条件用配列
           farConditionOption1: '', // 離す生徒1
           farConditionOption2: '', // 離す生徒2
           farStudentsName: [], // 離す生徒の名前
@@ -482,8 +470,11 @@
 
             console.log('---------')
           },
-          createNewForms(){
+          createNewNearConditions(){
             this.nearConditions.push(['', '', '']);
+          },
+          createNewFarConditions(){
+            this.farConditions.push(['', '', '']);
           },
           /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
             if(this.genderTable[row][col] === '') {
@@ -998,6 +989,9 @@
                 this.farStudentsName.push(farCondition[0], farCondition[1]);
               })
               this.farStudentsName = Array.from(new Set(this.farStudentsName)) // 重複している名前を削除
+              this.farStudentsName = this.farStudentsName.filter(function(farStudentsName) { //空白を削除
+                return farStudentsName !== '';
+              })
             }
           },
           genderTable: {
