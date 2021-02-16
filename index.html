@@ -99,15 +99,10 @@
                           <v-expansion-panel>
                             <v-expansion-panel-header>最前列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
-                              <span>
+                              <!-- 生徒の入力フォーム -->
+                              <span v-for="(frontCondition, frontIndex) in frontConditions">
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
-                              </span>
-                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                              <span v-for="frontCondition in frontConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontConditions"></v-select>
+                                v-model="frontConditions[frontIndex]" @change.once="createNewFrontConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
@@ -424,7 +419,7 @@
           dupFarStudentsName: [], // 離す生徒の名前の複製
           nearFarStudentsName: [], // 近づける/離す生徒の名前
           dupNearFarStudentsName: [], // 近づける/離す生徒の名前の複製
-          frontConditions: [], // 最前列に固定する生徒
+          frontConditions: [''], // 最前列に固定する生徒
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           frontTwoRowsConditions: [], // 前2列に固定する生徒
@@ -450,11 +445,11 @@
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
-            let testArray1 = ["aaa", "bbb", "ccc"]
-            let testArray2 = [[0,0], [1,1], [2,2]]
+            let testArray1 = ["aaa", "bbb", "ccc", '']
 
-            console.log(testArray1.originalIndexOf("ccc"))
-            console.log(testArray2.originalIndexOf([1,2]))
+            console.log(testArray1);
+            testArray1 = testArray1.filter(Boolean);
+            console.log(testArray1);
 
             console.log('---------')
           },
@@ -466,6 +461,9 @@
           },
           createNewFixConditions(){
             this.fixConditions.push(['', '', '']);
+          },
+          createNewFrontConditions(){
+            this.frontConditions.push('');
           },
           /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
             if(this.genderTable[row][col] === '') {
@@ -586,6 +584,7 @@
               this.makeFrontTwoRowsSeatsIndex(); // 前2列インデックスを作成
               this.makeBackSeatsIndex(); // 最後列インデックスを作成
               this.makeBackTwoRowsSeatsIndex(); // 後ろ2列インデックスを作成
+              this.frontConditions = this.frontConditions.filter(Boolean); // 空白を削除
               this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
@@ -849,9 +848,6 @@
           placeFixedSeats() { // 固定する生徒を配置
             this.fixConditions.forEach(fixCondition => {
               if(fixCondition[0] != ''){ // フォーム表示のため最後に['', '', '']が入ってしまっているので、そのときは処理しない
-                console.log(`fixCondition = ${fixCondition}`)
-                console.log(`fixCondition[0] = ${fixCondition[0]}`)
-
                 let fixConditionName = fixCondition[0];
                 let fixConditionRow = fixCondition[1]-1; // 入力された値とインデックスのずれを補正
                 let fixConditionCol = fixCondition[2]-1; // 入力された値とインデックスのずれを補正
@@ -966,6 +962,15 @@
             },
             deep: true
           },
+          /*
+          frontConditions: {
+            handler: function(){
+              this.frontConditions = this.frontConditions.filter(function(frontConditions) { //空白を削除
+                return frontConditions !== '';
+              })
+            }
+          },
+          */
           nearConditions: {
             handler: function(){
               this.nearStudentsName.splice(-this.nearStudentsName.length); // 配列を初期化
