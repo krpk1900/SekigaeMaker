@@ -190,7 +190,7 @@
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
                           v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
-                          以下にする
+                          席以下にする
                         </div>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -213,7 +213,7 @@
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
                           v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
-                          以上にする
+                          席以上空ける
                         </div>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -974,14 +974,14 @@
             handler: function(){
               this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1);
               const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
-              this.distanceOptions = [...Array(maxXY)].map((_, i) => i + 1)
+              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i)
             }
           },
           seatsSizeY: {
             handler: function(){
               this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1)
               const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
-              this.distanceOptions = [...Array(maxXY)].map((_, i) => i + 1)
+              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i)
             }
           }
         }
