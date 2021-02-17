@@ -43,7 +43,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装22日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装23日目）</h1>
             </v-col>
           </v-row>
 
@@ -161,10 +161,10 @@
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                           v-model="fixConditions[fixIndex][0]"></v-select>
                           を、前から
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          <v-select :items="limitedSeatsOptionsY" outlined style="width:70px; display: inline-block"
                           v-model="fixConditions[fixIndex][1]"></v-select>
                           列目、左から
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          <v-select :items="limitedSeatsOptionsX" outlined style="width:70px; display: inline-block"
                           v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
                           列目に固定する
                         </div>
@@ -190,7 +190,7 @@
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
                           v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
-                          以下にする
+                          席以下にする
                         </div>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -213,7 +213,7 @@
                           の間を
                           <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
                           v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
-                          以上にする
+                          席以上空ける
                         </div>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -389,17 +389,15 @@
           seatsNum: 0, // 有効な座席数
           seatsOptionsX: [1,2,3,4,5,6,7,8], // よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], // たての座席数入力フォームの選択肢
-          distanceOptions: [1,2,3,4,5,6,7,8], // 近づける・離す距離の選択肢
+          limitedSeatsOptionsX: [1,2,3,4,5,6], // seatsSizeXのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
+          limitedSeatsOptionsY: [1,2,3,4,5,6], // seatsSizeYのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
+          distanceOptions: [0,1,2,3,4], // 近づける・離す距離の選択肢、デフォルト値6に合わせて実現可能な選択肢をデフォルトに設定
           studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
           dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
           nearConditions: [['', '', '']], // 近づける条件配列
-          nearConditionOption1: '', // 近づける生徒1
-          nearConditionOption2: '', // 近づける生徒2
           nearStudentsName: [], // 近づける生徒の名前
           dupNearStudentsName: [], // 近づける生徒の名前の複製
           farConditions: [['', '', '']], // 離す条件用配列
-          farConditionOption1: '', // 離す生徒1
-          farConditionOption2: '', // 離す生徒2
           farStudentsName: [], // 離す生徒の名前
           dupFarStudentsName: [], // 離す生徒の名前の複製
           nearFarStudentsName: [], // 近づける/離す生徒の名前
@@ -425,8 +423,6 @@
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
-          fixConditionOption1: '', // 近づける生徒1
-          fixConditionOption2: '', // 近づける生徒2
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -459,15 +455,6 @@
           createNewBackConditions(){
             this.backConditions.push('');
           },
-          /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
-            if(this.genderTable[row][col] === '') {
-              return 'off-seats'
-            }else if(this.genderTable[row][col] === 'male'){
-              return 'male-seats'
-            }else if(this.genderTable[row][col] === 'female'){
-              return 'female-seats'
-            }else return 'on-seats'
-          },*/
           getColorByName(studentName) { // 座席の種類に応じた色を返す
             let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
             let gender
@@ -511,45 +498,6 @@
                 if (seat !== '') this.seatsNum += 1
               })
             })
-          },
-          setNearConditionOption1(nearConditionOption1) { // 近づける条件で指定する生徒1を登録
-            this.nearConditionOption1 = nearConditionOption1;
-          },
-          setNearConditionOption2(nearConditionOption2) {　// 近づける条件で指定する生徒2を登録
-            this.nearConditionOption2 = nearConditionOption2;
-          },
-          addNearConditions(distance) { // 生徒1と生徒2を近づける条件を登録
-            this.nearConditions.push( [this.nearConditionOption1, this.nearConditionOption2, distance] );
-          },
-          setFarConditionOption1(farConditionOption1) { // 離す条件で指定する生徒1を登録
-            this.farConditionOption1 = farConditionOption1;
-          },
-          setFarConditionOption2(farConditionOption2) { // 離す条件で指定する生徒2を登録
-            this.farConditionOption2 = farConditionOption2;
-          },
-          addFarConditions(distance) { // 生徒1と生徒2を離す条件を登録
-            this.farConditions.push( [this.farConditionOption1, this.farConditionOption2, distance] )
-          },
-          addFrontConditions(studentName) { // 最前列に固定する条件を要録
-            this.frontConditions.push(studentName);
-          },
-          addFrontTwoRowsConditions(studentName) { // 前2列に固定する条件を要録
-            this.frontTwoRowsConditions.push(studentName);
-          },
-          addBackConditions(studentName) { // 最後列に固定する条件を要録
-            this.backConditions.push(studentName);
-          },
-          addBackTwoRowsConditions(studentName) { // 後ろ2列に固定する条件を要録
-            this.backTwoRowsConditions.push(studentName);
-          },
-          setFixConditionOption1(fixConditionOption1) { // 近づける条件で指定する生徒1を登録
-            this.fixConditionOption1 = fixConditionOption1;
-          },
-          setFixConditionOption2(fixConditionOption2) {　// 近づける条件で指定する生徒2を登録
-            this.fixConditionOption2 = fixConditionOption2;
-          },
-          addFixConditions(fixConditionOption3) { // 生徒1と生徒2を近づける条件を登録
-            this.fixConditions.push( [this.fixConditionOption1, this.fixConditionOption2, fixConditionOption3] );
           },
           makeNextSeatsTable() { // nextSeatsTableを作成
             this.nextSeatsTable = []
@@ -608,9 +556,9 @@
               this.createNewBackTwoRowsConditions(); // 次回の準備、後2列のフォームを1つ作成
               this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
               console.log(`----${loopNum}回目のループ終了----`);
-            } while(this.restartFlag && loopNum <= 100)
+            } while(this.restartFlag && loopNum <= 500)
             console.log(`====終了====`);
-            if(loopNum > 100){
+            if(loopNum > 500){
               window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
             }
           },
@@ -861,6 +809,11 @@
                 this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
                 this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
                 this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+
+                this.delete(fixIndex, this.dupFrontSeatsIndex); // ここで配置した座標はchangeFrontSeats()で使えないため、座席座標を削除する
+                this.delete(fixIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
+                this.delete(fixIndex, this.dupBackSeatsIndex); // ここで配置した座標はchangeBackSeats()で使えないため、座席座標を削除する
+                this.delete(fixIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
               }
             })
           },
@@ -886,7 +839,7 @@
                   nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
                 }
                 // ----ここまで----
-                let distance = nearConditionArray[2]; // 距離
+                let distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
                 let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
                 if( this.maxDistance(p, nearStudentPosition) > distance ){ // 距離のmaxが条件distanceより上なら返り値をfalseに更新
                   return_value = false;
@@ -907,7 +860,7 @@
                   farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
                 }
                 // ----ここまで----
-                let distance = farConditionArray[2]; // 距離
+                let distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
                 let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
                 if( this.maxDistance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
                   return_value = false;
@@ -966,15 +919,6 @@
             },
             deep: true
           },
-          /*
-          frontConditions: {
-            handler: function(){
-              this.frontConditions = this.frontConditions.filter(function(frontConditions) { //空白を削除
-                return frontConditions !== '';
-              })
-            }
-          },
-          */
           nearConditions: {
             handler: function(){
               this.nearStudentsName.splice(-this.nearStudentsName.length); // 配列を初期化
@@ -1008,6 +952,20 @@
             },
             deep: true
           },
+          seatsSizeX: {
+            handler: function(){
+              this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1);
+              const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
+              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i)
+            }
+          },
+          seatsSizeY: {
+            handler: function(){
+              this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1)
+              const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
+              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i)
+            }
+          }
         }
       });
     </script>
