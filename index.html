@@ -43,7 +43,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装22日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装23日目）</h1>
             </v-col>
           </v-row>
 
@@ -455,15 +455,6 @@
           createNewBackConditions(){
             this.backConditions.push('');
           },
-          /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
-            if(this.genderTable[row][col] === '') {
-              return 'off-seats'
-            }else if(this.genderTable[row][col] === 'male'){
-              return 'male-seats'
-            }else if(this.genderTable[row][col] === 'female'){
-              return 'female-seats'
-            }else return 'on-seats'
-          },*/
           getColorByName(studentName) { // 座席の種類に応じた色を返す
             let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
             let gender
@@ -565,9 +556,9 @@
               this.createNewBackTwoRowsConditions(); // 次回の準備、後2列のフォームを1つ作成
               this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
               console.log(`----${loopNum}回目のループ終了----`);
-            } while(this.restartFlag && loopNum <= 100)
+            } while(this.restartFlag && loopNum <= 500)
             console.log(`====終了====`);
-            if(loopNum > 100){
+            if(loopNum > 500){
               window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
             }
           },
@@ -928,15 +919,6 @@
             },
             deep: true
           },
-          /*
-          frontConditions: {
-            handler: function(){
-              this.frontConditions = this.frontConditions.filter(function(frontConditions) { //空白を削除
-                return frontConditions !== '';
-              })
-            }
-          },
-          */
           nearConditions: {
             handler: function(){
               this.nearStudentsName.splice(-this.nearStudentsName.length); // 配列を初期化
