@@ -848,7 +848,7 @@
                   nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
                 }
                 // ----ここまで----
-                let distance = nearConditionArray[2]; // 距離
+                let distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
                 let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
                 if( this.maxDistance(p, nearStudentPosition) > distance ){ // 距離のmaxが条件distanceより上なら返り値をfalseに更新
                   return_value = false;
@@ -869,7 +869,7 @@
                   farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
                 }
                 // ----ここまで----
-                let distance = farConditionArray[2]; // 距離
+                let distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
                 let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
                 if( this.maxDistance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
                   return_value = false;
