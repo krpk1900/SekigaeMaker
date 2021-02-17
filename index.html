@@ -393,13 +393,9 @@
           studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
           dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
           nearConditions: [['', '', '']], // 近づける条件配列
-          //nearConditionOption1: '', // 近づける生徒1
-          //nearConditionOption2: '', // 近づける生徒2
           nearStudentsName: [], // 近づける生徒の名前
           dupNearStudentsName: [], // 近づける生徒の名前の複製
           farConditions: [['', '', '']], // 離す条件用配列
-          //farConditionOption1: '', // 離す生徒1
-          //farConditionOption2: '', // 離す生徒2
           farStudentsName: [], // 離す生徒の名前
           dupFarStudentsName: [], // 離す生徒の名前の複製
           nearFarStudentsName: [], // 近づける/離す生徒の名前
@@ -425,8 +421,6 @@
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
-          //fixConditionOption1: '', // 近づける生徒1
-          //fixConditionOption2: '', // 近づける生徒2
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -512,45 +506,6 @@
               })
             })
           },
-          /*setNearConditionOption1(nearConditionOption1) { // 近づける条件で指定する生徒1を登録
-            this.nearConditionOption1 = nearConditionOption1;
-          },
-          setNearConditionOption2(nearConditionOption2) {　// 近づける条件で指定する生徒2を登録
-            this.nearConditionOption2 = nearConditionOption2;
-          },
-          addNearConditions(distance) { // 生徒1と生徒2を近づける条件を登録
-            this.nearConditions.push( [this.nearConditionOption1, this.nearConditionOption2, distance] );
-          },*/
-          /*setFarConditionOption1(farConditionOption1) { // 離す条件で指定する生徒1を登録
-            this.farConditionOption1 = farConditionOption1;
-          },
-          setFarConditionOption2(farConditionOption2) { // 離す条件で指定する生徒2を登録
-            this.farConditionOption2 = farConditionOption2;
-          },
-          addFarConditions(distance) { // 生徒1と生徒2を離す条件を登録
-            this.farConditions.push( [this.farConditionOption1, this.farConditionOption2, distance] )
-          },
-          addFrontConditions(studentName) { // 最前列に固定する条件を要録
-            this.frontConditions.push(studentName);
-          },
-          addFrontTwoRowsConditions(studentName) { // 前2列に固定する条件を要録
-            this.frontTwoRowsConditions.push(studentName);
-          },
-          addBackConditions(studentName) { // 最後列に固定する条件を要録
-            this.backConditions.push(studentName);
-          },
-          addBackTwoRowsConditions(studentName) { // 後ろ2列に固定する条件を要録
-            this.backTwoRowsConditions.push(studentName);
-          },
-          setFixConditionOption1(fixConditionOption1) { // 近づける条件で指定する生徒1を登録
-            this.fixConditionOption1 = fixConditionOption1;
-          },
-          setFixConditionOption2(fixConditionOption2) {　// 近づける条件で指定する生徒2を登録
-            this.fixConditionOption2 = fixConditionOption2;
-          },
-          addFixConditions(fixConditionOption3) { // 生徒1と生徒2を近づける条件を登録
-            this.fixConditions.push( [this.fixConditionOption1, this.fixConditionOption2, fixConditionOption3] );
-          },*/
           makeNextSeatsTable() { // nextSeatsTableを作成
             this.nextSeatsTable = []
             for(let i = 0; i < this.seatsSizeY; i++) {
