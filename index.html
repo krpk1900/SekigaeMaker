@@ -161,10 +161,10 @@
                           <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                           v-model="fixConditions[fixIndex][0]"></v-select>
                           を、前から
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          <v-select :items="limitedSeatsOptionsY" outlined style="width:70px; display: inline-block"
                           v-model="fixConditions[fixIndex][1]"></v-select>
                           列目、左から
-                          <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                          <v-select :items="limitedSeatsOptionsX" outlined style="width:70px; display: inline-block"
                           v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
                           列目に固定する
                         </div>
@@ -389,7 +389,9 @@
           seatsNum: 0, // 有効な座席数
           seatsOptionsX: [1,2,3,4,5,6,7,8], // よこの座席数入力フォームの選択肢
           seatsOptionsY: [1,2,3,4,5,6,7,8], // たての座席数入力フォームの選択肢
-          distanceOptions: [1,2,3,4,5,6,7,8], // 近づける・離す距離の選択肢
+          limitedSeatsOptionsX: [1,2,3,4,5,6], // seatsSizeXのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
+          limitedSeatsOptionsY: [1,2,3,4,5,6], // seatsSizeYのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
+          distanceOptions: [1,2,3,4,5,6], // 近づける・離す距離の選択肢
           studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
           dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
           nearConditions: [['', '', '']], // 近づける条件配列
@@ -968,6 +970,20 @@
             },
             deep: true
           },
+          seatsSizeX: {
+            handler: function(){
+              this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1);
+              const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
+              this.distanceOptions = [...Array(maxXY)].map((_, i) => i + 1)
+            }
+          },
+          seatsSizeY: {
+            handler: function(){
+              this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1)
+              const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
+              this.distanceOptions = [...Array(maxXY)].map((_, i) => i + 1)
+            }
+          }
         }
       });
     </script>
