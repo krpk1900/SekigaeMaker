@@ -111,15 +111,10 @@
                           <v-expansion-panel>
                             <v-expansion-panel-header>前2列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
-                              <span>
+                              <!-- 生徒の入力フォーム -->
+                              <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontTwoRowsConditions"></v-select>
-                              </span>
-                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                              <span v-for="frontTwoRowsCondition in frontTwoRowsConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addFrontTwoRowsConditions"></v-select>
+                                v-model="frontTwoRowsConditions[frontTwoRowsIndex]" @change.once="createNewFrontTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
@@ -128,15 +123,10 @@
                           <v-expansion-panel>
                             <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
-                              <span>
+                              <!-- 生徒の入力フォーム -->
+                              <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addBackTwoRowsConditions"></v-select>
-                              </span>
-                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                              <span v-for="backTwoRowsCondition in backTwoRowsConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addBackTwoRowsConditions"></v-select>
+                                v-model="backTwoRowsConditions[backTwoRowsIndex]" @change.once="createNewBackTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
@@ -145,15 +135,10 @@
                           <v-expansion-panel>
                             <v-expansion-panel-header>最後列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム（初期表示のための１つ目） -->
-                              <span>
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addBackConditions"></v-select>
-                              </span>
                               <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
-                              <span v-for="backCondition in backConditions">
+                              <span v-for="(backCondition, backIndex) in backConditions">
                                 <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
-                                @change="addBackConditions"></v-select>
+                                v-model="backConditions[backIndex]" @change.once="createNewBackConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
@@ -422,13 +407,13 @@
           frontConditions: [''], // 最前列に固定する生徒
           frontSeatsIndex: [], // 最前列のインデックス
           dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          frontTwoRowsConditions: [], // 前2列に固定する生徒
+          frontTwoRowsConditions: [''], // 前2列に固定する生徒
           frontTwoRowsSeatsIndex: [], // 前2列のインデックス
           dupFrontTwoRowsSeatsIndex: [], // 前2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          backConditions: [], // 最後列に固定する生徒
+          backConditions: [''], // 最後列に固定する生徒
           backSeatsIndex: [], // 最後列のインデックス
           dupBackSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          backTwoRowsConditions: [], // 後ろ2列に固定する生徒
+          backTwoRowsConditions: [''], // 後ろ2列に固定する生徒
           backTwoRowsSeatsIndex: [], // 後ろ2列のインデックス
           dupBackTwoRowsSeatsIndex: [], // 後ろ2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           nextSeatsTable: [], // 席替え後の座席テーブル
@@ -464,6 +449,15 @@
           },
           createNewFrontConditions(){
             this.frontConditions.push('');
+          },
+          createNewFrontTwoRowsConditions(){
+            this.frontTwoRowsConditions.push('');
+          },
+          createNewBackTwoRowsConditions(){
+            this.backTwoRowsConditions.push('');
+          },
+          createNewBackConditions(){
+            this.backConditions.push('');
           },
           /*getColorByIndex(col, row) { // 座席の種類に応じた色を返す
             if(this.genderTable[row][col] === '') {
@@ -585,6 +579,9 @@
               this.makeBackSeatsIndex(); // 最後列インデックスを作成
               this.makeBackTwoRowsSeatsIndex(); // 後ろ2列インデックスを作成
               this.frontConditions = this.frontConditions.filter(Boolean); // 空白を削除
+              this.frontTwoRowsConditions = this.frontTwoRowsConditions.filter(Boolean); // 空白を削除
+              this.backConditions = this.backConditions.filter(Boolean); // 空白を削除
+              this.backTwoRowsConditions = this.backTwoRowsConditions.filter(Boolean); // 空白を削除
               this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
               this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
@@ -605,6 +602,11 @@
               //this.changeFarSeats(); // 離す生徒を席替え
               this.changeNearFarSeats(); // 近づける/離す生徒を席替え
               this.shuffleSeats(); // 条件のない生徒を席替え
+
+              this.createNewFrontConditions(); // 次回の準備、最前列のフォームを1つ作成
+              this.createNewFrontTwoRowsConditions(); // 次回の準備、前2列のフォームを1つ作成
+              this.createNewBackTwoRowsConditions(); // 次回の準備、後2列のフォームを1つ作成
+              this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
               console.log(`----${loopNum}回目のループ終了----`);
             } while(this.restartFlag && loopNum <= 100)
             console.log(`====終了====`);
@@ -699,6 +701,7 @@
               this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
               this.delete(frontStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
               this.delete(frontStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(topIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
             })
           },
           changeFrontTwoRowsSeats() { // 前2列に固定する生徒を席替え
@@ -741,6 +744,7 @@
               this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
               this.delete(backStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
               this.delete(backStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(topIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
             })
           },
           changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
