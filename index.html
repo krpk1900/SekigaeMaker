@@ -786,8 +786,8 @@
             this.shuffle(this.dupSeatsTableIndex);
             this.dupNearFarStudentsName.forEach(dupNearFarStudentName => {
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す処理----
-              while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || (this.isFixGender && !this.checkGender(dupNearFarStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+              // ----近づける/離す/性別/異なる座席チェック----
+              while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || (this.isFixGender && !this.checkGender(dupNearFarStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupNearFarStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
                   break;
