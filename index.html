@@ -31,6 +31,10 @@
         box-sizing: border-box;
         text-align: center;
       }
+      /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする*/
+      .theme--light.v-select .v-select__selection--disabled{
+        color: black;
+      }
       [v-cloak] {
         display: none;
       }
@@ -349,6 +353,10 @@
                   <p>固定する条件用配列</p>
                   {{ fixConditions }}
                 </v-col>
+                <v-col cols="6" style="background-color: #b1a6ed">
+                  <p>disabledStudentsName</p>
+                  {{ disabledStudentsName }}
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -388,7 +396,6 @@
           distanceOptions: [0,1,2,3,4], // 近づける・離す距離の選択肢、デフォルト値6に合わせて実現可能な選択肢をデフォルトに設定
           studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
           dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
-          rowConditionsStudentsName: [], // 横の列で固定するフォームの選択肢用の配列
           nearConditions: [['', '', '']], // 近づける条件配列
           nearStudentsName: [], // 近づける生徒の名前
           dupNearStudentsName: [], // 近づける生徒の名前の複製
@@ -418,6 +425,7 @@
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
+          disabledStudentsName: ["aaa"],
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -919,7 +927,6 @@
               this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
                 return studentName !== '';
               });
-              this.rowConditionsStudentsName = this.studentsName.slice(0); // 横の列で固定するフォームの選択肢用に生徒名配列を複製
             },
             deep: true
           },
@@ -975,6 +982,23 @@
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
             }
+          },
+          frontConditions: {
+            handler: function(){
+              this.frontConditions.forEach(studentName => {
+                this.disabledStudentsName.push(studentName);
+              })
+            }
+          }
+        },
+        computed: {
+          rowConditionsStudentsName() {
+            return this.studentsName.map(studentName => {
+              return {
+                text: studentName,
+                disabled: this.disabledStudentsName.includes(studentName)
+              }
+            })
           }
         }
       });
