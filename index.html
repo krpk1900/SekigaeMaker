@@ -571,11 +571,10 @@
             this.seatsTableIndex.push([indexCol, indexRow]);
           },
           shuffleSeats() { // 条件のない生徒を席替え
-            // console.log(`dupSeatsTableIndex = ${this.dupSeatsTableIndex}`)
             this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
             this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
               let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              while( this.isFixGender && !this.checkGender(dupStudentName, topIndex) ){ // 征伐の条件を満たさない間、繰り返す
+              while( (this.isFixGender && !this.checkGender(dupStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupStudentName, topIndex)) ){ // 条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
                   break;
@@ -887,8 +886,6 @@
           checkDifferent(studentName, p) { // 引数の生徒を座標pに配置したとき、現在の座席と異なっているならtrue、現在の座席と同じならfalseを返す
             let studentIndex = this.studentsName.indexOf(studentName);
             let currentIndex = this.seatsTableIndex[studentIndex];
-            console.log(`currentIndex = ${currentIndex}`);
-            console.log(`p = ${p}`);
             if(currentIndex.toString() == p.toString()) { // 配列を比較するときは厳密比較になるので文字列に変換
               return false;
             }else{
