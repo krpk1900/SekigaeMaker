@@ -985,11 +985,28 @@
           },
           frontConditions: {
             handler: function(){
-              this.frontConditions.forEach(studentName => {
-                this.disabledStudentsName.push(studentName);
-              })
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
             }
-          }
+          },
+          frontTwoRowsConditions: {
+            handler: function(){
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            }
+          },
+          backConditions: {
+            handler: function(){
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            }
+          },
+          backTwoRowsConditions: {
+            handler: function(){
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            }
+          },
         },
         computed: {
           rowConditionsStudentsName() {
