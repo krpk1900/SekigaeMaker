@@ -638,8 +638,8 @@
             this.shuffle(this.dupFrontSeatsIndex);
             this.frontConditions.forEach(frontStudentName => {
               let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別チェック----
-              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+              // ----近づける/離す/性別/異なる座席チェック----
+              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
                   break;
@@ -660,8 +660,8 @@
             this.shuffle(this.dupFrontTwoRowsSeatsIndex);
             this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
               let topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別チェック----
-              while( !this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+              // ----近づける/離す/性別/異なる座席チェック----
+              while( !this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontTwoRowsStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
                   break;
@@ -681,8 +681,8 @@
             this.shuffle(this.dupBackSeatsIndex);
             this.backConditions.forEach(backStudentName => {
               let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別チェック----
-              while( !this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+              // ----近づける/離す/性別/異なる座席チェック----
+              while( !this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
                   break;
@@ -706,8 +706,8 @@
                 // todo エラーを表示してbreak
               }
               let topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別チェック----
-              while( !this.checkNear(backTwoRowsStudentName, topIndex) || !this.checkFar(backTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backTwoRowsStudentName, topIndex)) ){ // どちらかの条件を満たさない間、繰り返す
+              // ----近づける/離す/性別/異なる座席チェック----
+              while( !this.checkNear(backTwoRowsStudentName, topIndex) || !this.checkFar(backTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backTwoRowsStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
                 if(this.calcNum > this.seatsNum){
                   this.restartFlag = true;
                   break;
