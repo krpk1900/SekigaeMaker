@@ -99,7 +99,7 @@
                             <v-expansion-panel-content>
                               <!-- 生徒の入力フォーム -->
                               <span v-for="(frontCondition, frontIndex) in frontConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="frontConditions[frontIndex]" @change.once="createNewFrontConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -111,7 +111,7 @@
                             <v-expansion-panel-content>
                               <!-- 生徒の入力フォーム -->
                               <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="frontTwoRowsConditions[frontTwoRowsIndex]" @change.once="createNewFrontTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -123,7 +123,7 @@
                             <v-expansion-panel-content>
                               <!-- 生徒の入力フォーム -->
                               <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="backTwoRowsConditions[backTwoRowsIndex]" @change.once="createNewBackTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -135,7 +135,7 @@
                             <v-expansion-panel-content>
                               <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
                               <span v-for="(backCondition, backIndex) in backConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="backConditions[backIndex]" @change.once="createNewBackConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -392,6 +392,7 @@
           distanceOptions: [0,1,2,3,4], // 近づける・離す距離の選択肢、デフォルト値6に合わせて実現可能な選択肢をデフォルトに設定
           studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
           dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
+          rowConditionsStudentsName: [], // 横の列で固定するフォームの選択肢用の配列
           nearConditions: [['', '', '']], // 近づける条件配列
           nearStudentsName: [], // 近づける生徒の名前
           dupNearStudentsName: [], // 近づける生徒の名前の複製
@@ -921,7 +922,8 @@
               this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
               this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
                 return studentName !== '';
-              })
+              });
+              this.rowConditionsStudentsName = this.studentsName.slice(0); // 横の列で固定するフォームの選択肢用に生徒名配列を複製
             },
             deep: true
           },
