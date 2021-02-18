@@ -31,6 +31,10 @@
         box-sizing: border-box;
         text-align: center;
       }
+      /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする*/
+      .theme--light.v-select .v-select__selection--disabled{
+        color: black;
+      }
       [v-cloak] {
         display: none;
       }
@@ -92,14 +96,13 @@
                       <v-expansion-panel-header>横の列で固定する</v-expansion-panel-header>
                       <v-expansion-panel-content>
                         <!-- ネストされたエクスパンションパネル -->
-                        <v-expansion-panels accordion>
+                        <v-expansion-panels accordion multiple>
                           <!-- 最前列のエクスパンションパネル -->
                           <v-expansion-panel>
                             <v-expansion-panel-header>最前列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム -->
                               <span v-for="(frontCondition, frontIndex) in frontConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="frontConditions[frontIndex]" @change.once="createNewFrontConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -109,9 +112,8 @@
                           <v-expansion-panel>
                             <v-expansion-panel-header>前2列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム -->
                               <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="frontTwoRowsConditions[frontTwoRowsIndex]" @change.once="createNewFrontTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -121,9 +123,8 @@
                           <v-expansion-panel>
                             <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム -->
                               <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="backTwoRowsConditions[backTwoRowsIndex]" @change.once="createNewBackTwoRowsConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -133,9 +134,8 @@
                           <v-expansion-panel>
                             <v-expansion-panel-header>最後列</v-expansion-panel-header>
                             <v-expansion-panel-content>
-                              <!-- 生徒の入力フォーム（追加表示のための２つ目以降） -->
                               <span v-for="(backCondition, backIndex) in backConditions">
-                                <v-select :items="studentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
+                                <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:200px; display: inline-block"
                                 v-model="backConditions[backIndex]" @change.once="createNewBackConditions"></v-select>
                               </span>
                             </v-expansion-panel-content>
@@ -353,6 +353,10 @@
                   <p>固定する条件用配列</p>
                   {{ fixConditions }}
                 </v-col>
+                <v-col cols="6" style="background-color: #b1a6ed">
+                  <p>disabledStudentsName</p>
+                  {{ disabledStudentsName }}
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -421,6 +425,7 @@
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
+          disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -921,7 +926,7 @@
               this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
               this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
                 return studentName !== '';
-              })
+              });
             },
             deep: true
           },
@@ -977,6 +982,40 @@
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
             }
+          },
+          frontConditions: {
+            handler: function(){
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            }
+          },
+          frontTwoRowsConditions: {
+            handler: function(){
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            }
+          },
+          backConditions: {
+            handler: function(){
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            }
+          },
+          backTwoRowsConditions: {
+            handler: function(){
+              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            }
+          },
+        },
+        computed: {
+          rowConditionsStudentsName() {
+            return this.studentsName.map(studentName => {
+              return {
+                text: studentName,
+                disabled: this.disabledStudentsName.includes(studentName)
+              }
+            })
           }
         }
       });
