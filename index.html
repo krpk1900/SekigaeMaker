@@ -442,16 +442,24 @@
             this.fixConditions.push(['', '', '']);
           },
           createNewFrontConditions(){
-            this.frontConditions.push('');
+            if(this.frontConditions.length < this.seatsSizeX){
+              this.frontConditions.push('');
+            }
           },
           createNewFrontTwoRowsConditions(){
-            this.frontTwoRowsConditions.push('');
+            if(this.frontTwoRowsConditions.length < this.seatsSizeX * 2){
+              this.frontTwoRowsConditions.push('');
+            }
           },
           createNewBackTwoRowsConditions(){
-            this.backTwoRowsConditions.push('');
+            if(this.backTwoRowsConditions.length < this.seatsSizeX * 2){
+              this.backTwoRowsConditions.push('');
+            }
           },
           createNewBackConditions(){
-            this.backConditions.push('');
+            if(this.backConditions.length < this.seatsSizeX){
+              this.backConditions.push('');
+            }
           },
           getColorByName(studentName) { // 座席の種類に応じた色を返す
             let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
