@@ -926,13 +926,16 @@
               this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
                 return studentName !== '';
               });
-              this.seatsTableIndex.splice(0);
+              this.seatsTableIndex.splice(0); // 有効な座席インデックス配列を初期化
               let row = 0;
               this.seatsTable.forEach(seats => {
                 let col = 0;
                 seats.forEach(seat => {
-                  if(seat != ''){
-                    this.seatsTableIndex.push([col, row]);
+                  if(seat != ''){ // 更新されるごとに有効な座席を判定し、
+                    this.seatsTableIndex.push([col, row]); // 有効な座席インデックス配列にプッシュ
+                  }
+                  if(seat == ''){ // 座席テーブルから名前が消されたら
+                    this.genderTable[row].splice(col, 1, ''); // 性別も消去
                   }
                   col += 1;
                 })
