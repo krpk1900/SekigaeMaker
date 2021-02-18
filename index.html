@@ -373,7 +373,7 @@
         let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
         let temp = dupThis.reverse().some(array => {
           indexNum -= 1;
-          return (array.toString() == target.toString());
+          return (array.toString() == target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
         })
         if(!temp){ indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
         return indexNum;
@@ -428,12 +428,7 @@
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
-            let testArray1 = ["aaa", "bbb", "ccc", '']
-
-            console.log(testArray1);
-            testArray1 = testArray1.filter(Boolean);
-            console.log(testArray1);
-
+            console.log(this.checkDifferent('1', [0, 0]));
             console.log('---------')
           },
           createNewNearConditions(){
@@ -879,7 +874,7 @@
             })
             return return_value;
           },
-          checkGender(studentName, p) { // 引数の生徒を座標pに配置しても、性別の条件を満たすならtrue、満たさないならfalseを返す
+          checkGender(studentName, p) { // 引数の生徒を座標pに配置したとき、性別の条件を満たすならtrue、満たさないならfalseを返す
             let genderIndex = this.studentsName.indexOf(studentName);
             let currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
             let nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
@@ -887,6 +882,17 @@
               return true
             }else{
               return false
+            }
+          },
+          checkDifferent(studentName, p) { // 引数の生徒を座標pに配置したとき、現在の座席と異なっているならtrue、現在の座席と同じならfalseを返す
+            let studentIndex = this.studentsName.indexOf(studentName);
+            let currentIndex = this.seatsTableIndex[studentIndex];
+            console.log(`currentIndex = ${currentIndex}`);
+            console.log(`p = ${p}`);
+            if(currentIndex.toString() == p.toString()) { // 配列を比較するときは厳密比較になるので文字列に変換
+              return false;
+            }else{
+              return true;
             }
           },
           getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
