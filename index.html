@@ -61,7 +61,6 @@
                 <li v-for="( seats, indexRow ) in seatsTable">
                   <textarea v-for="( seat, indexCol ) in seats" :class="getColorByName(seatsTable[indexRow][indexCol])"
                   class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  @input.once="pushSeatsTableIndex(indexCol, indexRow);"
                   :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
                   </textarea>
@@ -927,6 +926,18 @@
               this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
                 return studentName !== '';
               });
+              this.seatsTableIndex.splice(0);
+              let row = 0;
+              this.seatsTable.forEach(seats => {
+                let col = 0;
+                seats.forEach(seat => {
+                  if(seat != ''){
+                    this.seatsTableIndex.push([col, row]);
+                  }
+                  col += 1;
+                })
+                row += 1;
+              })
             },
             deep: true
           },
