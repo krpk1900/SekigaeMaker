@@ -69,14 +69,12 @@
               <v-row>
                 <!-- 横の座席数入力フォーム -->
                 <v-col cols="6" style="background-color: turquoise">
-                  <v-select :items="seatsOptionsX" label="横の座席数" outlined　v-model.number="seatsSizeX"
-                  @change="makeSeatsTable()" style="width:100px"></v-select>
+                  <v-select :items="seatsOptionsX" label="横の座席数" outlined　v-model.number="seatsSizeX" style="width:100px"></v-select>
                 </v-col>
 
                 <!-- 縦の座席数入力フォーム -->
                 <v-col cols="6" style="background-color: lightseagreen">
-                  <v-select :items="seatsOptionsY" label="縦の座席数" outlined　v-model.number="seatsSizeY"
-                  @change="makeSeatsTable()" style="width:100px"></v-select>
+                  <v-select :items="seatsOptionsY" label="縦の座席数" outlined　v-model.number="seatsSizeY" style="width:100px"></v-select>
                 </v-col>
 
                 <!-- 同じ席にしないかどうかのチェックボックス -->
@@ -952,18 +950,24 @@
             },
             deep: true
           },
-          seatsSizeX: {
+          seatsSizeX: { // テーブルの横座席数が変わったら
             handler: function(){
-              this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1);
+              this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1); // 固定する選択肢を変更
               const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
-              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i)
+              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i); // 距離の選択肢を変更
+              this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
+              this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
+              this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
             }
           },
-          seatsSizeY: {
+          seatsSizeY: { // テーブルの縦座席数が変わったら
             handler: function(){
-              this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1)
+              this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1) // 固定する選択肢を変更
               const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
-              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i)
+              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i); // 距離の選択肢を変更
+              this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
+              this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
+              this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
             }
           }
         }
