@@ -9,7 +9,7 @@
       li {
         text-align: center;
         list-style: none;
-        height: 80px;
+        margin-bottom: -7px;
       }
       .on-seats {
         background: mediumaquamarine;
@@ -30,6 +30,12 @@
         border: 3px solid white;
         box-sizing: border-box;
         text-align: center;
+      }
+      .margin-right {
+        margin-right: 10px;
+      }
+      .margin-bottom {
+        margin-bottom: 10px;
       }
       /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする*/
       .theme--light.v-select .v-select__selection--disabled{
@@ -59,10 +65,13 @@
               <p style="text-align: center">クリックで性別を変更できます</p>
               <div>
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <textarea v-for="( seat, indexCol ) in seats" :class="getColorByName(seatsTable[indexRow][indexCol])"
-                  class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
-                  :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
+                  <textarea v-for="( seat, indexCol ) in seats"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
+                  @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                  :key="indexRow.toString() + indexCol.toString()"
+                  style="text-align: center;  resize: none; word-break: keep-all"
+                  :value="seatsTable[indexRow][indexCol]"
+                  @click="toggleGender(indexCol,indexRow)">
                   </textarea>
                 </li>
               </div>
@@ -70,14 +79,24 @@
 
             <v-col cols="6">
               <v-row>
-                <!-- 横の座席数入力フォーム -->
-                <v-col cols="6" style="background-color: turquoise">
-                  <v-select :items="seatsOptionsX" label="横の座席数" outlined　v-model.number="seatsSizeX" style="width:100px"></v-select>
+                <!-- 全体の横の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: turquoise">
+                  <v-select :items="seatsOptionsX" label="全体の横の座席数" outlined　v-model.number="seatsSizeX" style="width:125px"></v-select>
                 </v-col>
 
-                <!-- 縦の座席数入力フォーム -->
-                <v-col cols="6" style="background-color: lightseagreen">
-                  <v-select :items="seatsOptionsY" label="縦の座席数" outlined　v-model.number="seatsSizeY" style="width:100px"></v-select>
+                <!-- 全体の縦の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: lightseagreen">
+                  <v-select :items="seatsOptionsY" label="全体の縦の座席数" outlined　v-model.number="seatsSizeY" style="width:125px"></v-select>
+                </v-col>
+
+                <!-- 班の横の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: turquoise">
+                  <v-select :items="groupSizeOptionsX" label="班の横の座席数" outlined　v-model.number="groupSizeX" style="width:110px"></v-select>
+                </v-col>
+
+                <!-- 班の縦の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: lightseagreen">
+                  <v-select :items="groupSizeOptionsY" label="班の縦の座席数" outlined　v-model.number="groupSizeY" style="width:110px"></v-select>
                 </v-col>
 
                 <!-- 同じ席にしないかどうかのチェックボックス -->
@@ -425,6 +444,10 @@
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
           disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
+          groupSizeX: 2,
+          groupSizeY: 3,
+          groupSizeOptionsX: ['なし',2,3],
+          groupSizeOptionsY: ['なし',2,3],
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
