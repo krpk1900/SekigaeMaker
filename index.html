@@ -9,7 +9,7 @@
       li {
         text-align: center;
         list-style: none;
-        height: 80px;
+        margin-bottom: -7px;
       }
       .on-seats {
         background: mediumaquamarine;
@@ -30,6 +30,12 @@
         border: 3px solid white;
         box-sizing: border-box;
         text-align: center;
+      }
+      .margin-right {
+        margin-right: 10px;
+      }
+      .margin-bottom {
+        margin-bottom: 10px;
       }
       /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする*/
       .theme--light.v-select .v-select__selection--disabled{
@@ -59,10 +65,13 @@
               <p style="text-align: center">クリックで性別を変更できます</p>
               <div>
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <textarea v-for="( seat, indexCol ) in seats" :class="getColorByName(seatsTable[indexRow][indexCol])"
-                  class="seat" @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
-                  :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
+                  <textarea v-for="( seat, indexCol ) in seats"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
+                  @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                  :key="indexRow.toString() + indexCol.toString()"
+                  style="text-align: center;  resize: none; word-break: keep-all"
+                  :value="seatsTable[indexRow][indexCol]"
+                  @click="toggleGender(indexCol,indexRow)">
                   </textarea>
                 </li>
               </div>
@@ -70,22 +79,30 @@
 
             <v-col cols="6">
               <v-row>
-                <!-- 横の座席数入力フォーム -->
-                <v-col cols="6" style="background-color: turquoise">
-                  <v-select :items="seatsOptionsX" label="横の座席数" outlined　v-model.number="seatsSizeX" style="width:100px"></v-select>
+                <!-- 全体の横の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: turquoise">
+                  <v-select :items="seatsOptionsX" label="全体の横の座席数" outlined　v-model.number="seatsSizeX" style="width:125px"></v-select>
                 </v-col>
 
-                <!-- 縦の座席数入力フォーム -->
-                <v-col cols="6" style="background-color: lightseagreen">
-                  <v-select :items="seatsOptionsY" label="縦の座席数" outlined　v-model.number="seatsSizeY" style="width:100px"></v-select>
+                <!-- 全体の縦の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: lightseagreen">
+                  <v-select :items="seatsOptionsY" label="全体の縦の座席数" outlined　v-model.number="seatsSizeY" style="width:125px"></v-select>
+                </v-col>
+
+                <!-- 班の横の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: turquoise">
+                  <v-select :items="groupSizeOptionsX" label="班の横の座席数" outlined　v-model.number="groupSizeX" style="width:110px"></v-select>
+                </v-col>
+
+                <!-- 班の縦の座席数入力フォーム -->
+                <v-col cols="3" style="background-color: lightseagreen">
+                  <v-select :items="groupSizeOptionsY" label="班の縦の座席数" outlined　v-model.number="groupSizeY" style="width:110px"></v-select>
                 </v-col>
 
                 <!-- 同じ席にしないかどうかのチェックボックス -->
                 <v-col cols="12" style="background-color: orange">
-                  <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" v-model="isAllDifferent"
-                  hide-details></v-checkbox>
-                  <v-checkbox label="男女の座席を固定する" color="indigo darken-3" v-model="isFixGender"
-                  hide-details></v-checkbox>
+                  <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" v-model="isAllDifferent" hide-details></v-checkbox>
+                  <v-checkbox label="男女の座席を固定する" color="indigo darken-3" v-model="isFixGender" hide-details></v-checkbox>
                 </v-col>
 
                 <!-- 横の列で固定するエクスパンションパネル -->
@@ -245,9 +262,10 @@
               <div id="nextSeatArrange">
                 <p style="text-align: center">席替え後の座席</p>
                 <li v-for="( nextSeats, indexRow ) in nextSeatsTable">
-                  <textarea v-for="( seat, indexCol ) in nextSeats" class="seat"
-                  :class="getColorByName(nextSeatsTable[indexRow][indexCol])"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
+                  <textarea v-for="( seat, indexCol ) in nextSeats"
+                  :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
+                  :key="indexRow.toString() + indexCol.toString()"
+                  style="text-align: center;  resize: none; word-break: keep-all"
                   :value="nextSeatsTable[indexRow][indexCol]">
                   </textarea>
                 </li>
@@ -425,6 +443,10 @@
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
           disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
+          groupSizeX: 2,
+          groupSizeY: 3,
+          groupSizeOptionsX: ['なし',2,3],
+          groupSizeOptionsY: ['なし',2,3],
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
@@ -988,6 +1010,40 @@
               this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              switch(this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
+                case 1:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 2:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 3:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 4:
+                  this.groupSizeOptionsX = ['なし', 2];
+                  this.groupSizeX = 2
+                  break;
+                case 5:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 6:
+                  this.groupSizeOptionsX = ['なし', 2, 3];
+                  this.groupSizeX = 2
+                  break;
+                case 7:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 8:
+                  this.groupSizeOptionsX = ['なし', 2, 4];
+                  this.groupSizeX = 2
+                  break;
+              }
             }
           },
           seatsSizeY: { // テーブルの縦座席数が変わったら
@@ -998,6 +1054,40 @@
               this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              switch(this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
+                case 1:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 2:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 3:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 4:
+                  this.groupSizeOptionsY = ['なし', 2];
+                  this.groupSizeY = 2
+                  break;
+                case 5:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 6:
+                  this.groupSizeOptionsY = ['なし', 2, 3];
+                  this.groupSizeY = 3
+                  break;
+                case 7:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 8:
+                  this.groupSizeOptionsY = ['なし', 2, 4];
+                  this.groupSizeY = 2
+                  break;
+              }
             }
           },
           frontConditions: {
