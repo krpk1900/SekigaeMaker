@@ -101,10 +101,8 @@
 
                 <!-- 同じ席にしないかどうかのチェックボックス -->
                 <v-col cols="12" style="background-color: orange">
-                  <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" v-model="isAllDifferent"
-                  hide-details></v-checkbox>
-                  <v-checkbox label="男女の座席を固定する" color="indigo darken-3" v-model="isFixGender"
-                  hide-details></v-checkbox>
+                  <v-checkbox label="現在の座席と異なる座席にする" color="indigo darken-3" v-model="isAllDifferent" hide-details></v-checkbox>
+                  <v-checkbox label="男女の座席を固定する" color="indigo darken-3" v-model="isFixGender" hide-details></v-checkbox>
                 </v-col>
 
                 <!-- 横の列で固定するエクスパンションパネル -->
@@ -264,9 +262,10 @@
               <div id="nextSeatArrange">
                 <p style="text-align: center">席替え後の座席</p>
                 <li v-for="( nextSeats, indexRow ) in nextSeatsTable">
-                  <textarea v-for="( seat, indexCol ) in nextSeats" class="seat"
-                  :class="getColorByName(nextSeatsTable[indexRow][indexCol])"
-                  :key="indexRow.toString() + indexCol.toString()" style="text-align: center;  resize: none; word-break: keep-all"
+                  <textarea v-for="( seat, indexCol ) in nextSeats"
+                  :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
+                  :key="indexRow.toString() + indexCol.toString()"
+                  style="text-align: center;  resize: none; word-break: keep-all"
                   :value="nextSeatsTable[indexRow][indexCol]">
                   </textarea>
                 </li>
