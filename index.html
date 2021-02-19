@@ -262,7 +262,7 @@
               <div id="nextSeatArrange">
                 <p style="text-align: center">席替え後の座席</p>
                 <li v-for="( nextSeats, indexRow ) in nextSeatsTable">
-                  <draggable>
+                  <draggable :animation="500" group='seats'>
                     <textarea v-for="( seat, indexCol ) in nextSeats"
                     :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
                     :key="indexRow.toString() + indexCol.toString()"
