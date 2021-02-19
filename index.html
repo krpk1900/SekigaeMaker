@@ -1011,6 +1011,40 @@
               this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              switch(this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
+                case 1:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 2:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 3:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 4:
+                  this.groupSizeOptionsX = ['なし', 2];
+                  this.groupSizeX = 2
+                  break;
+                case 5:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 6:
+                  this.groupSizeOptionsX = ['なし', 2, 3];
+                  this.groupSizeX = 2
+                  break;
+                case 7:
+                  this.groupSizeOptionsX = ['なし'];
+                  this.groupSizeX = 'なし'
+                  break;
+                case 8:
+                  this.groupSizeOptionsX = ['なし', 2, 4];
+                  this.groupSizeX = 2
+                  break;
+              }
             }
           },
           seatsSizeY: { // テーブルの縦座席数が変わったら
@@ -1021,6 +1055,40 @@
               this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              switch(this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
+                case 1:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 2:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 3:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 4:
+                  this.groupSizeOptionsY = ['なし', 2];
+                  this.groupSizeY = 2
+                  break;
+                case 5:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 6:
+                  this.groupSizeOptionsY = ['なし', 2, 3];
+                  this.groupSizeY = 3
+                  break;
+                case 7:
+                  this.groupSizeOptionsY = ['なし'];
+                  this.groupSizeY = 'なし'
+                  break;
+                case 8:
+                  this.groupSizeOptionsY = ['なし', 2, 4];
+                  this.groupSizeY = 2
+                  break;
+              }
             }
           },
           frontConditions: {
