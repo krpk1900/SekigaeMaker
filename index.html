@@ -34,8 +34,11 @@
       .margin-right {
         margin-right: 10px;
       }
+      .minus-margin-right {
+        margin-right: -4px;
+      }
       .margin-bottom {
-        margin-bottom: 10px;
+        padding-bottom: 10px;
       }
       /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする */
       .theme--light.v-select .v-select__selection--disabled{
@@ -68,14 +71,18 @@
               <p style="text-align: center">クリックで性別を変更できます</p>
               <div>
                 <li v-for="( seats, indexRow ) in seatsTable">
-                  <textarea v-for="( seat, indexCol ) in seats"
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
-                  @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all"
-                  :value="seatsTable[indexRow][indexCol]"
-                  @click="toggleGender(indexCol,indexRow)">
+                  <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
+                    <textarea
+                    :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                    @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                    :key="indexRow.toString() + indexCol.toString()"
+                    style="text-align: center;  resize: none; word-break: keep-all"
+                    :value="seatsTable[indexRow][indexCol]"
+                    @click="toggleGender(indexCol,indexRow)">
                   </textarea>
+                  <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
+                </span>
+                <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
                 </li>
               </div>
             </v-col>
@@ -263,13 +270,19 @@
             <!-- 席替え後の座席テーブル -->
             <v-col cols="6" style="background-color: lightsteelblue">
               <p style="text-align: center">席替え後の座席</p>
-              <li :id="'nextSeatsRow' + indexRow" v-for="( nextSeats, indexRow ) in nextSeatsTable" >
-                <textarea v-for="( seat, indexCol ) in nextSeats"
-                :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
-                :key="indexRow.toString() + indexCol.toString()"
-                style="text-align: center;  resize: none; word-break: keep-all"
-                :value="nextSeatsTable[indexRow][indexCol]">
-                </textarea>
+              <li v-for="( nextSeats, indexRow ) in nextSeatsTable" >
+                <span v-for="( nextSeat, indexCol ) in nextSeats" class="minus-margin-right">
+                  <span :id="'nextSeatsRow' + (indexRow*seatsSizeX+indexCol)">
+                    <textarea
+                    :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol])]"
+                    :key="indexRow.toString() + indexCol.toString()"
+                    style="text-align: center;  resize: none; word-break: keep-all"
+                    :value="nextSeatsTable[indexRow][indexCol]">
+                    </textarea>
+                  </span>
+                  <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
+                </span>
+                <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
               </li>
             </v-col>
             <v-col cols="6">
@@ -941,8 +954,7 @@
             }
           },
           setSortableJS(){ // sortableJSをフォームにセット
-            console.log(`this.seatsSizeY = ${this.seatsSizeY}`);
-            for(let i=0; i<this.seatsSizeY; i++) {
+            for(let i=0; i<this.seatsSizeX * this.seatsSizeY; i++) {
               let el = document.getElementById(`nextSeatsRow${i}`);
               Sortable.create(el, {
               group: "nextSeats",
@@ -1061,6 +1073,9 @@
                   this.groupSizeX = 2
                   break;
               }
+              this.$nextTick(function(){ // DOMの更新を待ってから
+                this.setSortableJS(); // sortableJSをフォームにセット
+              })
             }
           },
           seatsSizeY: { // テーブルの縦座席数が変わったら
