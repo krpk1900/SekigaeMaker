@@ -465,7 +465,11 @@
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
-            this.setSortableJS();
+            this.makeNextSeatsTable();
+            //this.setSortableJS();
+            this.$nextTick(function(){ // DOMの更新を待ってから
+              this.setSortableJS(); // sortableJSをフォームにセット
+            })
             console.log('---------')
           },
           createNewNearConditions(){
@@ -527,7 +531,7 @@
             }
           },
           makeSeatsTable() { // seatsTableを作成
-            this.seatsTable = []
+            this.seatsTable.splice(0)
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
@@ -542,7 +546,7 @@
             })
           },
           makeNextSeatsTable() { // nextSeatsTableを作成
-            this.nextSeatsTable = []
+            this.nextSeatsTable.splice(0)
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.nextSeatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
             }
@@ -564,6 +568,8 @@
               this.resetFrontTwoRowsSeatsIndex(); // 前2列インデックス配列を空にする
               this.resetBackSeatsIndex(); // 最後列インデックス配列を空にする
               this.resetBackTwoRowsSeatsIndex(); // 後ろ2列インデックス配列を空にする
+              //this.makeSeatsTable();                                                                  //test
+              //this.makeNextSeatsTable();                                                              // test
               this.makeFrontSeatsIndex(); // 最前列インデックスを作成
               this.makeFrontTwoRowsSeatsIndex(); // 前2列インデックスを作成
               this.makeBackSeatsIndex(); // 最後列インデックスを作成
@@ -960,8 +966,8 @@
               group: "nextSeats",
               swap: true,
               swapClass: 'highlighted',
-              animation: 150
-            });
+              animation: 150,
+              });
             }
           }
         },
