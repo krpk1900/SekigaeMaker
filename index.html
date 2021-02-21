@@ -263,9 +263,7 @@
             <!-- 席替え後の座席テーブル -->
             <v-col cols="6" style="background-color: lightsteelblue">
               <p style="text-align: center">席替え後の座席</p>
-              <!-- :id="'items' + indexRow" --> <!-- v-for="( nextSeats, indexRow ) in nextSeatsTable" -->
-
-              <li :id="'nextSeatsRow' + indexRow" v-for="( nextSeats, indexRow ) in nextSeatsTable">
+              <li :id="'nextSeatsRow' + indexRow" v-for="( nextSeats, indexRow ) in nextSeatsTable" >
                 <textarea v-for="( seat, indexCol ) in nextSeats"
                 :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol]), {'margin-right': (indexCol+1)%groupSizeX==0}, {'margin-bottom': (indexRow+1)%groupSizeY==0}]"
                 :key="indexRow.toString() + indexCol.toString()"
@@ -273,14 +271,6 @@
                 :value="nextSeatsTable[indexRow][indexCol]">
                 </textarea>
               </li>
-
-              <!-- test
-              <li :id="'items' + n" v-for="n of 2">
-                <textarea v-for="m of 4" class="seat">
-                </textarea>
-              </li> -->
-
-
             </v-col>
             <v-col cols="6">
               <v-row>
@@ -467,7 +457,7 @@
         },
         methods: {
           testMethod() { // デバッグ用。最後に消す。
-            console.log(this.checkDifferent('1', [0, 0]));
+            this.setSortableJS();
             console.log('---------')
           },
           createNewNearConditions(){
@@ -955,11 +945,26 @@
               array.splice(deleteIndex, 1); // arrayからtargetを削除する
             }
           },
+          setSortableJS(){ // sortableJSをフォームにセット
+            console.log(`this.seatsSizeY = ${this.seatsSizeY}`);
+            for(let i=0; i<this.seatsSizeY; i++) {
+              let el = document.getElementById(`nextSeatsRow${i}`);
+              Sortable.create(el, {
+              group: "nextSeats",
+              swap: true,
+              swapClass: 'highlighted',
+              animation: 150
+            });
+            }
+          }
         },
         created() {
-          this.makeSeatsTable() // 最初にseatsTableを作成
-          this.makeNextSeatsTable() // 席替え後用のnextSeatsTableを空白で作成
-          this.makeGenderTable() // genderTableを作成
+          this.makeSeatsTable(); // 最初にseatsTableを作成
+          this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
+          this.makeGenderTable(); // genderTableを作成
+        },
+        mounted() {
+          this.setSortableJS(); // sortableJSをフォームにセット
         },
         watch: {
           seatsTable: {
@@ -1105,6 +1110,9 @@
                   this.groupSizeY = 2
                   break;
               }
+              this.$nextTick(function(){ // DOMの更新を待ってから
+                this.setSortableJS(); // sortableJSをフォームにセット
+              })
             }
           },
           frontConditions: {
@@ -1142,27 +1150,6 @@
             })
           }
         }
-      });
-      // ---- SortableJS ----
-      for(let i=0; i<this.seatsSizeY; i++){
-        console.log(i);
-      }
-
-      let el1 = document.getElementById('nextSeatsRow0');
-      Sortable.create(el1, {
-        group: "test",
-        swap: true,
-        swapClass: 'highlighted', // The class applied to the hovered swap item
-	      animation: 150
-      });
-
-
-      let el2 = document.getElementById('nextSeatsRow1');
-      Sortable.create(el2, {
-        group: "test",
-        swap: true,
-        swapClass: 'highlighted', // The class applied to the hovered swap item
-	      animation: 150
       });
     </script>
   </body>
