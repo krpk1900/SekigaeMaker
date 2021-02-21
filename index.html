@@ -398,13 +398,8 @@
         if(!temp){ indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
         return indexNum;
       };
-
-      //const draggable = window['vuedraggable'];
       const app = new Vue({
         el: "#app",
-        //components: {
-        //  'draggable': draggable,
-        //},
         vuetify: new Vuetify(),
         data: {
           seatsSizeY: 6, // デフォルト値は6
