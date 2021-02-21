@@ -47,8 +47,17 @@
       [v-cloak] {
         display: none;
       }
+      /* sortableJSで選択された座席 */
       .highlighted {
         background-color: #9AB6F1;
+      }
+      .sortable-item:hover {
+        cursor: grab;
+      }
+      .sortable-item:active .sortable-ghost, .sortable-chosen .sortable-drag {
+        cursor: grabbing;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
       }
     </style>
   </head>
@@ -272,8 +281,8 @@
               <p style="text-align: center">席替え後の座席</p>
               <li v-for="( nextSeats, indexRow ) in nextSeatsTable" >
                 <span v-for="( nextSeat, indexCol ) in nextSeats" class="minus-margin-right">
-                  <span :id="'nextSeatsRow' + (indexRow*seatsSizeX+indexCol)">
-                    <textarea
+                  <span :id="'nextSeatsRow' + (indexRow*seatsSizeX+indexCol)" class="sortable-item">
+                    <textarea class="sortable-item"
                     :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol])]"
                     :key="indexRow.toString() + indexCol.toString()"
                     style="text-align: center;  resize: none; word-break: keep-all"
