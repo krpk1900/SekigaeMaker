@@ -299,10 +299,10 @@
             <v-col cols="6" style="background-color: lightsteelblue">
               <p style="text-align: center">席替え後の座席</p>
               <div class="center">
-                <transition-group name="transition-item">
+                <transition-group name="transition-item" type="transition">
                   <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
                     <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                      <span :id="'nextSeatsRow' + (nextIndexRow*seatsSizeX+nextIndexCol)" class="transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)"><!-- sortable-item -->
+                      <span :id="'nextSeatsRow' + (nextIndexRow*seatsSizeX+nextIndexCol)" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
                         <textarea class="sortable-item"
                         :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
                         style="text-align: center;  resize: none; word-break: keep-all"
@@ -498,7 +498,7 @@
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
-            this.nextSeatsTable.splice(0,1,["6", "5", "4", "3", "2", "1"]);
+            this.setSortableJS(); // sortableJSをフォームにセット
             console.log('---------')
           },
           testMethod2() { // デバッグ用。最後に消す。
@@ -648,6 +648,9 @@
               this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
               console.log(`----${loopNum}回目のループ終了----`);
             } while(this.restartFlag && loopNum <= 500)
+            this.$nextTick(function(){ // DOMの更新を待ってからsortableJSをフォームにセット
+              setTimeout(this.setSortableJS, 0); // setTimeout()で処理しないとセットされない
+            });
             console.log(`====終了====`);
             if(loopNum > 500){
               window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
@@ -1009,7 +1012,7 @@
               group: "nextSeats",
               swap: true,
               swapClass: 'highlighted',
-              animation: 150,
+              animation: 400,
               });
             }
           }
