@@ -40,6 +40,19 @@
       .margin-bottom {
         padding-bottom: 10px;
       }
+      .minus-margin-bottom {
+        vertical-align: bottom;
+        margin-bottom: -7px;
+      }
+      .center {
+        text-align: center;
+      }
+      .square {
+        display: inline-block;
+        margin: 0 auto;
+        height: 80px;
+        width: 80px;
+      }
       /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする */
       .theme--light.v-select .v-select__selection--disabled{
         color: black;
@@ -59,6 +72,12 @@
         cursor: -moz-grabbing;
         cursor: -webkit-grabbing;
       }
+      .transition-item-move {
+        transition: transform 1s;
+      }
+      .transition-item-enter-active, .transition-item-leave-active {
+        transition: all 0s;
+      }
     </style>
   </head>
   <body>
@@ -68,7 +87,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装25日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装27日目）</h1>
             </v-col>
           </v-row>
 
@@ -279,26 +298,30 @@
             <!-- 席替え後の座席テーブル -->
             <v-col cols="6" style="background-color: lightsteelblue">
               <p style="text-align: center">席替え後の座席</p>
-              <li v-for="( nextSeats, indexRow ) in nextSeatsTable" >
-                <span v-for="( nextSeat, indexCol ) in nextSeats" class="minus-margin-right">
-                  <span :id="'nextSeatsRow' + (indexRow*seatsSizeX+indexCol)" class="sortable-item">
-                    <textarea class="sortable-item"
-                    :class="['seat', getColorByName(nextSeatsTable[indexRow][indexCol])]"
-                    :key="indexRow.toString() + indexCol.toString()"
-                    style="text-align: center;  resize: none; word-break: keep-all"
-                    :value="nextSeatsTable[indexRow][indexCol]">
-                    </textarea>
-                  </span>
-                  <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
-                </span>
-                <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
-              </li>
+              <div class="center">
+                <transition-group name="transition-item">
+                  <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
+                    <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
+                      <span :id="'nextSeatsRow' + (nextIndexRow*seatsSizeX+nextIndexCol)" class="transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)"><!-- sortable-item -->
+                        <textarea class="sortable-item"
+                        :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
+                        style="text-align: center;  resize: none; word-break: keep-all"
+                        :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
+                        </textarea>
+                      </span>
+                      <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
+                    </template>
+                    <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
+                  </template>
+                </transition-group>
+              </div>
             </v-col>
             <v-col cols="6">
               <v-row>
                 <!-- testボタン -->
                 <v-col cols="12" style="background-color: darkgray">
-                  <v-btn elevation="2" outlined @click="testMethod">テスト！</v-btn>
+                  <v-btn elevation="2" outlined @click="testMethod1">テスト1</v-btn>
+                  <v-btn elevation="2" outlined @click="testMethod2">テスト2</v-btn>
                 </v-col>
 
                 <v-col cols="6" style="background-color: khaki">
@@ -408,6 +431,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
 
     <script>
       Array.prototype.originalIndexOf = function(target) { // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
@@ -473,13 +497,23 @@
           groupSizeOptionsY: ['なし',2,3],
         },
         methods: {
-          testMethod() { // デバッグ用。最後に消す。
-            this.makeNextSeatsTable();
-            //this.setSortableJS();
-            this.$nextTick(function(){ // DOMの更新を待ってから
-              this.setSortableJS(); // sortableJSをフォームにセット
-            })
+          testMethod1() { // デバッグ用。最後に消す。
+            this.nextSeatsTable.splice(0,1,["6", "5", "4", "3", "2", "1"]);
             console.log('---------')
+          },
+          testMethod2() { // デバッグ用。最後に消す。
+            this.nextSeatsTable.splice(0,1,["1", "2", "3", "4", "5", "6"]);
+            console.log('---------')
+          },
+          uniqueKey(value, nextIndexRow, nextIndexCol) {
+            let key
+            if(value == ''){
+              key = `nextSeatsRow${nextIndexRow*this.seatsSizeX + nextIndexCol}`;
+            }else{
+              key = value;
+            }
+            // console.log(`key = ${key}`);
+            return key;
           },
           createNewNearConditions(){
             this.nearConditions.push(['', '', '']);
