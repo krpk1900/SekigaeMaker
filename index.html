@@ -298,30 +298,33 @@
             <!-- 席替え後の座席テーブル -->
             <v-col cols="6" style="background-color: lightsteelblue">
               <p style="text-align: center">席替え後の座席</p>
-              <div class="center">
-                <transition-group name="transition-item" type="transition">
-                  <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
-                    <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                      <span :id="'nextSeatsRow' + (nextIndexRow*seatsSizeX+nextIndexCol)" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                        <textarea class="sortable-item"
-                        :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
-                        style="text-align: center;  resize: none; word-break: keep-all"
-                        :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
-                        </textarea>
-                      </span>
-                      <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
+              <template v-if="isRenderNextSeatsTable">
+                <div class="center">
+                  <transition-group name="transition-item" type="transition">
+                    <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
+                      <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
+                        <span :id="'nextSeatsRow' + (nextIndexRow*seatsSizeX+nextIndexCol)" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
+                          <textarea class="sortable-item"
+                          :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
+                          style="text-align: center;  resize: none; word-break: keep-all"
+                          :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
+                          @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
+                          </textarea>
+                        </span>
+                        <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
+                      </template>
+                      <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
                     </template>
-                    <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
-                  </template>
-                </transition-group>
-              </div>
+                  </transition-group>
+                </div>
+              </template>
             </v-col>
             <v-col cols="6">
               <v-row>
                 <!-- testボタン -->
                 <v-col cols="12" style="background-color: darkgray">
                   <v-btn elevation="2" outlined @click="testMethod1">テスト1</v-btn>
-                  <v-btn elevation="2" outlined @click="testMethod2">テスト2</v-btn>
+                  <v-btn elevation="2" outlined @click="testMethod3">テスト3</v-btn>
                 </v-col>
 
                 <v-col cols="6" style="background-color: khaki">
@@ -434,6 +437,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
 
     <script>
+      let isRerenderNextSeatsTable = false; // nextSeatsTableを表示するかどうかの制御フラグ、sortableJSではVueのdataを更新できなかったのでJSの変数として定義
       Array.prototype.originalIndexOf = function(target) { // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
         let indexNum = this.length;
         let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
@@ -495,15 +499,17 @@
           groupSizeY: 3,
           groupSizeOptionsX: ['なし',2,3],
           groupSizeOptionsY: ['なし',2,3],
+          isRenderNextSeatsTable: true, // nextSeatsTableを表示するかどうかの制御フラグ
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
-            this.setSortableJS(); // sortableJSをフォームにセット
             console.log('---------')
           },
-          testMethod2() { // デバッグ用。最後に消す。
-            this.nextSeatsTable.splice(0,1,["1", "2", "3", "4", "5", "6"]);
-            console.log('---------')
+          testMethod2(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
+            this.nextSeatsTable[indexRow].splice(indexCol, 1, name)
+          },
+          testMethod3() {
+            console.log(isRerenderNextSeatsTable)
           },
           uniqueKey(value, nextIndexRow, nextIndexCol) {
             let key
@@ -649,8 +655,15 @@
               console.log(`----${loopNum}回目のループ終了----`);
             } while(this.restartFlag && loopNum <= 500)
             this.$nextTick(function(){ // DOMの更新を待ってからsortableJSをフォームにセット
-              setTimeout(this.setSortableJS, 0); // setTimeout()で処理しないとセットされない
+              setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
             });
+            if(isRerenderNextSeatsTable){ // 再描画する必要がある場合
+              this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
+              this.$nextTick(function(){ // DOMに反映されるのを待ち、
+                this.isRenderNextSeatsTable = true; // 描画をオンにする
+              });
+            }
+            isRerenderNextSeatsTable = false;
             console.log(`====終了====`);
             if(loopNum > 500){
               window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
@@ -1009,10 +1022,13 @@
             for(let i=0; i<this.seatsSizeX * this.seatsSizeY; i++) {
               let el = document.getElementById(`nextSeatsRow${i}`);
               Sortable.create(el, {
-              group: "nextSeats",
-              swap: true,
-              swapClass: 'highlighted',
-              animation: 400,
+                group: "nextSeats",
+                swap: true,
+                swapClass: 'highlighted',
+                animation: 400,
+                onSort: function() { // スワップしたら、
+                  isRerenderNextSeatsTable = true; // 再描画する必要があるためフラグをオンにする
+                }
               });
             }
           }
