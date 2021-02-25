@@ -626,28 +626,6 @@
             }
           },
           changeSeats() { // メイン処理
-            /*
-            if(isReverseSeats){
-              this.reverseSeats();
-              console.log(`reverseを呼び出した`);
-            }
-            isReverseSeats = false;
-            */
-
-            /*
-            this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
-            this.$nextTick(function(){ // DOMに反映されるのを待ち、
-              this.isRenderNextSeatsTable = true; // 描画をオンにする
-            });
-            */
-
-            //this.testMethod1();
-            //console.log(`b`);
-
-            //this.reverseSeats();
-
-            this.$nextTick(function(){//
-
             let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
             do {
               loopNum += 1;
@@ -710,8 +688,6 @@
             if(loopNum > 500){
               window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
             }
-
-            });//
           },
           pushSeatsTableIndex(indexCol, indexRow) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexCol, indexRow]);
@@ -1089,12 +1065,10 @@
                     isReverseSeats = true;
                   },
                   onEnd: function(evt) {
-                    console.log(evt)
                     let fromRow = parseInt(evt.from.id.toString().slice(-2, -1));
                     let fromCol = parseInt(evt.from.id.toString().slice(-1));
                     let toRow = parseInt(evt.to.id.toString().slice(-2, -1));
                     let toCol = parseInt(evt.to.id.toString().slice(-1));
-                    console.log(`[${fromRow}][${fromCol}]--[${toRow}][${toCol}]`);
                     fromRows.push(fromRow);
                     fromCols.push(fromCol);
                     toRows.push(toRow);
