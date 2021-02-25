@@ -456,7 +456,11 @@
       };
       const app = new Vue({
         el: "#app",
-        vuetify: new Vuetify(),
+        vuetify: new Vuetify({
+          theme: {
+            dark: false,
+          }
+        }),
         data: {
           seatsSizeY: 6, // デフォルト値は6
           seatsSizeX: 6, // デフォルト値は6
