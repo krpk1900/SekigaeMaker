@@ -280,7 +280,7 @@
 
                 <!-- 席替えボタン -->
                 <v-col cols="12" style="background-color: khaki">
-                  <v-btn elevation="2" outlined @click="changeSeats">席替え！</v-btn>
+                  <v-btn elevation="2" outlined @click="testMethod1(); testMethod2();">席替え！</v-btn>
                 </v-col>
               </v-row>
             </v-col>
@@ -303,7 +303,7 @@
                   <transition-group name="transition-item" type="transition">
                     <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
                       <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                        <span :id="'nextSeatsRow' + (nextIndexRow*seatsSizeX+nextIndexCol)" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
+                        <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
                           <textarea class="sortable-item"
                           :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
                           style="text-align: center;  resize: none; word-break: keep-all"
@@ -324,6 +324,7 @@
                 <!-- testボタン -->
                 <v-col cols="12" style="background-color: darkgray">
                   <v-btn elevation="2" outlined @click="testMethod1">テスト1</v-btn>
+                  <v-btn elevation="2" outlined @click="testMethod2">テスト2</v-btn>
                   <v-btn elevation="2" outlined @click="testMethod3">テスト3</v-btn>
                 </v-col>
 
@@ -437,7 +438,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
 
     <script>
+      // sortableJSで使う変数、sortableJSではVueのdataやmethodを認識しないため
       let isRerenderNextSeatsTable = false; // nextSeatsTableを表示するかどうかの制御フラグ、sortableJSではVueのdataを更新できなかったのでJSの変数として定義
+      let isReverseSeats = false;
+      let fromRows = [];
+      let fromCols = [];
+      let toRows = [];
+      let toCols = [];
       Array.prototype.originalIndexOf = function(target) { // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
         let indexNum = this.length;
         let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
@@ -491,8 +498,8 @@
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
           genderTable: [], // 生徒の性別テーブル
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
-          isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
-          isFixGender: true, // 性別を固定するかどうかの制御フラグ
+          isAllDifferent: false, // 前回の座席と異なる配置にするかどうかの制御フラグ
+          isFixGender: false, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
           disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
           groupSizeX: 2,
@@ -503,13 +510,25 @@
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
-            console.log('---------')
+            if(isReverseSeats){
+              this.reverseSeats();
+              console.log(`reverseを呼び出した`);
+
+              this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
+              this.$nextTick(function(){ // DOMに反映されるのを待ち、
+                this.isRenderNextSeatsTable = true; // 描画をオンにする
+              });
+            }
+            isReverseSeats = false;
           },
           testMethod2(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
-            this.nextSeatsTable[indexRow].splice(indexCol, 1, name)
+            setTimeout(this.changeSeats,1);
           },
           testMethod3() {
-            console.log(isRerenderNextSeatsTable)
+            console.log(`fromRows = ${fromRows}`);
+            console.log(`fromCols = ${fromCols}`);
+            console.log(`toRows = ${toRows}`);
+            console.log(`toCols = ${toCols}`);
           },
           uniqueKey(value, nextIndexRow, nextIndexCol) {
             let key
@@ -518,7 +537,6 @@
             }else{
               key = value;
             }
-            // console.log(`key = ${key}`);
             return key;
           },
           createNewNearConditions(){
@@ -606,6 +624,28 @@
             }
           },
           changeSeats() { // メイン処理
+            /*
+            if(isReverseSeats){
+              this.reverseSeats();
+              console.log(`reverseを呼び出した`);
+            }
+            isReverseSeats = false;
+            */
+
+            /*
+            this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
+            this.$nextTick(function(){ // DOMに反映されるのを待ち、
+              this.isRenderNextSeatsTable = true; // 描画をオンにする
+            });
+            */
+
+            //this.testMethod1();
+            //console.log(`b`);
+
+            //this.reverseSeats();
+
+            this.$nextTick(function(){//
+
             let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
             do {
               loopNum += 1;
@@ -668,6 +708,8 @@
             if(loopNum > 500){
               window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
             }
+
+            });//
           },
           pushSeatsTableIndex(indexCol, indexRow) { // 座席テーブルの有効な座席のインデックスをプッシュ
             this.seatsTableIndex.push([indexCol, indexRow]);
@@ -1018,18 +1060,46 @@
               array.splice(deleteIndex, 1); // arrayからtargetを削除する
             }
           },
+          reverseSeats(){
+            for(let i=0; i<fromRows.length; i++){
+              let fromSeat = this.nextSeatsTable[fromRows[i]][fromCols[i]];
+              let toSeat = this.nextSeatsTable[toRows[i]][toCols[i]];
+              this.nextSeatsTable[fromRows[i]].splice(fromCols[i], 1, toSeat);
+              this.nextSeatsTable[toRows[i]].splice(toCols[i], 1, fromSeat);
+              console.log(`${fromSeat}([${fromRows[i]}][${fromCols[i]}])と${toSeat}([${toRows[i]}][${toCols[i]}])をスワップ`);
+            }
+            fromRows.splice(0);
+            fromCols.splice(0);
+            toRows.splice(0);
+            toCols.splice(0);
+          },
           setSortableJS(){ // sortableJSをフォームにセット
-            for(let i=0; i<this.seatsSizeX * this.seatsSizeY; i++) {
-              let el = document.getElementById(`nextSeatsRow${i}`);
-              Sortable.create(el, {
-                group: "nextSeats",
-                swap: true,
-                swapClass: 'highlighted',
-                animation: 400,
-                onSort: function() { // スワップしたら、
-                  isRerenderNextSeatsTable = true; // 再描画する必要があるためフラグをオンにする
-                }
-              });
+            for(let row=0; row<this.seatsSizeY; row++) {
+              for(let col=0; col<this.seatsSizeX; col++) {
+                let el = document.getElementById(`nextSeatsRow${row}${col}`);
+                Sortable.create(el, {
+                  group: "nextSeats",
+                  swap: true,
+                  swapClass: 'highlighted',
+                  animation: 400,
+                  onSort: function() { // スワップしたら、
+                    //isRerenderNextSeatsTable = true; // 再描画する必要があるためフラグをオンにする
+                    isReverseSeats = true;
+                  },
+                  onEnd: function(evt) {
+                    console.log(evt)
+                    let fromRow = parseInt(evt.from.id.toString().slice(-2, -1));
+                    let fromCol = parseInt(evt.from.id.toString().slice(-1));
+                    let toRow = parseInt(evt.to.id.toString().slice(-2, -1));
+                    let toCol = parseInt(evt.to.id.toString().slice(-1));
+                    console.log(`[${fromRow}][${fromCol}]--[${toRow}][${toCol}]`);
+                    fromRows.push(fromRow);
+                    fromCols.push(fromCol);
+                    toRows.push(toRow);
+                    toCols.push(toCol);
+                  },
+                });
+              }
             }
           }
         },
