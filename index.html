@@ -87,7 +87,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="12" style="background-color: wheat">
-              <h1 class="text-center">席替えメーカー（実装27日目）</h1>
+              <h1 class="text-center">席替えメーカー（実装28日目）</h1>
             </v-col>
           </v-row>
 
@@ -280,7 +280,7 @@
 
                 <!-- 席替えボタン -->
                 <v-col cols="12" style="background-color: khaki">
-                  <v-btn elevation="2" outlined @click="testMethod1(); testMethod2();">席替え！</v-btn>
+                  <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats();">席替え！</v-btn>
                 </v-col>
               </v-row>
             </v-col>
@@ -440,7 +440,7 @@
     <script>
       // sortableJSで使う変数、sortableJSではVueのdataやmethodを認識しないため
       let isRerenderNextSeatsTable = false; // nextSeatsTableを表示するかどうかの制御フラグ、sortableJSではVueのdataを更新できなかったのでJSの変数として定義
-      let isReverseSeats = false;
+      let isReverseSeats = false; // スワップした座席を席替え直前に戻すためのフラグ
       let fromRows = [];
       let fromCols = [];
       let toRows = [];
@@ -510,19 +510,8 @@
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
-            if(isReverseSeats){
-              this.reverseSeats();
-              console.log(`reverseを呼び出した`);
-
-              this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
-              this.$nextTick(function(){ // DOMに反映されるのを待ち、
-                this.isRenderNextSeatsTable = true; // 描画をオンにする
-              });
-            }
-            isReverseSeats = false;
           },
-          testMethod2(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
-            setTimeout(this.changeSeats,1);
+          testMethod2() { // 引数で受け取った座席の有効・無効を切り替える
           },
           testMethod3() {
             console.log(`fromRows = ${fromRows}`);
@@ -538,6 +527,19 @@
               key = value;
             }
             return key;
+          },
+          beforeChangeSeats() { // トランジションのズレをなくすために、スワップされていたら席替え直前に、次の座席テーブルに反映する
+            if(isReverseSeats){
+              this.reverseSeats();
+              this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
+              this.$nextTick(function(){ // DOMに反映されるのを待ち、
+                this.isRenderNextSeatsTable = true; // 描画をオンにする
+              });
+            }
+            isReverseSeats = false;
+          },
+          delayChangeSeats() { // beforeChangeSeats()の反映を待つために、わずかに遅れてChangeSeats()を呼び出す
+            setTimeout(this.changeSeats,1);
           },
           createNewNearConditions(){
             this.nearConditions.push(['', '', '']);
