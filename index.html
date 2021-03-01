@@ -106,17 +106,19 @@
   <body>
     <div id="app" v-cloak>
       <v-app>
-        <v-container fluid>
+        <v-container fluid fill-height class="background-color">
           <v-row>
             <!-- タイトル -->
-            <v-col cols="6" class="background-color">
+            <v-col cols="6">
               <h1 class="text-center">席替えメーカー</h1>
             </v-col>
-            <v-col cols="6" class="background-color">
+            <v-col cols="6">
               <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="right"></v-app-bar-nav-icon>
             </v-col>
+          </v-row>
 
-            <v-col cols="6" class="background-color">
+          <v-row>
+            <v-col cols="6">
               <!-- サイドバー -->
               <template>
                 <v-navigation-drawer v-model="drawer" absolute right width="50%" color="#c0c0c0">
@@ -259,7 +261,7 @@
 
           <v-row>
             <!-- 座席テーブル -->
-            <v-col cols="6" class="background-color">
+            <v-col cols="6">
               <v-hover v-slot:default="{ hover }">
                 <v-card outlined :elevation="hover ? 12 : 2" color="#1f7087">
                   <v-card-title class="justify-center">現在の座席</v-card-title>
@@ -286,7 +288,7 @@
             </v-col>
 
             <!-- 席替え後の座席テーブル -->
-            <v-col cols="6" class="background-color">
+            <v-col cols="6">
               <v-hover v-slot:default="{ hover }">
                 <v-card outlined :elevation="hover ? 12 : 2" color="#1f7087">
                   <v-card-title class="justify-center">席替え後の座席</v-card-title>
