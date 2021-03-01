@@ -80,6 +80,9 @@
       .v-navigation-drawer {
         transition-duration: 0.5s;
       }
+      .v-navigation-drawer {
+        box-shadow: -4px 0 4px #a9a9a9;
+      }
       [v-cloak] {
         display: none;
       }
@@ -106,7 +109,7 @@
   <body>
     <div id="app" v-cloak>
       <v-app>
-        <v-container fluid fill-height class="background-color">
+        <v-container fluid class="background-color">
           <v-row>
             <!-- タイトル -->
             <v-col cols="6">
@@ -282,9 +285,9 @@
                     <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
                     </li>
                   </div>
-                  <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats();">席替え！</v-btn>
                 </v-card>
               </v-hover>
+              <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats();">席替え！</v-btn>
             </v-col>
 
             <!-- 席替え後の座席テーブル -->
@@ -317,8 +320,8 @@
               </v-hover>
             </v-col>
 
-          <style>/*
-          <!-- 以下デバッグ用表示 -->
+
+          <!-- 以下デバッグ用表示
           <v-row>
             <v-col cols="12">
               <h1 class="text-center">以下デバッグ用</h1>
@@ -326,7 +329,6 @@
           </v-row>
 
           <v-row>
-            <!-- 席替え後の座席テーブル -->
             <v-col cols="6">
               <p style="text-align: center">席替え後の座席</p>
               <template v-if="isRenderNextSeatsTable">
@@ -352,7 +354,6 @@
             </v-col>
             <v-col cols="6">
               <v-row>
-                <!-- testボタン -->
                 <v-col cols="12" style="background-color: darkgray">
                   <v-btn elevation="2" outlined @click="testMethod1">テスト1</v-btn>
                   <v-btn elevation="2" outlined @click="testMethod2">テスト2</v-btn>
@@ -456,8 +457,7 @@
                   {{ disabledStudentsName }}
                 </v-col>
               </v-row>
-            </v-col>
-            */</style>
+            </v-col-->
           </v-row>
         </v-container>
       </v-app>
