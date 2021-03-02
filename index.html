@@ -13,9 +13,9 @@
       }
       .background-color {
         /* degital water */
-        background: #74ebd5;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: #74ebd5;
+        background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);
+        background: linear-gradient(to right, #ACB6E5, #74ebd5);
       }
       .right {
         float: right;
@@ -34,10 +34,10 @@
         background: mediumaquamarine;
       }
       .male-seats {
-        background: #add8e6;
+        background: #d1e8ff;
       }
       .female-seats {
-        background: #d9c3d9;
+        background: #ffe5f2;
       }
       .off-seats {
         background: #fffafa;
@@ -89,20 +89,22 @@
       }
       /* vuetifyのスタイルをオーバーライド、サイドメニューの開閉速度を設定 */
       .v-navigation-drawer {
-        transition-duration: 0.5s;
+        transition-duration: 0.4s;
       }
-      .v-navigation-drawer {
-        box-shadow: -4px 0 4px #a9a9a9;
+      /* サイドバーのボーダーを設定 */
+      .v-navigation-drawer__content {
+        border: solid #747474;
+        border-width: 0 1px 0 1px;
       }
       .box-shadow {
-        box-shadow: 0 0 5px 4px #a79e9e;
+        box-shadow: 0 0 6px 6px rgba(220,220,220,0.5);
       }
       [v-cloak] {
         display: none;
       }
       /* sortableJSで選択された座席 */
       .highlighted {
-        background-color: #9AB6F1;
+        background-color: #b9b9b9;
       }
       .sortable-item:hover {
         cursor: grab;
@@ -135,13 +137,13 @@
             <v-col cols="6">
               <!-- サイドバー -->
               <template>
-                <v-navigation-drawer absolute right width="50%" color="#c0c0c0" :mini-variant="drawer">
+                <v-navigation-drawer absolute right width="50%" color="#e4e4e4" :mini-variant="!drawer">
                   <v-list nav dense>
                     <v-list-item-group>
                       <v-list-item class="right">
                         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
                       </v-list-item>
-                      <template v-if="!drawer">
+                      <template v-if="drawer">
                         <h1 class="margin-bottom-35">条件</h1>
                         <!-- 座席数のセレクトボックス -->
                         <v-select :items="seatsOptionsX" label="全体の横の座席数" outlined　v-model.number="seatsSizeX" style="width:125px" class="inline-block"></v-select>
@@ -298,7 +300,7 @@
                   </li>
                 </div>
               </v-card>
-              <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats();">席替え！</v-btn>
+              <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">席替え！</v-btn>
             </v-col>
 
             <!-- 席替え後の座席テーブル -->
