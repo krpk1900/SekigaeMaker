@@ -60,12 +60,8 @@
       .margin-bottom {
         padding-bottom: 10px;
       }
-      .margin-bottom-35 {
-        margin:35px 0;
-      }
-      .margin-top-35 {
-        margin-top: 35px;
-        margin-bottom: -50px;
+      .padding-35 {
+        padding:35px 0;
       }
       .minus-margin-bottom {
         vertical-align: bottom;
@@ -144,7 +140,7 @@
                         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
                       </v-list-item>
                       <template v-if="drawer">
-                        <h1 class="margin-bottom-35">条件</h1>
+                        <h1 class="padding-35">条件</h1>
                         <!-- 座席数のセレクトボックス -->
                         <v-select :items="seatsOptionsX" label="全体の横の座席数" outlined　v-model.number="seatsSizeX" style="width:125px" class="inline-block"></v-select>
                         <v-select :items="seatsOptionsY" label="全体の縦の座席数" outlined　v-model.number="seatsSizeY" style="width:125px" class="inline-block"></v-select>
