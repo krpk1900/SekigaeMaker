@@ -93,7 +93,7 @@
         border-width: 0 1px 0 1px;
       }
       .box-shadow {
-        box-shadow: 0 0 6px 6px rgba(220,220,220,0.5);
+        box-shadow: 0 0 3px 3px rgba(170,170,170,0.5);
       }
       [v-cloak] {
         display: none;
@@ -133,11 +133,11 @@
             <v-col cols="6">
               <!-- サイドバー -->
               <template>
-                <v-navigation-drawer absolute right width="50%" color="#e4e4e4" :mini-variant="!drawer">
+                <v-navigation-drawer absolute width="50%" color="#e4e4e4" :mini-variant="!drawer" right>
                   <v-list nav dense>
                     <v-list-item-group>
-                      <v-list-item class="right">
-                        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+                      <v-list-item class="right" @click.stop="drawer = !drawer">
+                        <v-app-bar-nav-icon></v-app-bar-nav-icon>
                       </v-list-item>
                       <template v-if="drawer">
                         <h1 class="padding-35">条件</h1>
