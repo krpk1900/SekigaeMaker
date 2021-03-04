@@ -61,7 +61,7 @@
         padding-bottom: 10px;
       }
       .card-bottom {
-        padding-bottom: 30px;
+        padding-bottom: 35px;
       }
       .padding-35 {
         padding:35px 0;
@@ -275,57 +275,61 @@
           <v-row>
             <!-- 座席テーブル -->
             <v-col cols="6">
-              <v-card outlined color="#0d6399" class="box-shadow rounded-xl">
-                <v-card-title class="justify-center white--text text-h4">今の座席</v-card-title>
-                <!--v-card-subtitle class="justify-center text-center white--text">現在の座席に名前を入力してください<br>クリックで性別を変更できます</v-card-subtitle-->
-                <div>
-                  <li v-for="( seats, indexRow ) in seatsTable">
-                    <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
-                      <textarea
-                      :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
-                      @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                      :key="indexRow.toString() + indexCol.toString()"
-                      style="text-align: center;  resize: none; word-break: keep-all"
-                      :value="seatsTable[indexRow][indexCol]"
-                      @click="toggleGender(indexCol,indexRow)">
-                    </textarea>
-                    <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
-                  </span>
-                  <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
-                  </li>
-                </div>
-                <div class="card-bottom"></div>
-              </v-card>
+              <v-layout justify-center>
+                <v-card outlined color="#0d6399" class="box-shadow rounded-xl" width="620px">
+                  <v-card-title class="justify-center white--text text-h4">今の座席</v-card-title>
+                  <!--v-card-subtitle class="justify-center text-center white--text">現在の座席に名前を入力してください<br>クリックで性別を変更できます</v-card-subtitle-->
+                  <div>
+                    <li v-for="( seats, indexRow ) in seatsTable">
+                      <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
+                        <textarea
+                        :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                        @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                        :key="indexRow.toString() + indexCol.toString()"
+                        style="text-align: center;  resize: none; word-break: keep-all"
+                        :value="seatsTable[indexRow][indexCol]"
+                        @click="toggleGender(indexCol,indexRow)">
+                      </textarea>
+                      <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
+                    </span>
+                    <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
+                    </li>
+                  </div>
+                  <div class="card-bottom"></div>
+                </v-card>
+              </v-layout>
               <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">席替え！</v-btn>
             </v-col>
 
             <!-- 席替え後の座席テーブル -->
             <v-col cols="6">
-              <v-card outlined color="#0d6399" class="box-shadow rounded-xl">
-                <v-card-title class="justify-center white--text text-h4">席替え後</v-card-title>
-                <!--v-card-subtitle class="justify-center text-center"><br><br></v-card-subtitle-->
-                <template v-if="isRenderNextSeatsTable">
-                  <div class="center">
-                    <transition-group name="transition-item" type="transition">
-                      <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
-                        <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                          <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                            <textarea class="sortable-item"
-                            :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
-                            style="text-align: center;  resize: none; word-break: keep-all"
-                            :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
-                            @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
-                            </textarea>
-                          </span>
-                          <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
+              <v-layout justify-center>
+                <v-card outlined color="#0d6399" class="box-shadow rounded-xl" width="620px">
+                  <v-card-title class="justify-center white--text text-h4">席替え後</v-card-title>
+                  <!--v-card-subtitle class="justify-center text-center"><br><br></v-card-subtitle-->
+                  <template v-if="isRenderNextSeatsTable">
+                    <div class="center">
+                      <transition-group name="transition-item" type="transition">
+                        <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
+                          <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
+                            <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
+                              <textarea class="sortable-item"
+                              :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
+                              style="text-align: center;  resize: none; word-break: keep-all"
+                              :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
+                              @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
+                              </textarea>
+                            </span>
+                            <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
+                          </template>
+                          <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
                         </template>
-                        <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
-                      </template>
-                    </transition-group>
-                  </div>
-                </template>
-                <div class="card-bottom"></div>
-              </v-card>
+                      </transition-group>
+                    </div>
+                  </template>
+                  <div class="card-bottom"></div>
+                </v-card>
+            </v-layout>
             </v-col>
 
 
