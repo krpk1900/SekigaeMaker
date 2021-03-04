@@ -205,13 +205,13 @@
                         <v-expansion-panel-header>特定の座席に固定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(fixCondition, fixIndex) in fixConditions">
-                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
+                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
                             v-model="fixConditions[fixIndex][0]"></v-select>
                             を、前から
-                            <v-select :items="limitedSeatsOptionsY" outlined style="width:70px; display: inline-block"
+                            <v-select :items="limitedSeatsOptionsY" outlined style="width:65px; display: inline-block"
                             v-model="fixConditions[fixIndex][1]"></v-select>
                             列目、左から
-                            <v-select :items="limitedSeatsOptionsX" outlined style="width:70px; display: inline-block"
+                            <v-select :items="limitedSeatsOptionsX" outlined style="width:65px; display: inline-block"
                             v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
                             列目に固定する
                           </div>
@@ -225,13 +225,13 @@
                         <v-expansion-panel-header>生徒同士を近づける</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(nearCondition, nearIndex) in nearConditions">
-                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
+                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
                             v-model="nearConditions[nearIndex][0]"></v-select>
                             と
-                            <v-select :items="studentsName" placeholder="Bさん" outlined style="width:190px; display: inline-block"
+                            <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
                             v-model="nearConditions[nearIndex][1]"></v-select>
                             の間を
-                            <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                            <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
                             v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
                             席以下にする
                           </div>
@@ -245,13 +245,13 @@
                         <v-expansion-panel-header>生徒同士を離す</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(farCondition, farIndex) in farConditions">
-                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
+                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
                             v-model="farConditions[farIndex][0]"></v-select>
                             と
-                            <v-select :items="studentsName" placeholder="Bさん" outlined style="width:190px; display: inline-block"
+                            <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
                             v-model="farConditions[farIndex][1]"></v-select>
                             の間を
-                            <v-select :items="distanceOptions" outlined style="width:70px; display: inline-block"
+                            <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
                             v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
                             席以上空ける
                           </div>
