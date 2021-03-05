@@ -13,9 +13,12 @@
       }
       .background-color {
         /* degital water */
+        /*
         background: #74ebd5;
         background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);
         background: linear-gradient(to right, #ACB6E5, #74ebd5);
+        */
+        background: #FFFFFF;
       }
       .right {
         float: right;
@@ -46,7 +49,7 @@
         height: 80px;
         width: 80px;
         display: inline-block;
-        border: 3px solid #0d6399;
+        border: 3px solid #008396;
         box-sizing: border-box;
         text-align: center;
         border-radius: 7px;
@@ -128,7 +131,7 @@
           <v-row>
             <!-- タイトル -->
             <v-col cols="6">
-              <h1 class="text-center font" style="color: #FFFFFF; font-size: 50px;">席替えメーカー</h1>
+              <h1 class="text-center font" style="color: #008396; font-size: 50px;">席替えメーカー</h1>
             </v-col>
           </v-row>
 
@@ -276,8 +279,8 @@
             <!-- 座席テーブル -->
             <v-col cols="6">
               <v-layout justify-center>
-                <v-card outlined color="#0d6399" class="box-shadow rounded-xl" width="620px">
-                  <v-card-title class="justify-center white--text text-h4">今の座席</v-card-title>
+                <v-card outlined color="#008396" class="box-shadow rounded-xl" width="620px" style="color: #FFFFFF;">
+                  <v-card-title class="justify-center text-h4" style="font-weight: 900;">今の座席</v-card-title>
                   <!--v-card-subtitle class="justify-center text-center white--text">現在の座席に名前を入力してください<br>クリックで性別を変更できます</v-card-subtitle-->
                   <div>
                     <li v-for="( seats, indexRow ) in seatsTable">
@@ -304,8 +307,8 @@
             <!-- 席替え後の座席テーブル -->
             <v-col cols="6">
               <v-layout justify-center>
-                <v-card outlined color="#0d6399" class="box-shadow rounded-xl" width="620px">
-                  <v-card-title class="justify-center white--text text-h4">席替え後</v-card-title>
+                <v-card outlined color="#008396" class="box-shadow rounded-xl" width="620px" style="color: #FFFFFF;">
+                  <v-card-title class="justify-center text-h4" style="font-weight: 900;">席替え後</v-card-title>
                   <!--v-card-subtitle class="justify-center text-center"><br><br></v-card-subtitle-->
                   <template v-if="isRenderNextSeatsTable">
                     <div class="center">
