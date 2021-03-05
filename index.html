@@ -20,6 +20,13 @@
         */
         background: #FFFFFF;
       }
+      .btn {
+        background: #B82E73;
+        /*background: #db7257;*/
+      }
+      .v-btn {
+        border-radius: 12px;
+      }
       .right {
         float: right;
       }
@@ -139,63 +146,59 @@
             <v-spacer></v-spacer>
             <!-- 座席テーブル -->
             <v-col cols="5">
-              <v-layout justify-center>
-                <v-card outlined color="#008396" class="box-shadow rounded-xl" width="620px" style="color: #FFFFFF;">
-                  <v-card-title class="justify-center text-h4" style="font-weight: 900;">今の座席</v-card-title>
-                  <!--v-card-subtitle class="justify-center text-center white--text">現在の座席に名前を入力してください<br>クリックで性別を変更できます</v-card-subtitle-->
-                  <div>
-                    <li v-for="( seats, indexRow ) in seatsTable">
-                      <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
-                        <textarea
-                        :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
-                        @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                        :key="indexRow.toString() + indexCol.toString()"
-                        style="text-align: center;  resize: none; word-break: keep-all"
-                        :value="seatsTable[indexRow][indexCol]"
-                        @click="toggleGender(indexCol,indexRow)">
-                      </textarea>
-                      <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
-                    </span>
-                    <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
-                    </li>
-                  </div>
-                  <div class="card-bottom"></div>
-                </v-card>
-              </v-layout>
-              <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">席替え！</v-btn>
+              <v-card outlined color="#008396" class="box-shadow rounded-xl"style="color: #FFFFFF;">
+                <v-card-title class="justify-center text-h4" style="font-weight: 900;">今の座席</v-card-title>
+                <!--v-card-subtitle class="justify-center text-center white--text">現在の座席に名前を入力してください<br>クリックで性別を変更できます</v-card-subtitle-->
+                <div>
+                  <li v-for="( seats, indexRow ) in seatsTable">
+                    <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
+                      <textarea
+                      :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                      @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                      :key="indexRow.toString() + indexCol.toString()"
+                      style="text-align: center;  resize: none; word-break: keep-all"
+                      :value="seatsTable[indexRow][indexCol]"
+                      @click="toggleGender(indexCol,indexRow)">
+                    </textarea>
+                    <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
+                  </span>
+                  <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
+                  </li>
+                </div>
+                <div class="card-bottom"></div>
+              </v-card>
+              <v-btn elevation="2" x-large color="#FFFFFF" class="btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">席替え！</v-btn>
             </v-col>
 
             <v-spacer></v-spacer>
 
             <!-- 席替え後の座席テーブル -->
             <v-col cols="5">
-              <v-layout justify-center>
-                <v-card outlined color="#008396" class="box-shadow rounded-xl" width="620px" style="color: #FFFFFF;">
-                  <v-card-title class="justify-center text-h4" style="font-weight: 900;">席替え後</v-card-title>
-                  <!--v-card-subtitle class="justify-center text-center"><br><br></v-card-subtitle-->
-                  <template v-if="isRenderNextSeatsTable">
-                    <div class="center">
-                      <transition-group name="transition-item" type="transition">
-                        <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
-                          <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                            <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                              <textarea class="sortable-item"
-                              :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
-                              style="text-align: center;  resize: none; word-break: keep-all"
-                              :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
-                              @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
-                              </textarea>
-                            </span>
-                            <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
-                          </template>
-                          <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
+              <v-card outlined color="#008396" class="box-shadow rounded-xl"style="color: #FFFFFF;">
+                <v-card-title class="justify-center text-h4" style="font-weight: 900;">席替え後</v-card-title>
+                <!--v-card-subtitle class="justify-center text-center"><br><br></v-card-subtitle-->
+                <template v-if="isRenderNextSeatsTable">
+                  <div class="center">
+                    <transition-group name="transition-item" type="transition">
+                      <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
+                        <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
+                          <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
+                            <textarea class="sortable-item"
+                            :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
+                            style="text-align: center;  resize: none; word-break: keep-all"
+                            :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
+                            @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
+                            </textarea>
+                          </span>
+                          <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
                         </template>
-                      </transition-group>
-                    </div>
-                  </template>
-                  <div class="card-bottom"></div>
-                </v-card>
-              </v-layout>
+                        <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
+                      </template>
+                    </transition-group>
+                  </div>
+                </template>
+                <div class="card-bottom"></div>
+              </v-card>
             </v-col>
 
             <v-col cols="1">
@@ -325,7 +328,7 @@
                         <v-checkbox label="現在の座席と異なる座席にする" v-model="isAllDifferent" hide-details></v-checkbox>
                         <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details></v-checkbox>
                         <!-- 席替えボタン -->
-                        <v-btn elevation="2" outlined @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" class="change-seats-button">席替え！</v-btn>
+                        <v-btn elevation="2" x-large color="#FFFFFF" class="btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">席替え！</v-btn>
                       </template>
                     </v-list-item-group>
                   </v-list>
