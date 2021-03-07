@@ -17,17 +17,10 @@
         margin-bottom: -7px;
       }
       .background-color {
-        /* degital water */
-        /*
-        background: #74ebd5;
-        background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);
-        background: linear-gradient(to right, #ACB6E5, #74ebd5);
-        */
         background: #FFFFFF;
       }
       .btn {
         background: #B82E73;
-        /*background: #db7257;*/
       }
       .v-btn {
         border-radius: 12px;
@@ -157,7 +150,6 @@
           <!-- 座席テーブル -->
           <v-card outlined color="#008396" class="box-shadow rounded-xl left-card-margin"style="color: #FFFFFF;">
             <v-card-title class="justify-center text-h4" style="font-weight: 900;">今の座席</v-card-title>
-            <!--v-card-subtitle class="justify-center text-center white--text">現在の座席に名前を入力してください<br>クリックで性別を変更できます</v-card-subtitle-->
             <div>
               <li v-for="( seats, indexRow ) in seatsTable">
                 <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
@@ -180,7 +172,6 @@
           <!-- 席替え後の座席テーブル -->
           <v-card outlined color="#008396" class="box-shadow rounded-xl right-card-margin"style="color: #FFFFFF;">
             <v-card-title class="justify-center text-h4" style="font-weight: 900;">席替え後</v-card-title>
-            <!--v-card-subtitle class="justify-center text-center"><br><br></v-card-subtitle-->
             <template v-if="isRenderNextSeatsTable">
               <div class="center">
                 <transition-group name="transition-item" type="transition">
@@ -291,7 +282,6 @@
                     <!-- 近づける生徒のエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels">
                       <v-expansion-panel>
-
                         <v-expansion-panel-header><v-icon color="#008396">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(nearCondition, nearIndex) in nearConditions">
@@ -355,8 +345,8 @@
                 </v-list-item-group>
               </v-list>
             </v-navigation-drawer>
-          <!-- サイドバーここまで -->
           </template>
+          <!-- サイドバーここまで -->
 
           <!-- 以下デバッグ用表示
           <v-row>
