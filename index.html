@@ -206,13 +206,13 @@
             <v-col cols="1">
               <!-- サイドバー -->
               <template>
-                <v-navigation-drawer absolute width="51%" color="#ededed" :mini-variant="!drawer" right>
+                <v-navigation-drawer absolute width="51%" color="#ededed" :mini-variant="!drawer" mini-variant-width="70px" right>
                   <v-list nav dense>
                     <v-list-item-group>
-                      <v-list-item class="right" @click.stop="drawer = !drawer">
-                        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-                      </v-list-item>
                       <template v-if="drawer">
+                        <v-list-item @click.stop="drawer = !drawer">
+                          <v-icon color="#008396">mdi-chevron-double-right</v-icon>
+                        </v-list-item>
                         <h1 class="padding-35"><v-icon color="#008396" style="font-size: 35px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                         <!-- 座席数のセレクトボックス -->
                         <v-select :items="seatsOptionsX" label="全体の横の座席数" outlined　v-model.number="seatsSizeX" style="width:125px" class="inline-block"></v-select>
@@ -222,7 +222,7 @@
                         <!-- 前後で指定するエクスパンションパネル -->
                         <v-expansion-panels accordion class="expansion-panels">
                           <v-expansion-panel>
-                            <v-expansion-panel-header><v-icon color="#008396"> mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
+                            <v-expansion-panel-header><v-icon color="#008396">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
                             <v-expansion-panel-content>
                               <v-expansion-panels accordion multiple>
                                 <!-- 最前列のエクスパンションパネル -->
@@ -331,7 +331,26 @@
                         <v-checkbox label="現在の座席と異なる座席にする" v-model="isAllDifferent" hide-details></v-checkbox>
                         <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details></v-checkbox>
                         <!-- 席替えボタン -->
-                        <v-btn elevation="2" x-large color="#FFFFFF" class="btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false"><v-icon>mdi-sync-circle</v-icon>席替え</v-btn>
+                        <v-btn elevation="2" x-large color="#FFFFFF" class="btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false"><v-icon>mdi-sync</v-icon>席替え</v-btn>
+                      </template>
+                      <!-- サイドバーを閉じたとき -->
+                      <template v-else>
+                        <v-list-item @click.stop="drawer = !drawer">
+                          <v-icon color="#008396">mdi-chevron-double-left</v-icon>
+                        </v-list-item>
+                        <v-list-item @click.stop="drawer = !drawer">
+                          <v-icon color="#008396">mdi-sort-ascending</v-icon>
+                        </v-list-item>
+                        <v-list-item @click.stop="drawer = !drawer">
+                          <v-icon color="#008396">mdi-target-variant</v-icon>
+                        </v-list-item>
+                        <v-list-item @click.stop="drawer = !drawer">
+                          <v-icon color="#008396">mdi-arrow-collapse</v-icon>
+                        </v-list-item>
+                        <v-list-item @click.stop="drawer = !drawer">
+                          <v-icon color="#008396">mdi-arrow-expand</v-icon>
+                        </v-list-item>
+                        <v-btn elevation="2" color="#FFFFFF" class="btn"fab text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false"><v-icon>mdi-sync</v-icon></v-btn>
                       </template>
                     </v-list-item-group>
                   </v-list>
