@@ -134,17 +134,21 @@
       .v-expansion-panel-header>:not(.v-expansion-panel-header__icon) {
         flex: none;
       }
-      .open-close-icon {
+      .close-icon {
         margin: 20px 0;
       }
+      .open-icon {
+        margin: 20px 0 23px 0;
+      }
       .v-text-field.v-text-field--enclosed {
-        margin: 15px 5px -15px;
+        margin: 0px 5px -20px;
       }
       .closed-icon {
         margin: 10px 0;
+
       }
       .condition-title {
-        margin: 5px 0 15px;
+        margin: 5px 0 28px;
       }
       .icon {
         margin: 0 8px 0 -5px;
@@ -161,19 +165,34 @@
 
           <!-- サイドバー -->
           <div>
-            <v-navigation-drawer absolute width="52%" color="#ededed" :mini-variant="!drawer" mini-variant-width="70px" right>
+            <v-navigation-drawer absolute width="52%" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right>
               <v-list nav dense>
                 <v-list-item-group>
                   <template v-if="drawer">
                     <v-list-item  style="float: right;" @click.stop="drawer = !drawer">
-                      <v-icon color="#008396" class="open-close-icon">mdi-chevron-double-right</v-icon>
+                      <v-icon color="#008396" class="close-icon">mdi-chevron-double-right</v-icon>
                     </v-list-item>
                     <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#008396" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
-                    <!-- 座席数のセレクトボックス -->
-                    <v-select :items="seatsOptionsX" label="全体の横の座席数" outlined　v-model.number="seatsSizeX" style="width:125px" class="inline-block"></v-select>
-                    <v-select :items="seatsOptionsY" label="全体の縦の座席数" outlined　v-model.number="seatsSizeY" style="width:125px" class="inline-block"></v-select>
-                    <v-select :items="groupSizeOptionsX" label="班の横の座席数" outlined　v-model.number="groupSizeX" style="width:110px" class="inline-block"></v-select>
-                    <v-select :items="groupSizeOptionsY" label="班の縦の座席数" outlined　v-model.number="groupSizeY" style="width:110px" class="inline-block"></v-select>
+                    <!-- 座席数を指定するエクスパンションパネル -->
+                    <v-expansion-panels accordion class="expansion-panels">
+                      <v-expansion-panel>
+                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <div>
+                            全体
+                            <v-select :items="seatsOptionsX" label="横" outlined　v-model.number="seatsSizeX" style="width:90px" class="inline-block"></v-select>
+                            ✕
+                            <v-select :items="seatsOptionsY" label="縦" outlined　v-model.number="seatsSizeY" style="width:90px" class="inline-block"></v-select>
+                          </div>
+                          <div>
+                            班　
+                            <v-select :items="groupSizeOptionsX" label="横" outlined　v-model.number="groupSizeX" style="width:90px" class="inline-block"></v-select>
+                            ✕
+                            <v-select :items="groupSizeOptionsY" label="縦" outlined　v-model.number="groupSizeY" style="width:90px" class="inline-block"></v-select>
+                          </div>
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
                     <!-- 前後で指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels">
                       <v-expansion-panel class="expansion-panel">
@@ -292,21 +311,27 @@
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
                     <v-list-item @click.stop="drawer = !drawer">
-                      <v-icon color="#008396" class="open-close-icon">mdi-chevron-double-left</v-icon>
+                      <v-icon color="#008396" class="open-icon">mdi-chevron-double-left</v-icon>
+                    </v-list-item>
+                    <div style="margin-bottom: 25px;"></div>
+                    <v-list-item @click.stop="drawer = !drawer">
+                      <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
                     </v-list-item>
                     <v-list-item @click.stop="drawer = !drawer">
-                      <v-icon color="#008396">mdi-sort-ascending</v-icon>
+                      <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-sort-ascending</v-icon>
                     </v-list-item>
                     <v-list-item @click.stop="drawer = !drawer">
-                      <v-icon color="#008396">mdi-target-variant</v-icon>
+                      <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-target-variant</v-icon>
                     </v-list-item>
                     <v-list-item @click.stop="drawer = !drawer">
-                      <v-icon color="#008396">mdi-arrow-collapse</v-icon>
+                      <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-arrow-collapse</v-icon>
                     </v-list-item>
                     <v-list-item @click.stop="drawer = !drawer">
-                      <v-icon color="#008396">mdi-arrow-expand</v-icon>
+                      <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
                     </v-list-item>
-                    <v-btn elevation="2" color="#FFFFFF" class="btn" fab text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false"><v-icon>mdi-sync</v-icon></v-btn>
+                    <v-btn elevation="2" color="#FFFFFF" class="btn" fab text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">
+                      <v-icon style="font-size: 32px;">mdi-sync</v-icon>
+                    </v-btn>
                   </template>
                 </v-list-item-group>
               </v-list>
