@@ -11,6 +11,10 @@
         grid-template-columns: 1fr 1fr 70px;
         grid-template-rows: 100px;
       }
+      .panel-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
       li {
         text-align: center;
         list-style: none;
@@ -19,9 +23,12 @@
       .background-color {
         background: #FFFFFF;
       }
-      .btn {
+      .open-btn {
         background: #B82E73;
         margin: 13px 0;
+      }
+      .closed-btn {
+        background: #B82E73;
       }
       .v-btn {
         border-radius: 12px;
@@ -178,17 +185,15 @@
                       <v-expansion-panel>
                         <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
-                          <div>
-                            全体
-                            <v-select :items="seatsOptionsX" label="横" outlined　v-model.number="seatsSizeX" style="width:90px" class="inline-block"></v-select>
-                            ✕
-                            <v-select :items="seatsOptionsY" label="縦" outlined　v-model.number="seatsSizeY" style="width:90px" class="inline-block"></v-select>
-                          </div>
-                          <div>
-                            班　
-                            <v-select :items="groupSizeOptionsX" label="横" outlined　v-model.number="groupSizeX" style="width:90px" class="inline-block"></v-select>
-                            ✕
-                            <v-select :items="groupSizeOptionsY" label="縦" outlined　v-model.number="groupSizeY" style="width:90px" class="inline-block"></v-select>
+                          <div class="panel-grid-layout">
+                            <div>
+                              全体<v-select :items="seatsOptionsX" label="横" outlined　v-model.number="seatsSizeX" style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
+                              ✕<v-select :items="seatsOptionsY" label="縦" outlined　v-model.number="seatsSizeY" style="width: 90px;" class="inline-block"></v-select>
+                            </div>
+                            <div>
+                              班<v-select :items="groupSizeOptionsX" label="横" outlined　v-model.number="groupSizeX" style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
+                              ✕<v-select :items="groupSizeOptionsY" label="縦" outlined　v-model.number="groupSizeY" style="width: 90px;" class="inline-block"></v-select>
+                            </div>
                           </div>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
@@ -304,7 +309,7 @@
                     <v-checkbox label="現在の座席と異なる座席にする" v-model="isAllDifferent" hide-details></v-checkbox>
                     <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details></v-checkbox>
                     <!-- 席替えボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
                   </template>
@@ -329,7 +334,7 @@
                     <v-list-item @click.stop="drawer = !drawer">
                       <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
                     </v-list-item>
-                    <v-btn elevation="2" color="#FFFFFF" class="btn" fab text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">
+                    <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false">
                       <v-icon style="font-size: 32px;">mdi-sync</v-icon>
                     </v-btn>
                   </template>
