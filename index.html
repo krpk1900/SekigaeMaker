@@ -21,6 +21,7 @@
       }
       .btn {
         background: #B82E73;
+        margin: 13px 0;
       }
       .v-btn {
         border-radius: 12px;
@@ -33,7 +34,7 @@
         margin-right: 10px;
       }
       .expansion-panels {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
       .change-seats-button {
         margin-top: 10px;
@@ -76,9 +77,6 @@
       }
       .right-card-margin {
         margin: 0 40px 0 20px;
-      }
-      .padding-35 {
-        padding:35px 0;
       }
       .minus-margin-bottom {
         vertical-align: bottom;
@@ -136,6 +134,21 @@
       .v-expansion-panel-header>:not(.v-expansion-panel-header__icon) {
         flex: none;
       }
+      .open-close-icon {
+        margin: 20px 0;
+      }
+      .v-text-field.v-text-field--enclosed {
+        margin: 15px 5px -15px;
+      }
+      .closed-icon {
+        margin: 10px 0;
+      }
+      .condition-title {
+        margin: 5px 0 15px;
+      }
+      .icon {
+        margin: 0 8px 0 -5px;
+      }
     </style>
   </head>
   <body>
@@ -143,7 +156,7 @@
       <v-app>
         <div class="grid-layout background-color">
           <!-- タイトル -->
-          <h1 class="text-center font" style="color: #008396; font-size: 50px;"><v-icon color="#008396" style="font-size: 55px;">mdi-nintendo-switch</v-icon>席替えメーカー</h1>
+          <h1 class="text-center font" style="color: #008396; font-size: 50px;">席替えメーカー</h1>
           <div></div><!-- グリッドレイアウト調整用 -->
 
           <!-- サイドバー -->
@@ -152,10 +165,10 @@
               <v-list nav dense>
                 <v-list-item-group>
                   <template v-if="drawer">
-                    <v-list-item @click.stop="drawer = !drawer">
-                      <v-icon color="#008396">mdi-chevron-double-right</v-icon>
+                    <v-list-item  style="float: right;" @click.stop="drawer = !drawer">
+                      <v-icon color="#008396" class="open-close-icon">mdi-chevron-double-right</v-icon>
                     </v-list-item>
-                    <h1 class="padding-35"><v-icon color="#008396" style="font-size: 35px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
+                    <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#008396" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                     <!-- 座席数のセレクトボックス -->
                     <v-select :items="seatsOptionsX" label="全体の横の座席数" outlined　v-model.number="seatsSizeX" style="width:125px" class="inline-block"></v-select>
                     <v-select :items="seatsOptionsY" label="全体の縦の座席数" outlined　v-model.number="seatsSizeY" style="width:125px" class="inline-block"></v-select>
@@ -163,8 +176,8 @@
                     <v-select :items="groupSizeOptionsY" label="班の縦の座席数" outlined　v-model.number="groupSizeY" style="width:110px" class="inline-block"></v-select>
                     <!-- 前後で指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels">
-                      <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
+                      <v-expansion-panel class="expansion-panel">
+                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <v-expansion-panels accordion multiple>
                             <!-- 最前列のエクスパンションパネル -->
@@ -214,7 +227,7 @@
                     <!-- 特定の座席に固定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels">
                       <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(fixCondition, fixIndex) in fixConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
@@ -233,7 +246,7 @@
                     <!-- 近づける生徒のエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels">
                       <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(nearCondition, nearIndex) in nearConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
@@ -252,7 +265,7 @@
                     <!-- 離す生徒のエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels">
                       <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(farCondition, farIndex) in farConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
@@ -272,12 +285,14 @@
                     <v-checkbox label="現在の座席と異なる座席にする" v-model="isAllDifferent" hide-details></v-checkbox>
                     <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details></v-checkbox>
                     <!-- 席替えボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false"><v-icon>mdi-sync</v-icon>席替え</v-btn>
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
+                      <v-icon class="icon">mdi-sync</v-icon>席替え
+                    </v-btn>
                   </template>
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
                     <v-list-item @click.stop="drawer = !drawer">
-                      <v-icon color="#008396">mdi-chevron-double-left</v-icon>
+                      <v-icon color="#008396" class="open-close-icon">mdi-chevron-double-left</v-icon>
                     </v-list-item>
                     <v-list-item @click.stop="drawer = !drawer">
                       <v-icon color="#008396">mdi-sort-ascending</v-icon>
@@ -291,7 +306,7 @@
                     <v-list-item @click.stop="drawer = !drawer">
                       <v-icon color="#008396">mdi-arrow-expand</v-icon>
                     </v-list-item>
-                    <v-btn elevation="2" color="#FFFFFF" class="btn"fab text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false"><v-icon>mdi-sync</v-icon></v-btn>
+                    <v-btn elevation="2" color="#FFFFFF" class="btn" fab text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false"><v-icon>mdi-sync</v-icon></v-btn>
                   </template>
                 </v-list-item-group>
               </v-list>
