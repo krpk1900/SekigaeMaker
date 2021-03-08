@@ -43,6 +43,9 @@
       .expansion-panels {
         margin-bottom: 12px;
       }
+      .nested-expansion-panel {
+        background-color: #fbfbfb;
+      }
       .change-seats-button {
         margin-top: 10px;
       }
@@ -205,7 +208,7 @@
                         <v-expansion-panel-content>
                           <v-expansion-panels accordion multiple>
                             <!-- 最前列のエクスパンションパネル -->
-                            <v-expansion-panel>
+                            <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>最前列</v-expansion-panel-header>
                               <v-expansion-panel-content>
                                 <span v-for="(frontCondition, frontIndex) in frontConditions">
@@ -215,7 +218,7 @@
                               </v-expansion-panel-content>
                             </v-expansion-panel>
                             <!-- 前2列のエクスパンションパネル -->
-                            <v-expansion-panel>
+                            <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>前2列</v-expansion-panel-header>
                               <v-expansion-panel-content>
                                 <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
@@ -225,7 +228,7 @@
                               </v-expansion-panel-content>
                             </v-expansion-panel>
                             <!-- 後ろ2列のエクスパンションパネル -->
-                            <v-expansion-panel>
+                            <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
                               <v-expansion-panel-content>
                                 <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
@@ -235,7 +238,7 @@
                               </v-expansion-panel-content>
                             </v-expansion-panel>
                             <!-- 最後列のエクスパンションパネル -->
-                            <v-expansion-panel>
+                            <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>最後列</v-expansion-panel-header>
                               <v-expansion-panel-content>
                                 <span v-for="(backCondition, backIndex) in backConditions">
@@ -306,8 +309,8 @@
                       </v-expansion-panel>
                     </v-expansion-panels>
                     <!-- チェックボックス -->
-                    <v-checkbox label="現在の座席と異なる座席にする" v-model="isAllDifferent" hide-details></v-checkbox>
-                    <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details></v-checkbox>
+                    <v-checkbox label="現在の座席と異なる座席にする" v-model="isAllDifferent" hide-details color="#008396"></v-checkbox>
+                    <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396"></v-checkbox>
                     <!-- 席替えボタン -->
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
