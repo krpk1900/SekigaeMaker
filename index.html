@@ -180,7 +180,7 @@
                 <v-list-item-group>
                   <template v-if="drawer">
                     <v-list-item  style="float: right;" @click.stop="drawer = !drawer">
-                      <v-icon color="#008396" class="close-icon">mdi-chevron-double-right</v-icon>
+                      <v-icon color="#008396" class="close-icon" style="font-size: 32px;">mdi-chevron-double-right</v-icon>
                     </v-list-item>
                     <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#008396" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                     <!-- 座席数を指定するエクスパンションパネル -->
@@ -319,7 +319,7 @@
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
-                      <v-icon color="#008396" class="open-icon">mdi-chevron-double-left</v-icon>
+                      <v-icon color="#008396" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
                     <div style="margin-bottom: 25px;"></div>
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
@@ -353,14 +353,35 @@
             <div>
               <li v-for="( seats, indexRow ) in seatsTable">
                 <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
-                  <textarea
+                  <!-- 1つ目のフォームにプレイスホルダーを設定 -->
+                  <textarea v-if="indexRow==0 && indexCol==0"
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all"
+                  style="text-align: center;  resize: none; word-break: keep-all;"
+                  :value="seatsTable[indexRow][indexCol]"
+                  @click="toggleGender(indexCol,indexRow)"
+                  placeholder="席替え&#13;太郎">
+                  </textarea>
+                  <!-- 2つ目のフォームにプレイスホルダーを設定 -->
+                  <textarea v-else-if="indexRow==0 && indexCol==1"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                  @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                  :key="indexRow.toString() + indexCol.toString()"
+                  style="text-align: center;  resize: none; word-break: keep-all;"
+                  :value="seatsTable[indexRow][indexCol]"
+                  @click="toggleGender(indexCol,indexRow)"
+                  placeholder="席替え&#13;太郎">
+                  </textarea>
+                  <!-- 3つ目以降のフォーム -->
+                  <textarea v-else
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                  @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
+                  :key="indexRow.toString() + indexCol.toString()"
+                  style="text-align: center;  resize: none; word-break: keep-all;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)">
-                </textarea>
+                  </textarea>
                 <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
               </span>
               <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
