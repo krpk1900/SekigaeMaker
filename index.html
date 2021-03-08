@@ -15,6 +15,10 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
       }
+      .checkbox-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 10px 1fr;
+      }
       li {
         text-align: center;
         list-style: none;
@@ -148,14 +152,13 @@
         margin: 20px 0;
       }
       .open-icon {
-        margin: 20px 0 23px 0;
+        margin: 20px 0 24px 0;
       }
       .v-text-field.v-text-field--enclosed {
         margin: 0px 5px -20px;
       }
       .closed-icon {
         margin: 10px 0;
-
       }
       .condition-title {
         margin: 5px 0 28px;
@@ -309,8 +312,16 @@
                       </v-expansion-panel>
                     </v-expansion-panels>
                     <!-- チェックボックス -->
-                    <v-checkbox label="現在の座席と異なる座席にする" v-model="isAllDifferent" hide-details color="#008396"></v-checkbox>
-                    <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396"></v-checkbox>
+                    <div class="checkbox-grid-layout">
+                      <v-card>
+                        <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#008396" style="margin:10px 0 0 17px;"></v-checkbox>
+                        <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396" style="margin:10px 0 10px 17px;"></v-checkbox>
+                      </v-card>
+                      <div></div><!-- マージン調整用 -->
+                      <v-card>
+                        <div style="margin-top: 20px; color: #555555;">{{seatsNum}}席入力済み</div>
+                      </v-card>
+                    </div>
                     <!-- 席替えボタン -->
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
@@ -321,7 +332,7 @@
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#008396" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
-                    <div style="margin-bottom: 25px;"></div>
+                    <div style="margin-bottom: 17px;"></div>
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
                     </v-list-item>
@@ -358,7 +369,7 @@
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all;"
+                  style="text-align: center;  resize: none; word-break: keep-all; font-size: 20px;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)"
                   placeholder="席替え&#13;太郎">
