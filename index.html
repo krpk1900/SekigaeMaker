@@ -369,7 +369,7 @@
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all; font-size: 20px;"
+                  style="text-align: center;  resize: none; word-break: keep-all; font-size: 22px;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)"
                   placeholder="席替え&#13;太郎">
@@ -382,7 +382,7 @@
                   style="text-align: center;  resize: none; word-break: keep-all;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)"
-                  placeholder="席替え&#13;太郎">
+                  placeholder="名前&#13;3行&#13;いけます">
                   </textarea>
                   <!-- 3つ目以降のフォーム -->
                   <textarea v-else
@@ -563,8 +563,8 @@
                   {{ disabledStudentsName }}
                 </v-col>
               </v-row>
-            </v-col-->
-          </v-row>
+            </v-col>
+          </v-row-->
         </div>
       </v-app>
     </div>
