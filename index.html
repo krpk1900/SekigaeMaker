@@ -339,23 +339,49 @@
                       </v-card>
                     </v-dialog>
                     <!-- プライバシーポリシー -->
-                    <v-dialog v-model="privacyPolicy" width="500">
+                    <v-dialog v-model="privacyPolicy" width="850" scrollable>
                       <template v-slot:activator="{ on, attrs }">
                         <a style="color: #777777; font-size: 15px; float: right; margin: 10px 0 0 10px;" v-bind="attrs" v-on="on">プライバシーポリシー</a>
                       </template>
                       <v-card>
-                        <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">プライバシーポリシー
+                        <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">プライバシーポリシー
                           <v-icon style="float: right;" @click="privacyPolicy = false">mdi-close</v-icon>
                         </v-card-title>
                         <v-card-text style="margin-top: 20px;">
-                          ＜第一条＞
-                          利用規則をかく！！！<br>
-                          ＜第一条＞
-                          利用規則をかく！！！<br>
-                          ＜第一条＞
-                          利用規則をかく！！！<br>
-                          ＜第一条＞
-                          利用規則をかく！！！<br>
+                          サイト運営者（以下「当方」と言います）は、当方の提供するサービス（以下「当サービス」と言います）における、ユーザーについての個人情報を含む利用者情報の取扱いについて、
+                          以下の通りプライバシーポリシー（以下「ポリシー」と言います）を定めます。
+                          <div class="font-weight-bold">第1条（収集する利用者情報及び収集情報）</div>
+                          本ポリシーにおいて、「利用者情報」とは、ユーザーの識別に係る情報、通信サービス上の行動履歴、その他ユーザーまたはユーザーの端末に関連して生成または蓄積された情報であって、
+                          本ポリシーに基づき当方が収集するものを意味するものとします。本サービスにおいて当方が収集する利用者情報は、その収集方法に応じて、以下のようなものとなります。<br>
+                          1.リファラ<br>
+                          2.IPアドレス<br>
+                          3.サーバーアクセスログに関する情報<br>
+                          4.Cookie<br>
+                          5.本サービスが提供する各種ツールの入力情報
+                          <div class="font-weight-bold">第2条（利用目的）</div>
+                          本サービスのサービス提供にかかわる利用者情報の具体的な利用目的は以下です。<br>
+                          1.ユーザーのトラフィック測定及び行動測定のため<br>
+                          2.広告の配信、表示及び効果測定のため<br>
+                          3.本サービスが提供する各種ツールの品質向上のため
+                          <div class="font-weight-bold">第3条（アクセス解析ツール）</div>
+                          1.当サービスでは、Googleによるアクセス解析ツール「Googleアナリティクス」・LogRocket社の提供するサービスである「LogRocket」を使用しています。
+                          このGoogleアナリティクス・LogRocketはデータの収集のためにCookieを使用しています。<br>
+                          2.この機能はCookieを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。
+                          この規約に関しての詳細は<a href="https://marketingplatform.google.com/about/analytics/terms/jp/"　target="_blank" rel="noopener noreferrer">Googleアナリティクスサービス利用規約</a>や
+                          <a href="https://policies.google.com/technologies/ads?hl=ja"　target="_blank" rel="noopener noreferrer">Googleポリシーと規約</a>・
+                          <a href="https://logrocket.com/privacy/"　target="_blank" rel="noopener noreferrer">LogRocketプライバシポリシー</a>をご覧ください。
+                          <div class="font-weight-bold">第4条（第三者提供）</div>
+                          当方は、利用者情報のうち、個人情報については、あらかじめユーザーの同意を得ないで、第三者（日本国外にある者を含みます）に提供しません。
+                          但し、次に掲げる必要があり第三者（日本国外にある者を含みます。）に提供する場合はこの限りではありません。<br>
+                          1.当方が利用目的の達成に必要な範囲内において個人情報の取り扱いの全部または一部を委託する場合<br>
+                          2.事業の継承に伴って個人情報が提供される場合<br>
+                          3.第3項の定めに従って、提携先または情報収集モジュール提供者へ個人情報が提供される場合<br>
+                          4.国の機関もしくは地方公共団体またはその委託を受けた者が法令の定めるジムを遂行することに対して協力する必要がある場合であって、
+                          ユーザーの同意を得ることによって当該事務の遂行に師匠を及ぼすおそれがある場合<br>
+                          5.その他、個人情報の保護に関する法律（以下「個人情報保護法」と言います ）その他の法令で認められる場合
+                          <div class="font-weight-bold">第5条（プライバシーポリシーの変更手続）</div>
+                          当方は、必要に応じて、本ポリシーを変更します。但し、法令上ユーザーの同意が必要となるような本ポリシーの変更を行う場合、変更後の本ポリシーは、当方所定の方法で変更に同意したユーザーに対してのみ適用されるものとします。
+                          なお、当方は、本ポリシーを変更する場合には、変更後の本ポリシーの施行時期及び内容を当ウェブサイト上での表示その他適切な方法により周知し、またはユーザーに通知します。
                         </v-card-text>
                       </v-card>
                     </v-dialog>
@@ -365,7 +391,7 @@
                         <a style="color: #777777; font-size: 15px; float: right; margin: 10px 0 0 10px;" v-bind="attrs" v-on="on">利用規則</a>
                       </template>
                       <v-card>
-                        <v-card-title class="headline grey lighten-2 font-weight-black" style="display:block;">利用規約
+                        <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
                           <v-icon style="float: right;" @click="userPolicy = false">mdi-close</v-icon>
                         </v-card-title>
                         <v-card-text style="margin-top: 20px;">
