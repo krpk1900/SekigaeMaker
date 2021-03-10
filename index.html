@@ -15,10 +15,6 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
       }
-      .checkbox-grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 10px 1fr;
-      }
       li {
         text-align: center;
         list-style: none;
@@ -314,16 +310,10 @@
                       </v-expansion-panel>
                     </v-expansion-panels>
                     <!-- チェックボックス -->
-                    <div class="checkbox-grid-layout">
-                      <v-card>
-                        <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#008396" style="margin:10px 0 0 17px;"></v-checkbox>
-                        <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396" style="margin:10px 0 10px 17px;"></v-checkbox>
-                      </v-card>
-                      <div></div><!-- マージン調整用 -->
-                      <v-card>
-                        <div style="margin-top: 20px; color: #555555;">{{seatsNum}}席入力済み</div>
-                      </v-card>
-                    </div>
+                    <v-card>
+                      <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#008396" style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
+                      <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396" style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
+                    </v-card>
                     <!-- 席替えボタン -->
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
