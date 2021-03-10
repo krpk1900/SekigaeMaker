@@ -368,7 +368,7 @@
                 <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                   <!-- 1つ目のフォームにプレイスホルダーを設定 -->
                   <input type="text" v-if="indexRow==0 && indexCol==0"
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol])]"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
@@ -377,7 +377,7 @@
                   placeholder="安藤">
                   <!-- 2つ目のフォームにプレイスホルダーを設定 -->
                   <input type="text" v-else-if="indexRow==0 && indexCol==1"
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol])]"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
@@ -386,7 +386,7 @@
                   placeholder="石原">
                   <!-- 3つ目以降のフォーム -->
                   <input type="text" v-else
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol])]"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
@@ -410,7 +410,7 @@
                     <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
                       <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
                         <input type="text" class="sortable-item"
-                        :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
+                        :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
                         style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                         :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
                         @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
@@ -641,8 +641,8 @@
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
           genderTable: [], // 生徒の性別テーブル
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
-          isAllDifferent: false, // 前回の座席と異なる配置にするかどうかの制御フラグ
-          isFixGender: false, // 性別を固定するかどうかの制御フラグ
+          isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
+          isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
           disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
           groupSizeX: 2,
@@ -719,7 +719,7 @@
               this.backConditions.push('');
             }
           },
-          getColorByName(studentName) { // 座席の種類に応じた色を返す
+          getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
             let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
             let gender
             if(genderIndex === -1){ //
@@ -728,7 +728,13 @@
               gender = this.genderArray[genderIndex];
             }
             if(gender === '') {
-              return 'off-seats'
+              if(row==0 && col==0){
+                return 'male-seats'
+              }else if(row==0 && col==1){
+                return 'female-seats'
+              }else {
+                return 'off-seats'
+              }
             }else if(gender === 'male'){
               return 'male-seats'
             }else if(gender === 'female'){
