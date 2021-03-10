@@ -382,7 +382,14 @@
 
           <!-- 座席テーブル -->
           <v-card outlined color="#008396" class="box-shadow rounded-xl left-card-margin"style="color: #FFFFFF;">
-            <v-card-title class="justify-center text-h4" style="font-weight: 900;">今の座席</v-card-title>
+            <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                </template>
+                <span>クリックで性別を切り替えることができます</span>
+              </v-tooltip>
+            </v-card-title>
             <div>
               <li v-for="( seats, indexRow ) in seatsTable">
                 <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
@@ -422,7 +429,14 @@
 
           <!-- 席替え後の座席テーブル -->
           <v-card outlined color="#008396" class="box-shadow rounded-xl right-card-margin"style="color: #FFFFFF;">
-            <v-card-title class="justify-center text-h4" style="font-weight: 900;">席替え後</v-card-title>
+            <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                </template>
+                <span>座席をつかんで入れ替えることができます</span>
+              </v-tooltip>
+            </v-card-title>
             <template v-if="isRenderNextSeatsTable">
               <div class="center">
                 <transition-group name="transition-item" type="transition">
