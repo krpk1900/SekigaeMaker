@@ -15,6 +15,10 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
       }
+      .dialogs-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
       li {
         text-align: center;
         list-style: none;
@@ -318,6 +322,115 @@
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
+                    <!-- 著作権表記 -->
+                    <span style="color: #777777; font-size: 15px; float: right; margin: 10px 10px 0;">©2021席替えメーカー</span>
+                    <!-- 更新情報 -->
+                    <v-dialog v-model="updateInformation" width="500">
+                      <template v-slot:activator="{ on, attrs }">
+                        <a style="color: #777777; font-size: 15px; float: right; margin: 10px 0 0 10px;" v-bind="attrs" v-on="on">更新情報</a>
+                      </template>
+                      <v-card>
+                        <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">更新情報
+                          <v-icon style="float: right;" @click="updateInformation = false">mdi-close</v-icon>
+                        </v-card-title>
+                        <v-card-text style="margin-top: 20px;">
+                          2021.03.10 β版公開<br>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+                    <!-- プライバシーポリシー -->
+                    <v-dialog v-model="privacyPolicy" width="500">
+                      <template v-slot:activator="{ on, attrs }">
+                        <a style="color: #777777; font-size: 15px; float: right; margin: 10px 0 0 10px;" v-bind="attrs" v-on="on">プライバシーポリシー</a>
+                      </template>
+                      <v-card>
+                        <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">プライバシーポリシー
+                          <v-icon style="float: right;" @click="privacyPolicy = false">mdi-close</v-icon>
+                        </v-card-title>
+                        <v-card-text style="margin-top: 20px;">
+                          ＜第一条＞
+                          利用規則をかく！！！<br>
+                          ＜第一条＞
+                          利用規則をかく！！！<br>
+                          ＜第一条＞
+                          利用規則をかく！！！<br>
+                          ＜第一条＞
+                          利用規則をかく！！！<br>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+                    <!-- 利用規則 -->
+                    <v-dialog v-model="userPolicy" width="850" scrollable>
+                      <template v-slot:activator="{ on, attrs }">
+                        <a style="color: #777777; font-size: 15px; float: right; margin: 10px 0 0 10px;" v-bind="attrs" v-on="on">利用規則</a>
+                      </template>
+                      <v-card>
+                        <v-card-title class="headline grey lighten-2 font-weight-black" style="display:block;">利用規約
+                          <v-icon style="float: right;" @click="userPolicy = false">mdi-close</v-icon>
+                        </v-card-title>
+                        <v-card-text style="margin-top: 20px;">
+                          本利用規約（以下「本規約」と言います。）には、本サービスの提供条件及びサイト運営者（以下「当方」と言います）とユーザーの皆様との間の権利義務関係が定められています。
+                          本サービスの利用に際しては、本規約の全文をお読みいただいたうえで、本規約に同意いただく必要があります。
+                          <div class="font-weight-bold">第1条（適用）</div>
+                          1.本規約は、本サービスの提供条件及び本サービスの利用に関する当方とユーザーとの間の権利義務関係を定めることを目的とし、
+                            ユーザーと当方との間の本サービスの利用に関わる一切の関係に適用されます。<br>
+                          2.本規約の内容と、本規約外における本サービスの説明等とが異なる場合は、本規約の規定が優先して適用されるものとします。
+                          <div class="font-weight-bold">第2条（定義）</div>
+                          本規約において使用する以下の用語は、各々以下に定める意味を有するものとします。<br>
+                          1.「知的財産権」とは、著作権、特許権、実用新案権、意匠権、商標権その他の知的財産権（それらの権利を取得し、またはそれらの権利につき登録等を出願する権利を含みます。）を意味します。<br>
+                          2.「当ウェブサイト」とは、そのドメインが「sekigae.jp」である、当方が運営するウェブサイト（理由の如何を問わず、当方のウェブサイトのドメインまたは内容が変更された場合は、
+                          当該変更後のウェブサイトを含みます。）を意味します。<br>
+                          3.「本サービス」とは、当方が提供する席替えメーカーという名称のサービス（理由の如何を問わずサービスの名称または内容が変更された場合は、当該変更後のサービスを含みます。）を意味します。<br>
+                          <div class="font-weight-bold">第3条（禁止事項）</div>
+                          ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。<br>
+                          1.法令または公序良俗に違反する行為<br>
+                          2.犯罪行為に関連する行為<br>
+                          3.本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為<br>
+                          4.当社、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為<br>
+                          5.本サービスによって得られた情報を商業的に利用する行為<br>
+                          6.当社のサービスの運営を妨害するおそれのある行為<br>
+                          7.不正アクセスをし、またはこれを試みる行為<br>
+                          8.他のユーザーに関する個人情報等を収集または蓄積する行為<br>
+                          9.不正な目的を持って本サービスを利用する行為<br>
+                          10.本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為<br>
+                          11.他のユーザーに成りすます行為<br>
+                          12.当社が許諾しない本サービス上での宣伝、広告、勧誘、または営業行為<br>
+                          13.面識のない異性との出会いを目的とした行為<br>
+                          14.当社のサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為<br>
+                          15.その他、当社が不適切と判断する行為<br>
+                          <div class="font-weight-bold">第4条（本サービスの提供の停止等）</div>
+                          1.当社は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
+                          　1.本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
+                          　2.地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合<br>
+                          　3.コンピュータまたは通信回線等が事故により停止した場合<br>
+                          　4.その他、当社が本サービスの提供が困難と判断した場合<br>
+                          2.当社は、本サービスの提供の停止または中断により、ユーザーまたは第三者が被ったいかなる不利益または損害についても、一切の責任を負わないものとします。
+                          <div class="font-weight-bold">第5条（保証の否認及び免責）</div>
+                          1.当方は、本サービスがユーザーの特定の目的に適合すること、期待する機能・商品的価値・正確性・有用性を有すること、
+                            ユーザーによる本サービスの利用がユーザーに適用のある法令または業界団体の内部規則等に適合すること、
+                            継続的に利用できること、及び不具合が生じないことについて、明示又は黙示を問わず何ら保証するものではありません。<br>
+                          2.当方は、本サービスに関してユーザーが被った損害について賠償する責任を負わないものとし、また、付随的損害、間接損害、特別損害、将来の損害及び逸失利益にかかる損害については、
+                          賠償する責任を負わないものとします。<br>
+                          3.本サービスまたは当方ウェブサイトに関連してユーザーと他のユーザーまたは第三者との間において生じた取引、連絡、紛争等については、ユーザーが自己の責任によって解決するものとします。
+                          <div class="font-weight-bold">第6条（本サービスの内容の変更、終了）</div>
+                          1.当方は、当方の都合により、本サービスの内容を変更し、または提供を終了することができます。<br>
+                          2.当方が本サービスの提供を終了する場合、当方はユーザーに事前に通知するものとします。
+                          <div class="font-weight-bold">第7条（利用規約の変更）</div>
+                          当社は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
+                          なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
+                          <div class="font-weight-bold">第8条（個人情報の取扱い）</div>
+                          当社は、本サービスの利用によって取得する個人情報については、当社「プライバシーポリシー」に従い適切に取り扱うものとします。
+                          <div class="font-weight-bold">第9条（権利義務の譲渡の禁止）</div>
+                          ユーザーは、当社の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
+                          <div class="font-weight-bold">第10条（分離可能性）</div>
+                          本規約のいずれかの条項またはその一部が、消費者契約法その他の法令等により無効または執行不能と判断された場合であっても、
+                          本規約の残りの規定及び一部が無効または執行不能と判断された規定の残りの部分は、継続して完全に効力を有するものとします。
+                          <div class="font-weight-bold">第11条（準拠法・裁判管轄）</div>
+                          1.本規約の解釈にあたっては、日本法を準拠法とします。<br>
+                          2.本サービスに関して紛争が生じた場合には、当社の本店所在地を管轄する裁判所を専属的合意管轄とします。<br>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
                   </template>
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
@@ -690,6 +803,9 @@
           isOpenPlaceFixPanel: 1, // 特定の座席に固定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenNearPanel: 1, // 生徒同士を近づけるエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenFarPanel: 1, // 生徒同士を話すエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
+          userPolicy: false, // 利用規則の表示制御フラグ
+          privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
+          updateInformation: false, // 更新情報の表示制御フラグ
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
