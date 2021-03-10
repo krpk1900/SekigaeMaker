@@ -15,14 +15,9 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
       }
-      .checkbox-grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 10px 1fr;
-      }
       li {
         text-align: center;
         list-style: none;
-        margin-bottom: -7px;
       }
       .background-color {
         background: #FFFFFF;
@@ -315,16 +310,10 @@
                       </v-expansion-panel>
                     </v-expansion-panels>
                     <!-- チェックボックス -->
-                    <div class="checkbox-grid-layout">
-                      <v-card>
-                        <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#008396" style="margin:10px 0 0 17px;"></v-checkbox>
-                        <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396" style="margin:10px 0 10px 17px;"></v-checkbox>
-                      </v-card>
-                      <div></div><!-- マージン調整用 -->
-                      <v-card>
-                        <div style="margin-top: 20px; color: #555555;">{{seatsNum}}席入力済み</div>
-                      </v-card>
-                    </div>
+                    <v-card>
+                      <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#008396" style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
+                      <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396" style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
+                    </v-card>
                     <!-- 席替えボタン -->
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="beforeChangeSeats(); delayChangeSeats(); drawer = false" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
@@ -368,34 +357,31 @@
               <li v-for="( seats, indexRow ) in seatsTable">
                 <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                   <!-- 1つ目のフォームにプレイスホルダーを設定 -->
-                  <textarea v-if="indexRow==0 && indexCol==0"
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                  <input type="text" v-if="indexRow==0 && indexCol==0"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all; font-size: 22px;"
+                  style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)"
-                  placeholder="席替え&#13;太郎">
-                  </textarea>
+                  placeholder="安藤">
                   <!-- 2つ目のフォームにプレイスホルダーを設定 -->
-                  <textarea v-else-if="indexRow==0 && indexCol==1"
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                  <input type="text" v-else-if="indexRow==0 && indexCol==1"
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all;"
+                  style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)"
-                  placeholder="名前&#13;3行&#13;いけます">
-                  </textarea>
+                  placeholder="石原">
                   <!-- 3つ目以降のフォーム -->
-                  <textarea v-else
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol]), ]"
+                  <input type="text" v-else
+                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all;"
+                  style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)">
-                  </textarea>
                 <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
               </span>
               <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
@@ -413,12 +399,11 @@
                   <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
                     <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
                       <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                        <textarea class="sortable-item"
-                        :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
-                        style="text-align: center;  resize: none; word-break: keep-all"
+                        <input type="text" class="sortable-item"
+                        :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
+                        style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                         :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
                         @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
-                        </textarea>
                       </span>
                       <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
                     </template>
@@ -646,8 +631,8 @@
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
           genderTable: [], // 生徒の性別テーブル
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
-          isAllDifferent: false, // 前回の座席と異なる配置にするかどうかの制御フラグ
-          isFixGender: false, // 性別を固定するかどうかの制御フラグ
+          isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
+          isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
           disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
           groupSizeX: 2,
@@ -724,7 +709,7 @@
               this.backConditions.push('');
             }
           },
-          getColorByName(studentName) { // 座席の種類に応じた色を返す
+          getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
             let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
             let gender
             if(genderIndex === -1){ //
@@ -733,7 +718,13 @@
               gender = this.genderArray[genderIndex];
             }
             if(gender === '') {
-              return 'off-seats'
+              if(row==0 && col==0){
+                return 'male-seats'
+              }else if(row==0 && col==1){
+                return 'female-seats'
+              }else {
+                return 'off-seats'
+              }
             }else if(gender === 'male'){
               return 'male-seats'
             }else if(gender === 'female'){
