@@ -12,7 +12,7 @@
     <!-- LogRocket -->
     <script src="https://cdn.lr-ingest.io/LogRocket.min.js" crossorigin="anonymous"></script>
     <script>window.LogRocket && window.LogRocket.init('qaii7f/sekigaemaker');</script>
-
+    <!-- メタ情報 -->
     <link rel=”icon” href=“favicon.ico”>
     <title>席替えメーカー｜一瞬で席替えができるアプリ</title>
     <meta name="description" content="学校の席替えの原案を瞬時に出力するアプリです。詳細な条件が設定でき、小学校、中学校、高校問わず使用することができるツールです。教師の業務の時間短縮につながります。">
@@ -763,21 +763,21 @@
             </v-dialog>
           </div-->
 
-          <!-- セレクトボックスをダイアログに変更するテスト >
+          <!-- セレクトボックスをダイアログに変更するテスト>
           <div></div>
           <div>
-            <v-textarea v-model="testName1" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-            <v-textarea v-model="testName2" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-            <v-textarea v-model="testName3" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName1" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName2" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName3" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
           </div>
           <div>
-            <v-dialog v-model="test" width="300">
+            <v-dialog v-model="isShowStudentsNameDialog" width="300">
               <v-card>
                 <v-list dense>
                   <v-list-item v-if="studentsName.length==0">
                     座席に生徒名が入力されていません
                   </v-list-item>
-                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName1=name; test=false;">
+                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName1=name; isShowStudentsNameDialog=false;">
                     {{ name }}
                   </v-list-item>
                 </v-list>
@@ -1022,7 +1022,7 @@
           privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
           updateInformation: false, // 更新情報の表示制御フラグ
           isAcceptedUserPolicy: false, // 利用規則に同意してもらったか
-          test: false,
+          isShowStudentsNameDialog: false,
           testName1: '',
           testName2: '',
           testName3: '',
