@@ -39,7 +39,7 @@
       .grid-layout {
         display: grid;
         grid-template-columns: 1fr 1fr 70px;
-        grid-template-rows: 100px;
+        grid-template-rows: 115px;
       }
       .panel-grid-layout {
         display: grid;
@@ -187,10 +187,10 @@
         flex: none;
       }
       .close-icon {
-        margin: 20px 0;
+        margin: 17px 0 20px 0;
       }
       .open-icon {
-        margin: 20px 0 24px 0;
+        margin: 25px 0 25px 0;
       }
       .v-text-field.v-text-field--enclosed {
         margin: 0px 5px -20px;
@@ -199,7 +199,7 @@
         margin: 10px 0;
       }
       .condition-title {
-        margin: 5px 0 28px;
+        margin: 17px 0 28px;
       }
       .icon {
         margin: 0 8px 0 -5px;
@@ -211,7 +211,7 @@
       <v-app>
         <div class="grid-layout background-color">
           <!-- タイトル -->
-          <div style="margin-left: auto; margin-right: auto; margin-top: 15px;">
+          <div style="margin: auto;">
             <img src="logo.png" width="75px" height="70px">
             <span style="color: #008396; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
           </div>
@@ -516,7 +516,7 @@
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#008396" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
-                    <div style="margin-bottom: 17px;"></div>
+                    <div style="margin-bottom: 20px;"></div>
                     <v-tooltip left>
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
