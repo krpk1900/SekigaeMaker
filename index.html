@@ -630,7 +630,7 @@
               </v-tooltip>
             </v-card-title>
             <template v-if="isRenderNextSeatsTable">
-              <div class="center">
+              <div class="center" style="margin-left: 2px;">
                 <transition-group name="transition-item" type="transition">
                   <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
                     <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
