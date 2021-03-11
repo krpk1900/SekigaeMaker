@@ -115,11 +115,17 @@
       .card-bottom {
         padding-bottom: 35px;
       }
-      .left-card-margin {
+      .left-card-margin-large {
         margin: 0 20px 0 40px;
       }
-      .right-card-margin {
+      .left-card-margin-small {
+        margin: 0 3px 0 6px;
+      }
+      .right-card-margin-large {
         margin: 0 40px 0 20px;
+      }
+      .right-card-margin-small {
+        margin: 0 6px 0 3px;
       }
       .minus-margin-bottom {
         vertical-align: bottom;
@@ -567,7 +573,7 @@
           <!-- サイドバーここまで -->
 
           <!-- 座席テーブル -->
-          <v-card outlined color="#008396" class="box-shadow rounded-xl left-card-margin"style="color: #FFFFFF;">
+          <v-card outlined color="#008396" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -577,7 +583,7 @@
               </v-tooltip>
             </v-card-title>
             <div>
-              <li v-for="( seats, indexRow ) in seatsTable">
+              <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: 2px;">
                 <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                   <!-- 1つ目のフォームにプレイスホルダーを設定 -->
                   <input type="text" v-if="indexRow==0 && indexCol==0"
@@ -614,7 +620,7 @@
           </v-card>
 
           <!-- 席替え後の座席テーブル -->
-          <v-card outlined color="#008396" class="box-shadow rounded-xl right-card-margin"style="color: #FFFFFF;">
+          <v-card outlined color="#008396" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
