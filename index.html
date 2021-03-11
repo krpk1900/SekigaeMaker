@@ -33,6 +33,9 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <style>
+      textarea {
+        cursor: pointer;
+      }
       .grid-layout {
         display: grid;
         grid-template-columns: 1fr 1fr 70px;
@@ -152,6 +155,9 @@
       }
       [v-cloak] {
         display: none;
+      }
+      .cursor-pointer {
+        cursor: pointer;
       }
       /* sortableJSで選択された座席 */
       .highlighted {
@@ -349,11 +355,11 @@
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
-                    <div style="float: right; margin: 10px 0 0 10px;">
+                    <div style="float: right; margin: 10px 0 0 15px;">
                       <!-- プライバシーポリシー -->
                       <v-dialog v-model="privacyPolicy" width="850" scrollable>
                         <template v-slot:activator="{ on, attrs }">
-                          <div><a style="color: #777777; font-size: 15px;" v-bind="attrs" v-on="on">プライバシーポリシー</a></div>
+                          <a style="color: #777777; font-size: 15px; display: inline-block; margin-top: 5px;" v-bind="attrs" v-on="on">プライバシーポリシー</a>
                         </template>
                         <v-card>
                           <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">プライバシーポリシー
@@ -397,18 +403,24 @@
                           </v-card-text>
                         </v-card>
                       </v-dialog>
-                      <!-- フィードバック -->
-                      <a style="color: #777777; font-size: 15px; text-decoration: none;" href="https://forms.gle/hUvXzRSAFhLEsUCv6"
-                        target="_blank" rel="noopener noreferrer">フィードバック
+                      <!-- 開発者Twitter -->
+                      <a style="color: #777777; font-size: 15px; text-decoration: none; margin: 0 0 0 15px;" href="https://twitter.com/krpk1900_dev"
+                        target="_blank" rel="noopener noreferrer">開発者Twitter
                       </a>
-                      <!-- 著作権表記 -->
-                      <span style="color: #777777; font-size: 15px; margin: 0 10px 0 15px;">©2021席替えメーカー</span>
+                      <div>
+                        <!-- フィードバック -->
+                        <a style="color: #777777; font-size: 15px; text-decoration: none; margin-top: 1px; display: inline-block;" href="https://forms.gle/hUvXzRSAFhLEsUCv6"
+                          target="_blank" rel="noopener noreferrer">フィードバック
+                        </a>
+                        <!-- 著作権表記 -->
+                        <span style="color: #777777; font-size: 15px; margin: 0 10px 0 15px;">©2021席替えメーカー</span>
+                      </div>
                     </div>
-                    <div style="float: right; margin: 10px 0 0 10px;">
-                      <!-- 利用規則 -->
+                    <div style="float: right; margin: 15px 0 0 0px;">
+                      <!-- 利用規約 -->
                       <v-dialog v-model="userPolicy" width="850" scrollable>
                         <template v-slot:activator="{ on, attrs }">
-                          <div><a style="color: #777777; font-size: 15px;" v-bind="attrs" v-on="on">利用規則</a></div>
+                          <div style="margin-bottom: 1px;"><a style="color: #777777; font-size: 15px;" v-bind="attrs" v-on="on">利用規約</a></div>
                         </template>
                         <v-card>
                           <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
@@ -633,7 +645,7 @@
             <div class="card-bottom"></div>
           </v-card>
 
-          <!-- 同意ボタン付き利用規則 -->
+          <!-- 同意ボタン付き利用規約 -->
           <v-dialog v-model="userPolicyWithButton" width="850" scrollable>
             <v-card>
               <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
@@ -708,7 +720,7 @@
             </v-card>
           </v-dialog>
 
-          <!-- エラー -->
+          <!-- エラー文 -->
           <v-dialog v-model="error" width="500">
             <v-card>
               <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
@@ -744,6 +756,29 @@
               </v-card>
             </v-dialog>
           </div-->
+
+          <!-- セレクトボックスをダイアログに変更するテスト >
+          <div></div>
+          <div>
+            <v-textarea v-model="testName1" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName2" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName3" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+          </div>
+          <div>
+            <v-dialog v-model="test" width="300">
+              <v-card>
+                <v-list dense>
+                  <v-list-item v-if="studentsName.length==0">
+                    座席に生徒名が入力されていません
+                  </v-list-item>
+                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName1=name; test=false;">
+                    {{ name }}
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-dialog>
+          </div-->
+
 
           <!-- 以下デバッグ用表示
           <v-row>
@@ -981,8 +1016,10 @@
           privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
           updateInformation: false, // 更新情報の表示制御フラグ
           isAcceptedUserPolicy: false, // 利用規則に同意してもらったか
-          // test: false,
-          // testName: '',
+          test: false,
+          testName1: '',
+          testName2: '',
+          testName3: '',
           error: false,
         },
         methods: {
