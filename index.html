@@ -349,7 +349,6 @@
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
-
                     <div style="float: right; margin: 10px 0 0 10px;">
                       <!-- プライバシーポリシー -->
                       <v-dialog v-model="privacyPolicy" width="850" scrollable>
@@ -709,6 +708,43 @@
             </v-card>
           </v-dialog>
 
+          <!-- エラー -->
+          <v-dialog v-model="error" width="500">
+            <v-card>
+              <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
+                <v-icon style="float: right;" @click="error = false">mdi-close</v-icon>
+              </v-card-title>
+              <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
+                条件を満たす席の配置が存在しません。<br>
+                よくある矛盾点は以下の通りです。<br>
+                ・男女の座席の固定と、特定の席への固定の両方を満たせない
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+
+          <!-- セレクトボックスをダイアログに変更するテスト >
+          <div></div>
+          <div>
+            <v-dialog v-model="test" width="300">
+              <template v-slot:activator="{ on, attrs }">
+                <v-textarea v-bind="attrs" v-on="on" v-model="testName" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+              </template>
+              <v-card>
+                <v-list dense>
+                  <v-list-item v-if="studentsName.length==0">
+                    座席に生徒名が入力されていません
+                  </v-list-item>
+                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName=name; test=false;">
+                    {{ name }}
+                  </v-list-item>
+                  <v-list-item>
+                    test
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-dialog>
+          </div-->
+
           <!-- 以下デバッグ用表示
           <v-row>
             <v-col cols="12">
@@ -945,6 +981,9 @@
           privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
           updateInformation: false, // 更新情報の表示制御フラグ
           isAcceptedUserPolicy: false, // 利用規則に同意してもらったか
+          // test: false,
+          // testName: '',
+          error: false,
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
@@ -1129,7 +1168,8 @@
             });
             console.log(`====終了====`);
             if(loopNum > 500){
-              window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+              //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+              this.error = true;
             }
           },
           pushSeatsTableIndex(indexCol, indexRow) { // 座席テーブルの有効な座席のインデックスをプッシュ
