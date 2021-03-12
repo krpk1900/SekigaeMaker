@@ -60,6 +60,10 @@
         background: #B82E73;
         margin: 13px 0;
       }
+      .demo-btn {
+        background: #c3c3c3;
+        margin: 13px 0;
+      }
       .closed-btn {
         background: #B82E73;
       }
@@ -365,6 +369,10 @@
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
+                    <!-- デモデータのセットボタン -->
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
+                      <v-icon class="icon">mdi-pencil</v-icon>デモ
+                    </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
                       <!-- プライバシーポリシー -->
                       <v-dialog v-model="privacyPolicy" width="850" scrollable>
@@ -509,7 +517,7 @@
                             <v-icon style="float: right;" @click="updateInformation = false">mdi-close</v-icon>
                           </v-card-title>
                           <v-card-text style="margin-top: 20px;">
-                            2021.03.10 β版公開<br>
+                            2021.03.13 β版公開<br>
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -744,8 +752,10 @@
               </v-card-text>
             </v-card>
           </v-dialog>
+        </div>
 
-          <!-- セレクトボックスをダイアログに変更するテスト >
+        <!-- セレクトボックスをダイアログに変更するテスト >
+        <div>
           <div></div>
           <div>
             <v-dialog v-model="test" width="300">
@@ -788,10 +798,11 @@
                 </v-list>
               </v-card>
             </v-dialog>
-          </div-->
+          </div>
+        </div-->
 
-
-          <!-- 以下デバッグ用表示
+        <!-- 以下デバッグ用表示 -->
+        <div>
           <v-row>
             <v-col cols="12">
               <h1 class="text-center">以下デバッグ用</h1>
@@ -799,30 +810,7 @@
           </v-row>
 
           <v-row>
-            <v-col cols="6">
-              <p style="text-align: center">席替え後の座席</p>
-              <template v-if="isRenderNextSeatsTable">
-                <div class="center">
-                  <transition-group name="transition-item" type="transition">
-                    <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
-                      <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                        <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                          <textarea class="sortable-item"
-                          :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
-                          style="text-align: center;  resize: none; word-break: keep-all"
-                          :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
-                          @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
-                          </textarea>
-                        </span>
-                        <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
-                      </template>
-                      <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
-                    </template>
-                  </transition-group>
-                </div>
-              </template>
-            </v-col>
-            <v-col cols="6">
+            <v-col cols="12">
               <v-row>
                 <v-col cols="12" style="background-color: darkgray">
                   <v-btn elevation="2" outlined @click="testMethod1">テスト1</v-btn>
@@ -928,8 +916,8 @@
                 </v-col>
               </v-row>
             </v-col>
-          </v-row-->
-        </div>
+          </v-row>
+        </div >
       </v-app>
     </div>
 
@@ -1016,7 +1004,7 @@
           groupSizeOptionsX: ['なし',2,3],
           groupSizeOptionsY: ['なし',2,3],
           isRenderNextSeatsTable: true, // nextSeatsTableを表示するかどうかの制御フラグ
-          drawer: true,
+          drawer: true, // 条件サイドバーの開閉制御フラグ
           isOpenSeatNumPanel: 0, // 座席数を指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenFrontBackPanel: 1, // 前後で指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenPlaceFixPanel: 1, // 特定の座席に固定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
@@ -1039,10 +1027,20 @@
           testMethod2() { // 引数で受け取った座席の有効・無効を切り替える
           },
           testMethod3() {
-            console.log(`fromRows = ${fromRows}`);
-            console.log(`fromCols = ${fromCols}`);
-            console.log(`toRows = ${toRows}`);
-            console.log(`toCols = ${toCols}`);
+          },
+          setDemoData() {
+            this.seatsTable.splice(0, 1, ['中井','寺倉','伊藤','大浦','齋藤だ','新垣']);
+            this.seatsTable.splice(1, 1, ['堀北','寺井','斎藤い','田中','平尾','小濱']);
+            this.seatsTable.splice(2, 1, ['松田','茂木','粟島','本多','坂本た','橋本']);
+            this.seatsTable.splice(3, 1, ['波多野','小川','遠藤','真子','大城','森上']);
+            this.seatsTable.splice(4, 1, ['菅野','有村','菊本','吉田','俵','村島']);
+            this.seatsTable.splice(5, 1, ['川原','坂本こ','勝谷','船先','勝又','廣瀬']);
+            this.genderTable.splice(0, 1, ["male", "female", "male", "female", "male", "female"]);
+            this.genderTable.splice(1, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(2, 1, ["male", "female", "male", "female", "male", "female"]);
+            this.genderTable.splice(3, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(4, 1, ["male", "female", "male", "female", "male", "female"]);
+            this.genderTable.splice(5, 1, ["female", "male", "female", "male", "male", "male"]);
           },
           uniqueKey(value, nextIndexRow, nextIndexCol) {
             let key
