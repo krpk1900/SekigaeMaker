@@ -12,7 +12,7 @@
     <!-- LogRocket -->
     <script src="https://cdn.lr-ingest.io/LogRocket.min.js" crossorigin="anonymous"></script>
     <script>window.LogRocket && window.LogRocket.init('qaii7f/sekigaemaker');</script>
-
+    <!-- メタ情報 -->
     <link rel=”icon” href=“favicon.ico”>
     <title>席替えメーカー｜一瞬で席替えができるアプリ</title>
     <meta name="description" content="学校の席替えの原案を瞬時に出力するアプリです。詳細な条件が設定でき、小学校、中学校、高校問わず使用することができるツールです。教師の業務の時間短縮につながります。">
@@ -39,7 +39,7 @@
       .grid-layout {
         display: grid;
         grid-template-columns: 1fr 1fr 70px;
-        grid-template-rows: 100px;
+        grid-template-rows: 115px;
       }
       .panel-grid-layout {
         display: grid;
@@ -58,6 +58,10 @@
       }
       .open-btn {
         background: #B82E73;
+        margin: 13px 0;
+      }
+      .demo-btn {
+        background: #c3c3c3;
         margin: 13px 0;
       }
       .closed-btn {
@@ -165,6 +169,10 @@
       .cursor-pointer {
         cursor: pointer;
       }
+      /* v-checkboxのテキストカラー */
+      .theme--light.v-label {
+        color: rgba(0,0,0,0.75);
+      }
       /* sortableJSで選択された座席 */
       .highlighted {
         background-color: #b9b9b9;
@@ -187,10 +195,10 @@
         flex: none;
       }
       .close-icon {
-        margin: 20px 0;
+        margin: 17px 0 20px 0;
       }
       .open-icon {
-        margin: 20px 0 24px 0;
+        margin: 25px 0 25px 0;
       }
       .v-text-field.v-text-field--enclosed {
         margin: 0px 5px -20px;
@@ -199,7 +207,7 @@
         margin: 10px 0;
       }
       .condition-title {
-        margin: 5px 0 28px;
+        margin: 17px 0 28px;
       }
       .icon {
         margin: 0 8px 0 -5px;
@@ -211,7 +219,7 @@
       <v-app>
         <div class="grid-layout background-color">
           <!-- タイトル -->
-          <div style="margin-left: auto; margin-right: auto; margin-top: 15px;">
+          <div style="margin: auto;">
             <img src="logo.png" width="75px" height="70px">
             <span style="color: #008396; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
           </div>
@@ -361,6 +369,10 @@
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
+                    <!-- デモデータのセットボタン -->
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
+                      <v-icon class="icon">mdi-pencil</v-icon>デモ
+                    </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
                       <!-- プライバシーポリシー -->
                       <v-dialog v-model="privacyPolicy" width="850" scrollable>
@@ -505,7 +517,7 @@
                             <v-icon style="float: right;" @click="updateInformation = false">mdi-close</v-icon>
                           </v-card-title>
                           <v-card-text style="margin-top: 20px;">
-                            2021.03.10 β版公開<br>
+                            2021.03.13 β版公開<br>
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -516,7 +528,7 @@
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#008396" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
-                    <div style="margin-bottom: 17px;"></div>
+                    <div style="margin-bottom: 20px;"></div>
                     <v-tooltip left>
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
@@ -579,7 +591,8 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
                 </template>
-                <span>クリックで性別を切り替えることができます</span>
+                <div>クリックで性別を切り替えることができます</div>
+                <div>Tabキーを押すと次の座席に移動することができます</div>
               </v-tooltip>
             </v-card-title>
             <div>
@@ -630,7 +643,7 @@
               </v-tooltip>
             </v-card-title>
             <template v-if="isRenderNextSeatsTable">
-              <div class="center">
+              <div class="center" style="margin-left: 2px;">
                 <transition-group name="transition-item" type="transition">
                   <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
                     <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
@@ -739,8 +752,10 @@
               </v-card-text>
             </v-card>
           </v-dialog>
+        </div>
 
-          <!-- セレクトボックスをダイアログに変更するテスト >
+        <!-- セレクトボックスをダイアログに変更するテスト >
+        <div>
           <div></div>
           <div>
             <v-dialog v-model="test" width="300">
@@ -763,30 +778,31 @@
             </v-dialog>
           </div-->
 
-          <!-- セレクトボックスをダイアログに変更するテスト >
+          <!-- セレクトボックスをダイアログに変更するテスト>
           <div></div>
           <div>
-            <v-textarea v-model="testName1" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-            <v-textarea v-model="testName2" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-            <v-textarea v-model="testName3" @click="test=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName1" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName2" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
+            <v-textarea v-model="testName3" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
           </div>
           <div>
-            <v-dialog v-model="test" width="300">
+            <v-dialog v-model="isShowStudentsNameDialog" width="300">
               <v-card>
                 <v-list dense>
                   <v-list-item v-if="studentsName.length==0">
                     座席に生徒名が入力されていません
                   </v-list-item>
-                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName1=name; test=false;">
+                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName1=name; isShowStudentsNameDialog=false;">
                     {{ name }}
                   </v-list-item>
                 </v-list>
               </v-card>
             </v-dialog>
-          </div-->
+          </div>
+        </div-->
 
-
-          <!-- 以下デバッグ用表示
+        <!-- 以下デバッグ用表示 >
+        <div>
           <v-row>
             <v-col cols="12">
               <h1 class="text-center">以下デバッグ用</h1>
@@ -794,30 +810,7 @@
           </v-row>
 
           <v-row>
-            <v-col cols="6">
-              <p style="text-align: center">席替え後の座席</p>
-              <template v-if="isRenderNextSeatsTable">
-                <div class="center">
-                  <transition-group name="transition-item" type="transition">
-                    <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
-                      <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                        <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                          <textarea class="sortable-item"
-                          :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol])]"
-                          style="text-align: center;  resize: none; word-break: keep-all"
-                          :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
-                          @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
-                          </textarea>
-                        </span>
-                        <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
-                      </template>
-                      <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
-                    </template>
-                  </transition-group>
-                </div>
-              </template>
-            </v-col>
-            <v-col cols="6">
+            <v-col cols="12">
               <v-row>
                 <v-col cols="12" style="background-color: darkgray">
                   <v-btn elevation="2" outlined @click="testMethod1">テスト1</v-btn>
@@ -923,8 +916,8 @@
                 </v-col>
               </v-row>
             </v-col>
-          </v-row-->
-        </div>
+          </v-row>
+        </div -->
       </v-app>
     </div>
 
@@ -1011,7 +1004,7 @@
           groupSizeOptionsX: ['なし',2,3],
           groupSizeOptionsY: ['なし',2,3],
           isRenderNextSeatsTable: true, // nextSeatsTableを表示するかどうかの制御フラグ
-          drawer: true,
+          drawer: true, // 条件サイドバーの開閉制御フラグ
           isOpenSeatNumPanel: 0, // 座席数を指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenFrontBackPanel: 1, // 前後で指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenPlaceFixPanel: 1, // 特定の座席に固定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
@@ -1022,7 +1015,7 @@
           privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
           updateInformation: false, // 更新情報の表示制御フラグ
           isAcceptedUserPolicy: false, // 利用規則に同意してもらったか
-          test: false,
+          isShowStudentsNameDialog: false,
           testName1: '',
           testName2: '',
           testName3: '',
@@ -1034,10 +1027,21 @@
           testMethod2() { // 引数で受け取った座席の有効・無効を切り替える
           },
           testMethod3() {
-            console.log(`fromRows = ${fromRows}`);
-            console.log(`fromCols = ${fromCols}`);
-            console.log(`toRows = ${toRows}`);
-            console.log(`toCols = ${toCols}`);
+          },
+          setDemoData() {
+            this.seatsTable.splice(0, 1, ['寺倉','中井','大浦','伊藤','村島','齋藤だ']);
+            this.seatsTable.splice(1, 1, ['寺井','堀北','田中','斎藤い','小濱','平尾']);
+            this.seatsTable.splice(2, 1, ['茂木','松田','橋本','坂本た','本多','船先']);
+            this.seatsTable.splice(3, 1, ['森上','大城','真子','遠藤','小川','波多野']);
+            this.seatsTable.splice(4, 1, ['有村','菅野','吉田','菊本','新垣','俵']);
+            this.seatsTable.splice(5, 1, ['坂本こ','川原','粟島','勝谷','勝又','廣瀬']);
+            this.genderTable.splice(0, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(1, 1, ["male", "female", "male", "female", "male", "female"]);
+            this.genderTable.splice(2, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(3, 1, ["male", "female", "male", "female", "male", "female"]);
+            this.genderTable.splice(4, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
+            this.countSeats();
           },
           uniqueKey(value, nextIndexRow, nextIndexCol) {
             let key
@@ -1466,7 +1470,7 @@
             let genderIndex = this.studentsName.indexOf(studentName);
             let currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
             let nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
-            if(currentGender === nextGender){
+            if(currentGender == nextGender){
               return true
             }else{
               return false
