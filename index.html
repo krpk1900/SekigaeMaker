@@ -778,7 +778,7 @@
             </v-dialog>
           </div-->
 
-          <!-- セレクトボックスをダイアログに変更するテスト>
+          <!-- セレクトボックスをダイアログに変更するテスト　>
           <div></div>
           <div>
             <v-textarea v-model="testName1" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
@@ -788,6 +788,9 @@
           <div>
             <v-dialog v-model="isShowStudentsNameDialog" width="300">
               <v-card>
+                <v-card-title class="headline grey lighten-2 font-weight-midium" style="display: inherit;">生徒名
+                  <v-icon style="float: right;" @click="error = false">mdi-close</v-icon>
+                </v-card-title>
                 <v-list dense>
                   <v-list-item v-if="studentsName.length==0">
                     座席に生徒名が入力されていません
@@ -1035,6 +1038,21 @@
             this.seatsTable.splice(3, 1, ['森上','石原','真子','遠藤','小川','波多野']);
             this.seatsTable.splice(4, 1, ['有村','菅野','大城','菊本','新垣','俵']);
             this.seatsTable.splice(5, 1, ['坂本こ','川原','粟島','勝谷','勝又','廣瀬']);
+            this.genderTable.splice(0, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(1, 1, ["male", "female", "male", "female", "male", "female"]);
+            this.genderTable.splice(2, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(3, 1, ["male", "female", "male", "female", "male", "female"]);
+            this.genderTable.splice(4, 1, ["female", "male", "female", "male", "female", "male"]);
+            this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
+            this.countSeats();
+          },
+          setDemoData2() {
+            this.seatsTable.splice(0, 1, ['別本','山田','平野','山口','高松','寺井']);
+            this.seatsTable.splice(1, 1, ['山村','坂本','浦山','栗原','谷井','柳澤']);
+            this.seatsTable.splice(2, 1, ['中川','安岡','市川','門前','山本','志鷹']);
+            this.seatsTable.splice(3, 1, ['岡村','川瀬','四十住','金田','長島','藤岡']);
+            this.seatsTable.splice(4, 1, ['永瀬','直江','倉谷','瀧山','角間','黒田']);
+            this.seatsTable.splice(5, 1, ['濱井','小野寺','竹端','廣瀬','岩峅','松倉']);
             this.genderTable.splice(0, 1, ["female", "male", "female", "male", "female", "male"]);
             this.genderTable.splice(1, 1, ["male", "female", "male", "female", "male", "female"]);
             this.genderTable.splice(2, 1, ["female", "male", "female", "male", "female", "male"]);
