@@ -102,7 +102,7 @@
         height: 80px;
         width: 80px;
         display: inline-block;
-        border: 3px solid #008396;
+        border: 3px solid #0BB3BF;
         box-sizing: border-box;
         text-align: center;
         border-radius: 7px;
@@ -175,7 +175,7 @@
       }
       /* sortableJSで選択された座席 */
       .highlighted {
-        background-color: #b9b9b9;
+        background-color: #EEEEEE;
       }
       .sortable-item:hover {
         cursor: grab;
@@ -221,7 +221,7 @@
           <!-- タイトル -->
           <div style="margin: auto;">
             <img src="logo.png" width="75px" height="70px">
-            <span style="color: #008396; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
+            <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
           </div>
           <div></div><!-- グリッドレイアウト調整用 -->
 
@@ -232,13 +232,13 @@
                 <v-list-item-group>
                   <template v-if="drawer">
                     <v-list-item  style="float: right;" @click.stop="drawer = !drawer">
-                      <v-icon color="#008396" class="close-icon" style="font-size: 32px;">mdi-chevron-double-right</v-icon>
+                      <v-icon color="#0c9ea8" class="close-icon" style="font-size: 32px;">mdi-chevron-double-right</v-icon>
                     </v-list-item>
-                    <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#008396" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
+                    <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                     <!-- 座席数を指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel">
                       <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div class="panel-grid-layout">
                             <div>
@@ -256,7 +256,7 @@
                     <!-- 前後で指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenFrontBackPanel">
                       <v-expansion-panel class="expansion-panel">
-                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <v-expansion-panels accordion multiple>
                             <!-- 最前列のエクスパンションパネル -->
@@ -306,7 +306,7 @@
                     <!-- 特定の座席に固定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenPlaceFixPanel">
                       <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(fixCondition, fixIndex) in fixConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
@@ -325,7 +325,7 @@
                     <!-- 近づける生徒のエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenNearPanel">
                       <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(nearCondition, nearIndex) in nearConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
@@ -344,7 +344,7 @@
                     <!-- 離す生徒のエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenFarPanel">
                       <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#008396" class="icon">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <div v-for="(farCondition, farIndex) in farConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
@@ -362,8 +362,8 @@
                     </v-expansion-panels>
                     <!-- チェックボックス -->
                     <v-card>
-                      <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#008396" style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
-                      <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#008396" style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
+                      <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#0c9ea8" style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
+                      <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#0c9ea8" style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
                     </v-card>
                     <!-- 席替えボタン -->
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;">
@@ -526,14 +526,14 @@
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
-                      <v-icon color="#008396" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
+                      <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
                     <div style="margin-bottom: 20px;"></div>
                     <v-tooltip left>
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
                           @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
-                          <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
+                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
                         </v-list-item>
                       </template>
                       <span>座席数を指定する</span>
@@ -542,7 +542,7 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
                           @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=0; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
-                          <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-sort-ascending</v-icon>
+                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-sort-ascending</v-icon>
                         </v-list-item>
                       </template>
                       <span>前後で指定する</span>
@@ -551,7 +551,7 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
                           @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=0; isOpenNearPanel=1; isOpenFarPanel=1;">
-                          <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-target-variant</v-icon>
+                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-target-variant</v-icon>
                         </v-list-item>
                       </template>
                       <span>特定の座席に固定する</span>
@@ -560,7 +560,7 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
                           @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=0; isOpenFarPanel=1;">
-                          <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-arrow-collapse</v-icon>
+                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-collapse</v-icon>
                         </v-list-item>
                       </template>
                       <span>生徒同士を近づける</span>
@@ -569,7 +569,7 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
                           @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=0;">
-                          <v-icon color="#008396" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
+                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
                         </v-list-item>
                       </template>
                       <span>生徒同士を離す</span>
@@ -585,7 +585,7 @@
           <!-- サイドバーここまで -->
 
           <!-- 座席テーブル -->
-          <v-card outlined color="#008396" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}">
+          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -633,7 +633,7 @@
           </v-card>
 
           <!-- 席替え後の座席テーブル -->
-          <v-card outlined color="#008396" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}">
+          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -734,7 +734,7 @@
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="#008396" text class="font-weight-bold" @click="isAcceptedUserPolicy=true; userPolicyWithButton=false; changeSeatsProcess();">同意する</v-btn>
+                <v-btn color="#0c9ea8" text class="font-weight-bold" @click="isAcceptedUserPolicy=true; userPolicyWithButton=false; changeSeatsProcess();">同意する</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
