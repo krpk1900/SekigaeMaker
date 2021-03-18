@@ -776,6 +776,20 @@
               </v-card-text>
             </v-card>
           </v-dialog>
+
+          <!-- ランディング -->
+          <v-dialog v-model="landing" width="500">
+            <v-card>
+              <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
+                <v-icon style="float: right;" @click="error = false">mdi-close</v-icon>
+              </v-card-title>
+              <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
+                条件を満たす席の配置が存在しません。<br>
+                よくある矛盾点は以下の通りです。<br>
+                ・男女の座席の固定と、特定の席への固定の両方を満たせない
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </div>
 
         <!-- セレクトボックスをダイアログに変更するテスト >
@@ -1048,6 +1062,7 @@
           testName2: '',
           testName3: '',
           error: false,
+          landing: false,
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
@@ -1060,8 +1075,10 @@
             const intro = introJs().setOptions({
               prevLabel: '戻る',
               nextLabel: '進む',
+              // skipLabel: 'スキップ',
               doneLabel: '終了',
               showProgress: true,
+              showStepNumbers: true,
               showBullets: false
             });
             intro.onafterchange(function() {
@@ -1636,7 +1653,7 @@
         },
         mounted() {
           this.setSortableJS(); // sortableJSをフォームにセット
-          this.startTutorial();
+          // this.startTutorial();
         },
         watch: {
           seatsTable: {
