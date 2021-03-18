@@ -68,6 +68,9 @@
       .closed-btn {
         background: #B82E73;
       }
+      .tutorial-btn {
+        background: #c3c3c3;
+      }
       .v-btn {
         border-radius: 12px;
       }
@@ -243,7 +246,11 @@
                     <v-list-item  style="float: right;" @click.stop="drawer = !drawer">
                       <v-icon color="#0c9ea8" class="close-icon" style="font-size: 32px;">mdi-chevron-double-right</v-icon>
                     </v-list-item>
-                    <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
+                    <h1 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
+                    <!-- 使い方ボタン -->
+                    <v-btn elevation="2" large color="#FFFFFF" class="tutorial-btn" text  @click="startTutorial();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 20px;">
+                      <v-icon class="icon" style="padding-top: 4px;">mdi-magnify</v-icon>使い方
+                    </v-btn>
                     <!-- 座席数を指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left"
                     data-intro="まず全体の座席数を指定します。<br>37人のようにちょうど長方形にならない場合は、6×7のように余裕をもって指定することで対応できます。">
@@ -594,9 +601,14 @@
                       </template>
                       <span>生徒同士を離す</span>
                     </v-tooltip>
-                    <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text  @click="checkUserPolicyAccepted();">
-                      <v-icon style="font-size: 32px;">mdi-sync</v-icon>
-                    </v-btn>
+                    <v-tooltip left>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text  @click="checkUserPolicyAccepted();"　v-bind="attrs" v-on="on">
+                          <v-icon style="font-size: 32px;">mdi-sync</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>席を並び替える</span>
+                    </v-tooltip>
                   </template>
                 </v-list-item-group>
               </v-list>
@@ -1072,6 +1084,7 @@
           testMethod3() {
           },
           startTutorial() {
+            this.drawer = true;
             const intro = introJs().setOptions({
               prevLabel: '戻る',
               nextLabel: '進む',
