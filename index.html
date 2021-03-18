@@ -246,7 +246,7 @@
                     <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                     <!-- 座席数を指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left"
-                    data-intro="まず全体の座席数を指定します。<br>37人のようにちょうどにならない場合は、6×7のように余裕をもって指定することで対応できます。">
+                    data-intro="まず全体の座席数を指定します。<br>37人のようにちょうど長方形にならない場合は、6×7のように余裕をもって指定することで対応できます。">
                       <v-expansion-panel>
                         <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
@@ -608,7 +608,7 @@
 
           <!-- 座席テーブル -->
           <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}"
-          data-intro="生徒名を入力します。<br>Tabキーを押すと次の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-position="right" data-step="2">
+          data-intro="生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-position="right" data-step="2">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -657,7 +657,7 @@
 
           <!-- 席替え後の座席テーブル -->
           <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
-          data-intro="座席をドラッグして入れ換えることができます。<br>良さそうな配置であれば、最終調整を行ってください。" data-position="left" data-step="5">
+          data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-position="left" data-step="5">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
