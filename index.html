@@ -252,7 +252,7 @@
                       <v-icon class="icon" style="padding-top: 4px;">mdi-magnify</v-icon>使い方
                     </v-btn>
                     <!-- 座席数を指定するエクスパンションパネル -->
-                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left"
+                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left" data-title="1. 全体の座席数を決める！"
                     data-intro="まず全体の座席数を指定します。<br>37人のようにちょうど長方形にならない場合は、6×7のように余裕をもって指定することで対応できます。">
                       <v-expansion-panel>
                         <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
@@ -270,7 +270,7 @@
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
-                    <span data-intro="席替えの際に検討する条件を入力します。" data-step="3" data-position="left">
+                    <span data-intro="席替えの際に考える条件を入力します。" data-title="3. 条件を入力！" data-step="3" data-position="left">
                       <!-- 前後で指定するエクスパンションパネル -->
                       <v-expansion-panels accordion class="expansion-panels" :value="isOpenFrontBackPanel">
                         <v-expansion-panel class="expansion-panel">
@@ -386,7 +386,7 @@
                     </span>
                     <!-- 席替えボタン -->
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;"
-                    data-intro="席替えボタンを押すと座席が移動します。" data-position="left" data-step="4">
+                    data-intro="席替えボタンを押すと座席が移動します。" data-title="4. 席替え！" data-position="left" data-step="4">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
                     <!-- デモデータのセットボタン -->
@@ -543,8 +543,8 @@
                           </v-card-title>
                           <v-card-text style="margin-top: 20px;">
                             2021.03.13　β版を公開しました。<br>
-                            2021.03.16　明るい見た目が良いという声をいただいたので、<br>
-                            　　　　　　デザインを修正しました。
+                            2021.03.16　デザインを修正しました。<br>
+                            2021.03.18　使い方チュートリアルを導入しました。
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -618,7 +618,7 @@
 
           <!-- 座席テーブル -->
           <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}"
-          data-intro="座席に生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-position="right" data-step="2">
+          data-intro="座席に生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-title="2. 名前を入力！" data-position="right" data-step="2">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -667,7 +667,7 @@
 
           <!-- 席替え後の座席テーブル -->
           <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
-          data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-position="left" data-step="5">
+          data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-title="5. 最終調整！" data-position="left" data-step="5">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -791,7 +791,7 @@
           <v-dialog v-model="landing" width="530" transition="dialog-top-transition" overlay-opacity="0.25">
             <v-card>
               <v-card-title class="headline teal lighten-2 font-weight-black" style="display: inherit; color: #FFFFFF; ">席替えメーカーへようこそ！</v-card-title>
-              <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 20px; font-weight: 900;">
+              <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 20px; font-weight: 600;">
                 席替えメーカーは、生徒名と条件を入力するだけで座席の配置案を瞬時に出してくれるサービスです！
               </v-card-text>
               <v-divider></v-divider>
