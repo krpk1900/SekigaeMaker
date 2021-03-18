@@ -31,6 +31,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <style>
       textarea {
@@ -212,6 +213,10 @@
       .icon {
         margin: 0 8px 0 -5px;
       }
+      .introjs-tooltip {
+        min-width: 400px;
+        max-width: 400px;
+      }
     </style>
   </head>
   <body>
@@ -220,8 +225,12 @@
         <div class="grid-layout background-color">
           <!-- タイトル -->
           <div style="margin: auto;">
-            <img src="logo.png" width="75px" height="70px">
+            <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;">
             <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
+            <!-- 使い方ボタン >
+            <v-btn elevation="2" x-large color="#FFFFFF" class="guide-btn" text  @click="testMethod1();" style="font-size: 20px; font-weight: 900; margin-top: -50px;">
+              使い方
+            </v-btn-->
           </div>
           <div></div><!-- グリッドレイアウト調整用 -->
 
@@ -236,7 +245,8 @@
                     </v-list-item>
                     <h1 style="font-size: 40px; color: #555555;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                     <!-- 座席数を指定するエクスパンションパネル -->
-                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel">
+                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left"
+                    data-intro="まず全体の座席数を指定します。<br>37人のようにちょうどにならない場合は、6×7のように余裕をもって指定することで対応できます。">
                       <v-expansion-panel>
                         <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
@@ -253,120 +263,123 @@
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
-                    <!-- 前後で指定するエクスパンションパネル -->
-                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenFrontBackPanel">
-                      <v-expansion-panel class="expansion-panel">
-                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
-                        <v-expansion-panel-content>
-                          <v-expansion-panels accordion multiple>
-                            <!-- 最前列のエクスパンションパネル -->
-                            <v-expansion-panel style="background-color: #fbfbfb;">
-                              <v-expansion-panel-header>最前列</v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                <span v-for="(frontCondition, frontIndex) in frontConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                  v-model="frontConditions[frontIndex]" @change.once="createNewFrontConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                </span>
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                            <!-- 前2列のエクスパンションパネル -->
-                            <v-expansion-panel style="background-color: #fbfbfb;">
-                              <v-expansion-panel-header>前2列</v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                  v-model="frontTwoRowsConditions[frontTwoRowsIndex]" @change.once="createNewFrontTwoRowsConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                </span>
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                            <!-- 後ろ2列のエクスパンションパネル -->
-                            <v-expansion-panel style="background-color: #fbfbfb;">
-                              <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                  v-model="backTwoRowsConditions[backTwoRowsIndex]" @change.once="createNewBackTwoRowsConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                </span>
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                            <!-- 最後列のエクスパンションパネル -->
-                            <v-expansion-panel style="background-color: #fbfbfb;">
-                              <v-expansion-panel-header>最後列</v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                <span v-for="(backCondition, backIndex) in backConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                  v-model="backConditions[backIndex]" @change.once="createNewBackConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                </span>
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                          </v-expansion-panels>
-                        </v-expansion-panel-content>
-                      </v-expansion-panel>
-                    </v-expansion-panels>
-                    <!-- 特定の座席に固定するエクスパンションパネル -->
-                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenPlaceFixPanel">
-                      <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
-                        <v-expansion-panel-content>
-                          <div v-for="(fixCondition, fixIndex) in fixConditions">
-                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
-                            v-model="fixConditions[fixIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                            を、前から
-                            <v-select :items="limitedSeatsOptionsY" outlined style="width:65px; display: inline-block"
-                            v-model="fixConditions[fixIndex][1]"></v-select>
-                            列目、左から
-                            <v-select :items="limitedSeatsOptionsX" outlined style="width:65px; display: inline-block"
-                            v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
-                            列目に固定する
-                          </div>
-                        </v-expansion-panel-content>
-                      </v-expansion-panel>
-                    </v-expansion-panels>
-                    <!-- 近づける生徒のエクスパンションパネル -->
-                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenNearPanel">
-                      <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
-                        <v-expansion-panel-content>
-                          <div v-for="(nearCondition, nearIndex) in nearConditions">
-                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
-                            v-model="nearConditions[nearIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                            と
-                            <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
-                            v-model="nearConditions[nearIndex][1]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                            の間を
-                            <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
-                            v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
-                            席以下にする
-                          </div>
-                        </v-expansion-panel-content>
-                      </v-expansion-panel>
-                    </v-expansion-panels>
-                    <!-- 離す生徒のエクスパンションパネル -->
-                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenFarPanel">
-                      <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
-                        <v-expansion-panel-content>
-                          <div v-for="(farCondition, farIndex) in farConditions">
-                            <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
-                            v-model="farConditions[farIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                            と
-                            <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
-                            v-model="farConditions[farIndex][1]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                            の間を
-                            <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
-                            v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
-                            席以上空ける
-                          </div>
-                        </v-expansion-panel-content>
-                      </v-expansion-panel>
-                    </v-expansion-panels>
-                    <!-- チェックボックス -->
-                    <v-card>
-                      <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#0c9ea8" style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
-                      <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#0c9ea8" style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
-                    </v-card>
+                    <span data-intro="席替えの際に検討する条件を入力します。" data-step="3" data-position="left">
+                      <!-- 前後で指定するエクスパンションパネル -->
+                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenFrontBackPanel">
+                        <v-expansion-panel class="expansion-panel">
+                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
+                          <v-expansion-panel-content>
+                            <v-expansion-panels accordion multiple>
+                              <!-- 最前列のエクスパンションパネル -->
+                              <v-expansion-panel style="background-color: #fbfbfb;">
+                                <v-expansion-panel-header>最前列</v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <span v-for="(frontCondition, frontIndex) in frontConditions">
+                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
+                                    v-model="frontConditions[frontIndex]" @change.once="createNewFrontConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  </span>
+                                </v-expansion-panel-content>
+                              </v-expansion-panel>
+                              <!-- 前2列のエクスパンションパネル -->
+                              <v-expansion-panel style="background-color: #fbfbfb;">
+                                <v-expansion-panel-header>前2列</v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
+                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
+                                    v-model="frontTwoRowsConditions[frontTwoRowsIndex]" @change.once="createNewFrontTwoRowsConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  </span>
+                                </v-expansion-panel-content>
+                              </v-expansion-panel>
+                              <!-- 後ろ2列のエクスパンションパネル -->
+                              <v-expansion-panel style="background-color: #fbfbfb;">
+                                <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
+                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
+                                    v-model="backTwoRowsConditions[backTwoRowsIndex]" @change.once="createNewBackTwoRowsConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  </span>
+                                </v-expansion-panel-content>
+                              </v-expansion-panel>
+                              <!-- 最後列のエクスパンションパネル -->
+                              <v-expansion-panel style="background-color: #fbfbfb;">
+                                <v-expansion-panel-header>最後列</v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <span v-for="(backCondition, backIndex) in backConditions">
+                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
+                                    v-model="backConditions[backIndex]" @change.once="createNewBackConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  </span>
+                                </v-expansion-panel-content>
+                              </v-expansion-panel>
+                            </v-expansion-panels>
+                          </v-expansion-panel-content>
+                        </v-expansion-panel>
+                      </v-expansion-panels>
+                      <!-- 特定の座席に固定するエクスパンションパネル -->
+                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenPlaceFixPanel">
+                        <v-expansion-panel>
+                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
+                          <v-expansion-panel-content>
+                            <div v-for="(fixCondition, fixIndex) in fixConditions">
+                              <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
+                              v-model="fixConditions[fixIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
+                              を、前から
+                              <v-select :items="limitedSeatsOptionsY" outlined style="width:65px; display: inline-block"
+                              v-model="fixConditions[fixIndex][1]"></v-select>
+                              列目、左から
+                              <v-select :items="limitedSeatsOptionsX" outlined style="width:65px; display: inline-block"
+                              v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
+                              列目に固定する
+                            </div>
+                          </v-expansion-panel-content>
+                        </v-expansion-panel>
+                      </v-expansion-panels>
+                      <!-- 近づける生徒のエクスパンションパネル -->
+                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenNearPanel">
+                        <v-expansion-panel>
+                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
+                          <v-expansion-panel-content>
+                            <div v-for="(nearCondition, nearIndex) in nearConditions">
+                              <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
+                              v-model="nearConditions[nearIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
+                              と
+                              <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
+                              v-model="nearConditions[nearIndex][1]" no-data-text="座席に生徒名が入力されていません"></v-select>
+                              の間を
+                              <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
+                              v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
+                              席以下にする
+                            </div>
+                          </v-expansion-panel-content>
+                        </v-expansion-panel>
+                      </v-expansion-panels>
+                      <!-- 離す生徒のエクスパンションパネル -->
+                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenFarPanel">
+                        <v-expansion-panel>
+                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
+                          <v-expansion-panel-content>
+                            <div v-for="(farCondition, farIndex) in farConditions">
+                              <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
+                              v-model="farConditions[farIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
+                              と
+                              <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
+                              v-model="farConditions[farIndex][1]" no-data-text="座席に生徒名が入力されていません"></v-select>
+                              の間を
+                              <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
+                              v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
+                              席以上空ける
+                            </div>
+                          </v-expansion-panel-content>
+                        </v-expansion-panel>
+                      </v-expansion-panels>
+                      <!-- チェックボックス -->
+                      <v-card>
+                        <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#0c9ea8" style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
+                        <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#0c9ea8" style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
+                      </v-card>
+                    </span>
                     <!-- 席替えボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;">
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;"
+                    data-intro="席替えボタンを押すと座席が移動します。" data-position="left" data-step="4">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
                     <!-- デモデータのセットボタン -->
@@ -374,6 +387,11 @@
                       <v-icon class="icon">mdi-pencil</v-icon>デモ
                     </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
+                    <!-- テストボタン >
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="testMethod1();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
+                      <v-icon class="icon">mdi-pencil</v-icon>テスト
+                    </v-btn-->
+
                       <!-- プライバシーポリシー -->
                       <v-dialog v-model="privacyPolicy" width="850" scrollable>
                         <template v-slot:activator="{ on, attrs }">
@@ -531,6 +549,7 @@
                       <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
                     <div style="margin-bottom: 20px;"></div>
+                    <span data-intro="座席をドラッグして入れ換えることができます。<br>良さそうな配置であれば、最終調整を行ってください。" data-position="left" data-step="6">
                     <v-tooltip left>
                       <template v-slot:activator="{ on, attrs }">
                         <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
@@ -579,6 +598,7 @@
                     <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text  @click="checkUserPolicyAccepted();">
                       <v-icon style="font-size: 32px;">mdi-sync</v-icon>
                     </v-btn>
+                    </span>
                   </template>
                 </v-list-item-group>
               </v-list>
@@ -587,7 +607,8 @@
           <!-- サイドバーここまで -->
 
           <!-- 座席テーブル -->
-          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}">
+          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}"
+          data-intro="生徒名を入力します。<br>Tabキーを押すと次の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-position="right" data-step="2">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -635,7 +656,8 @@
           </v-card>
 
           <!-- 席替え後の座席テーブル -->
-          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}">
+          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
+          data-intro="座席をドラッグして入れ換えることができます。<br>良さそうな配置であれば、最終調整を行ってください。" data-position="left" data-step="5">
             <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
@@ -930,6 +952,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intro.js@3.3.1/intro.min.js"></script>
 
     <script>
       // ここからsortableJSで使う変数。sortableJSではVueインスタンスのdataやmethodを認識しないため
@@ -1029,9 +1052,31 @@
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
           },
-          testMethod2() { // 引数で受け取った座席の有効・無効を切り替える
+          testMethod2() {
           },
           testMethod3() {
+          },
+          startTutorial() {
+            const intro = introJs().setOptions({
+              prevLabel: '戻る',
+              nextLabel: '進む',
+              doneLabel: '終了',
+              showProgress: true,
+              showBullets: false
+            });
+            intro.onafterchange(function() {
+              console.log(this._currentStep);
+              if(this._currentStep == 2) {
+                app.setDemoData2();
+              } else if(this._currentStep == 4) {
+                app.changeSeatsProcess();
+              }
+            }).start();
+            intro.oncomplete(function() {
+              app.setBlackData();
+              app.resetNextSeatsTable();
+              app.drawer = true;
+            });
           },
           setDemoData() {
             this.seatsTable.splice(0, 1, ['寺倉','中井','大浦','伊藤','村島','齋藤だ']);
@@ -1061,6 +1106,21 @@
             this.genderTable.splice(3, 1, ["male", "female", "male", "female", "male", "female"]);
             this.genderTable.splice(4, 1, ["female", "male", "female", "male", "female", "male"]);
             this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
+            this.countSeats();
+          },
+          setBlackData() {
+            this.seatsTable.splice(0, 1, ['','','','','','']);
+            this.seatsTable.splice(1, 1, ['','','','','','']);
+            this.seatsTable.splice(2, 1, ['','','','','','']);
+            this.seatsTable.splice(3, 1, ['','','','','','']);
+            this.seatsTable.splice(4, 1, ['','','','','','']);
+            this.seatsTable.splice(5, 1, ['','','','','','']);
+            this.genderTable.splice(0, 1, ['','','','','','']);
+            this.genderTable.splice(1, 1, ['','','','','','']);
+            this.genderTable.splice(2, 1, ['','','','','','']);
+            this.genderTable.splice(3, 1, ['','','','','','']);
+            this.genderTable.splice(4, 1, ['','','','','','']);
+            this.genderTable.splice(5, 1, ['','','','','','']);
             this.countSeats();
           },
           uniqueKey(value, nextIndexRow, nextIndexCol) {
@@ -1576,6 +1636,7 @@
         },
         mounted() {
           this.setSortableJS(); // sortableJSをフォームにセット
+          this.startTutorial();
         },
         watch: {
           seatsTable: {
