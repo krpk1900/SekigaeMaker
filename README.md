@@ -1,7 +1,5 @@
 # サービス概要
 [https://sekigae.jp/](https://sekigae.jp/)
-<img width="800px" src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/693123/feceec5d-cc2a-dacd-28b9-2cec69b6d7bf.gif">
-![SekigaeMaker1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/693123/feceec5d-cc2a-dacd-28b9-2cec69b6d7bf.gif)
 入力された条件を満たす**席替えの原案を提供する**サービスです。
 教師だった経験をもとに、すべての教師の業務改善に貢献したいと思って開発しました。
 
