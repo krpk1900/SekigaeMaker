@@ -58,11 +58,7 @@
 - sortable.js 1.13.0
 - Netlify
 
-# 記事
-Qiita記事 https://qiita.com/krpk1900/items/22963432b62a9004717c
+# 関連記事
+[【個人開発】これまでになかった席替えアプリ「席替えメーカー」を作りました \- Qiita](https://qiita.com/krpk1900/items/22963432b62a9004717c)
 
-- [【個人開発】これまでになかった席替えアプリ「席替えメーカー」を作りました \- Qiita](https://qiita.com/krpk1900/items/22963432b62a9004717c)
-
-Note記事 https://note.com/krpk1900/n/n4453088b89dd
-
-- [現場で働く教師の業務改善のために、席替えアプリを作りました \- Qiita](https://note.com/krpk1900/n/n4453088b89dd)
+[現場で働く教師の業務改善のために、席替えアプリを作りました \- Qiita](https://note.com/krpk1900/n/n4453088b89dd)
