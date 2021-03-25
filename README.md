@@ -56,6 +56,7 @@
 - Vue.js 2.6.12
 - Vuetify 2.4
 - sortable.js 1.13.0
+- intro.js 3.3.1
 - Netlify
 
 # 関連記事
