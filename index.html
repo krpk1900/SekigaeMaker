@@ -28,6 +28,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://sekigae.jp/og_image.png">
     <meta name="twitter:site" content="席替えメーカー">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
@@ -102,8 +103,8 @@
         background: #ffffff;
       }
       .seat{
-        height: 80px;
-        width: 80px;
+        height: 80px;/*60px;*/
+        width: 80px;/*15%;*/
         display: inline-block;
         border: 3px solid #0BB3BF;
         box-sizing: border-box;
@@ -799,9 +800,9 @@
                 ※現在パソコンのみ対応しています。タブレット・スマホへの対応はもうしばらくお待ちください。
               </v-card-text>
               <v-card-actions>
-                <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="startTutorial(); landing=false;">使い方を確認</v-btn>
-                <v-spacer></v-spacer>
                 <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="startTutorial(); landing=false;">使い方を確認</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -1106,7 +1107,7 @@
               }
             }).start();
             intro.oncomplete(function() {
-              app.setBlackData();
+              app.setBlankData();
               app.resetNextSeatsTable();
               app.drawer = true;
             });
@@ -1141,7 +1142,7 @@
             this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
             this.countSeats();
           },
-          setBlackData() {
+          setBlankData() {
             this.seatsTable.splice(0, 1, ['','','','','','']);
             this.seatsTable.splice(1, 1, ['','','','','','']);
             this.seatsTable.splice(2, 1, ['','','','','','']);
