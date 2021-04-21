@@ -1,5 +1,6 @@
 # 席替えメーカー
 [![Vue](https://img.shields.io/badge/Vue-v2.6.12-%2342b77c)](https://www.npmjs.com/package/vue/v/2.6.12)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1789b738-3cc0-4887-b1ad-2790e8b91721/deploy-status)](https://app.netlify.com/sites/sekigae/deploys)
 
 # サービス概要
 [https://sekigae.jp/](https://sekigae.jp/)
