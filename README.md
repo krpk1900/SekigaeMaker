@@ -1,3 +1,7 @@
+#席替えメーカー
+
+[![Vue](https://img.shields.io/badge/Vue-v2.6.12-%2342b77c)](https://www.npmjs.com/package/vue/v/2.6.12)
+
 # サービス概要
 [https://sekigae.jp/](https://sekigae.jp/)
 
