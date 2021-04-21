@@ -1,7 +1,7 @@
 # サービス概要
 [https://sekigae.jp/](https://sekigae.jp/)
 
-![席替えメーカー16](https://user-images.githubusercontent.com/72296262/111739284-26282780-88c6-11eb-8442-3c212e3eea27.gif)
+![席替えメーカー16](https://user-images.githubusercontent.com/72296262/115614380-9f34f780-a328-11eb-93eb-a8b020c04b2f.gif)
 
 入力された条件を満たす**席替えの原案を提供する**サービスです。教師だった経験をもとに、現場で働く教師の業務改善に貢献したいと思って開発しました。
 
