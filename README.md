@@ -2,7 +2,7 @@
 [https://sekigae.jp/](https://sekigae.jp/)
 
 <a href="https://sekigae.jp/">
-  <img width="100%" src="https://user-images.githubusercontent.com/72296262/115614380-9f34f780-a328-11eb-93eb-a8b020c04b2f.gif" />
+  <img src="https://user-images.githubusercontent.com/72296262/115614380-9f34f780-a328-11eb-93eb-a8b020c04b2f.gif" />
 </a>
 
 入力された条件を満たす**席替えの原案を提供する**サービスです。教師だった経験をもとに、現場で働く教師の業務改善に貢献したいと思って開発しました。
