@@ -50,7 +50,7 @@
 ### 5. ドラッグで最終調整する
 ドラッグで座席を入れ換えることができるので、良さそうな座席の配置を元にして最終調整を行います。
 
-![席替えメーカー21](https://user-images.githubusercontent.com/72296262/111793418-9a83ba80-8908-11eb-8bc7-8275a83524a6.gif)
+![席替えメーカー21](https://user-images.githubusercontent.com/72296262/115620294-f5596900-a32f-11eb-972f-ca85d98278a3.gif)
 
 # 使用技術
 - Vue.js 2.6.12
