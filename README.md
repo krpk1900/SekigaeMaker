@@ -20,12 +20,16 @@
 ### 1. 全体の形と班の形を入力する
 まず、全体の座席の形を選択します。班の形も変えることができます。
 
-![席替えメーカー17](https://user-images.githubusercontent.com/72296262/115615369-d657d880-a329-11eb-9eb0-c6b71f06df47.gif)
+<a href="https://sekigae.jp/">
+  <img src="https://user-images.githubusercontent.com/72296262/115615369-d657d880-a329-11eb-9eb0-c6b71f06df47.gif" />
+</a>
 
 ### 2. 今の座席に生徒名を入力する
 次に、現在の座席に生徒名を入力していきます。クリックで生徒の性別を切り替えることができます。
 
-![席替えメーカー18](https://user-images.githubusercontent.com/72296262/115616619-5d598080-a32b-11eb-9031-9514965164ac.gif)
+<a href="https://sekigae.jp/">
+  <img src="https://user-images.githubusercontent.com/72296262/115616619-5d598080-a32b-11eb-9031-9514965164ac.gif" />
+</a>
 
 ### 3. 条件を入力する
 席替えの際に検討する条件を入力していきます。現在入力できる条件は以下の6通りです。
@@ -41,18 +45,24 @@
 - 今の座席から全員移動させる
 - 男女の座席を固定する
 
-![席替えメーカー19](https://user-images.githubusercontent.com/72296262/115618068-24221000-a32d-11eb-84aa-ca5b2f926b74.gif)
+<a href="https://sekigae.jp/">
+  <img src="https://user-images.githubusercontent.com/72296262/115618068-24221000-a32d-11eb-84aa-ca5b2f926b74.gif" />
+</a>
 
 ### 4. 席替えボタンを押す
 席替えボタンを押して座席を移動させます。良さそうな座席の配置が見つかるまで、席替えは何度でもできます。
 サイドバーを開いて条件を修正することもできます。
 
-![席替えメーカー20](https://user-images.githubusercontent.com/72296262/115619290-a6f79a80-a32e-11eb-9d2d-f25f8ddb022e.gif)
+<a href="https://sekigae.jp/">
+  <img src="https://user-images.githubusercontent.com/72296262/115619290-a6f79a80-a32e-11eb-9d2d-f25f8ddb022e.gif" />
+</a>
 
 ### 5. ドラッグで最終調整する
 ドラッグで座席を入れ換えることができるので、良さそうな座席の配置を元にして最終調整を行います。
 
-![席替えメーカー21](https://user-images.githubusercontent.com/72296262/115620294-f5596900-a32f-11eb-972f-ca85d98278a3.gif)
+<a href="https://sekigae.jp/">
+  <img src="https://user-images.githubusercontent.com/72296262/115620294-f5596900-a32f-11eb-972f-ca85d98278a3.gif" />
+</a>
 
 # 使用技術
 - Vue.js 2.6.12
