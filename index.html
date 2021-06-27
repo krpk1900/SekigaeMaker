@@ -34,6 +34,41 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
     <style>
+      @media screen and (max-width:600px) { /* スマホ */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr 70px;
+          grid-template-rows: 115px;
+        }
+      }
+      @media screen and (min-width:601px) and ( max-width:1020px) { /* タブレット縦 */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr 70px;
+          grid-template-rows: 115px;
+        }
+      }
+      @media screen and (min-width:1021px) and ( max-width:1439px) { /* タブレット横 */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr 70px;
+          grid-template-rows: 115px;
+        }
+      }
+      @media screen and (min-width:1440px) and ( max-width:1904px) { /* PC(lg) */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr 70px;
+          grid-template-rows: 115px;
+        }
+      }
+      @media screen and (min-width:1905px) { /* PC(xl) */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr 70px;
+          grid-template-rows: 115px;
+        }
+      }
       textarea {
         cursor: pointer;
       }
@@ -235,7 +270,7 @@
               使い方
             </v-btn-->
           </div>
-          <div></div><!-- グリッドレイアウト調整用 -->
+          <div v-if="onlyPC()"></div><!-- グリッドレイアウト調整用 -->
 
           <!-- サイドバー -->
           <div>
@@ -548,6 +583,7 @@
                             2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
                             2021.03.22　デザインの変更をOGPに反映させました。<br>
                             2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
+                            2021.06.27　{{ testMethod1() }}
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -1095,6 +1131,15 @@
           testMethod2() {
           },
           testMethod3() {
+          },
+          onlyPC() {
+            if(window.parent.screen.width <= 1439){
+              console.log("Mobile");
+              return false
+            } else {
+              console.log("PC");
+              return true
+            }
           },
           startTutorial() {
             this.drawer = true;
