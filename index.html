@@ -239,7 +239,7 @@
 
           <!-- サイドバー -->
           <div>
-            <v-navigation-drawer absolute width="52%" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right>
+            <v-navigation-drawer absolute width="52%" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
               <v-list nav dense>
                 <v-list-item-group>
                   <template v-if="drawer">
@@ -548,7 +548,6 @@
                             2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
                             2021.03.22　デザインの変更をOGPに反映させました。<br>
                             2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
-                            2021.06.27　test2
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -1084,6 +1083,14 @@
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
+            if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) { // iPhone、iPod、Android(Mobileを含む)
+              console.log("Mobile");
+            } else if (navigator.userAgent.match(/(iPad|(?!(Android.*Mobile)+)Android)/i)) { // iPad、Android(Mobileを含まない)
+              console.log("Tablet");
+            } else { // それ以外はPC
+              console.log("PC");
+            }
+            return `${window.parent.screen.width}×${window.parent.screen.height}`
           },
           testMethod2() {
           },
