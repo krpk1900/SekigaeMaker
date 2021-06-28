@@ -35,47 +35,81 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
     <style>
       @media screen and (max-width:600px) { /* スマホ */
+        span {
+          color: green !important;
+        }
         .grid-layout {
           display: grid;
-          grid-template-columns: 1fr 1fr 70px;
+          grid-template-columns: 1fr 70px;
           grid-template-rows: 115px;
         }
       }
       @media screen and (min-width:601px) and ( max-width:1020px) { /* タブレット縦 */
+        span {
+          color: blue !important;
+        }
         .grid-layout {
           display: grid;
-          grid-template-columns: 1fr 1fr 70px;
+          grid-template-columns: 1fr 70px;
           grid-template-rows: 115px;
         }
       }
       @media screen and (min-width:1021px) and ( max-width:1439px) { /* タブレット横 */
+        span {
+          color: red !important;
+        }
         .grid-layout {
           display: grid;
-          grid-template-columns: 1fr 1fr 70px;
+          grid-template-columns: 1fr 70px;
           grid-template-rows: 115px;
         }
       }
       @media screen and (min-width:1440px) and ( max-width:1904px) { /* PC(lg) */
+        span {
+          color: pink !important;
+        }
         .grid-layout {
           display: grid;
           grid-template-columns: 1fr 1fr 70px;
           grid-template-rows: 115px;
         }
+        .left-card-margin-large {
+          margin: 0 20px 0 40px;
+        }
+        .left-card-margin-small {
+          margin: 0 3px 0 6px;
+        }
+        .right-card-margin-large {
+          margin: 0 40px 0 20px;
+        }
+        .right-card-margin-small {
+          margin: 0 6px 0 3px;
+        }
       }
       @media screen and (min-width:1905px) { /* PC(xl) */
+        span {
+          color: black !important;
+        }
         .grid-layout {
           display: grid;
           grid-template-columns: 1fr 1fr 70px;
           grid-template-rows: 115px;
+        }
+        .left-card-margin-large {
+          margin: 0 20px 0 40px;
+        }
+        .left-card-margin-small {
+          margin: 0 3px 0 6px;
+        }
+        .right-card-margin-large {
+          margin: 0 40px 0 20px;
+        }
+        .right-card-margin-small {
+          margin: 0 6px 0 3px;
         }
       }
       textarea {
         cursor: pointer;
-      }
-      .grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr 70px;
-        grid-template-rows: 115px;
       }
       .panel-grid-layout {
         display: grid;
@@ -158,7 +192,7 @@
       .card-bottom {
         padding-bottom: 35px;
       }
-      .left-card-margin-large {
+      /*.left-card-margin-large { // TBは定義しなおす
         margin: 0 20px 0 40px;
       }
       .left-card-margin-small {
@@ -169,7 +203,7 @@
       }
       .right-card-margin-small {
         margin: 0 6px 0 3px;
-      }
+      }*/
       .minus-margin-bottom {
         vertical-align: bottom;
         margin-bottom: -7px;
@@ -704,6 +738,8 @@
             <div class="card-bottom"></div>
           </v-card>
 
+          <div v-if="onlyTB()"></div><!-- グリッドレイアウト調整用 -->
+
           <!-- 席替え後の座席テーブル -->
           <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
           data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-title="5. 最終調整！" data-position="left" data-step="5">
@@ -1119,13 +1155,13 @@
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
-            if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) { // iPhone、iPod、Android(Mobileを含む)
+            /*if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) { // iPhone、iPod、Android(Mobileを含む)
               console.log("Mobile");
             } else if (navigator.userAgent.match(/(iPad|(?!(Android.*Mobile)+)Android)/i)) { // iPad、Android(Mobileを含まない)
               console.log("Tablet");
             } else { // それ以外はPC
               console.log("PC");
-            }
+            }*/
             return `${window.parent.screen.width}×${window.parent.screen.height}`
           },
           testMethod2() {
@@ -1139,6 +1175,15 @@
             } else {
               console.log("PC");
               return true
+            }
+          },
+          onlyTB() {
+            if(window.parent.screen.width <= 1439){
+              console.log("Mobile");
+              return true
+            } else {
+              console.log("PC");
+              return false
             }
           },
           startTutorial() {
@@ -1721,6 +1766,11 @@
           this.makeSeatsTable(); // 最初にseatsTableを作成
           this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
           this.makeGenderTable(); // genderTableを作成
+          if(window.parent.screen.width <= 1439){
+            this.drawer = false;
+          } else {
+            this.drawer = true;
+          }
         },
         mounted() {
           this.setSortableJS(); // sortableJSをフォームにセット
