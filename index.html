@@ -43,6 +43,18 @@
           grid-template-columns: 1fr 70px;
           grid-template-rows: 115px;
         }
+        /*.left-card-margin-large { スマホの場合を定義しなおす
+          margin: 0 20px 0 40px;
+        }
+        .left-card-margin-small {
+          margin: 0 3px 0 6px;
+        }
+        .right-card-margin-large {
+          margin: 0 40px 0 20px;
+        }
+        .right-card-margin-small {
+          margin: 0 6px 0 3px;
+        }*/
       }
       @media screen and (min-width:601px) and ( max-width:1020px) { /* タブレット縦 */
         span {
@@ -216,18 +228,6 @@
       .card-bottom {
         padding-bottom: 35px;
       }
-      /*.left-card-margin-large { // TBは定義しなおす
-        margin: 0 20px 0 40px;
-      }
-      .left-card-margin-small {
-        margin: 0 3px 0 6px;
-      }
-      .right-card-margin-large {
-        margin: 0 40px 0 20px;
-      }
-      .right-card-margin-small {
-        margin: 0 6px 0 3px;
-      }*/
       .minus-margin-bottom {
         vertical-align: bottom;
         margin-bottom: -7px;
@@ -1791,9 +1791,9 @@
           this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
           this.makeGenderTable(); // genderTableを作成
           if(window.parent.screen.width <= 1439){
-            this.drawer = false;
+            this.drawer = false; // SP・TBのときは初期はサイドバーを非表示
           } else {
-            this.drawer = true;
+            this.drawer = true; // PCのときのみ初期はサイドバーを表示
           }
         },
         mounted() {
