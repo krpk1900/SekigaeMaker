@@ -34,13 +34,103 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
     <style>
+      @media screen and (max-width:600px) { /* スマホ */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 70px;
+          grid-template-rows: 115px;
+        }
+        /*.left-card-margin-large { スマホの場合を定義しなおす
+          margin: 0 20px 0 40px;
+        }
+        .left-card-margin-small {
+          margin: 0 3px 0 6px;
+        }
+        .right-card-margin-large {
+          margin: 0 40px 0 20px;
+        }
+        .right-card-margin-small {
+          margin: 0 6px 0 3px;
+        }*/
+      }
+      @media screen and (min-width:601px) and ( max-width:1020px) { /* タブレット縦 */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 70px;
+          grid-template-rows: 115px;
+        }
+        .left-card-margin-large {
+          margin: 0 10px 10px 10px;
+        }
+        .left-card-margin-small {
+          margin: 0 10px 10px 10px;
+        }
+        .right-card-margin-large {
+          margin: 10px 10px 0 10px;
+        }
+        .right-card-margin-small {
+          margin: 10px 10px 0 10px;
+        }
+      }
+      @media screen and (min-width:1021px) and ( max-width:1439px) { /* タブレット横 */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 70px;
+          grid-template-rows: 115px;
+        }
+        .left-card-margin-large {
+          margin: 0 100px 10px 100px;
+        }
+        .left-card-margin-small {
+          margin: 0 100px 10px 100px;
+        }
+        .right-card-margin-large {
+          margin: 10px 100px 0 100px;
+        }
+        .right-card-margin-small {
+          margin: 10px 100px 0 100px;
+        }
+      }
+      @media screen and (min-width:1440px) and ( max-width:1904px) { /* PC(lg) */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr 70px;
+          grid-template-rows: 115px;
+        }
+        .left-card-margin-large {
+          margin: 0 20px 0 40px;
+        }
+        .left-card-margin-small {
+          margin: 0 3px 0 6px;
+        }
+        .right-card-margin-large {
+          margin: 0 40px 0 20px;
+        }
+        .right-card-margin-small {
+          margin: 0 6px 0 3px;
+        }
+      }
+      @media screen and (min-width:1905px) { /* PC(xl) */
+        .grid-layout {
+          display: grid;
+          grid-template-columns: 1fr 1fr 70px;
+          grid-template-rows: 115px;
+        }
+        .left-card-margin-large {
+          margin: 0 20px 0 40px;
+        }
+        .left-card-margin-small {
+          margin: 0 3px 0 6px;
+        }
+        .right-card-margin-large {
+          margin: 0 40px 0 20px;
+        }
+        .right-card-margin-small {
+          margin: 0 6px 0 3px;
+        }
+      }
       textarea {
         cursor: pointer;
-      }
-      .grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr 70px;
-        grid-template-rows: 115px;
       }
       .panel-grid-layout {
         display: grid;
@@ -122,18 +212,6 @@
       }
       .card-bottom {
         padding-bottom: 35px;
-      }
-      .left-card-margin-large {
-        margin: 0 20px 0 40px;
-      }
-      .left-card-margin-small {
-        margin: 0 3px 0 6px;
-      }
-      .right-card-margin-large {
-        margin: 0 40px 0 20px;
-      }
-      .right-card-margin-small {
-        margin: 0 6px 0 3px;
       }
       .minus-margin-bottom {
         vertical-align: bottom;
@@ -235,11 +313,11 @@
               使い方
             </v-btn-->
           </div>
-          <div></div><!-- グリッドレイアウト調整用 -->
+          <div v-if="onlyPC()"></div><!-- グリッドレイアウト調整用 -->
 
           <!-- サイドバー -->
           <div>
-            <v-navigation-drawer absolute width="52%" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right>
+            <v-navigation-drawer absolute :width="sidebarWidth" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
               <v-list nav dense>
                 <v-list-item-group>
                   <template v-if="drawer">
@@ -390,7 +468,7 @@
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
                     <!-- デモデータのセットボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData2();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData2(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
                       <v-icon class="icon">mdi-pencil</v-icon>デモ
                     </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
@@ -548,7 +626,7 @@
                             2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
                             2021.03.22　デザインの変更をOGPに反映させました。<br>
                             2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
-                            2021.06.27　test2
+                            2021.06.30　タブレット縦・タブレット横に対応しました。
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -668,6 +746,8 @@
             </div>
             <div class="card-bottom"></div>
           </v-card>
+
+          <div v-if="onlyTB()"></div><!-- グリッドレイアウト調整用 -->
 
           <!-- 席替え後の座席テーブル -->
           <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
@@ -799,7 +879,7 @@
                 席替えメーカーは、生徒名と条件を入力するだけで座席の配置案を瞬時に出してくれるサービスです！
               </v-card-text>
               <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
-                ※現在パソコンのみ対応しています。タブレット・スマホへの対応はもうしばらくお待ちください。
+                ※現在パソコンとタブレットに対応しています。スマホへの対応はもうしばらくお待ちください。
               </v-card-text>
               <v-card-actions>
                 <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
@@ -1081,15 +1161,43 @@
           testName3: '',
           error: false,
           landing: true,
+          sidebarWidth: '52%', // PC用のデフォルト値
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
+            /*if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) { // iPhone、iPod、Android(Mobileを含む)
+              console.log("Mobile");
+            } else if (navigator.userAgent.match(/(iPad|(?!(Android.*Mobile)+)Android)/i)) { // iPad、Android(Mobileを含まない)
+              console.log("Tablet");
+            } else { // それ以外はPC
+              console.log("PC");
+            }*/
+            return `${window.parent.screen.width}×${window.parent.screen.height}`
           },
           testMethod2() {
           },
           testMethod3() {
           },
+          onlyPC() {
+            if(window.parent.screen.width <= 1439){
+              console.log("Mobile");
+              return false
+            } else {
+              console.log("PC");
+              return true
+            }
+          },
+          onlyTB() {
+            if(window.parent.screen.width <= 1439){
+              console.log("Mobile");
+              return true
+            } else {
+              console.log("PC");
+              return false
+            }
+          },
           startTutorial() {
+            const vueInstance = this
             this.drawer = true;
             const intro = introJs().setOptions({
               prevLabel: '戻る',
@@ -1100,18 +1208,28 @@
               showStepNumbers: true,
               showBullets: false
             });
-            intro.onafterchange(function() {
-              console.log(this._currentStep);
-              if(this._currentStep == 2) {
-                app.setDemoData2();
-              } else if(this._currentStep == 4) {
-                app.changeSeatsProcess();
-              }
-            }).start();
+            this.$nextTick(function() { // DOM更新が反映されてサイドバーが表示されるのを待ってから
+              intro.onafterchange(function() {
+                console.log(this._currentStep);
+                if(this._currentStep == 1) {
+                  if(window.parent.screen.width <= 1439){ // SP・TBのとき
+                    app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
+                  }
+                } else if(this._currentStep == 2) {
+                  app.setSidebarWidth();
+                  app.drawer = true;
+                  app.setDemoData2();
+                } else if(this._currentStep == 4) {
+                  app.changeSeatsProcess();
+                }
+              }).start();
+            })
             intro.oncomplete(function() {
               app.setBlankData();
               app.resetNextSeatsTable();
-              app.drawer = true;
+              if(1440 <= window.parent.screen.width){ // PCのとき
+                app.drawer = true;
+              }
             });
           },
           setDemoData() {
@@ -1663,12 +1781,32 @@
                 });
               }
             }
-          }
+          },
+          setSidebarWidth() {
+            if(window.parent.screen.width <= 1020){ // スマホ・タブレット縦のとき
+              this.sidebarWidth = '95%'
+            } else if (1021 <= window.parent.screen.width && window.parent.screen.width <= 1439) { // タブレット横のとき
+              this.sidebarWidth = '80%'
+            } else { // PCのとき
+              this.sidebarWidth = '52%'
+            }
+          },
+          hideSidebarOnlyTB() {
+            if(window.parent.screen.width <= 1439){ // スマホ・タブレット縦のとき
+              this.drawer = false; // サイドバーを非表示
+            }
+          },
         },
         created() {
           this.makeSeatsTable(); // 最初にseatsTableを作成
           this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
           this.makeGenderTable(); // genderTableを作成
+          this.setSidebarWidth();
+          if(window.parent.screen.width <= 1439){ // SP・TBのとき
+            this.drawer = false; // 初期はサイドバーを非表示
+          } else { // PCのとき
+            this.drawer = true; // 初期はサイドバーを表示
+          }
         },
         mounted() {
           this.setSortableJS(); // sortableJSをフォームにセット
