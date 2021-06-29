@@ -1228,11 +1228,13 @@
                 console.log(this._currentStep);
                 if(this._currentStep == 1) {
                   if(window.parent.screen.width <= 1439){ // SP・TBのとき
-                    //app.drawer = false;
+                    app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
                   }
                 } else if(this._currentStep == 2) {
+                  app.setSidebarWidth();
                   app.drawer = true;
                   app.setDemoData2();
+                  //
                 } else if(this._currentStep == 4) {
                   app.changeSeatsProcess();
                 }
@@ -1793,20 +1795,26 @@
                 });
               }
             }
-          }
+          },
+          setSidebarWidth() {
+            if(window.parent.screen.width <= 1020){ // スマホ・タブレット縦のとき
+              this.sidebarWidth = '95%'
+            } else if (1021 <= window.parent.screen.width && window.parent.screen.width <= 1439) { // タブレット横のとき
+              this.sidebarWidth = '80%'
+            } else { // PCのとき
+              this.sidebarWidth = '52%'
+            }
+          },
         },
         created() {
           this.makeSeatsTable(); // 最初にseatsTableを作成
           this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
           this.makeGenderTable(); // genderTableを作成
-          if(window.parent.screen.width <= 1020){ // スマホ・タブレット縦のとき
-            this.drawer = false; // SP・TBのときは初期はサイドバーを非表示
-            this.sidebarWidth = '95%'
-          } else if (1021 <= window.parent.screen.width && window.parent.screen.width <= 1439) { // タブレット横のとき
-            this.drawer = false; // SP・TBのときは初期はサイドバーを非表示
-            this.sidebarWidth = '80%'
+          this.setSidebarWidth();
+          if(window.parent.screen.width <= 1439){ // SP・TBのとき
+            this.drawer = false; // 初期はサイドバーを非表示
           } else { // PCのとき
-            this.drawer = true; // PCのときのみ初期はサイドバーを表示
+            this.drawer = true; // 初期はサイドバーを表示
           }
         },
         mounted() {
