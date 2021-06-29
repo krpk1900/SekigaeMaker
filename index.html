@@ -1211,30 +1211,36 @@
             }
           },
           startTutorial() {
+            const vueInstance = this
             this.drawer = true;
-            this.$nextTick(function() {
-              const intro = introJs().setOptions({
-                prevLabel: '戻る',
-                nextLabel: '進む',
-                // skipLabel: 'スキップ',
-                doneLabel: '終了',
-                showProgress: true,
-                showStepNumbers: true,
-                showBullets: false
-              });
+            const intro = introJs().setOptions({
+              prevLabel: '戻る',
+              nextLabel: '進む',
+              // skipLabel: 'スキップ',
+              doneLabel: '終了',
+              showProgress: true,
+              showStepNumbers: true,
+              showBullets: false
+            });
+            this.$nextTick(function() { // DOM更新が反映されてサイドバーが表示されるのを待ってから
               intro.onafterchange(function() {
                 console.log(this._currentStep);
-                if(this._currentStep == 2) {
+                if(this._currentStep == 1) {
+                  if(window.parent.screen.width <= 1439){ // SP・TBのとき
+                    //app.drawer = false;
+                  }
+                } else if(this._currentStep == 2) {
+                  app.drawer = true;
                   app.setDemoData2();
                 } else if(this._currentStep == 4) {
                   app.changeSeatsProcess();
                 }
               }).start();
-              intro.oncomplete(function() {
-                app.setBlankData();
-                app.resetNextSeatsTable();
-                app.drawer = true;
-              });
+            })
+            intro.oncomplete(function() {
+              app.setBlankData();
+              app.resetNextSeatsTable();
+              app.drawer = true;
             });
           },
           setDemoData() {
