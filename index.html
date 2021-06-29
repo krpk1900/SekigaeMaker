@@ -129,6 +129,7 @@
           margin: 0 6px 0 3px;
         }
       }
+
       textarea {
         cursor: pointer;
       }
@@ -176,6 +177,10 @@
       }
       .nested-expansion-panel {
         background-color: #fbfbfb;
+      }
+      /* サイドバーをスクロール追従 */
+      .sticked{
+        position: sticky;
       }
       .change-seats-button {
         margin-top: 10px;
@@ -317,7 +322,7 @@
 
           <!-- サイドバー -->
           <div>
-            <v-navigation-drawer app absolute :width="sidebarWidth" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
+            <v-navigation-drawer absolute :width="sidebarWidth" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
               <v-list nav dense>
                 <v-list-item-group>
                   <template v-if="drawer">
@@ -634,6 +639,9 @@
                   </template>
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
+
+                    <div class="sticked"> <!-- stickey -->
+
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
@@ -691,6 +699,9 @@
                       </template>
                       <span>席を並び替える</span>
                     </v-tooltip>
+
+                  </div> <!-- stickey -->
+
                   </template>
                 </v-list-item-group>
               </v-list>
