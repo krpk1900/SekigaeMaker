@@ -483,7 +483,7 @@
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
                     <!-- デモデータのセットボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData2();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData2(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
                       <v-icon class="icon">mdi-pencil</v-icon>デモ
                     </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
@@ -1234,7 +1234,6 @@
                   app.setSidebarWidth();
                   app.drawer = true;
                   app.setDemoData2();
-                  //
                 } else if(this._currentStep == 4) {
                   app.changeSeatsProcess();
                 }
@@ -1803,6 +1802,11 @@
               this.sidebarWidth = '80%'
             } else { // PCのとき
               this.sidebarWidth = '52%'
+            }
+          },
+          hideSidebarOnlyTB() {
+            if(window.parent.screen.width <= 1439){ // スマホ・タブレット縦のとき
+              this.drawer = false; // サイドバーを非表示
             }
           },
         },
