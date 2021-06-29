@@ -332,7 +332,7 @@
 
           <!-- サイドバー -->
           <div>
-            <v-navigation-drawer absolute width="52%" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
+            <v-navigation-drawer absolute :width="sidebarWidth" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
               <v-list nav dense>
                 <v-list-item-group>
                   <template v-if="drawer">
@@ -1176,6 +1176,7 @@
           testName3: '',
           error: false,
           landing: true,
+          sidebarWidth: '52%', // PC用のデフォルト値
         },
         methods: {
           testMethod1() { // デバッグ用。最後に消す。
@@ -1798,9 +1799,13 @@
           this.makeSeatsTable(); // 最初にseatsTableを作成
           this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
           this.makeGenderTable(); // genderTableを作成
-          if(window.parent.screen.width <= 1439){
+          if(window.parent.screen.width <= 1020){ // スマホ・タブレット縦のとき
             this.drawer = false; // SP・TBのときは初期はサイドバーを非表示
-          } else {
+            this.sidebarWidth = '95%'
+          } else if (1021 <= window.parent.screen.width && window.parent.screen.width <= 1439) { // タブレット横のとき
+            this.drawer = false; // SP・TBのときは初期はサイドバーを非表示
+            this.sidebarWidth = '80%'
+          } else { // PCのとき
             this.drawer = true; // PCのときのみ初期はサイドバーを表示
           }
         },
