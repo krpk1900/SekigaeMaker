@@ -1242,7 +1242,9 @@
             intro.oncomplete(function() {
               app.setBlankData();
               app.resetNextSeatsTable();
-              app.drawer = true;
+              if(1440 <= window.parent.screen.width){ // PCのとき
+                app.drawer = true;
+              }
             });
           },
           setDemoData() {
