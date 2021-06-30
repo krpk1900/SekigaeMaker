@@ -175,6 +175,11 @@
       .expansion-panels {
         margin-bottom: 12px;
       }
+      .sticky {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+      }
       .nested-expansion-panel {
         background-color: #fbfbfb;
       }
@@ -317,7 +322,7 @@
           <div v-if="onlyPC()"></div><!-- グリッドレイアウト調整用 -->
 
           <!-- サイドバー -->
-          <div>
+          <div class="stickey">
             <v-navigation-drawer absolute :width="sidebarWidth" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
               <v-list nav dense>
                 <v-list-item-group>
