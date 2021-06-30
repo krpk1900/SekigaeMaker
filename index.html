@@ -178,10 +178,6 @@
       .nested-expansion-panel {
         background-color: #fbfbfb;
       }
-      /* サイドバーをスクロール追従 */
-      .sticked{
-        position: sticky;
-      }
       .change-seats-button {
         margin-top: 10px;
       }
@@ -639,9 +635,6 @@
                   </template>
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
-
-                    <div class="sticked"> <!-- stickey -->
-
                     <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
@@ -699,9 +692,6 @@
                       </template>
                       <span>席を並び替える</span>
                     </v-tooltip>
-
-                  </div> <!-- stickey -->
-
                   </template>
                 </v-list-item-group>
               </v-list>
