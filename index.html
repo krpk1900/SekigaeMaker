@@ -175,11 +175,6 @@
       .expansion-panels {
         margin-bottom: 12px;
       }
-      .sticky {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
-      }
       .nested-expansion-panel {
         background-color: #fbfbfb;
       }
@@ -640,7 +635,7 @@
                   </template>
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
-                    <v-list-item style="position: fixed;" @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                    <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
                     <div style="margin-bottom: 20px;"></div>
