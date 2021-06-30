@@ -175,6 +175,11 @@
       .expansion-panels {
         margin-bottom: 12px;
       }
+      .sticky {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+      }
       .nested-expansion-panel {
         background-color: #fbfbfb;
       }
@@ -319,7 +324,7 @@
           <!-- サイドバー -->
           <div>
             <v-navigation-drawer absolute :width="sidebarWidth" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
-              <v-list nav dense style="position: fixed;">
+              <v-list nav dense>
                 <v-list-item-group>
                   <template v-if="drawer">
                     <v-list-item  style="float: right;" @click.stop="drawer = !drawer">
@@ -635,7 +640,7 @@
                   </template>
                   <!-- サイドバーを閉じたとき -->
                   <template v-else>
-                    <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                    <v-list-item class="sticky" @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
                       <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                     </v-list-item>
                     <div style="margin-bottom: 20px;"></div>
