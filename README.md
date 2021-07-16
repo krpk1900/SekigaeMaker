@@ -80,3 +80,4 @@
 - [【個人開発】これまでになかった席替えアプリ「席替えメーカー」を作りました \- Qiita](https://qiita.com/krpk1900/items/22963432b62a9004717c)
 - [現場で働く教師の業務改善のために、席替えアプリを作りました \- Note](https://note.com/krpk1900/n/n4453088b89dd)
 - [元教師が作成した「席替え」専用アプリが便利と話題に \- やじうまWatch](https://internet.watch.impress.co.jp/docs/yajiuma/1312508.html)
+- [小学校での席替え、先生の決め方・やり方とその方法「どうやって決めてるの？」 \- あおせんらぼ](https://ao-labo.com/sekigae/)
