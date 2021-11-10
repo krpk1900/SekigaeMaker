@@ -712,7 +712,7 @@
               </v-tooltip>
             </v-card-title>
             <div>
-              <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: 2px;">
+              <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: -4px;">
                 <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                   <!-- 1つ目のフォームにプレイスホルダーを設定 -->
                   <input type="text" v-if="indexRow==0 && indexCol==0"
@@ -740,7 +740,7 @@
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]"
                   @click="toggleGender(indexCol,indexRow)">
-                <span :class="{'margin-right': (indexCol+1)%groupSizeX==0}"></span>
+                <span :class="{'margin-right': (indexCol+1)%groupSizeX==0 && (indexCol+1)!=seatsSizeX}"></span>
               </span>
               <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
               </li>
@@ -762,7 +762,7 @@
               </v-tooltip>
             </v-card-title>
             <template v-if="isRenderNextSeatsTable">
-              <div class="center" style="margin-left: 2px;">
+              <div class="center">
                 <transition-group name="transition-item" type="transition">
                   <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
                     <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
@@ -773,7 +773,7 @@
                         :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
                         @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
                       </span>
-                      <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
+                      <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0 && (nextIndexCol+1)!=seatsSizeX}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
                     </template>
                     <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
                   </template>
