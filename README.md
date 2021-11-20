@@ -81,6 +81,7 @@
 - [現場で働く教師の業務改善のために、席替えアプリを作りました \- Note](https://note.com/krpk1900/n/n4453088b89dd)
 - [元教師が作成した「席替え」専用アプリが便利と話題に \- やじうまWatch](https://internet.watch.impress.co.jp/docs/yajiuma/1312508.html)
 - [こんなの欲しかった! 　先生が開発した便利アプリ2選 \- 小学館 みんなの教育技術](https://kyoiku.sho.jp/103325/)
+- [テクノロジーを活用した学校教育のアップデートを考えよう \- 企業教育研究会](https://ace-npo.org/wp/archives/study/cjk146)
 - [小学校での席替え、先生の決め方・やり方とその方法「どうやって決めてるの？」 \- あおせんらぼ](https://ao-labo.com/sekigae/)
 - [【知らなきゃ損する】小学校の席替えの秘密を教えます \- 教員のための精神と時の教室](https://syutoshi-blog.com/syougakkou-sekigae/)
 - [無料で使えるおすすめの席替え・グループ分けツール！～どれくらいの頻度で席替えすべき？～ \- やっちゃえ先生探求記](https://www.yacchaesensei.com/entry/2021/05/04/211150)
