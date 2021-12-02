@@ -89,3 +89,4 @@
 - [【ICT活用】授業で使えるおすすめアプリ５選
  \- がっくんのWebハイスクール](
 https://gakkun-web-highschool.com/%e3%80%90ict%e6%b4%bb%e7%94%a8%e3%80%91%e6%8e%88%e6%a5%ad%e3%81%a7%e4%bd%bf%e3%81%88%e3%82%8b%e3%81%8a%e3%81%99%e3%81%99%e3%82%81%e3%82%a2%e3%83%97%e3%83%aa%ef%bc%95%e9%81%b8/)
+- [【Teacher Aide 3周年】今「先生の幸せ」に向けて学生ができること \- Jimpei Hitsuwari　Official Site](https://hitsuwari-jimpei.com/posts/211201)
