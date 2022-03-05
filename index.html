@@ -1099,7 +1099,7 @@
         data: {
           seatsSizeY: 6, // デフォルト値は6
           seatsSizeX: 6, // デフォルト値は6
-          seatsTable: [], // 座席テーブル
+          seatsTable: [], // 座席テーブル、生徒名が入る二次元配列
           seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
           dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
           seatsNum: 0, // 有効な座席数
@@ -1130,11 +1130,11 @@
           backTwoRowsConditions: [''], // 後ろ2列に固定する生徒
           backTwoRowsSeatsIndex: [], // 後ろ2列のインデックス
           dupBackTwoRowsSeatsIndex: [], // 後ろ2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          nextSeatsTable: [], // 席替え後の座席テーブル
+          nextSeatsTable: [], // 席替え後の座席テーブル、生徒名が入る二次元配列
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
           calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
-          genderTable: [], // 生徒の性別テーブル
+          genderTable: [], // 生徒の性別テーブル、生徒名が入る二次元配列
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
