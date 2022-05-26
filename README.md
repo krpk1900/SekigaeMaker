@@ -91,5 +91,6 @@
 https://gakkun-web-highschool.com/%e3%80%90ict%e6%b4%bb%e7%94%a8%e3%80%91%e6%8e%88%e6%a5%ad%e3%81%a7%e4%bd%bf%e3%81%88%e3%82%8b%e3%81%8a%e3%81%99%e3%81%99%e3%82%81%e3%82%a2%e3%83%97%e3%83%aa%ef%bc%95%e9%81%b8/)
 - [【Teacher Aide 3周年】今「先生の幸せ」に向けて学生ができること \- Jimpei Hitsuwari　Official Site](https://hitsuwari-jimpei.com/posts/211201)
 - [【学級経営のポイント】席替えの方法・やり方！失敗すると学級崩壊も \- 詩ちゃんねる](https://kishiuta.com/changing-seats)
+- [席替えを簡単にしたい！ \- A Blog of Language and Culture Learning](https://www.lancule.com/archives/2326)
 - [おすすめ！学級経営に使えるアプリ（自動席替えなど） \- FREERIDE TEACHER|清水智Shimizu Satoshi | 教育ICTコンサルタント](https://note.com/happy_days/n/n228e1e46c592)
 - [【ホームルームで活用】超便利アプリ「席替えメーカー」 \- 木村耀人](https://note.com/yohitokimuradesu/n/na5c627444c07)
