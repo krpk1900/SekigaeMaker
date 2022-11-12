@@ -95,4 +95,5 @@ https://gakkun-web-highschool.com/%e3%80%90ict%e6%b4%bb%e7%94%a8%e3%80%91%e6%8e%
 - [席替えを簡単にしたい！ \- A Blog of Language and Culture Learning](https://www.lancule.com/archives/2326)
 - [【先生におすすめ】席替え簡単無料ツール「席替えメーカー」 \- ICT支援員が学んで発信「学校ICT」](https://www.penginedu.com/entry/2022/09/04/224348)
 - [おすすめ！学級経営に使えるアプリ（自動席替えなど） \- FREERIDE TEACHER|清水智Shimizu Satoshi | 教育ICTコンサルタント](https://note.com/happy_days/n/n228e1e46c592)
+- [素早く！！時短で！！席替え　第2段 \- めがねっ子ブログ〜美容と読書が大好き〜仕事のモットーは時短！効率化！再現性！](https://www.meganekko0w0.com/change-seats-part2/)
 - [【ホームルームで活用】超便利アプリ「席替えメーカー」 \- 木村耀人](https://note.com/yohitokimuradesu/n/na5c627444c07)
