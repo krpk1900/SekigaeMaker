@@ -615,7 +615,9 @@
                             2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
                             2021.03.22　デザインの変更をOGPに反映させました。<br>
                             2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
-                            2021.06.30　タブレット（縦・横）に対応しました。
+                            2021.06.30　タブレット（縦・横）に対応しました。<br>
+                            2022.12.11　座席表の大きさを変更してもすでに入力されていた名前が<br>
+                            　　　　　　消えないように修正しました。
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -1151,6 +1153,8 @@
           error: false,
           landing: true,
           sidebarWidth: '52%', // PC用のデフォルト値
+          seatsTableMemory: [['']],
+          genderTableMemory: [['']],
         },
         methods: {
           onlyPC() {
@@ -1208,6 +1212,8 @@
             });
           },
           setDemoData() {
+            this.seatsSizeX = 6;
+            this.seatsSizeY = 6;
             this.seatsTable.splice(0, 1, ['別本','山田','平野','山口','高松','寺井']);
             this.seatsTable.splice(1, 1, ['山村','坂本','浦山','栗原','谷井','柳澤']);
             this.seatsTable.splice(2, 1, ['中川','安岡','市川','門前','山本','志鷹']);
@@ -1339,6 +1345,28 @@
             this.seatsTable.splice(0)
             for(let i = 0; i < this.seatsSizeY; i++) {
               this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
+            }
+            this.countSeats();
+          },
+          countSeats() { // 有効な座席数をカウント
+            this.seatsNum = 0;
+            this.seatsTable.forEach(seatsRow => {
+              seatsRow.forEach(seat => {
+                if (seat !== '') this.seatsNum += 1
+              })
+            })
+          },
+          remakeSeatsTable() { // seatsTableを作成
+            this.seatsTableMemory = this.seatsTable.splice(0)
+            for(let i = 0; i < this.seatsSizeY; i++) {
+              this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
+            }
+            const minX = Math.min(this.seatsTableMemory[0].length, this.seatsSizeX);
+            const minY = Math.min(this.seatsTableMemory.length, this.seatsSizeY);
+            for(let i = 0; i < minY; i++) {
+              for(let j = 0; j < minX; j++) {
+                this.seatsTable[i][j] = this.seatsTableMemory[i][j] // もともと入力されていた名前をセット
+              }
             }
             this.countSeats();
           },
@@ -1697,6 +1725,19 @@
               this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
             }
           },
+          remakeGenderTable() { // genderTableを作成
+            this.genderTableMemory = this.genderTable.splice(0)
+            for(let i = 0; i < this.seatsSizeY; i++) {
+              this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
+            }
+            const minX = Math.min(this.genderTableMemory[0].length, this.seatsSizeX);
+            const minY = Math.min(this.genderTableMemory.length, this.seatsSizeY);
+            for(let i = 0; i < minY; i++) {
+              for(let j = 0; j < minX; j++) {
+                this.genderTable[i][j] = this.genderTableMemory[i][j] // もともと入力されていた性別をセット
+              }
+            }
+          },
           delete(target, array){
             let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
             if(deleteIndex != -1){ // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
@@ -1835,9 +1876,9 @@
               this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1); // 固定する選択肢を変更
               const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
               this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i); // 距離の選択肢を変更
-              this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
+              this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
-              this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
               switch(this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
                 case 1:
                   this.groupSizeOptionsX = ['なし'];
@@ -1882,9 +1923,9 @@
               this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1) // 固定する選択肢を変更
               const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
               this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i); // 距離の選択肢を変更
-              this.makeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
+              this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
-              this.makeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
               switch(this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
                 case 1:
                   this.groupSizeOptionsY = ['なし'];
