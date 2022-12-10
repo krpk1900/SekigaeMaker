@@ -100,3 +100,4 @@ https://gakkun-web-highschool.com/%e3%80%90ict%e6%b4%bb%e7%94%a8%e3%80%91%e6%8e%
 - [席替えあるある【先生の立場から】 \- マヨ決めＧＯ！ゆみママblog 「読むと子育ての見通しが立つかも！？」迷って決めて進む！もと中学教師ママの子育て情報](https://www.yumimamanchan.com/entry/sekigae)
 - [【ホームルームで活用】超便利アプリ「席替えメーカー」 \- 木村耀人](https://note.com/yohitokimuradesu/n/na5c627444c07)
 - [席替えメーカー：条件を満たす席替えプラン提案サービス：ポートフォリオ紹介 \- RUNTEQ BLOG](https://runteq.jp/blog/portfolio/7357/)
+- [ポートフォリオコンテスト3連勝中のプログラミングスクール「RUNTEQ」が、2021年上半期にリリースしたRUNTEQ生ポートフォリオ5選をご紹介 \- PR TIMES](https://prtimes.jp/main/html/rd/p/000000010.000057664.html)
