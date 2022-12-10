@@ -462,7 +462,7 @@
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
                     <!-- デモデータのセットボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData2(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
                       <v-icon class="icon">mdi-pencil</v-icon>デモ
                     </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
@@ -1193,7 +1193,7 @@
                 } else if(this._currentStep == 2) {
                   app.setSidebarWidth();
                   app.drawer = true;
-                  app.setDemoData2();
+                  app.setDemoData();
                 } else if(this._currentStep == 4) {
                   app.changeSeatsProcess();
                 }
@@ -1208,21 +1208,6 @@
             });
           },
           setDemoData() {
-            this.seatsTable.splice(0, 1, ['寺倉','中井','大浦','伊藤','村島','齋藤だ']);
-            this.seatsTable.splice(1, 1, ['寺井','堀北','田中','斎藤い','小濱','平尾']);
-            this.seatsTable.splice(2, 1, ['茂木','松田','橋本','坂本た','本多','船先']);
-            this.seatsTable.splice(3, 1, ['森上','石原','真子','遠藤','小川','波多野']);
-            this.seatsTable.splice(4, 1, ['有村','菅野','大城','菊本','新垣','俵']);
-            this.seatsTable.splice(5, 1, ['坂本こ','川原','粟島','勝谷','勝又','廣瀬']);
-            this.genderTable.splice(0, 1, ["female", "male", "female", "male", "female", "male"]);
-            this.genderTable.splice(1, 1, ["male", "female", "male", "female", "male", "female"]);
-            this.genderTable.splice(2, 1, ["female", "male", "female", "male", "female", "male"]);
-            this.genderTable.splice(3, 1, ["male", "female", "male", "female", "male", "female"]);
-            this.genderTable.splice(4, 1, ["female", "male", "female", "male", "female", "male"]);
-            this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
-            this.countSeats();
-          },
-          setDemoData2() {
             this.seatsTable.splice(0, 1, ['別本','山田','平野','山口','高松','寺井']);
             this.seatsTable.splice(1, 1, ['山村','坂本','浦山','栗原','谷井','柳澤']);
             this.seatsTable.splice(2, 1, ['中川','安岡','市川','門前','山本','志鷹']);
