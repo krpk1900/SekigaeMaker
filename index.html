@@ -306,10 +306,6 @@
           <div style="margin: auto;">
             <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;">
             <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
-            <!-- 使い方ボタン >
-            <v-btn elevation="2" x-large color="#FFFFFF" class="guide-btn" text  @click="testMethod1();" style="font-size: 20px; font-weight: 900; margin-top: -50px;">
-              使い方
-            </v-btn-->
           </div>
           <div v-if="onlyPC()"></div><!-- グリッドレイアウト調整用 -->
 
@@ -470,10 +466,6 @@
                       <v-icon class="icon">mdi-pencil</v-icon>デモ
                     </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
-                    <!-- テストボタン >
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="testMethod1();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
-                      <v-icon class="icon">mdi-pencil</v-icon>テスト
-                    </v-btn-->
 
                       <!-- プライバシーポリシー -->
                       <v-dialog v-model="privacyPolicy" width="850" scrollable>
@@ -1161,20 +1153,6 @@
           sidebarWidth: '52%', // PC用のデフォルト値
         },
         methods: {
-          testMethod1() { // デバッグ用。最後に消す。
-            /*if (navigator.userAgent.match(/(iPhone|iPod|Android.*Mobile)/i)) { // iPhone、iPod、Android(Mobileを含む)
-              console.log("Mobile");
-            } else if (navigator.userAgent.match(/(iPad|(?!(Android.*Mobile)+)Android)/i)) { // iPad、Android(Mobileを含まない)
-              console.log("Tablet");
-            } else { // それ以外はPC
-              console.log("PC");
-            }*/
-            return `${window.parent.screen.width}×${window.parent.screen.height}`
-          },
-          testMethod2() {
-          },
-          testMethod3() {
-          },
           onlyPC() {
             if(window.parent.screen.width <= 1439){
               console.log("Mobile");
