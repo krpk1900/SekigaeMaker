@@ -151,7 +151,6 @@
       }
       .demo-btn {
         background: #c3c3c3;
-        margin: 13px 0;
       }
       .closed-btn {
         background: #B82E73;
@@ -320,8 +319,12 @@
                     </v-list-item>
                     <h1 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                     <!-- 使い方ボタン -->
-                    <v-btn elevation="2" large color="#FFFFFF" class="tutorial-btn" text  @click="startTutorial();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 20px;">
+                    <v-btn elevation="2" large color="#FFFFFF" class="tutorial-btn" text  @click="startTutorial();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 15px;">
                       <v-icon class="icon" style="padding-top: 4px;">mdi-magnify</v-icon>使い方
+                    </v-btn>
+                    <!-- デモデータのセットボタン -->
+                    <v-btn elevation="2" large color="#FFFFFF" class="demo-btn" text  @click="setDemoData(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 10px; padding-right: 15px;">
+                      <v-icon class="icon">mdi-pencil</v-icon>デモデータ
                     </v-btn>
                     <!-- 座席数を指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left" data-title="1. 全体の座席数を決める！"
@@ -461,9 +464,9 @@
                     data-intro="席替えボタンを押すと座席が移動します。" data-title="4. 席替え！" data-position="left" data-step="4">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
-                    <!-- デモデータのセットボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
-                      <v-icon class="icon">mdi-pencil</v-icon>デモ
+                    <!-- 前回の結果を復元するボタン -->
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="fetchLocalStrage()" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
+                      <v-icon class="icon">mdi-pencil</v-icon>前回の結果を復元
                     </v-btn>
                     <div style="float: right; margin: 10px 0 0 15px;">
 
@@ -1159,19 +1162,19 @@
         methods: {
           onlyPC() {
             if(window.parent.screen.width <= 1439){
-              console.log("Mobile");
+              // console.log("Mobile");
               return false
             } else {
-              console.log("PC");
+              // console.log("PC");
               return true
             }
           },
           onlyTB() {
             if(window.parent.screen.width <= 1439){
-              console.log("Mobile");
+              // console.log("Mobile");
               return true
             } else {
-              console.log("PC");
+              // console.log("PC");
               return false
             }
           },
@@ -1435,6 +1438,7 @@
             this.$nextTick(function(){ // DOMの更新を待ってからsortableJSをフォームにセット
               setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
             });
+            this.setLocalStrage() // 席替え後の座席表のデータをLacalStrageに保存する
             console.log(`====終了====`);
             if(loopNum > 500){
               //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
@@ -1796,6 +1800,36 @@
             if(window.parent.screen.width <= 1439){ // スマホ・タブレット縦のとき
               this.drawer = false; // サイドバーを非表示
             }
+          },
+          fetchLocalStrage() { // LocalStrageに保存されている前回の結果を取り出す
+            // LocalStrageの値を読み込んで、存在すれば反映する
+            let seatsTableLocalStrage = JSON.parse(localStorage.getItem('seatsTable'));
+            let genderTableLocalStrage = JSON.parse(localStorage.getItem('genderTable'));
+            let seatsSizeYLocalStrage = JSON.parse(localStorage.getItem('seatsSizeY'));
+            let seatsSizeXLocalStrage = JSON.parse(localStorage.getItem('seatsSizeX'));
+            let groupSizeYLocalStrage = JSON.parse(localStorage.getItem('groupSizeY'));
+            let groupSizeXLocalStrage = JSON.parse(localStorage.getItem('groupSizeX'));
+
+            if(seatsTableLocalStrage && genderTableLocalStrage && seatsSizeYLocalStrage && seatsSizeXLocalStrage && groupSizeYLocalStrage && groupSizeXLocalStrage){
+              console.log("LocalStrageに値があったので反映させました。");
+              this.seatsTable = seatsTableLocalStrage;
+              this.genderTable = genderTableLocalStrage;
+              this.seatsSizeY = seatsSizeYLocalStrage;
+              this.seatsSizeX = seatsSizeXLocalStrage;
+              this.groupSizeY = groupSizeYLocalStrage;
+              this.groupSizeX = groupSizeXLocalStrage;
+            } else {
+              console.log("LocalStrageに値はありませんでした。");
+            }
+          },
+          setLocalStrage() { // LocalStrageに現在の座席表を書き込む
+            localStorage.setItem('seatsTable', JSON.stringify(this.nextSeatsTable, undefined, 1));
+            localStorage.setItem('genderTable', JSON.stringify(this.genderTable, undefined, 1));
+            localStorage.setItem('seatsSizeX', JSON.stringify(this.seatsSizeX, undefined, 1));
+            localStorage.setItem('seatsSizeY', JSON.stringify(this.seatsSizeY, undefined, 1));
+            localStorage.setItem('groupSizeX', JSON.stringify(this.groupSizeX, undefined, 1));
+            localStorage.setItem('groupSizeY', JSON.stringify(this.groupSizeY, undefined, 1));
+            console.log('LocalStrageに値を書き込みました。');
           },
         },
         created() {
