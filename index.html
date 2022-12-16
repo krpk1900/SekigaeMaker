@@ -1128,8 +1128,9 @@
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
           calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
-          genderTable: [], // 生徒の性別テーブル、生徒名が入る二次元配列
+          genderTable: [], // 生徒の性別テーブル、性別が入る二次元配列
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
+          nextGenderTable: [], // 席替え後の生徒の性別テーブル、性別が入る二次元配列
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
@@ -1463,6 +1464,9 @@
                 this.calcNum += 1;
               }
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
+              let genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
+              let gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
+              this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender);// 復元用のnextGenderTableに席替え後の性別を保存
             })
           },
           shuffle(array) { // 配列をランダムにシャッフル
@@ -1743,6 +1747,12 @@
               }
             }
           },
+          makeNextGenderTable() { // nextGenderTableを作成
+            this.nextGenderTable = []
+            for(let i = 0; i < this.seatsSizeY; i++) {
+              this.nextGenderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
+            }
+          },
           delete(target, array){
             let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
             if(deleteIndex != -1){ // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
@@ -1825,7 +1835,7 @@
           },
           setLocalStrage() { // LocalStrageに現在の座席表を書き込む
             localStorage.setItem('seatsTable', JSON.stringify(this.nextSeatsTable, undefined, 1));
-            localStorage.setItem('genderTable', JSON.stringify(this.genderTable, undefined, 1));
+            localStorage.setItem('genderTable', JSON.stringify(this.nextGenderTable, undefined, 1));
             localStorage.setItem('seatsSizeX', JSON.stringify(this.seatsSizeX, undefined, 1));
             localStorage.setItem('seatsSizeY', JSON.stringify(this.seatsSizeY, undefined, 1));
             localStorage.setItem('groupSizeX', JSON.stringify(this.groupSizeX, undefined, 1));
@@ -1837,6 +1847,7 @@
           this.makeSeatsTable(); // 最初にseatsTableを作成
           this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
           this.makeGenderTable(); // genderTableを作成
+          this.makeNextGenderTable(); // 席替え後用のnextGenderTableを作成
           this.setSidebarWidth();
           if(window.parent.screen.width <= 1439){ // SP・TBのとき
             this.drawer = false; // 初期はサイドバーを非表示
@@ -1914,6 +1925,7 @@
               this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
               switch(this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
                 case 1:
                   this.groupSizeOptionsX = ['なし'];
@@ -1961,6 +1973,7 @@
               this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
               switch(this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
                 case 1:
                   this.groupSizeOptionsY = ['なし'];
