@@ -151,7 +151,6 @@
       }
       .demo-btn {
         background: #c3c3c3;
-        margin: 13px 0;
       }
       .closed-btn {
         background: #B82E73;
@@ -320,8 +319,12 @@
                     </v-list-item>
                     <h1 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
                     <!-- 使い方ボタン -->
-                    <v-btn elevation="2" large color="#FFFFFF" class="tutorial-btn" text  @click="startTutorial();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 20px;">
+                    <v-btn elevation="2" large color="#FFFFFF" class="tutorial-btn" text  @click="startTutorial();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 15px;">
                       <v-icon class="icon" style="padding-top: 4px;">mdi-magnify</v-icon>使い方
+                    </v-btn>
+                    <!-- デモデータのセットボタン -->
+                    <v-btn elevation="2" large color="#FFFFFF" class="demo-btn" text  @click="setDemoData(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 10px; padding-right: 15px;">
+                      <v-icon class="icon">mdi-pencil</v-icon>デモデータ
                     </v-btn>
                     <!-- 座席数を指定するエクスパンションパネル -->
                     <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left" data-title="1. 全体の座席数を決める！"
@@ -461,166 +464,170 @@
                     data-intro="席替えボタンを押すと座席が移動します。" data-title="4. 席替え！" data-position="left" data-step="4">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
-                    <!-- デモデータのセットボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="setDemoData(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 30px;">
-                      <v-icon class="icon">mdi-pencil</v-icon>デモ
+                    <!-- 前回の結果を復元するボタン -->
+                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="fetchLocalStrage()" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px;">
+                      <v-icon class="icon">mdi-pencil</v-icon>前回の結果を復元
                     </v-btn>
-                    <div style="float: right; margin: 10px 0 0 15px;">
-
-                      <!-- プライバシーポリシー -->
-                      <v-dialog v-model="privacyPolicy" width="850" scrollable>
-                        <template v-slot:activator="{ on, attrs }">
-                          <a style="color: #777777; font-size: 15px; display: inline-block; margin-top: 5px;" v-bind="attrs" v-on="on">プライバシーポリシー</a>
-                        </template>
-                        <v-card>
-                          <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">プライバシーポリシー
-                            <v-icon style="float: right;" @click="privacyPolicy = false">mdi-close</v-icon>
-                          </v-card-title>
-                          <v-card-text style="margin-top: 20px;">
-                            サイト運営者（以下「当方」と言います）は、当方の提供するサービス（以下「当サービス」と言います）における、ユーザーについての個人情報を含む利用者情報の取扱いについて、
-                            以下の通りプライバシーポリシー（以下「ポリシー」と言います）を定めます。
-                            <div class="font-weight-bold">第1条（収集する利用者情報及び収集情報）</div>
-                            本ポリシーにおいて、「利用者情報」とは、ユーザーの識別に係る情報、通信サービス上の行動履歴、その他ユーザーまたはユーザーの端末に関連して生成または蓄積された情報であって、
-                            本ポリシーに基づき当方が収集するものを意味するものとします。本サービスにおいて当方が収集する利用者情報は、その収集方法に応じて、以下のようなものとなります。<br>
-                            1.リファラ<br>
-                            2.IPアドレス<br>
-                            3.サーバーアクセスログに関する情報<br>
-                            4.Cookie<br>
-                            5.本サービスが提供する各種ツールの入力情報
-                            <div class="font-weight-bold">第2条（利用目的）</div>
-                            本サービスのサービス提供にかかわる利用者情報の具体的な利用目的は以下です。<br>
-                            1.ユーザーのトラフィック測定及び行動測定のため<br>
-                            2.広告の配信、表示及び効果測定のため<br>
-                            3.本サービスが提供する各種ツールの品質向上のため
-                            <div class="font-weight-bold">第3条（アクセス解析ツール）</div>
-                            1.当サービスでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。
-                            このGoogleアナリティクスはデータの収集のためにCookieを使用しています。<br>
-                            2.この機能はCookieを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。
-                            この規約に関しての詳細は<a href="https://marketingplatform.google.com/about/analytics/terms/jp/" target="_blank" rel="noopener noreferrer">Googleアナリティクスサービス利用規約</a>や
-                            <a href="https://policies.google.com/technologies/ads?hl=ja"　target="_blank" rel="noopener noreferrer">Googleポリシーと規約</a>をご覧ください。
-                            <div class="font-weight-bold">第4条（第三者提供）</div>
-                            当方は、利用者情報のうち、個人情報については、あらかじめユーザーの同意を得ないで、第三者（日本国外にある者を含みます）に提供しません。
-                            但し、次に掲げる必要があり第三者（日本国外にある者を含みます。）に提供する場合はこの限りではありません。<br>
-                            1.当方が利用目的の達成に必要な範囲内において個人情報の取り扱いの全部または一部を委託する場合<br>
-                            2.事業の継承に伴って個人情報が提供される場合<br>
-                            3.第3項の定めに従って、提携先または情報収集モジュール提供者へ個人情報が提供される場合<br>
-                            4.国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって、
-                            ユーザーの同意を得ることによって当該事務の遂行に支障を及ぼすおそれがある場合<br>
-                            5.その他、個人情報の保護に関する法律（以下「個人情報保護法」と言います ）その他の法令で認められる場合
-                            <div class="font-weight-bold">第5条（プライバシーポリシーの変更手続）</div>
-                            当方は、必要に応じて、本ポリシーを変更します。但し、法令上ユーザーの同意が必要となるような本ポリシーの変更を行う場合、変更後の本ポリシーは、当方所定の方法で変更に同意したユーザーに対してのみ適用されるものとします。
-                            なお、当方は、本ポリシーを変更する場合には、変更後の本ポリシーの施行時期及び内容を当ウェブサイト上での表示その他適切な方法により周知し、またはユーザーに通知します。
-                          </v-card-text>
-                        </v-card>
-                      </v-dialog>
-                      <!-- 開発者Twitter -->
-                      <a style="color: #777777; font-size: 15px; text-decoration: none; margin: 0 0 0 15px;" href="https://twitter.com/krpk1900_dev"
-                        target="_blank" rel="noopener noreferrer">開発者Twitter
-                      </a>
+                    <div style="float: right; margin: 10px 0 0 0px;">
                       <div>
+                        <!-- 利用規約 -->
+                        <v-dialog v-model="userPolicy" width="850" scrollable>
+                          <template v-slot:activator="{ on, attrs }">
+                            <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;" v-bind="attrs" v-on="on">利用規約</a>
+                          </template>
+                          <v-card>
+                            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
+                              <v-icon style="float: right;" @click="userPolicy = false">mdi-close</v-icon>
+                            </v-card-title>
+                            <v-card-text style="margin-top: 20px;">
+                              本利用規約（以下「本規約」と言います。）には、本サービスの提供条件及びサイト運営者（以下「当方」と言います）とユーザーの皆様との間の権利義務関係が定められています。
+                              本サービスの利用に際しては、本規約の全文をお読みいただいたうえで、本規約に同意いただく必要があります。
+                              <div class="font-weight-bold">第1条（適用）</div>
+                              1.本規約は、本サービスの提供条件及び本サービスの利用に関する当方とユーザーとの間の権利義務関係を定めることを目的とし、
+                                ユーザーと当方との間の本サービスの利用に関わる一切の関係に適用されます。<br>
+                              2.本規約の内容と、本規約外における本サービスの説明等とが異なる場合は、本規約の規定が優先して適用されるものとします。
+                              <div class="font-weight-bold">第2条（定義）</div>
+                              本規約において使用する以下の用語は、各々以下に定める意味を有するものとします。<br>
+                              1.「知的財産権」とは、著作権、特許権、実用新案権、意匠権、商標権その他の知的財産権（それらの権利を取得し、またはそれらの権利につき登録等を出願する権利を含みます。）を意味します。<br>
+                              2.「当ウェブサイト」とは、そのドメインが「sekigae.jp」である、当方が運営するウェブサイト（理由の如何を問わず、当方のウェブサイトのドメインまたは内容が変更された場合は、
+                              当該変更後のウェブサイトを含みます。）を意味します。<br>
+                              3.「本サービス」とは、当方が提供する席替えメーカーという名称のサービス（理由の如何を問わずサービスの名称または内容が変更された場合は、当該変更後のサービスを含みます。）を意味します。<br>
+                              <div class="font-weight-bold">第3条（禁止事項）</div>
+                              ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。<br>
+                              1.法令または公序良俗に違反する行為<br>
+                              2.犯罪行為に関連する行為<br>
+                              3.本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為<br>
+                              4.当方、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為<br>
+                              5.本サービスによって得られた情報を商業的に利用する行為<br>
+                              6.当方のサービスの運営を妨害するおそれのある行為<br>
+                              7.不正アクセスをし、またはこれを試みる行為<br>
+                              8.他のユーザーに関する個人情報等を収集または蓄積する行為<br>
+                              9.不正な目的を持って本サービスを利用する行為<br>
+                              10.本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為<br>
+                              11.他のユーザーに成りすます行為<br>
+                              12.当方が許諾しない本サービス上での宣伝、広告、勧誘、または営業行為<br>
+                              13.面識のない異性との出会いを目的とした行為<br>
+                              14.当方のサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為<br>
+                              15.その他、当方が不適切と判断する行為<br>
+                              <div class="font-weight-bold">第4条（本サービスの提供の停止等）</div>
+                              1.当方は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
+                              　1.本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
+                              　2.地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合<br>
+                              　3.コンピュータまたは通信回線等が事故により停止した場合<br>
+                              　4.その他、当方が本サービスの提供が困難と判断した場合<br>
+                              2.当方は、本サービスの提供の停止または中断により、ユーザーまたは第三者が被ったいかなる不利益または損害についても、一切の責任を負わないものとします。
+                              <div class="font-weight-bold">第5条（保証の否認及び免責）</div>
+                              1.当方は、本サービスがユーザーの特定の目的に適合すること、期待する機能・商品的価値・正確性・有用性を有すること、
+                                ユーザーによる本サービスの利用がユーザーに適用のある法令または業界団体の内部規則等に適合すること、
+                                継続的に利用できること、及び不具合が生じないことについて、明示又は黙示を問わず何ら保証するものではありません。<br>
+                              2.当方は、本サービスに関してユーザーが被った損害について賠償する責任を負わないものとし、また、付随的損害、間接損害、特別損害、将来の損害及び逸失利益にかかる損害については、
+                              賠償する責任を負わないものとします。<br>
+                              3.本サービスまたは当方ウェブサイトに関連してユーザーと他のユーザーまたは第三者との間において生じた取引、連絡、紛争等については、ユーザーが自己の責任によって解決するものとします。
+                              <div class="font-weight-bold">第6条（本サービスの内容の変更、終了）</div>
+                              1.当方は、当方の都合により、本サービスの内容を変更し、または提供を終了することができます。<br>
+                              2.当方が本サービスの提供を終了する場合、当方はユーザーに事前に通知するものとします。
+                              <div class="font-weight-bold">第7条（利用規約の変更）</div>
+                              当方は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
+                              なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
+                              <div class="font-weight-bold">第8条（個人情報の取扱い）</div>
+                              当方は、本サービスの利用によって取得する個人情報については、当方「プライバシーポリシー」に従い適切に取り扱うものとします。
+                              <div class="font-weight-bold">第9条（権利義務の譲渡の禁止）</div>
+                              ユーザーは、当方の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
+                              <div class="font-weight-bold">第10条（分離可能性）</div>
+                              本規約のいずれかの条項またはその一部が、消費者契約法その他の法令等により無効または執行不能と判断された場合であっても、
+                              本規約の残りの規定及び一部が無効または執行不能と判断された規定の残りの部分は、継続して完全に効力を有するものとします。
+                              <div class="font-weight-bold">第11条（準拠法・裁判管轄）</div>
+                              1.本規約の解釈にあたっては、日本法を準拠法とします。<br>
+                              2.本サービスに関して紛争が生じた場合には、当方の本店所在地を管轄する裁判所を専属的合意管轄とします。<br>
+                            </v-card-text>
+                          </v-card>
+                        </v-dialog>
+                        <!-- プライバシーポリシー -->
+                        <v-dialog v-model="privacyPolicy" width="850" scrollable>
+                          <template v-slot:activator="{ on, attrs }">
+                            <a style="color: #777777; font-size: 15px; display: inline-block; text-decoration: underline;" v-bind="attrs" v-on="on">プライバシーポリシー</a>
+                          </template>
+                          <v-card>
+                            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">プライバシーポリシー
+                              <v-icon style="float: right;" @click="privacyPolicy = false">mdi-close</v-icon>
+                            </v-card-title>
+                            <v-card-text style="margin-top: 20px;">
+                              サイト運営者（以下「当方」と言います）は、当方の提供するサービス（以下「当サービス」と言います）における、ユーザーについての個人情報を含む利用者情報の取扱いについて、
+                              以下の通りプライバシーポリシー（以下「ポリシー」と言います）を定めます。
+                              <div class="font-weight-bold">第1条（収集する利用者情報及び収集情報）</div>
+                              本ポリシーにおいて、「利用者情報」とは、ユーザーの識別に係る情報、通信サービス上の行動履歴、その他ユーザーまたはユーザーの端末に関連して生成または蓄積された情報であって、
+                              本ポリシーに基づき当方が収集するものを意味するものとします。本サービスにおいて当方が収集する利用者情報は、その収集方法に応じて、以下のようなものとなります。<br>
+                              1.リファラ<br>
+                              2.IPアドレス<br>
+                              3.サーバーアクセスログに関する情報<br>
+                              4.Cookie<br>
+                              5.本サービスが提供する各種ツールの入力情報
+                              <div class="font-weight-bold">第2条（利用目的）</div>
+                              本サービスのサービス提供にかかわる利用者情報の具体的な利用目的は以下です。<br>
+                              1.ユーザーのトラフィック測定及び行動測定のため<br>
+                              2.広告の配信、表示及び効果測定のため<br>
+                              3.本サービスが提供する各種ツールの品質向上のため
+                              <div class="font-weight-bold">第3条（アクセス解析ツール）</div>
+                              1.当サービスでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。
+                              このGoogleアナリティクスはデータの収集のためにCookieを使用しています。<br>
+                              2.この機能はCookieを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。
+                              この規約に関しての詳細は<a href="https://marketingplatform.google.com/about/analytics/terms/jp/" target="_blank" rel="noopener noreferrer">Googleアナリティクスサービス利用規約</a>や
+                              <a href="https://policies.google.com/technologies/ads?hl=ja"　target="_blank" rel="noopener noreferrer">Googleポリシーと規約</a>をご覧ください。
+                              <div class="font-weight-bold">第4条（ローカルストレージ）</div>
+                              1.当サービスでは、席替え結果をブラウザに記憶するためにlocalStrage（ローカルストレージ）の機能を使用しています。
+                              2.ローカルストレージを通じて取得した情報は、前回の席替え結果の復元のために限り使用します。
+                              <div class="font-weight-bold">第5条（第三者提供）</div>
+                              当方は、利用者情報のうち、個人情報については、あらかじめユーザーの同意を得ないで、第三者（日本国外にある者を含みます）に提供しません。
+                              但し、次に掲げる必要があり第三者（日本国外にある者を含みます。）に提供する場合はこの限りではありません。<br>
+                              1.当方が利用目的の達成に必要な範囲内において個人情報の取り扱いの全部または一部を委託する場合<br>
+                              2.事業の継承に伴って個人情報が提供される場合<br>
+                              3.第3項の定めに従って、提携先または情報収集モジュール提供者へ個人情報が提供される場合<br>
+                              4.国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって、
+                              ユーザーの同意を得ることによって当該事務の遂行に支障を及ぼすおそれがある場合<br>
+                              5.その他、個人情報の保護に関する法律（以下「個人情報保護法」と言います ）その他の法令で認められる場合
+                              <div class="font-weight-bold">第6条（プライバシーポリシーの変更手続）</div>
+                              当方は、必要に応じて、本ポリシーを変更します。但し、法令上ユーザーの同意が必要となるような本ポリシーの変更を行う場合、変更後の本ポリシーは、当方所定の方法で変更に同意したユーザーに対してのみ適用されるものとします。
+                              なお、当方は、本ポリシーを変更する場合には、変更後の本ポリシーの施行時期及び内容を当ウェブサイト上での表示その他適切な方法により周知し、またはユーザーに通知します。
+                            </v-card-text>
+                          </v-card>
+                        </v-dialog>
+                      </div>
+                      <div>
+                        <!-- 更新情報 -->
+                        <v-dialog v-model="updateInformation" width="500">
+                          <template v-slot:activator="{ on, attrs }">
+                            <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;" v-bind="attrs" v-on="on">更新情報</a>
+                          </template>
+                          <v-card>
+                            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">更新情報
+                              <v-icon style="float: right;" @click="updateInformation = false">mdi-close</v-icon>
+                            </v-card-title>
+                            <v-card-text style="margin-top: 20px;">
+                              2021.03.13　β版を公開しました。<br>
+                              2021.03.16　デザインを修正しました。<br>
+                              2021.03.18　使い方チュートリアルを導入しました。<br>
+                              2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
+                              2021.03.22　デザインの変更をOGPに反映させました。<br>
+                              2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
+                              2021.06.30　タブレット（縦・横）に対応しました。<br>
+                              2022.12.11　座席表の大きさを変更してもすでに入力されていた名前が<br>
+                              　　　　　　消えないように修正しました。
+                            </v-card-text>
+                          </v-card>
+                        </v-dialog>
                         <!-- フィードバック -->
-                        <a style="color: #777777; font-size: 15px; text-decoration: none; margin-top: 1px; display: inline-block;" href="https://forms.gle/hUvXzRSAFhLEsUCv6"
+                        <a style="color: #777777; font-size: 15px; display: inline-block;" href="https://forms.gle/hUvXzRSAFhLEsUCv6"
                           target="_blank" rel="noopener noreferrer">フィードバック
                         </a>
-                        <!-- 著作権表記 -->
-                        <span style="color: #777777; font-size: 15px; margin: 0 10px 0 15px;">©2022席替えメーカー</span>
                       </div>
-                    </div>
-                    <div style="float: right; margin: 15px 0 0 0px;">
-                      <!-- 利用規約 -->
-                      <v-dialog v-model="userPolicy" width="850" scrollable>
-                        <template v-slot:activator="{ on, attrs }">
-                          <div style="margin-bottom: 1px;"><a style="color: #777777; font-size: 15px;" v-bind="attrs" v-on="on">利用規約</a></div>
-                        </template>
-                        <v-card>
-                          <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
-                            <v-icon style="float: right;" @click="userPolicy = false">mdi-close</v-icon>
-                          </v-card-title>
-                          <v-card-text style="margin-top: 20px;">
-                            本利用規約（以下「本規約」と言います。）には、本サービスの提供条件及びサイト運営者（以下「当方」と言います）とユーザーの皆様との間の権利義務関係が定められています。
-                            本サービスの利用に際しては、本規約の全文をお読みいただいたうえで、本規約に同意いただく必要があります。
-                            <div class="font-weight-bold">第1条（適用）</div>
-                            1.本規約は、本サービスの提供条件及び本サービスの利用に関する当方とユーザーとの間の権利義務関係を定めることを目的とし、
-                              ユーザーと当方との間の本サービスの利用に関わる一切の関係に適用されます。<br>
-                            2.本規約の内容と、本規約外における本サービスの説明等とが異なる場合は、本規約の規定が優先して適用されるものとします。
-                            <div class="font-weight-bold">第2条（定義）</div>
-                            本規約において使用する以下の用語は、各々以下に定める意味を有するものとします。<br>
-                            1.「知的財産権」とは、著作権、特許権、実用新案権、意匠権、商標権その他の知的財産権（それらの権利を取得し、またはそれらの権利につき登録等を出願する権利を含みます。）を意味します。<br>
-                            2.「当ウェブサイト」とは、そのドメインが「sekigae.jp」である、当方が運営するウェブサイト（理由の如何を問わず、当方のウェブサイトのドメインまたは内容が変更された場合は、
-                            当該変更後のウェブサイトを含みます。）を意味します。<br>
-                            3.「本サービス」とは、当方が提供する席替えメーカーという名称のサービス（理由の如何を問わずサービスの名称または内容が変更された場合は、当該変更後のサービスを含みます。）を意味します。<br>
-                            <div class="font-weight-bold">第3条（禁止事項）</div>
-                            ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。<br>
-                            1.法令または公序良俗に違反する行為<br>
-                            2.犯罪行為に関連する行為<br>
-                            3.本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為<br>
-                            4.当方、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為<br>
-                            5.本サービスによって得られた情報を商業的に利用する行為<br>
-                            6.当方のサービスの運営を妨害するおそれのある行為<br>
-                            7.不正アクセスをし、またはこれを試みる行為<br>
-                            8.他のユーザーに関する個人情報等を収集または蓄積する行為<br>
-                            9.不正な目的を持って本サービスを利用する行為<br>
-                            10.本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為<br>
-                            11.他のユーザーに成りすます行為<br>
-                            12.当方が許諾しない本サービス上での宣伝、広告、勧誘、または営業行為<br>
-                            13.面識のない異性との出会いを目的とした行為<br>
-                            14.当方のサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為<br>
-                            15.その他、当方が不適切と判断する行為<br>
-                            <div class="font-weight-bold">第4条（本サービスの提供の停止等）</div>
-                            1.当方は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
-                            　1.本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
-                            　2.地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合<br>
-                            　3.コンピュータまたは通信回線等が事故により停止した場合<br>
-                            　4.その他、当方が本サービスの提供が困難と判断した場合<br>
-                            2.当方は、本サービスの提供の停止または中断により、ユーザーまたは第三者が被ったいかなる不利益または損害についても、一切の責任を負わないものとします。
-                            <div class="font-weight-bold">第5条（保証の否認及び免責）</div>
-                            1.当方は、本サービスがユーザーの特定の目的に適合すること、期待する機能・商品的価値・正確性・有用性を有すること、
-                              ユーザーによる本サービスの利用がユーザーに適用のある法令または業界団体の内部規則等に適合すること、
-                              継続的に利用できること、及び不具合が生じないことについて、明示又は黙示を問わず何ら保証するものではありません。<br>
-                            2.当方は、本サービスに関してユーザーが被った損害について賠償する責任を負わないものとし、また、付随的損害、間接損害、特別損害、将来の損害及び逸失利益にかかる損害については、
-                            賠償する責任を負わないものとします。<br>
-                            3.本サービスまたは当方ウェブサイトに関連してユーザーと他のユーザーまたは第三者との間において生じた取引、連絡、紛争等については、ユーザーが自己の責任によって解決するものとします。
-                            <div class="font-weight-bold">第6条（本サービスの内容の変更、終了）</div>
-                            1.当方は、当方の都合により、本サービスの内容を変更し、または提供を終了することができます。<br>
-                            2.当方が本サービスの提供を終了する場合、当方はユーザーに事前に通知するものとします。
-                            <div class="font-weight-bold">第7条（利用規約の変更）</div>
-                            当方は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
-                            なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
-                            <div class="font-weight-bold">第8条（個人情報の取扱い）</div>
-                            当方は、本サービスの利用によって取得する個人情報については、当方「プライバシーポリシー」に従い適切に取り扱うものとします。
-                            <div class="font-weight-bold">第9条（権利義務の譲渡の禁止）</div>
-                            ユーザーは、当方の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
-                            <div class="font-weight-bold">第10条（分離可能性）</div>
-                            本規約のいずれかの条項またはその一部が、消費者契約法その他の法令等により無効または執行不能と判断された場合であっても、
-                            本規約の残りの規定及び一部が無効または執行不能と判断された規定の残りの部分は、継続して完全に効力を有するものとします。
-                            <div class="font-weight-bold">第11条（準拠法・裁判管轄）</div>
-                            1.本規約の解釈にあたっては、日本法を準拠法とします。<br>
-                            2.本サービスに関して紛争が生じた場合には、当方の本店所在地を管轄する裁判所を専属的合意管轄とします。<br>
-                          </v-card-text>
-                        </v-card>
-                      </v-dialog>
-                      <!-- 更新情報 -->
-                      <v-dialog v-model="updateInformation" width="500">
-                        <template v-slot:activator="{ on, attrs }">
-                          <a style="color: #777777; font-size: 15px;" v-bind="attrs" v-on="on">更新情報</a>
-                        </template>
-                        <v-card>
-                          <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">更新情報
-                            <v-icon style="float: right;" @click="updateInformation = false">mdi-close</v-icon>
-                          </v-card-title>
-                          <v-card-text style="margin-top: 20px;">
-                            2021.03.13　β版を公開しました。<br>
-                            2021.03.16　デザインを修正しました。<br>
-                            2021.03.18　使い方チュートリアルを導入しました。<br>
-                            2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
-                            2021.03.22　デザインの変更をOGPに反映させました。<br>
-                            2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
-                            2021.06.30　タブレット（縦・横）に対応しました。<br>
-                            2022.12.11　座席表の大きさを変更してもすでに入力されていた名前が<br>
-                            　　　　　　消えないように修正しました。
-                          </v-card-text>
-                        </v-card>
-                      </v-dialog>
+                      <div>
+                        <!-- 開発者Twitter -->
+                        <a style="color: #777777; font-size: 15px; margin-right: 10px;" href="https://twitter.com/krpk1900_dev"
+                          target="_blank" rel="noopener noreferrer">開発者Twitter
+                        </a>
+                        <!-- 著作権表記 -->
+                        <span style="color: #777777; font-size: 15px; margin-right: 10px;">©2023席替えメーカー</span>
+                      </div>
                     </div>
                   </template>
                   <!-- サイドバーを閉じたとき -->
@@ -1124,8 +1131,9 @@
           tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
           calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
           restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
-          genderTable: [], // 生徒の性別テーブル、生徒名が入る二次元配列
+          genderTable: [], // 生徒の性別テーブル、性別が入る二次元配列
           genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
+          nextGenderTable: [], // 席替え後の生徒の性別テーブル、性別が入る二次元配列
           isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
           isFixGender: true, // 性別を固定するかどうかの制御フラグ
           fixConditions: [['', '', '']], // 近づける条件配列
@@ -1141,11 +1149,11 @@
           isOpenPlaceFixPanel: 1, // 特定の座席に固定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenNearPanel: 1, // 生徒同士を近づけるエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
           isOpenFarPanel: 1, // 生徒同士を話すエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
-          userPolicy: false, // 利用規則の表示制御フラグ
-          userPolicyWithButton: false, // ボタン付き利用規則の表示制御フラグ
+          userPolicy: false, // 利用規約の表示制御フラグ
+          userPolicyWithButton: false, // ボタン付き利用規約の表示制御フラグ
           privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
           updateInformation: false, // 更新情報の表示制御フラグ
-          isAcceptedUserPolicy: false, // 利用規則に同意してもらったか
+          isAcceptedUserPolicy: false, // 利用規約に同意してもらったか
           isShowStudentsNameDialog: false,
           testName1: '',
           testName2: '',
@@ -1159,19 +1167,19 @@
         methods: {
           onlyPC() {
             if(window.parent.screen.width <= 1439){
-              console.log("Mobile");
+              // console.log("Mobile");
               return false
             } else {
-              console.log("PC");
+              // console.log("PC");
               return true
             }
           },
           onlyTB() {
             if(window.parent.screen.width <= 1439){
-              console.log("Mobile");
+              // console.log("Mobile");
               return true
             } else {
-              console.log("PC");
+              // console.log("PC");
               return false
             }
           },
@@ -1435,6 +1443,7 @@
             this.$nextTick(function(){ // DOMの更新を待ってからsortableJSをフォームにセット
               setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
             });
+            this.setLocalStrage() // 席替え後の座席表のデータをLacalStrageに保存する
             console.log(`====終了====`);
             if(loopNum > 500){
               //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
@@ -1458,6 +1467,9 @@
                 this.calcNum += 1;
               }
               this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
+              let genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
+              let gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
+              this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender);// 復元用のnextGenderTableに席替え後の性別を保存
             })
           },
           shuffle(array) { // 配列をランダムにシャッフル
@@ -1738,6 +1750,12 @@
               }
             }
           },
+          makeNextGenderTable() { // nextGenderTableを作成
+            this.nextGenderTable = []
+            for(let i = 0; i < this.seatsSizeY; i++) {
+              this.nextGenderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
+            }
+          },
           delete(target, array){
             let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
             if(deleteIndex != -1){ // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
@@ -1797,11 +1815,42 @@
               this.drawer = false; // サイドバーを非表示
             }
           },
+          fetchLocalStrage() { // LocalStrageに保存されている前回の結果を取り出す
+            // LocalStrageの値を読み込んで、存在すれば反映する
+            let seatsTableLocalStrage = JSON.parse(localStorage.getItem('seatsTable'));
+            let genderTableLocalStrage = JSON.parse(localStorage.getItem('genderTable'));
+            let seatsSizeYLocalStrage = JSON.parse(localStorage.getItem('seatsSizeY'));
+            let seatsSizeXLocalStrage = JSON.parse(localStorage.getItem('seatsSizeX'));
+            let groupSizeYLocalStrage = JSON.parse(localStorage.getItem('groupSizeY'));
+            let groupSizeXLocalStrage = JSON.parse(localStorage.getItem('groupSizeX'));
+
+            if(seatsTableLocalStrage && genderTableLocalStrage && seatsSizeYLocalStrage && seatsSizeXLocalStrage && groupSizeYLocalStrage && groupSizeXLocalStrage){
+              console.log("LocalStrageに値があったので反映させました。");
+              this.seatsTable = seatsTableLocalStrage;
+              this.genderTable = genderTableLocalStrage;
+              this.seatsSizeY = seatsSizeYLocalStrage;
+              this.seatsSizeX = seatsSizeXLocalStrage;
+              this.groupSizeY = groupSizeYLocalStrage;
+              this.groupSizeX = groupSizeXLocalStrage;
+            } else {
+              console.log("LocalStrageに値はありませんでした。");
+            }
+          },
+          setLocalStrage() { // LocalStrageに現在の座席表を書き込む
+            localStorage.setItem('seatsTable', JSON.stringify(this.nextSeatsTable, undefined, 1));
+            localStorage.setItem('genderTable', JSON.stringify(this.nextGenderTable, undefined, 1));
+            localStorage.setItem('seatsSizeX', JSON.stringify(this.seatsSizeX, undefined, 1));
+            localStorage.setItem('seatsSizeY', JSON.stringify(this.seatsSizeY, undefined, 1));
+            localStorage.setItem('groupSizeX', JSON.stringify(this.groupSizeX, undefined, 1));
+            localStorage.setItem('groupSizeY', JSON.stringify(this.groupSizeY, undefined, 1));
+            console.log('LocalStrageに値を書き込みました。');
+          },
         },
         created() {
           this.makeSeatsTable(); // 最初にseatsTableを作成
           this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
           this.makeGenderTable(); // genderTableを作成
+          this.makeNextGenderTable(); // 席替え後用のnextGenderTableを作成
           this.setSidebarWidth();
           if(window.parent.screen.width <= 1439){ // SP・TBのとき
             this.drawer = false; // 初期はサイドバーを非表示
@@ -1879,6 +1928,7 @@
               this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
               switch(this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
                 case 1:
                   this.groupSizeOptionsX = ['なし'];
@@ -1926,6 +1976,7 @@
               this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
               this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
               this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
+              this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
               switch(this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
                 case 1:
                   this.groupSizeOptionsY = ['なし'];
