@@ -71,7 +71,7 @@
 
 # 使用技術
 - Vue.js 2.7.15
-- Vuetify 2.4
+- Vuetify 2.7.1
 - sortable.js 1.13.0
 - intro.js 3.3.1
 - Netlify
