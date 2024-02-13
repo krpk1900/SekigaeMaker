@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head prefix="og: https://ogp.me/ns#">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2317JL7RT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-J2317JL7RT');
-    </script>
-    <!-- メタ情報 -->
-    <link rel=”icon” href=“favicon.ico”>
-    <title>席替えメーカー｜一瞬で席替えができるアプリ</title>
-    <meta name="description" content="学校の席替えの原案を瞬時に出力するアプリです。詳細な条件が設定でき、小学校、中学校、高校問わず使用することができるツールです。教師の業務の時間短縮につながります。">
-    <meta name="keywords" content="席替え アプリ, 席替え ソフト, 席替え ツール, 席替え 自動, 席替え 楽">
-    <meta charset="utf-8">
-    <meta property="og:title" content="席替えメーカー">
-    <meta property="og:site_name" content="席替えメーカー">
-    <meta property="og:description" content="学校の席替えの原案を一瞬で出力するアプリです。詳細な条件が設定でき、小学校、中学校、高校問わず使うことができます。教師の業務の時間短縮につながります。">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://sekigae.jp/">
-    <meta property="og:image" content="https://sekigae.jp/new_og_image.png">
-    <meta property="og:locale" content="ja_JP">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://sekigae.jp/new_og_image.png">
-    <meta name="twitter:site" content="席替えメーカー">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
-    <style>
-      @media screen and (max-width:600px) { /* スマホ */
-        .grid-layout {
-          display: grid;
-          grid-template-columns: 1fr 70px;
-          grid-template-rows: 115px;
-        }
-        /*.left-card-margin-large { スマホの場合を定義しなおす
+
+<head prefix="og: https://ogp.me/ns#">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2317JL7RT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-J2317JL7RT');
+  </script>
+  <!-- メタ情報 -->
+  <link rel=”icon” href=“favicon.ico”>
+  <title>席替えメーカー｜一瞬で席替えができるアプリ</title>
+  <meta name="description" content="学校の席替えの原案を瞬時に出力するアプリです。詳細な条件が設定でき、小学校、中学校、高校問わず使用することができるツールです。教師の業務の時間短縮につながります。">
+  <meta name="keywords" content="席替え アプリ, 席替え ソフト, 席替え ツール, 席替え 自動, 席替え 楽">
+  <meta charset="utf-8">
+  <meta property="og:title" content="席替えメーカー">
+  <meta property="og:site_name" content="席替えメーカー">
+  <meta property="og:description" content="学校の席替えの原案を一瞬で出力するアプリです。詳細な条件が設定でき、小学校、中学校、高校問わず使うことができます。教師の業務の時間短縮につながります。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sekigae.jp/">
+  <meta property="og:image" content="https://sekigae.jp/new_og_image.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://sekigae.jp/new_og_image.png">
+  <meta name="twitter:site" content="席替えメーカー">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
+  <style>
+    @media screen and (max-width:600px) {
+
+      /* スマホ */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 70px;
+        grid-template-rows: 115px;
+      }
+
+      /*.left-card-margin-large { スマホの場合を定義しなおす
           margin: 0 20px 0 40px;
         }
         .left-card-margin-small {
@@ -49,847 +53,975 @@
         .right-card-margin-small {
           margin: 0 6px 0 3px;
         }*/
-      }
-      @media screen and (min-width:601px) and ( max-width:1020px) { /* タブレット縦 */
-        .grid-layout {
-          display: grid;
-          grid-template-columns: 1fr 70px;
-          grid-template-rows: 115px;
-        }
-        .left-card-margin-large {
-          margin: 0 10px 10px 10px;
-        }
-        .left-card-margin-small {
-          margin: 0 10px 10px 10px;
-        }
-        .right-card-margin-large {
-          margin: 10px 10px 0 10px;
-        }
-        .right-card-margin-small {
-          margin: 10px 10px 0 10px;
-        }
-      }
-      @media screen and (min-width:1021px) and ( max-width:1439px) { /* タブレット横 */
-        .grid-layout {
-          display: grid;
-          grid-template-columns: 1fr 70px;
-          grid-template-rows: 115px;
-        }
-        .left-card-margin-large {
-          margin: 0 100px 10px 100px;
-        }
-        .left-card-margin-small {
-          margin: 0 100px 10px 100px;
-        }
-        .right-card-margin-large {
-          margin: 10px 100px 0 100px;
-        }
-        .right-card-margin-small {
-          margin: 10px 100px 0 100px;
-        }
-      }
-      @media screen and (min-width:1440px) and ( max-width:1904px) { /* PC(lg) */
-        .grid-layout {
-          display: grid;
-          grid-template-columns: 1fr 1fr 70px;
-          grid-template-rows: 115px;
-        }
-        .left-card-margin-large {
-          margin: 0 20px 0 40px;
-        }
-        .left-card-margin-small {
-          margin: 0 3px 0 6px;
-        }
-        .right-card-margin-large {
-          margin: 0 40px 0 20px;
-        }
-        .right-card-margin-small {
-          margin: 0 6px 0 3px;
-        }
-      }
-      @media screen and (min-width:1905px) { /* PC(xl) */
-        .grid-layout {
-          display: grid;
-          grid-template-columns: 1fr 1fr 70px;
-          grid-template-rows: 115px;
-        }
-        .left-card-margin-large {
-          margin: 0 20px 0 40px;
-        }
-        .left-card-margin-small {
-          margin: 0 3px 0 6px;
-        }
-        .right-card-margin-large {
-          margin: 0 40px 0 20px;
-        }
-        .right-card-margin-small {
-          margin: 0 6px 0 3px;
-        }
+    }
+
+    @media screen and (min-width:601px) and (max-width:1020px) {
+
+      /* タブレット縦 */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 70px;
+        grid-template-rows: 115px;
       }
 
-      textarea {
-        cursor: pointer;
+      .left-card-margin-large {
+        margin: 0 10px 10px 10px;
       }
-      .panel-grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-      }
-      .dialogs-grid-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-      }
-      li {
-        text-align: center;
-        list-style: none;
-      }
-      .background-color {
-        background: #FFFFFF;
-      }
-      .open-btn {
-        background: #B82E73;
-        margin: 13px 0;
-      }
-      .demo-btn {
-        background: #c3c3c3;
-      }
-      .closed-btn {
-        background: #B82E73;
-      }
-      .tutorial-btn {
-        background: #c3c3c3;
-      }
-      .v-btn {
-        border-radius: 12px;
-      }
-      .right {
-        float: right;
-      }
-      /* サイドバー内のセレクトボックス */
-      .v-text-field.v-text-field--enclosed {
-        margin-right: 10px;
-      }
-      .expansion-panels {
-        margin-bottom: 12px;
-      }
-      .nested-expansion-panel {
-        background-color: #fbfbfb;
-      }
-      .change-seats-button {
-        margin-top: 10px;
-      }
-      .on-seats {
-        background: mediumaquamarine;
-      }
-      .male-seats {
-        background: #cce5ff;
-      }
-      .female-seats {
-        background: #ffdbff;
-      }
-      .off-seats {
-        background: #ffffff;
-      }
-      .seat{
-        height: 80px;/*60px;*/
-        width: 80px;/*15%;*/
-        display: inline-block;
-        border: 3px solid #0BB3BF;
-        box-sizing: border-box;
-        text-align: center;
-        border-radius: 7px;
-      }
-      .margin-right {
-        margin-right: 10px;
-      }
-      .minus-margin-right {
-        margin-right: -4px;
-      }
-      .margin-bottom {
-        padding-bottom: 10px;
-      }
-      .card-bottom {
-        padding-bottom: 35px;
-      }
-      .minus-margin-bottom {
-        vertical-align: bottom;
-        margin-bottom: -7px;
-      }
-      .center {
-        text-align: center;
-      }
-      .inline-block {
-        display: inline-block;
-      }
-      .square {
-        display: inline-block;
-        margin: 0 auto;
-        height: 80px;
-        width: 80px;
-      }
-      /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする */
-      .theme--light.v-select .v-select__selection--disabled{
-        color: black;
-      }
-      /* vuetifyのスタイルをオーバーライド、サイドメニューの開閉速度を設定 */
-      .v-navigation-drawer {
-        transition-duration: 0.4s;
-      }
-      /* サイドバーのボーダーを設定 */
-      .v-navigation-drawer__content {
-        border: solid #747474;
-        border-width: 0 1px 0 1px;
-      }
-      .box-shadow {
-        box-shadow: 0 0 3px 3px rgba(170,170,170,0.5);
-      }
-      [v-cloak] {
-        display: none;
-      }
-      .cursor-pointer {
-        cursor: pointer;
-      }
-      /* v-checkboxのテキストカラー */
-      .theme--light.v-label {
-        color: rgba(0,0,0,0.75);
-      }
-      /* sortableJSで選択された座席 */
-      .highlighted {
-        background-color: #EEEEEE;
-      }
-      .sortable-item:hover {
-        cursor: grab;
-      }
-      .sortable-item:active .sortable-ghost, .sortable-chosen .sortable-drag {
-        cursor: grabbing;
-        cursor: -moz-grabbing;
-        cursor: -webkit-grabbing;
-      }
-      .transition-item-move {
-        transition: transform 1s;
-      }
-      .transition-item-enter-active, .transition-item-leave-active {
-        transition: all 0s;
-      }
-      .v-expansion-panel-header>:not(.v-expansion-panel-header__icon) {
-        flex: none;
-      }
-      .close-icon {
-        margin: 17px 0 20px 0;
-      }
-      .open-icon {
-        margin: 25px 0 25px 0;
-      }
-      .v-text-field.v-text-field--enclosed {
-        margin: 0px 5px -20px;
-      }
-      .closed-icon {
-        margin: 10px 0;
-      }
-      .condition-title {
-        margin: 17px 0 28px;
-      }
-      .icon {
-        margin: 0 8px 0 -5px;
-      }
-      .introjs-tooltip {
-        min-width: 400px;
-        max-width: 400px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app" v-cloak>
-      <v-app>
-        <div class="grid-layout background-color">
-          <!-- タイトル -->
-          <div style="margin: auto;">
-            <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;">
-            <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
-          </div>
-          <div v-if="onlyPC()"></div><!-- グリッドレイアウト調整用 -->
 
-          <!-- サイドバー -->
-          <div>
-            <v-navigation-drawer fixed :width="sidebarWidth" color="#ededed" :mini-variant="!drawer" mini-variant-width="73px" right mobile-breakpoint="0">
-              <v-list nav dense>
-                <v-list-item-group>
-                  <template v-if="drawer">
-                    <v-list-item  style="float: right;" @click.stop="drawer = !drawer">
-                      <v-icon color="#0c9ea8" class="close-icon" style="font-size: 32px;">mdi-chevron-double-right</v-icon>
-                    </v-list-item>
-                    <h1 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
-                    <!-- 使い方ボタン -->
-                    <v-btn elevation="2" large color="#FFFFFF" class="tutorial-btn" text  @click="startTutorial();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 15px;">
-                      <v-icon class="icon" style="padding-top: 4px;">mdi-magnify</v-icon>使い方
-                    </v-btn>
-                    <!-- デモデータのセットボタン -->
-                    <v-btn elevation="2" large color="#FFFFFF" class="demo-btn" text  @click="setDemoData(); hideSidebarOnlyTB();" style="font-size: 20px; font-weight: 900; margin: -20px 0 0 10px; padding-right: 15px;">
-                      <v-icon class="icon">mdi-pencil</v-icon>デモデータ
-                    </v-btn>
-                    <!-- 座席数を指定するエクスパンションパネル -->
-                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"　data-position="left" data-title="1. 全体の座席数を決める！"
+      .left-card-margin-small {
+        margin: 0 10px 10px 10px;
+      }
+
+      .right-card-margin-large {
+        margin: 10px 10px 0 10px;
+      }
+
+      .right-card-margin-small {
+        margin: 10px 10px 0 10px;
+      }
+    }
+
+    @media screen and (min-width:1021px) and (max-width:1439px) {
+
+      /* タブレット横 */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 70px;
+        grid-template-rows: 115px;
+      }
+
+      .left-card-margin-large {
+        margin: 0 100px 10px 100px;
+      }
+
+      .left-card-margin-small {
+        margin: 0 100px 10px 100px;
+      }
+
+      .right-card-margin-large {
+        margin: 10px 100px 0 100px;
+      }
+
+      .right-card-margin-small {
+        margin: 10px 100px 0 100px;
+      }
+    }
+
+    @media screen and (min-width:1440px) and (max-width:1904px) {
+
+      /* PC(lg) */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr 70px;
+        grid-template-rows: 115px;
+      }
+
+      .left-card-margin-large {
+        margin: 0 20px 0 40px;
+      }
+
+      .left-card-margin-small {
+        margin: 0 3px 0 6px;
+      }
+
+      .right-card-margin-large {
+        margin: 0 40px 0 20px;
+      }
+
+      .right-card-margin-small {
+        margin: 0 6px 0 3px;
+      }
+    }
+
+    @media screen and (min-width:1905px) {
+
+      /* PC(xl) */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr 70px;
+        grid-template-rows: 115px;
+      }
+
+      .left-card-margin-large {
+        margin: 0 20px 0 40px;
+      }
+
+      .left-card-margin-small {
+        margin: 0 3px 0 6px;
+      }
+
+      .right-card-margin-large {
+        margin: 0 40px 0 20px;
+      }
+
+      .right-card-margin-small {
+        margin: 0 6px 0 3px;
+      }
+    }
+
+    textarea {
+      cursor: pointer;
+    }
+
+    .panel-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .dialogs-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    li {
+      text-align: center;
+      list-style: none;
+    }
+
+    .background-color {
+      background: #FFFFFF;
+    }
+
+    .open-btn {
+      background: #B82E73;
+      margin: 13px 0;
+    }
+
+    .demo-btn {
+      background: #c3c3c3;
+    }
+
+    .closed-btn {
+      background: #B82E73;
+    }
+
+    .tutorial-btn {
+      background: #c3c3c3;
+    }
+
+    .v-btn {
+      border-radius: 12px;
+    }
+
+    .right {
+      float: right;
+    }
+
+    /* サイドバー内のセレクトボックス */
+    .v-text-field.v-text-field--enclosed {
+      margin-right: 10px;
+    }
+
+    .expansion-panels {
+      margin-bottom: 12px;
+    }
+
+    .nested-expansion-panel {
+      background-color: #fbfbfb;
+    }
+
+    .change-seats-button {
+      margin-top: 10px;
+    }
+
+    .on-seats {
+      background: mediumaquamarine;
+    }
+
+    .male-seats {
+      background: #cce5ff;
+    }
+
+    .female-seats {
+      background: #ffdbff;
+    }
+
+    .off-seats {
+      background: #ffffff;
+    }
+
+    .seat {
+      height: 80px;
+      /*60px;*/
+      width: 80px;
+      /*15%;*/
+      display: inline-block;
+      border: 3px solid #0BB3BF;
+      box-sizing: border-box;
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    .margin-right {
+      margin-right: 10px;
+    }
+
+    .minus-margin-right {
+      margin-right: -4px;
+    }
+
+    .margin-bottom {
+      padding-bottom: 10px;
+    }
+
+    .card-bottom {
+      padding-bottom: 35px;
+    }
+
+    .minus-margin-bottom {
+      vertical-align: bottom;
+      margin-bottom: -7px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .inline-block {
+      display: inline-block;
+    }
+
+    .square {
+      display: inline-block;
+      margin: 0 auto;
+      height: 80px;
+      width: 80px;
+    }
+
+    /* vuetifyのスタイルをオーバーライド、選択されてdisabledになった文字のカラーをblackにする */
+    .theme--light.v-select .v-select__selection--disabled {
+      color: black;
+    }
+
+    /* vuetifyのスタイルをオーバーライド、サイドメニューの開閉速度を設定 */
+    .v-navigation-drawer {
+      transition-duration: 0.4s;
+    }
+
+    /* サイドバーのボーダーを設定 */
+    .v-navigation-drawer__content {
+      border: solid #747474;
+      border-width: 0 1px 0 1px;
+    }
+
+    .box-shadow {
+      box-shadow: 0 0 3px 3px rgba(170, 170, 170, 0.5);
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .cursor-pointer {
+      cursor: pointer;
+    }
+
+    /* v-checkboxのテキストカラー */
+    .theme--light.v-label {
+      color: rgba(0, 0, 0, 0.75);
+    }
+
+    /* sortableJSで選択された座席 */
+    .highlighted {
+      background-color: #EEEEEE;
+    }
+
+    .sortable-item:hover {
+      cursor: grab;
+    }
+
+    .sortable-item:active .sortable-ghost,
+    .sortable-chosen .sortable-drag {
+      cursor: grabbing;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing;
+    }
+
+    .transition-item-move {
+      transition: transform 1s;
+    }
+
+    .transition-item-enter-active,
+    .transition-item-leave-active {
+      transition: all 0s;
+    }
+
+    .v-expansion-panel-header>:not(.v-expansion-panel-header__icon) {
+      flex: none;
+    }
+
+    .close-icon {
+      margin: 17px 0 20px 0;
+    }
+
+    .open-icon {
+      margin: 25px 0 25px 0;
+    }
+
+    .v-text-field.v-text-field--enclosed {
+      margin: 0px 5px -20px;
+    }
+
+    .closed-icon {
+      margin: 10px 0;
+    }
+
+    .condition-title {
+      margin: 17px 0 28px;
+    }
+
+    .icon {
+      margin: 0 8px 0 -5px;
+    }
+
+    .introjs-tooltip {
+      min-width: 400px;
+      max-width: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <v-app>
+      <div class="grid-layout background-color">
+        <!-- タイトル -->
+        <div style="margin: auto;">
+          <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;">
+          <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
+        </div>
+        <div v-if="onlyPC()"></div><!-- グリッドレイアウト調整用 -->
+
+        <!-- サイドバー -->
+        <div>
+          <v-navigation-drawer fixed :width="sidebarWidth" color="#ededed" :mini-variant="!drawer"
+            mini-variant-width="73px" right mobile-breakpoint="0">
+            <v-list nav dense>
+              <v-list-item-group>
+                <template v-if="drawer">
+                  <v-list-item style="float: right;" @click.stop="drawer = !drawer">
+                    <v-icon color="#0c9ea8" class="close-icon"
+                      style="font-size: 32px;">mdi-chevron-double-right</v-icon>
+                  </v-list-item>
+                  <h1 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon
+                      color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
+                  <!-- 使い方ボタン -->
+                  <v-btn elevation="2" large color="#FFFFFF" class="tutorial-btn" text @click="startTutorial();"
+                    style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 15px;">
+                    <v-icon class="icon" style="padding-top: 4px;">mdi-magnify</v-icon>使い方
+                  </v-btn>
+                  <!-- デモデータのセットボタン -->
+                  <v-btn elevation="2" large color="#FFFFFF" class="demo-btn" text
+                    @click="setDemoData(); hideSidebarOnlyTB();"
+                    style="font-size: 20px; font-weight: 900; margin: -20px 0 0 10px; padding-right: 15px;">
+                    <v-icon class="icon">mdi-pencil</v-icon>デモデータ
+                  </v-btn>
+                  <!-- 座席数を指定するエクスパンションパネル -->
+                  <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"
+                    　data-position="left" data-title="1. 全体の座席数を決める！"
                     data-intro="まず全体の座席数を指定します。<br>37人のようにちょうど長方形にならない場合は、6×7のように余裕をもって指定することで対応できます。">
-                      <v-expansion-panel>
-                        <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header><v-icon color="#0c9ea8"
+                          class="icon">mdi-grid</v-icon>座席数を指定する</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <div class="panel-grid-layout">
+                          <div>
+                            全体<v-select :items="seatsOptionsX" label="横" outlined　v-model.number="seatsSizeX"
+                              style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
+                            ✕<v-select :items="seatsOptionsY" label="縦" outlined　v-model.number="seatsSizeY"
+                              style="width: 90px;" class="inline-block"></v-select>
+                          </div>
+                          <div>
+                            班<v-select :items="groupSizeOptionsX" label="横" outlined　v-model.number="groupSizeX"
+                              style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
+                            ✕<v-select :items="groupSizeOptionsY" label="縦" outlined　v-model.number="groupSizeY"
+                              style="width: 90px;" class="inline-block"></v-select>
+                          </div>
+                        </div>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                  <span data-intro="席替えの際に考える条件を入力します。" data-title="3. 条件を入力！" data-step="3" data-position="left">
+                    <!-- 前後で指定するエクスパンションパネル -->
+                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenFrontBackPanel">
+                      <v-expansion-panel class="expansion-panel">
+                        <v-expansion-panel-header><v-icon color="#0c9ea8"
+                            class="icon">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
-                          <div class="panel-grid-layout">
-                            <div>
-                              全体<v-select :items="seatsOptionsX" label="横" outlined　v-model.number="seatsSizeX" style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
-                              ✕<v-select :items="seatsOptionsY" label="縦" outlined　v-model.number="seatsSizeY" style="width: 90px;" class="inline-block"></v-select>
-                            </div>
-                            <div>
-                              班<v-select :items="groupSizeOptionsX" label="横" outlined　v-model.number="groupSizeX" style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
-                              ✕<v-select :items="groupSizeOptionsY" label="縦" outlined　v-model.number="groupSizeY" style="width: 90px;" class="inline-block"></v-select>
-                            </div>
+                          <v-expansion-panels accordion multiple>
+                            <!-- 最前列のエクスパンションパネル -->
+                            <v-expansion-panel style="background-color: #fbfbfb;">
+                              <v-expansion-panel-header>最前列</v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <span v-for="(frontCondition, frontIndex) in frontConditions">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
+                                    style="width:190px; display: inline-block" v-model="frontConditions[frontIndex]"
+                                    @change.once="createNewFrontConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                </span>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <!-- 前2列のエクスパンションパネル -->
+                            <v-expansion-panel style="background-color: #fbfbfb;">
+                              <v-expansion-panel-header>前2列</v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
+                                    style="width:190px; display: inline-block"
+                                    v-model="frontTwoRowsConditions[frontTwoRowsIndex]"
+                                    @change.once="createNewFrontTwoRowsConditions"
+                                    no-data-text="座席に生徒名が入力されていません"></v-select>
+                                </span>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <!-- 後ろ2列のエクスパンションパネル -->
+                            <v-expansion-panel style="background-color: #fbfbfb;">
+                              <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
+                                    style="width:190px; display: inline-block"
+                                    v-model="backTwoRowsConditions[backTwoRowsIndex]"
+                                    @change.once="createNewBackTwoRowsConditions"
+                                    no-data-text="座席に生徒名が入力されていません"></v-select>
+                                </span>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <!-- 最後列のエクスパンションパネル -->
+                            <v-expansion-panel style="background-color: #fbfbfb;">
+                              <v-expansion-panel-header>最後列</v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <span v-for="(backCondition, backIndex) in backConditions">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
+                                    style="width:190px; display: inline-block" v-model="backConditions[backIndex]"
+                                    @change.once="createNewBackConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                </span>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                          </v-expansion-panels>
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                    <!-- 特定の座席に固定するエクスパンションパネル -->
+                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenPlaceFixPanel">
+                      <v-expansion-panel>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8"
+                            class="icon">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <div v-for="(fixCondition, fixIndex) in fixConditions">
+                            <v-select :items="studentsName" placeholder="Aさん" outlined
+                              style="width:185px; display: inline-block" v-model="fixConditions[fixIndex][0]"
+                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                            を、前から
+                            <v-select :items="limitedSeatsOptionsY" outlined style="width:65px; display: inline-block"
+                              v-model="fixConditions[fixIndex][1]"></v-select>
+                            列目、左から
+                            <v-select :items="limitedSeatsOptionsX" outlined style="width:65px; display: inline-block"
+                              v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
+                            列目に固定する
                           </div>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
-                    <span data-intro="席替えの際に考える条件を入力します。" data-title="3. 条件を入力！" data-step="3" data-position="left">
-                      <!-- 前後で指定するエクスパンションパネル -->
-                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenFrontBackPanel">
-                        <v-expansion-panel class="expansion-panel">
-                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-sort-ascending</v-icon>前後で指定する</v-expansion-panel-header>
-                          <v-expansion-panel-content>
-                            <v-expansion-panels accordion multiple>
-                              <!-- 最前列のエクスパンションパネル -->
-                              <v-expansion-panel style="background-color: #fbfbfb;">
-                                <v-expansion-panel-header>最前列</v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                  <span v-for="(frontCondition, frontIndex) in frontConditions">
-                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                    v-model="frontConditions[frontIndex]" @change.once="createNewFrontConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                  </span>
-                                </v-expansion-panel-content>
-                              </v-expansion-panel>
-                              <!-- 前2列のエクスパンションパネル -->
-                              <v-expansion-panel style="background-color: #fbfbfb;">
-                                <v-expansion-panel-header>前2列</v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                  <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
-                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                    v-model="frontTwoRowsConditions[frontTwoRowsIndex]" @change.once="createNewFrontTwoRowsConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                  </span>
-                                </v-expansion-panel-content>
-                              </v-expansion-panel>
-                              <!-- 後ろ2列のエクスパンションパネル -->
-                              <v-expansion-panel style="background-color: #fbfbfb;">
-                                <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                  <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
-                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                    v-model="backTwoRowsConditions[backTwoRowsIndex]" @change.once="createNewBackTwoRowsConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                  </span>
-                                </v-expansion-panel-content>
-                              </v-expansion-panel>
-                              <!-- 最後列のエクスパンションパネル -->
-                              <v-expansion-panel style="background-color: #fbfbfb;">
-                                <v-expansion-panel-header>最後列</v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                  <span v-for="(backCondition, backIndex) in backConditions">
-                                    <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined style="width:190px; display: inline-block"
-                                    v-model="backConditions[backIndex]" @change.once="createNewBackConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
-                                  </span>
-                                </v-expansion-panel-content>
-                              </v-expansion-panel>
-                            </v-expansion-panels>
-                          </v-expansion-panel-content>
-                        </v-expansion-panel>
-                      </v-expansion-panels>
-                      <!-- 特定の座席に固定するエクスパンションパネル -->
-                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenPlaceFixPanel">
-                        <v-expansion-panel>
-                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-target-variant</v-icon>特定の座席に固定する</v-expansion-panel-header>
-                          <v-expansion-panel-content>
-                            <div v-for="(fixCondition, fixIndex) in fixConditions">
-                              <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
-                              v-model="fixConditions[fixIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                              を、前から
-                              <v-select :items="limitedSeatsOptionsY" outlined style="width:65px; display: inline-block"
-                              v-model="fixConditions[fixIndex][1]"></v-select>
-                              列目、左から
-                              <v-select :items="limitedSeatsOptionsX" outlined style="width:65px; display: inline-block"
-                              v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
-                              列目に固定する
-                            </div>
-                          </v-expansion-panel-content>
-                        </v-expansion-panel>
-                      </v-expansion-panels>
-                      <!-- 近づける生徒のエクスパンションパネル -->
-                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenNearPanel">
-                        <v-expansion-panel>
-                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
-                          <v-expansion-panel-content>
-                            <div v-for="(nearCondition, nearIndex) in nearConditions">
-                              <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
-                              v-model="nearConditions[nearIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                              と
-                              <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
-                              v-model="nearConditions[nearIndex][1]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                              の間を
-                              <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
+                    <!-- 近づける生徒のエクスパンションパネル -->
+                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenNearPanel">
+                      <v-expansion-panel>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8"
+                            class="icon">mdi-arrow-collapse</v-icon>生徒同士を近づける</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <div v-for="(nearCondition, nearIndex) in nearConditions">
+                            <v-select :items="studentsName" placeholder="Aさん" outlined
+                              style="width:185px; display: inline-block" v-model="nearConditions[nearIndex][0]"
+                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                            と
+                            <v-select :items="studentsName" placeholder="Bさん" outlined
+                              style="width:185px; display: inline-block" v-model="nearConditions[nearIndex][1]"
+                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                            の間を
+                            <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
                               v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
-                              席以下にする
-                            </div>
-                          </v-expansion-panel-content>
-                        </v-expansion-panel>
-                      </v-expansion-panels>
-                      <!-- 離す生徒のエクスパンションパネル -->
-                      <v-expansion-panels accordion class="expansion-panels" :value="isOpenFarPanel">
-                        <v-expansion-panel>
-                          <v-expansion-panel-header><v-icon color="#0c9ea8" class="icon">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
-                          <v-expansion-panel-content>
-                            <div v-for="(farCondition, farIndex) in farConditions">
-                              <v-select :items="studentsName" placeholder="Aさん" outlined style="width:185px; display: inline-block"
-                              v-model="farConditions[farIndex][0]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                              と
-                              <v-select :items="studentsName" placeholder="Bさん" outlined style="width:185px; display: inline-block"
-                              v-model="farConditions[farIndex][1]" no-data-text="座席に生徒名が入力されていません"></v-select>
-                              の間を
-                              <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
+                            席以下にする
+                          </div>
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                    <!-- 離す生徒のエクスパンションパネル -->
+                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenFarPanel">
+                      <v-expansion-panel>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8"
+                            class="icon">mdi-arrow-expand</v-icon>生徒同士を離す</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <div v-for="(farCondition, farIndex) in farConditions">
+                            <v-select :items="studentsName" placeholder="Aさん" outlined
+                              style="width:185px; display: inline-block" v-model="farConditions[farIndex][0]"
+                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                            と
+                            <v-select :items="studentsName" placeholder="Bさん" outlined
+                              style="width:185px; display: inline-block" v-model="farConditions[farIndex][1]"
+                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                            の間を
+                            <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
                               v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
-                              席以上空ける
-                            </div>
-                          </v-expansion-panel-content>
-                        </v-expansion-panel>
-                      </v-expansion-panels>
-                      <!-- チェックボックス -->
-                      <v-card>
-                        <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#0c9ea8" style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
-                        <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#0c9ea8" style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
-                      </v-card>
-                    </span>
-                    <!-- 席替えボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text  @click="checkUserPolicyAccepted();" style="font-size: 20px; font-weight: 900;"
-                    data-intro="席替えボタンを押すと座席が移動します。" data-title="4. 席替え！" data-position="left" data-step="4">
-                      <v-icon class="icon">mdi-sync</v-icon>席替え
-                    </v-btn>
-                    <!-- 前回の結果を復元するボタン -->
-                    <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text  @click="fetchLocalStrage()" style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px;">
-                      <v-icon class="icon">mdi-pencil</v-icon>前回の結果を復元
-                    </v-btn>
-                    <div style="float: right; margin: 10px 0 0 0px;">
-                      <div>
-                        <!-- 利用規約 -->
-                        <v-dialog v-model="userPolicy" width="850" scrollable>
-                          <template v-slot:activator="{ on, attrs }">
-                            <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;" v-bind="attrs" v-on="on">利用規約</a>
-                          </template>
-                          <v-card>
-                            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
-                              <v-icon style="float: right;" @click="userPolicy = false">mdi-close</v-icon>
-                            </v-card-title>
-                            <v-card-text style="margin-top: 20px;">
-                              本利用規約（以下「本規約」と言います。）には、本サービスの提供条件及びサイト運営者（以下「当方」と言います）とユーザーの皆様との間の権利義務関係が定められています。
-                              本サービスの利用に際しては、本規約の全文をお読みいただいたうえで、本規約に同意いただく必要があります。
-                              <div class="font-weight-bold">第1条（適用）</div>
-                              1.本規約は、本サービスの提供条件及び本サービスの利用に関する当方とユーザーとの間の権利義務関係を定めることを目的とし、
-                                ユーザーと当方との間の本サービスの利用に関わる一切の関係に適用されます。<br>
-                              2.本規約の内容と、本規約外における本サービスの説明等とが異なる場合は、本規約の規定が優先して適用されるものとします。
-                              <div class="font-weight-bold">第2条（定義）</div>
-                              本規約において使用する以下の用語は、各々以下に定める意味を有するものとします。<br>
-                              1.「知的財産権」とは、著作権、特許権、実用新案権、意匠権、商標権その他の知的財産権（それらの権利を取得し、またはそれらの権利につき登録等を出願する権利を含みます。）を意味します。<br>
-                              2.「当ウェブサイト」とは、そのドメインが「sekigae.jp」である、当方が運営するウェブサイト（理由の如何を問わず、当方のウェブサイトのドメインまたは内容が変更された場合は、
-                              当該変更後のウェブサイトを含みます。）を意味します。<br>
-                              3.「本サービス」とは、当方が提供する席替えメーカーという名称のサービス（理由の如何を問わずサービスの名称または内容が変更された場合は、当該変更後のサービスを含みます。）を意味します。<br>
-                              <div class="font-weight-bold">第3条（禁止事項）</div>
-                              ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。<br>
-                              1.法令または公序良俗に違反する行為<br>
-                              2.犯罪行為に関連する行為<br>
-                              3.本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為<br>
-                              4.当方、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為<br>
-                              5.本サービスによって得られた情報を商業的に利用する行為<br>
-                              6.当方のサービスの運営を妨害するおそれのある行為<br>
-                              7.不正アクセスをし、またはこれを試みる行為<br>
-                              8.他のユーザーに関する個人情報等を収集または蓄積する行為<br>
-                              9.不正な目的を持って本サービスを利用する行為<br>
-                              10.本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為<br>
-                              11.他のユーザーに成りすます行為<br>
-                              12.当方が許諾しない本サービス上での宣伝、広告、勧誘、または営業行為<br>
-                              13.面識のない異性との出会いを目的とした行為<br>
-                              14.当方のサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為<br>
-                              15.その他、当方が不適切と判断する行為<br>
-                              <div class="font-weight-bold">第4条（本サービスの提供の停止等）</div>
-                              1.当方は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
-                              　1.本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
-                              　2.地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合<br>
-                              　3.コンピュータまたは通信回線等が事故により停止した場合<br>
-                              　4.その他、当方が本サービスの提供が困難と判断した場合<br>
-                              2.当方は、本サービスの提供の停止または中断により、ユーザーまたは第三者が被ったいかなる不利益または損害についても、一切の責任を負わないものとします。
-                              <div class="font-weight-bold">第5条（保証の否認及び免責）</div>
-                              1.当方は、本サービスがユーザーの特定の目的に適合すること、期待する機能・商品的価値・正確性・有用性を有すること、
-                                ユーザーによる本サービスの利用がユーザーに適用のある法令または業界団体の内部規則等に適合すること、
-                                継続的に利用できること、及び不具合が生じないことについて、明示又は黙示を問わず何ら保証するものではありません。<br>
-                              2.当方は、本サービスに関してユーザーが被った損害について賠償する責任を負わないものとし、また、付随的損害、間接損害、特別損害、将来の損害及び逸失利益にかかる損害については、
-                              賠償する責任を負わないものとします。<br>
-                              3.本サービスまたは当方ウェブサイトに関連してユーザーと他のユーザーまたは第三者との間において生じた取引、連絡、紛争等については、ユーザーが自己の責任によって解決するものとします。
-                              <div class="font-weight-bold">第6条（本サービスの内容の変更、終了）</div>
-                              1.当方は、当方の都合により、本サービスの内容を変更し、または提供を終了することができます。<br>
-                              2.当方が本サービスの提供を終了する場合、当方はユーザーに事前に通知するものとします。
-                              <div class="font-weight-bold">第7条（利用規約の変更）</div>
-                              当方は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
-                              なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
-                              <div class="font-weight-bold">第8条（個人情報の取扱い）</div>
-                              当方は、本サービスの利用によって取得する個人情報については、当方「プライバシーポリシー」に従い適切に取り扱うものとします。
-                              <div class="font-weight-bold">第9条（権利義務の譲渡の禁止）</div>
-                              ユーザーは、当方の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
-                              <div class="font-weight-bold">第10条（分離可能性）</div>
-                              本規約のいずれかの条項またはその一部が、消費者契約法その他の法令等により無効または執行不能と判断された場合であっても、
-                              本規約の残りの規定及び一部が無効または執行不能と判断された規定の残りの部分は、継続して完全に効力を有するものとします。
-                              <div class="font-weight-bold">第11条（準拠法・裁判管轄）</div>
-                              1.本規約の解釈にあたっては、日本法を準拠法とします。<br>
-                              2.本サービスに関して紛争が生じた場合には、当方の本店所在地を管轄する裁判所を専属的合意管轄とします。<br>
-                            </v-card-text>
-                          </v-card>
-                        </v-dialog>
-                        <!-- プライバシーポリシー -->
-                        <v-dialog v-model="privacyPolicy" width="850" scrollable>
-                          <template v-slot:activator="{ on, attrs }">
-                            <a style="color: #777777; font-size: 15px; display: inline-block; text-decoration: underline;" v-bind="attrs" v-on="on">プライバシーポリシー</a>
-                          </template>
-                          <v-card>
-                            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">プライバシーポリシー
-                              <v-icon style="float: right;" @click="privacyPolicy = false">mdi-close</v-icon>
-                            </v-card-title>
-                            <v-card-text style="margin-top: 20px;">
-                              サイト運営者（以下「当方」と言います）は、当方の提供するサービス（以下「当サービス」と言います）における、ユーザーについての個人情報を含む利用者情報の取扱いについて、
-                              以下の通りプライバシーポリシー（以下「ポリシー」と言います）を定めます。
-                              <div class="font-weight-bold">第1条（収集する利用者情報及び収集情報）</div>
-                              本ポリシーにおいて、「利用者情報」とは、ユーザーの識別に係る情報、通信サービス上の行動履歴、その他ユーザーまたはユーザーの端末に関連して生成または蓄積された情報であって、
-                              本ポリシーに基づき当方が収集するものを意味するものとします。本サービスにおいて当方が収集する利用者情報は、その収集方法に応じて、以下のようなものとなります。<br>
-                              1.リファラ<br>
-                              2.IPアドレス<br>
-                              3.サーバーアクセスログに関する情報<br>
-                              4.Cookie<br>
-                              5.本サービスが提供する各種ツールの入力情報
-                              <div class="font-weight-bold">第2条（利用目的）</div>
-                              本サービスのサービス提供にかかわる利用者情報の具体的な利用目的は以下です。<br>
-                              1.ユーザーのトラフィック測定及び行動測定のため<br>
-                              2.広告の配信、表示及び効果測定のため<br>
-                              3.本サービスが提供する各種ツールの品質向上のため
-                              <div class="font-weight-bold">第3条（アクセス解析ツール）</div>
-                              1.当サービスでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。
-                              このGoogleアナリティクスはデータの収集のためにCookieを使用しています。<br>
-                              2.この機能はCookieを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。
-                              この規約に関しての詳細は<a href="https://marketingplatform.google.com/about/analytics/terms/jp/" target="_blank" rel="noopener noreferrer">Googleアナリティクスサービス利用規約</a>や
-                              <a href="https://policies.google.com/technologies/ads?hl=ja"　target="_blank" rel="noopener noreferrer">Googleポリシーと規約</a>をご覧ください。
-                              <div class="font-weight-bold">第4条（ローカルストレージ）</div>
-                              1.当サービスでは、席替え結果をブラウザに記憶するためにlocalStrage（ローカルストレージ）の機能を使用しています。
-                              2.ローカルストレージを通じて取得した情報は、前回の席替え結果の復元のために限り使用します。
-                              <div class="font-weight-bold">第5条（第三者提供）</div>
-                              当方は、利用者情報のうち、個人情報については、あらかじめユーザーの同意を得ないで、第三者（日本国外にある者を含みます）に提供しません。
-                              但し、次に掲げる必要があり第三者（日本国外にある者を含みます。）に提供する場合はこの限りではありません。<br>
-                              1.当方が利用目的の達成に必要な範囲内において個人情報の取り扱いの全部または一部を委託する場合<br>
-                              2.事業の継承に伴って個人情報が提供される場合<br>
-                              3.第3項の定めに従って、提携先または情報収集モジュール提供者へ個人情報が提供される場合<br>
-                              4.国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって、
-                              ユーザーの同意を得ることによって当該事務の遂行に支障を及ぼすおそれがある場合<br>
-                              5.その他、個人情報の保護に関する法律（以下「個人情報保護法」と言います ）その他の法令で認められる場合
-                              <div class="font-weight-bold">第6条（プライバシーポリシーの変更手続）</div>
-                              当方は、必要に応じて、本ポリシーを変更します。但し、法令上ユーザーの同意が必要となるような本ポリシーの変更を行う場合、変更後の本ポリシーは、当方所定の方法で変更に同意したユーザーに対してのみ適用されるものとします。
-                              なお、当方は、本ポリシーを変更する場合には、変更後の本ポリシーの施行時期及び内容を当ウェブサイト上での表示その他適切な方法により周知し、またはユーザーに通知します。
-                            </v-card-text>
-                          </v-card>
-                        </v-dialog>
-                      </div>
-                      <div>
-                        <!-- 更新情報 -->
-                        <v-dialog v-model="updateInformation" width="500">
-                          <template v-slot:activator="{ on, attrs }">
-                            <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;" v-bind="attrs" v-on="on">更新情報</a>
-                          </template>
-                          <v-card>
-                            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">更新情報
-                              <v-icon style="float: right;" @click="updateInformation = false">mdi-close</v-icon>
-                            </v-card-title>
-                            <v-card-text style="margin-top: 20px;">
-                              2021.03.13　β版を公開しました。<br>
-                              2021.03.16　デザインを修正しました。<br>
-                              2021.03.18　使い方チュートリアルを導入しました。<br>
-                              2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
-                              2021.03.22　デザインの変更をOGPに反映させました。<br>
-                              2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
-                              2021.06.30　タブレット（縦・横）に対応しました。<br>
-                              2022.12.11　座席表の大きさを変更してもすでに入力されていた名前が<br>
-                              　　　　　　消えないように修正しました。<br>
-                              2022.12.20　前回の席替え結果を復元する機能をリリースしました。
-                            </v-card-text>
-                          </v-card>
-                        </v-dialog>
-                        <!-- フィードバック -->
-                        <a style="color: #777777; font-size: 15px; display: inline-block;" href="https://forms.gle/hUvXzRSAFhLEsUCv6"
-                          target="_blank" rel="noopener noreferrer">フィードバック
-                        </a>
-                      </div>
-                      <div>
-                        <!-- 開発者Twitter -->
-                        <a style="color: #777777; font-size: 15px; margin-right: 10px;" href="https://twitter.com/krpk1900_dev"
-                          target="_blank" rel="noopener noreferrer">開発者Twitter
-                        </a>
-                        <!-- 著作権表記 -->
-                        <span style="color: #777777; font-size: 15px; margin-right: 10px;">©2023席替えメーカー</span>
-                      </div>
+                            席以上空ける
+                          </div>
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                    <!-- チェックボックス -->
+                    <v-card>
+                      <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#0c9ea8"
+                        style="margin:10px 0 0 17px; padding-top: 15px;"></v-checkbox>
+                      <v-checkbox label="男女の座席を固定する" v-model="isFixGender" hide-details color="#0c9ea8"
+                        style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
+                    </v-card>
+                  </span>
+                  <!-- 席替えボタン -->
+                  <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text @click="checkUserPolicyAccepted();"
+                    style="font-size: 20px; font-weight: 900;" data-intro="席替えボタンを押すと座席が移動します。" data-title="4. 席替え！"
+                    data-position="left" data-step="4">
+                    <v-icon class="icon">mdi-sync</v-icon>席替え
+                  </v-btn>
+                  <!-- 前回の結果を復元するボタン -->
+                  <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text @click="fetchLocalStrage()"
+                    style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px;">
+                    <v-icon class="icon">mdi-pencil</v-icon>前回の結果を復元
+                  </v-btn>
+                  <div style="float: right; margin: 10px 0 0 0px;">
+                    <div>
+                      <!-- 利用規約 -->
+                      <v-dialog v-model="userPolicy" width="850" scrollable>
+                        <template v-slot:activator="{ on, attrs }">
+                          <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;"
+                            v-bind="attrs" v-on="on">利用規約</a>
+                        </template>
+                        <v-card>
+                          <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
+                            <v-icon style="float: right;" @click="userPolicy = false">mdi-close</v-icon>
+                          </v-card-title>
+                          <v-card-text style="margin-top: 20px;">
+                            本利用規約（以下「本規約」と言います。）には、本サービスの提供条件及びサイト運営者（以下「当方」と言います）とユーザーの皆様との間の権利義務関係が定められています。
+                            本サービスの利用に際しては、本規約の全文をお読みいただいたうえで、本規約に同意いただく必要があります。
+                            <div class="font-weight-bold">第1条（適用）</div>
+                            1.本規約は、本サービスの提供条件及び本サービスの利用に関する当方とユーザーとの間の権利義務関係を定めることを目的とし、
+                            ユーザーと当方との間の本サービスの利用に関わる一切の関係に適用されます。<br>
+                            2.本規約の内容と、本規約外における本サービスの説明等とが異なる場合は、本規約の規定が優先して適用されるものとします。
+                            <div class="font-weight-bold">第2条（定義）</div>
+                            本規約において使用する以下の用語は、各々以下に定める意味を有するものとします。<br>
+                            1.「知的財産権」とは、著作権、特許権、実用新案権、意匠権、商標権その他の知的財産権（それらの権利を取得し、またはそれらの権利につき登録等を出願する権利を含みます。）を意味します。<br>
+                            2.「当ウェブサイト」とは、そのドメインが「sekigae.jp」である、当方が運営するウェブサイト（理由の如何を問わず、当方のウェブサイトのドメインまたは内容が変更された場合は、
+                            当該変更後のウェブサイトを含みます。）を意味します。<br>
+                            3.「本サービス」とは、当方が提供する席替えメーカーという名称のサービス（理由の如何を問わずサービスの名称または内容が変更された場合は、当該変更後のサービスを含みます。）を意味します。<br>
+                            <div class="font-weight-bold">第3条（禁止事項）</div>
+                            ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。<br>
+                            1.法令または公序良俗に違反する行為<br>
+                            2.犯罪行為に関連する行為<br>
+                            3.本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為<br>
+                            4.当方、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為<br>
+                            5.本サービスによって得られた情報を商業的に利用する行為<br>
+                            6.当方のサービスの運営を妨害するおそれのある行為<br>
+                            7.不正アクセスをし、またはこれを試みる行為<br>
+                            8.他のユーザーに関する個人情報等を収集または蓄積する行為<br>
+                            9.不正な目的を持って本サービスを利用する行為<br>
+                            10.本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為<br>
+                            11.他のユーザーに成りすます行為<br>
+                            12.当方が許諾しない本サービス上での宣伝、広告、勧誘、または営業行為<br>
+                            13.面識のない異性との出会いを目的とした行為<br>
+                            14.当方のサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為<br>
+                            15.その他、当方が不適切と判断する行為<br>
+                            <div class="font-weight-bold">第4条（本サービスの提供の停止等）</div>
+                            1.当方は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
+                            　1.本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
+                            　2.地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合<br>
+                            　3.コンピュータまたは通信回線等が事故により停止した場合<br>
+                            　4.その他、当方が本サービスの提供が困難と判断した場合<br>
+                            2.当方は、本サービスの提供の停止または中断により、ユーザーまたは第三者が被ったいかなる不利益または損害についても、一切の責任を負わないものとします。
+                            <div class="font-weight-bold">第5条（保証の否認及び免責）</div>
+                            1.当方は、本サービスがユーザーの特定の目的に適合すること、期待する機能・商品的価値・正確性・有用性を有すること、
+                            ユーザーによる本サービスの利用がユーザーに適用のある法令または業界団体の内部規則等に適合すること、
+                            継続的に利用できること、及び不具合が生じないことについて、明示又は黙示を問わず何ら保証するものではありません。<br>
+                            2.当方は、本サービスに関してユーザーが被った損害について賠償する責任を負わないものとし、また、付随的損害、間接損害、特別損害、将来の損害及び逸失利益にかかる損害については、
+                            賠償する責任を負わないものとします。<br>
+                            3.本サービスまたは当方ウェブサイトに関連してユーザーと他のユーザーまたは第三者との間において生じた取引、連絡、紛争等については、ユーザーが自己の責任によって解決するものとします。
+                            <div class="font-weight-bold">第6条（本サービスの内容の変更、終了）</div>
+                            1.当方は、当方の都合により、本サービスの内容を変更し、または提供を終了することができます。<br>
+                            2.当方が本サービスの提供を終了する場合、当方はユーザーに事前に通知するものとします。
+                            <div class="font-weight-bold">第7条（利用規約の変更）</div>
+                            当方は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
+                            なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
+                            <div class="font-weight-bold">第8条（個人情報の取扱い）</div>
+                            当方は、本サービスの利用によって取得する個人情報については、当方「プライバシーポリシー」に従い適切に取り扱うものとします。
+                            <div class="font-weight-bold">第9条（権利義務の譲渡の禁止）</div>
+                            ユーザーは、当方の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
+                            <div class="font-weight-bold">第10条（分離可能性）</div>
+                            本規約のいずれかの条項またはその一部が、消費者契約法その他の法令等により無効または執行不能と判断された場合であっても、
+                            本規約の残りの規定及び一部が無効または執行不能と判断された規定の残りの部分は、継続して完全に効力を有するものとします。
+                            <div class="font-weight-bold">第11条（準拠法・裁判管轄）</div>
+                            1.本規約の解釈にあたっては、日本法を準拠法とします。<br>
+                            2.本サービスに関して紛争が生じた場合には、当方の本店所在地を管轄する裁判所を専属的合意管轄とします。<br>
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                      <!-- プライバシーポリシー -->
+                      <v-dialog v-model="privacyPolicy" width="850" scrollable>
+                        <template v-slot:activator="{ on, attrs }">
+                          <a style="color: #777777; font-size: 15px; display: inline-block; text-decoration: underline;"
+                            v-bind="attrs" v-on="on">プライバシーポリシー</a>
+                        </template>
+                        <v-card>
+                          <v-card-title class="headline grey lighten-2 font-weight-black"
+                            style="display: block;">プライバシーポリシー
+                            <v-icon style="float: right;" @click="privacyPolicy = false">mdi-close</v-icon>
+                          </v-card-title>
+                          <v-card-text style="margin-top: 20px;">
+                            サイト運営者（以下「当方」と言います）は、当方の提供するサービス（以下「当サービス」と言います）における、ユーザーについての個人情報を含む利用者情報の取扱いについて、
+                            以下の通りプライバシーポリシー（以下「ポリシー」と言います）を定めます。
+                            <div class="font-weight-bold">第1条（収集する利用者情報及び収集情報）</div>
+                            本ポリシーにおいて、「利用者情報」とは、ユーザーの識別に係る情報、通信サービス上の行動履歴、その他ユーザーまたはユーザーの端末に関連して生成または蓄積された情報であって、
+                            本ポリシーに基づき当方が収集するものを意味するものとします。本サービスにおいて当方が収集する利用者情報は、その収集方法に応じて、以下のようなものとなります。<br>
+                            1.リファラ<br>
+                            2.IPアドレス<br>
+                            3.サーバーアクセスログに関する情報<br>
+                            4.Cookie<br>
+                            5.本サービスが提供する各種ツールの入力情報
+                            <div class="font-weight-bold">第2条（利用目的）</div>
+                            本サービスのサービス提供にかかわる利用者情報の具体的な利用目的は以下です。<br>
+                            1.ユーザーのトラフィック測定及び行動測定のため<br>
+                            2.広告の配信、表示及び効果測定のため<br>
+                            3.本サービスが提供する各種ツールの品質向上のため
+                            <div class="font-weight-bold">第3条（アクセス解析ツール）</div>
+                            1.当サービスでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。
+                            このGoogleアナリティクスはデータの収集のためにCookieを使用しています。<br>
+                            2.この機能はCookieを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。
+                            この規約に関しての詳細は<a href="https://marketingplatform.google.com/about/analytics/terms/jp/"
+                              target="_blank" rel="noopener noreferrer">Googleアナリティクスサービス利用規約</a>や
+                            <a href="https://policies.google.com/technologies/ads?hl=ja" 　target="_blank"
+                              rel="noopener noreferrer">Googleポリシーと規約</a>をご覧ください。
+                            <div class="font-weight-bold">第4条（ローカルストレージ）</div>
+                            1.当サービスでは、席替え結果をブラウザに記憶するためにlocalStrage（ローカルストレージ）の機能を使用しています。
+                            2.ローカルストレージを通じて取得した情報は、前回の席替え結果の復元のために限り使用します。
+                            <div class="font-weight-bold">第5条（第三者提供）</div>
+                            当方は、利用者情報のうち、個人情報については、あらかじめユーザーの同意を得ないで、第三者（日本国外にある者を含みます）に提供しません。
+                            但し、次に掲げる必要があり第三者（日本国外にある者を含みます。）に提供する場合はこの限りではありません。<br>
+                            1.当方が利用目的の達成に必要な範囲内において個人情報の取り扱いの全部または一部を委託する場合<br>
+                            2.事業の継承に伴って個人情報が提供される場合<br>
+                            3.第3項の定めに従って、提携先または情報収集モジュール提供者へ個人情報が提供される場合<br>
+                            4.国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって、
+                            ユーザーの同意を得ることによって当該事務の遂行に支障を及ぼすおそれがある場合<br>
+                            5.その他、個人情報の保護に関する法律（以下「個人情報保護法」と言います ）その他の法令で認められる場合
+                            <div class="font-weight-bold">第6条（プライバシーポリシーの変更手続）</div>
+                            当方は、必要に応じて、本ポリシーを変更します。但し、法令上ユーザーの同意が必要となるような本ポリシーの変更を行う場合、変更後の本ポリシーは、当方所定の方法で変更に同意したユーザーに対してのみ適用されるものとします。
+                            なお、当方は、本ポリシーを変更する場合には、変更後の本ポリシーの施行時期及び内容を当ウェブサイト上での表示その他適切な方法により周知し、またはユーザーに通知します。
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
                     </div>
-                  </template>
-                  <!-- サイドバーを閉じたとき -->
-                  <template v-else>
-                    <v-list-item @click.stop="drawer = !drawer;" @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
-                      <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
-                    </v-list-item>
-                    <div style="margin-bottom: 20px;"></div>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                          @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
-                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
-                        </v-list-item>
-                      </template>
-                      <span>座席数を指定する</span>
-                    </v-tooltip>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                          @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=0; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
-                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-sort-ascending</v-icon>
-                        </v-list-item>
-                      </template>
-                      <span>前後で指定する</span>
-                    </v-tooltip>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                          @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=0; isOpenNearPanel=1; isOpenFarPanel=1;">
-                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-target-variant</v-icon>
-                        </v-list-item>
-                      </template>
-                      <span>特定の座席に固定する</span>
-                    </v-tooltip>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                          @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=0; isOpenFarPanel=1;">
-                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-collapse</v-icon>
-                        </v-list-item>
-                      </template>
-                      <span>生徒同士を近づける</span>
-                    </v-tooltip>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                          @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=0;">
-                          <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
-                        </v-list-item>
-                      </template>
-                      <span>生徒同士を離す</span>
-                    </v-tooltip>
-                    <v-tooltip left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text  @click="checkUserPolicyAccepted();"　v-bind="attrs" v-on="on">
-                          <v-icon style="font-size: 32px;">mdi-sync</v-icon>
-                        </v-btn>
-                      </template>
-                      <span>席を並び替える</span>
-                    </v-tooltip>
-                  </template>
-                </v-list-item-group>
-              </v-list>
-            </v-navigation-drawer>
-          </div>
-          <!-- サイドバーここまで -->
-
-          <!-- 座席テーブル -->
-          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}"
-          data-intro="座席に生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-title="2. 名前を入力！" data-position="right" data-step="2">
-            <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                    <div>
+                      <!-- 更新情報 -->
+                      <v-dialog v-model="updateInformation" width="500">
+                        <template v-slot:activator="{ on, attrs }">
+                          <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;"
+                            v-bind="attrs" v-on="on">更新情報</a>
+                        </template>
+                        <v-card>
+                          <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">更新情報
+                            <v-icon style="float: right;" @click="updateInformation = false">mdi-close</v-icon>
+                          </v-card-title>
+                          <v-card-text style="margin-top: 20px;">
+                            2021.03.13　β版を公開しました。<br>
+                            2021.03.16　デザインを修正しました。<br>
+                            2021.03.18　使い方チュートリアルを導入しました。<br>
+                            2021.03.21　利用規約とプライバシーポリシーの誤字を修正しました。<br>
+                            2021.03.22　デザインの変更をOGPに反映させました。<br>
+                            2021.04.14　チュートリアルのボタンの位置を入れ替えました。<br>
+                            2021.06.30　タブレット（縦・横）に対応しました。<br>
+                            2022.12.11　座席表の大きさを変更してもすでに入力されていた名前が<br>
+                            　　　　　　消えないように修正しました。<br>
+                            2022.12.20　前回の席替え結果を復元する機能をリリースしました。
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
+                      <!-- フィードバック -->
+                      <a style="color: #777777; font-size: 15px; display: inline-block;"
+                        href="https://forms.gle/hUvXzRSAFhLEsUCv6" target="_blank" rel="noopener noreferrer">フィードバック
+                      </a>
+                    </div>
+                    <div>
+                      <!-- 開発者Twitter -->
+                      <a style="color: #777777; font-size: 15px; margin-right: 10px;"
+                        href="https://twitter.com/krpk1900_dev" target="_blank" rel="noopener noreferrer">開発者Twitter
+                      </a>
+                      <!-- 著作権表記 -->
+                      <span style="color: #777777; font-size: 15px; margin-right: 10px;">©2024席替えメーカー</span>
+                    </div>
+                  </div>
                 </template>
-                <div>クリックで性別を切り替えることができます</div>
-                <div>Tabキーを押すと次の座席に移動することができます</div>
-              </v-tooltip>
-            </v-card-title>
-            <div>
-              <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: -4px;">
-                <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
-                  <!-- 1つ目のフォームにプレイスホルダーを設定 -->
-                  <input type="text" v-if="indexRow==0 && indexCol==0"
+                <!-- サイドバーを閉じたとき -->
+                <template v-else>
+                  <v-list-item @click.stop="drawer = !drawer;"
+                    @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                    <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
+                  </v-list-item>
+                  <div style="margin-bottom: 20px;"></div>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                        @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                        <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
+                      </v-list-item>
+                    </template>
+                    <span>座席数を指定する</span>
+                  </v-tooltip>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=0; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                        <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-sort-ascending</v-icon>
+                      </v-list-item>
+                    </template>
+                    <span>前後で指定する</span>
+                  </v-tooltip>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=0; isOpenNearPanel=1; isOpenFarPanel=1;">
+                        <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-target-variant</v-icon>
+                      </v-list-item>
+                    </template>
+                    <span>特定の座席に固定する</span>
+                  </v-tooltip>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=0; isOpenFarPanel=1;">
+                        <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-collapse</v-icon>
+                      </v-list-item>
+                    </template>
+                    <span>生徒同士を近づける</span>
+                  </v-tooltip>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=0;">
+                        <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
+                      </v-list-item>
+                    </template>
+                    <span>生徒同士を離す</span>
+                  </v-tooltip>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text
+                        @click="checkUserPolicyAccepted();" 　v-bind="attrs" v-on="on">
+                        <v-icon style="font-size: 32px;">mdi-sync</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>席を並び替える</span>
+                  </v-tooltip>
+                </template>
+              </v-list-item-group>
+            </v-list>
+          </v-navigation-drawer>
+        </div>
+        <!-- サイドバーここまで -->
+
+        <!-- 座席テーブル -->
+        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;"
+          :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}"
+          data-intro="座席に生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-title="2. 名前を入力！"
+          data-position="right" data-step="2">
+          <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs"
+                  v-on="on">mdi-information-outline</v-icon>
+              </template>
+              <div>クリックで性別を切り替えることができます</div>
+              <div>Tabキーを押すと次の座席に移動することができます</div>
+            </v-tooltip>
+          </v-card-title>
+          <div>
+            <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: -4px;">
+              <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
+                <!-- 1つ目のフォームにプレイスホルダーを設定 -->
+                <input type="text" v-if="indexRow==0 && indexCol==0"
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
-                  :value="seatsTable[indexRow][indexCol]"
-                  @click="toggleGender(indexCol,indexRow)"
-                  placeholder="安藤">
-                  <!-- 2つ目のフォームにプレイスホルダーを設定 -->
-                  <input type="text" v-else-if="indexRow==0 && indexCol==1"
+                  :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="安藤">
+                <!-- 2つ目のフォームにプレイスホルダーを設定 -->
+                <input type="text" v-else-if="indexRow==0 && indexCol==1"
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
-                  :value="seatsTable[indexRow][indexCol]"
-                  @click="toggleGender(indexCol,indexRow)"
-                  placeholder="石原">
-                  <!-- 3つ目以降のフォーム -->
-                  <input type="text" v-else
+                  :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="石原">
+                <!-- 3つ目以降のフォーム -->
+                <input type="text" v-else
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
-                  :value="seatsTable[indexRow][indexCol]"
-                  @click="toggleGender(indexCol,indexRow)">
+                  :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
                 <span :class="{'margin-right': (indexCol+1)%groupSizeX==0 && (indexCol+1)!=seatsSizeX}"></span>
               </span>
               <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
-              </li>
-            </div>
-            <div class="card-bottom"></div>
-          </v-card>
+            </li>
+          </div>
+          <div class="card-bottom"></div>
+        </v-card>
 
-          <div v-if="onlyTB()"></div><!-- グリッドレイアウト調整用 -->
+        <div v-if="onlyTB()"></div><!-- グリッドレイアウト調整用 -->
 
-          <!-- 席替え後の座席テーブル -->
-          <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;" :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
+        <!-- 席替え後の座席テーブル -->
+        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;"
+          :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
           data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-title="5. 最終調整！" data-position="left" data-step="5">
-            <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
-                </template>
-                <span>座席をつかんで入れ替えることができます</span>
-              </v-tooltip>
-            </v-card-title>
-            <template v-if="isRenderNextSeatsTable">
-              <div class="center">
-                <transition-group name="transition-item" type="transition">
-                  <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable" >
-                    <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                      <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol" class="sortable-item transition-item square minus-margin-bottom" :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                        <input type="text" class="sortable-item"
+          <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs"
+                  v-on="on">mdi-information-outline</v-icon>
+              </template>
+              <span>座席をつかんで入れ替えることができます</span>
+            </v-tooltip>
+          </v-card-title>
+          <template v-if="isRenderNextSeatsTable">
+            <div class="center">
+              <transition-group name="transition-item" type="transition">
+                <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable">
+                  <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
+                    <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol"
+                      class="sortable-item transition-item square minus-margin-bottom"
+                      :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
+                      <input type="text" class="sortable-item"
                         :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
                         style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                         :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
                         @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
-                      </span>
-                      <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0 && (nextIndexCol+1)!=seatsSizeX}" :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
-                    </template>
-                    <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}" :key="'nextSeatsDiv' + (nextIndexRow)"></div>
+                    </span>
+                    <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0 && (nextIndexCol+1)!=seatsSizeX}"
+                      :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
                   </template>
-                </transition-group>
-              </div>
-            </template>
-            <div class="card-bottom"></div>
+                  <div :class="{'margin-bottom': (nextIndexRow+1)%groupSizeY==0}"
+                    :key="'nextSeatsDiv' + (nextIndexRow)"></div>
+                </template>
+              </transition-group>
+            </div>
+          </template>
+          <div class="card-bottom"></div>
+        </v-card>
+
+        <!-- 同意ボタン付き利用規約 -->
+        <v-dialog v-model="userPolicyWithButton" width="850" scrollable>
+          <v-card>
+            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
+              <v-icon style="float: right;" @click="userPolicyWithButton = false">mdi-close</v-icon>
+            </v-card-title>
+            <v-card-text style="margin-top: 20px;">
+              本利用規約（以下「本規約」と言います。）には、本サービスの提供条件及びサイト運営者（以下「当方」と言います）とユーザーの皆様との間の権利義務関係が定められています。
+              本サービスの利用に際しては、本規約の全文をお読みいただいたうえで、本規約に同意いただく必要があります。
+              <div class="font-weight-bold">第1条（適用）</div>
+              1.本規約は、本サービスの提供条件及び本サービスの利用に関する当方とユーザーとの間の権利義務関係を定めることを目的とし、
+              ユーザーと当方との間の本サービスの利用に関わる一切の関係に適用されます。<br>
+              2.本規約の内容と、本規約外における本サービスの説明等とが異なる場合は、本規約の規定が優先して適用されるものとします。
+              <div class="font-weight-bold">第2条（定義）</div>
+              本規約において使用する以下の用語は、各々以下に定める意味を有するものとします。<br>
+              1.「知的財産権」とは、著作権、特許権、実用新案権、意匠権、商標権その他の知的財産権（それらの権利を取得し、またはそれらの権利につき登録等を出願する権利を含みます。）を意味します。<br>
+              2.「当ウェブサイト」とは、そのドメインが「sekigae.jp」である、当方が運営するウェブサイト（理由の如何を問わず、当方のウェブサイトのドメインまたは内容が変更された場合は、
+              当該変更後のウェブサイトを含みます。）を意味します。<br>
+              3.「本サービス」とは、当方が提供する席替えメーカーという名称のサービス（理由の如何を問わずサービスの名称または内容が変更された場合は、当該変更後のサービスを含みます。）を意味します。<br>
+              <div class="font-weight-bold">第3条（禁止事項）</div>
+              ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。<br>
+              1.法令または公序良俗に違反する行為<br>
+              2.犯罪行為に関連する行為<br>
+              3.本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為<br>
+              4.当方、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為<br>
+              5.本サービスによって得られた情報を商業的に利用する行為<br>
+              6.当方のサービスの運営を妨害するおそれのある行為<br>
+              7.不正アクセスをし、またはこれを試みる行為<br>
+              8.他のユーザーに関する個人情報等を収集または蓄積する行為<br>
+              9.不正な目的を持って本サービスを利用する行為<br>
+              10.本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為<br>
+              11.他のユーザーに成りすます行為<br>
+              12.当方が許諾しない本サービス上での宣伝、広告、勧誘、または営業行為<br>
+              13.面識のない異性との出会いを目的とした行為<br>
+              14.当方のサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為<br>
+              15.その他、当方が不適切と判断する行為<br>
+              <div class="font-weight-bold">第4条（本サービスの提供の停止等）</div>
+              1.当方は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
+              　1.本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
+              　2.地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合<br>
+              　3.コンピュータまたは通信回線等が事故により停止した場合<br>
+              　4.その他、当方が本サービスの提供が困難と判断した場合<br>
+              2.当方は、本サービスの提供の停止または中断により、ユーザーまたは第三者が被ったいかなる不利益または損害についても、一切の責任を負わないものとします。
+              <div class="font-weight-bold">第5条（保証の否認及び免責）</div>
+              1.当方は、本サービスがユーザーの特定の目的に適合すること、期待する機能・商品的価値・正確性・有用性を有すること、
+              ユーザーによる本サービスの利用がユーザーに適用のある法令または業界団体の内部規則等に適合すること、
+              継続的に利用できること、及び不具合が生じないことについて、明示又は黙示を問わず何ら保証するものではありません。<br>
+              2.当方は、本サービスに関してユーザーが被った損害について賠償する責任を負わないものとし、また、付随的損害、間接損害、特別損害、将来の損害及び逸失利益にかかる損害については、
+              賠償する責任を負わないものとします。<br>
+              3.本サービスまたは当方ウェブサイトに関連してユーザーと他のユーザーまたは第三者との間において生じた取引、連絡、紛争等については、ユーザーが自己の責任によって解決するものとします。
+              <div class="font-weight-bold">第6条（本サービスの内容の変更、終了）</div>
+              1.当方は、当方の都合により、本サービスの内容を変更し、または提供を終了することができます。<br>
+              2.当方が本サービスの提供を終了する場合、当方はユーザーに事前に通知するものとします。
+              <div class="font-weight-bold">第7条（利用規約の変更）</div>
+              当方は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
+              なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
+              <div class="font-weight-bold">第8条（個人情報の取扱い）</div>
+              当方は、本サービスの利用によって取得する個人情報については、当方「プライバシーポリシー」に従い適切に取り扱うものとします。
+              <div class="font-weight-bold">第9条（権利義務の譲渡の禁止）</div>
+              ユーザーは、当方の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
+              <div class="font-weight-bold">第10条（分離可能性）</div>
+              本規約のいずれかの条項またはその一部が、消費者契約法その他の法令等により無効または執行不能と判断された場合であっても、
+              本規約の残りの規定及び一部が無効または執行不能と判断された規定の残りの部分は、継続して完全に効力を有するものとします。
+              <div class="font-weight-bold">第11条（準拠法・裁判管轄）</div>
+              1.本規約の解釈にあたっては、日本法を準拠法とします。<br>
+              2.本サービスに関して紛争が生じた場合には、当方の本店所在地を管轄する裁判所を専属的合意管轄とします。<br>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#0c9ea8" text class="font-weight-bold"
+                @click="isAcceptedUserPolicy=true; userPolicyWithButton=false; changeSeatsProcess();">同意する</v-btn>
+            </v-card-actions>
           </v-card>
+        </v-dialog>
 
-          <!-- 同意ボタン付き利用規約 -->
-          <v-dialog v-model="userPolicyWithButton" width="850" scrollable>
-            <v-card>
-              <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
-                <v-icon style="float: right;" @click="userPolicyWithButton = false">mdi-close</v-icon>
-              </v-card-title>
-              <v-card-text style="margin-top: 20px;">
-                本利用規約（以下「本規約」と言います。）には、本サービスの提供条件及びサイト運営者（以下「当方」と言います）とユーザーの皆様との間の権利義務関係が定められています。
-                本サービスの利用に際しては、本規約の全文をお読みいただいたうえで、本規約に同意いただく必要があります。
-                <div class="font-weight-bold">第1条（適用）</div>
-                1.本規約は、本サービスの提供条件及び本サービスの利用に関する当方とユーザーとの間の権利義務関係を定めることを目的とし、
-                  ユーザーと当方との間の本サービスの利用に関わる一切の関係に適用されます。<br>
-                2.本規約の内容と、本規約外における本サービスの説明等とが異なる場合は、本規約の規定が優先して適用されるものとします。
-                <div class="font-weight-bold">第2条（定義）</div>
-                本規約において使用する以下の用語は、各々以下に定める意味を有するものとします。<br>
-                1.「知的財産権」とは、著作権、特許権、実用新案権、意匠権、商標権その他の知的財産権（それらの権利を取得し、またはそれらの権利につき登録等を出願する権利を含みます。）を意味します。<br>
-                2.「当ウェブサイト」とは、そのドメインが「sekigae.jp」である、当方が運営するウェブサイト（理由の如何を問わず、当方のウェブサイトのドメインまたは内容が変更された場合は、
-                当該変更後のウェブサイトを含みます。）を意味します。<br>
-                3.「本サービス」とは、当方が提供する席替えメーカーという名称のサービス（理由の如何を問わずサービスの名称または内容が変更された場合は、当該変更後のサービスを含みます。）を意味します。<br>
-                <div class="font-weight-bold">第3条（禁止事項）</div>
-                ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。<br>
-                1.法令または公序良俗に違反する行為<br>
-                2.犯罪行為に関連する行為<br>
-                3.本サービスの内容等、本サービスに含まれる著作権、商標権ほか知的財産権を侵害する行為<br>
-                4.当方、ほかのユーザー、またはその他第三者のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為<br>
-                5.本サービスによって得られた情報を商業的に利用する行為<br>
-                6.当方のサービスの運営を妨害するおそれのある行為<br>
-                7.不正アクセスをし、またはこれを試みる行為<br>
-                8.他のユーザーに関する個人情報等を収集または蓄積する行為<br>
-                9.不正な目的を持って本サービスを利用する行為<br>
-                10.本サービスの他のユーザーまたはその他の第三者に不利益、損害、不快感を与える行為<br>
-                11.他のユーザーに成りすます行為<br>
-                12.当方が許諾しない本サービス上での宣伝、広告、勧誘、または営業行為<br>
-                13.面識のない異性との出会いを目的とした行為<br>
-                14.当方のサービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為<br>
-                15.その他、当方が不適切と判断する行為<br>
-                <div class="font-weight-bold">第4条（本サービスの提供の停止等）</div>
-                1.当方は、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。<br>
-                　1.本サービスにかかるコンピュータシステムの保守点検または更新を行う場合<br>
-                　2.地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合<br>
-                　3.コンピュータまたは通信回線等が事故により停止した場合<br>
-                　4.その他、当方が本サービスの提供が困難と判断した場合<br>
-                2.当方は、本サービスの提供の停止または中断により、ユーザーまたは第三者が被ったいかなる不利益または損害についても、一切の責任を負わないものとします。
-                <div class="font-weight-bold">第5条（保証の否認及び免責）</div>
-                1.当方は、本サービスがユーザーの特定の目的に適合すること、期待する機能・商品的価値・正確性・有用性を有すること、
-                  ユーザーによる本サービスの利用がユーザーに適用のある法令または業界団体の内部規則等に適合すること、
-                  継続的に利用できること、及び不具合が生じないことについて、明示又は黙示を問わず何ら保証するものではありません。<br>
-                2.当方は、本サービスに関してユーザーが被った損害について賠償する責任を負わないものとし、また、付随的損害、間接損害、特別損害、将来の損害及び逸失利益にかかる損害については、
-                賠償する責任を負わないものとします。<br>
-                3.本サービスまたは当方ウェブサイトに関連してユーザーと他のユーザーまたは第三者との間において生じた取引、連絡、紛争等については、ユーザーが自己の責任によって解決するものとします。
-                <div class="font-weight-bold">第6条（本サービスの内容の変更、終了）</div>
-                1.当方は、当方の都合により、本サービスの内容を変更し、または提供を終了することができます。<br>
-                2.当方が本サービスの提供を終了する場合、当方はユーザーに事前に通知するものとします。
-                <div class="font-weight-bold">第7条（利用規約の変更）</div>
-                当方は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。
-                なお、本規約の変更後、本サービスの利用を開始した場合には、当該ユーザーは変更後の規約に同意したものとみなします。
-                <div class="font-weight-bold">第8条（個人情報の取扱い）</div>
-                当方は、本サービスの利用によって取得する個人情報については、当方「プライバシーポリシー」に従い適切に取り扱うものとします。
-                <div class="font-weight-bold">第9条（権利義務の譲渡の禁止）</div>
-                ユーザーは、当方の書面による事前の承諾なく、利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し、または担保に供することはできません。
-                <div class="font-weight-bold">第10条（分離可能性）</div>
-                本規約のいずれかの条項またはその一部が、消費者契約法その他の法令等により無効または執行不能と判断された場合であっても、
-                本規約の残りの規定及び一部が無効または執行不能と判断された規定の残りの部分は、継続して完全に効力を有するものとします。
-                <div class="font-weight-bold">第11条（準拠法・裁判管轄）</div>
-                1.本規約の解釈にあたっては、日本法を準拠法とします。<br>
-                2.本サービスに関して紛争が生じた場合には、当方の本店所在地を管轄する裁判所を専属的合意管轄とします。<br>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#0c9ea8" text class="font-weight-bold" @click="isAcceptedUserPolicy=true; userPolicyWithButton=false; changeSeatsProcess();">同意する</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+        <!-- エラー文 -->
+        <v-dialog v-model="error" width="500">
+          <v-card>
+            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
+              <v-icon style="float: right;" @click="error = false">mdi-close</v-icon>
+            </v-card-title>
+            <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
+              条件を満たす席の配置が存在しません。<br>
+              よくある矛盾点は以下の通りです。<br>
+              ・男女の座席の固定と、特定の席への固定の両方を満たせない
+            </v-card-text>
+          </v-card>
+        </v-dialog>
 
-          <!-- エラー文 -->
-          <v-dialog v-model="error" width="500">
-            <v-card>
-              <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
-                <v-icon style="float: right;" @click="error = false">mdi-close</v-icon>
-              </v-card-title>
-              <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
-                条件を満たす席の配置が存在しません。<br>
-                よくある矛盾点は以下の通りです。<br>
-                ・男女の座席の固定と、特定の席への固定の両方を満たせない
-              </v-card-text>
-            </v-card>
-          </v-dialog>
+        <!-- ランディング -->
+        <v-dialog v-model="landing" width="530" transition="dialog-top-transition" overlay-opacity="0.25">
+          <v-card>
+            <v-card-title class="headline teal lighten-2 font-weight-black"
+              style="display: inherit; color: #FFFFFF; ">席替えメーカーへようこそ！</v-card-title>
+            <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 20px; font-weight: 600;">
+              席替えメーカーは、生徒名と条件を入力するだけで座席の配置案を瞬時に出してくれるサービスです！
+            </v-card-text>
+            <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
+              ※現在パソコンとタブレットでのみ使用可能です。スマホへの対応はもうしばらくお待ちください。
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile
+                @click="startTutorial(); landing=false;">使い方を確認</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
 
-          <!-- ランディング -->
-          <v-dialog v-model="landing" width="530" transition="dialog-top-transition" overlay-opacity="0.25">
-            <v-card>
-              <v-card-title class="headline teal lighten-2 font-weight-black" style="display: inherit; color: #FFFFFF; ">席替えメーカーへようこそ！</v-card-title>
-              <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 20px; font-weight: 600;">
-                席替えメーカーは、生徒名と条件を入力するだけで座席の配置案を瞬時に出してくれるサービスです！
-              </v-card-text>
-              <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
-                ※現在パソコンとタブレットでのみ使用可能です。スマホへの対応はもうしばらくお待ちください。
-              </v-card-text>
-              <v-card-actions>
-                <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
-                <v-spacer></v-spacer>
-                <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="startTutorial(); landing=false;">使い方を確認</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-
-        <!-- セレクトボックスをダイアログに変更するテスト >
+      <!-- セレクトボックスをダイアログに変更するテスト >
         <div>
           <div></div>
           <div>
@@ -913,7 +1045,7 @@
             </v-dialog>
           </div-->
 
-          <!-- セレクトボックスをダイアログに変更するテスト　>
+      <!-- セレクトボックスをダイアログに変更するテスト　>
           <div></div>
           <div>
             <v-textarea v-model="testName1" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
@@ -939,7 +1071,7 @@
           </div>
         </div-->
 
-        <!-- 以下デバッグ用表示 >
+      <!-- 以下デバッグ用表示 >
         <div>
           <v-row>
             <v-col cols="12">
@@ -1056,1003 +1188,1004 @@
             </v-col>
           </v-row>
         </div -->
-      </v-app>
-    </div>
+    </v-app>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/intro.js@3.3.1/intro.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intro.js@3.3.1/intro.min.js"></script>
 
-    <script>
-      // ここからsortableJSで使う変数。sortableJSではVueインスタンスのdataやmethodを認識しないため
-      let isReverseSeats = false; // スワップした座席を席替え直前に戻すためのフラグ
-      let fromRows = [];
-      let fromCols = [];
-      let toRows = [];
-      let toCols = [];
-      // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
-      Array.prototype.originalIndexOf = function(target) {
-        let indexNum = this.length;
-        let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
-        let temp = dupThis.reverse().some(array => {
-          indexNum -= 1;
-          return (array.toString() == target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
-        })
-        if(!temp){ indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
-        return indexNum;
-      };
-      // ここからVueインスタンス
-      const app = new Vue({
-        el: "#app",
-        vuetify: new Vuetify({
-          light: {
-            primary: '#3f51b5',
-            secondary: '#b0bec5',
-            accent: '#8c9eff',
-            error: '#b71c1c',
-          },
-        }),
-        data: {
-          seatsSizeY: 6, // デフォルト値は6
-          seatsSizeX: 6, // デフォルト値は6
-          seatsTable: [], // 座席テーブル、生徒名が入る二次元配列
-          seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
-          dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          seatsNum: 0, // 有効な座席数
-          seatsOptionsX: [1,2,3,4,5,6,7,8], // よこの座席数入力フォームの選択肢
-          seatsOptionsY: [1,2,3,4,5,6,7,8], // たての座席数入力フォームの選択肢
-          limitedSeatsOptionsX: [1,2,3,4,5,6], // seatsSizeXのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
-          limitedSeatsOptionsY: [1,2,3,4,5,6], // seatsSizeYのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
-          distanceOptions: [0,1,2,3,4], // 近づける・離す距離の選択肢、デフォルト値6に合わせて実現可能な選択肢をデフォルトに設定
-          studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
-          dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
-          nearConditions: [['', '', '']], // 近づける条件配列
-          nearStudentsName: [], // 近づける生徒の名前
-          dupNearStudentsName: [], // 近づける生徒の名前の複製
-          farConditions: [['', '', '']], // 離す条件用配列
-          farStudentsName: [], // 離す生徒の名前
-          dupFarStudentsName: [], // 離す生徒の名前の複製
-          nearFarStudentsName: [], // 近づける/離す生徒の名前
-          dupNearFarStudentsName: [], // 近づける/離す生徒の名前の複製
-          frontConditions: [''], // 最前列に固定する生徒
-          frontSeatsIndex: [], // 最前列のインデックス
-          dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          frontTwoRowsConditions: [''], // 前2列に固定する生徒
-          frontTwoRowsSeatsIndex: [], // 前2列のインデックス
-          dupFrontTwoRowsSeatsIndex: [], // 前2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          backConditions: [''], // 最後列に固定する生徒
-          backSeatsIndex: [], // 最後列のインデックス
-          dupBackSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          backTwoRowsConditions: [''], // 後ろ2列に固定する生徒
-          backTwoRowsSeatsIndex: [], // 後ろ2列のインデックス
-          dupBackTwoRowsSeatsIndex: [], // 後ろ2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
-          nextSeatsTable: [], // 席替え後の座席テーブル、生徒名が入る二次元配列
-          tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
-          calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
-          restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
-          genderTable: [], // 生徒の性別テーブル、性別が入る二次元配列
-          genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
-          nextGenderTable: [], // 席替え後の生徒の性別テーブル、性別が入る二次元配列
-          isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
-          isFixGender: true, // 性別を固定するかどうかの制御フラグ
-          fixConditions: [['', '', '']], // 近づける条件配列
-          disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
-          groupSizeX: 2,
-          groupSizeY: 3,
-          groupSizeOptionsX: ['なし',2,3],
-          groupSizeOptionsY: ['なし',2,3],
-          isRenderNextSeatsTable: true, // nextSeatsTableを表示するかどうかの制御フラグ
-          drawer: true, // 条件サイドバーの開閉制御フラグ
-          isOpenSeatNumPanel: 0, // 座席数を指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
-          isOpenFrontBackPanel: 1, // 前後で指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
-          isOpenPlaceFixPanel: 1, // 特定の座席に固定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
-          isOpenNearPanel: 1, // 生徒同士を近づけるエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
-          isOpenFarPanel: 1, // 生徒同士を話すエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
-          userPolicy: false, // 利用規約の表示制御フラグ
-          userPolicyWithButton: false, // ボタン付き利用規約の表示制御フラグ
-          privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
-          updateInformation: false, // 更新情報の表示制御フラグ
-          isAcceptedUserPolicy: false, // 利用規約に同意してもらったか
-          isShowStudentsNameDialog: false,
-          testName1: '',
-          testName2: '',
-          testName3: '',
-          error: false,
-          landing: true,
-          sidebarWidth: '52%', // PC用のデフォルト値
-          seatsTableMemory: [['']],
-          genderTableMemory: [['']],
+  <script>
+    // ここからsortableJSで使う変数。sortableJSではVueインスタンスのdataやmethodを認識しないため
+    let isReverseSeats = false; // スワップした座席を席替え直前に戻すためのフラグ
+    let fromRows = [];
+    let fromCols = [];
+    let toRows = [];
+    let toCols = [];
+    // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
+    Array.prototype.originalIndexOf = function (target) {
+      let indexNum = this.length;
+      let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
+      let temp = dupThis.reverse().some(array => {
+        indexNum -= 1;
+        return (array.toString() == target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
+      })
+      if (!temp) { indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
+      return indexNum;
+    };
+    // ここからVueインスタンス
+    const app = new Vue({
+      el: "#app",
+      vuetify: new Vuetify({
+        light: {
+          primary: '#3f51b5',
+          secondary: '#b0bec5',
+          accent: '#8c9eff',
+          error: '#b71c1c',
         },
-        methods: {
-          onlyPC() {
-            if(window.parent.screen.width <= 1439){
-              // console.log("Mobile");
-              return false
-            } else {
-              // console.log("PC");
-              return true
-            }
-          },
-          onlyTB() {
-            if(window.parent.screen.width <= 1439){
-              // console.log("Mobile");
-              return true
-            } else {
-              // console.log("PC");
-              return false
-            }
-          },
-          startTutorial() {
-            const vueInstance = this
-            this.drawer = true;
-            const intro = introJs().setOptions({
-              prevLabel: '戻る',
-              nextLabel: '進む',
-              // skipLabel: 'スキップ',
-              doneLabel: '終了',
-              showProgress: true,
-              showStepNumbers: true,
-              showBullets: false
-            });
-            this.$nextTick(function() { // DOM更新が反映されてサイドバーが表示されるのを待ってから
-              intro.onafterchange(function() {
-                console.log(this._currentStep);
-                if(this._currentStep == 1) {
-                  if(window.parent.screen.width <= 1439){ // SP・TBのとき
-                    app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
-                  }
-                } else if(this._currentStep == 2) {
-                  app.setSidebarWidth();
-                  app.drawer = true;
-                  app.setDemoData();
-                } else if(this._currentStep == 4) {
-                  app.changeSeatsProcess();
+      }),
+      data: {
+        seatsSizeY: 6, // デフォルト値は6
+        seatsSizeX: 6, // デフォルト値は6
+        seatsTable: [], // 座席テーブル、生徒名が入る二次元配列
+        seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
+        dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+        seatsNum: 0, // 有効な座席数
+        seatsOptionsX: [1, 2, 3, 4, 5, 6, 7, 8], // よこの座席数入力フォームの選択肢
+        seatsOptionsY: [1, 2, 3, 4, 5, 6, 7, 8], // たての座席数入力フォームの選択肢
+        limitedSeatsOptionsX: [1, 2, 3, 4, 5, 6], // seatsSizeXのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
+        limitedSeatsOptionsY: [1, 2, 3, 4, 5, 6], // seatsSizeYのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
+        distanceOptions: [0, 1, 2, 3, 4], // 近づける・離す距離の選択肢、デフォルト値6に合わせて実現可能な選択肢をデフォルトに設定
+        studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
+        dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
+        nearConditions: [['', '', '']], // 近づける条件配列
+        nearStudentsName: [], // 近づける生徒の名前
+        dupNearStudentsName: [], // 近づける生徒の名前の複製
+        farConditions: [['', '', '']], // 離す条件用配列
+        farStudentsName: [], // 離す生徒の名前
+        dupFarStudentsName: [], // 離す生徒の名前の複製
+        nearFarStudentsName: [], // 近づける/離す生徒の名前
+        dupNearFarStudentsName: [], // 近づける/離す生徒の名前の複製
+        frontConditions: [''], // 最前列に固定する生徒
+        frontSeatsIndex: [], // 最前列のインデックス
+        dupFrontSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+        frontTwoRowsConditions: [''], // 前2列に固定する生徒
+        frontTwoRowsSeatsIndex: [], // 前2列のインデックス
+        dupFrontTwoRowsSeatsIndex: [], // 前2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+        backConditions: [''], // 最後列に固定する生徒
+        backSeatsIndex: [], // 最後列のインデックス
+        dupBackSeatsIndex: [], // 最前列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+        backTwoRowsConditions: [''], // 後ろ2列に固定する生徒
+        backTwoRowsSeatsIndex: [], // 後ろ2列のインデックス
+        dupBackTwoRowsSeatsIndex: [], // 後ろ2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
+        nextSeatsTable: [], // 席替え後の座席テーブル、生徒名が入る二次元配列
+        tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
+        calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
+        restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
+        genderTable: [], // 生徒の性別テーブル、性別が入る二次元配列
+        genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
+        nextGenderTable: [], // 席替え後の生徒の性別テーブル、性別が入る二次元配列
+        isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
+        isFixGender: true, // 性別を固定するかどうかの制御フラグ
+        fixConditions: [['', '', '']], // 近づける条件配列
+        disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
+        groupSizeX: 2,
+        groupSizeY: 3,
+        groupSizeOptionsX: ['なし', 2, 3],
+        groupSizeOptionsY: ['なし', 2, 3],
+        isRenderNextSeatsTable: true, // nextSeatsTableを表示するかどうかの制御フラグ
+        drawer: true, // 条件サイドバーの開閉制御フラグ
+        isOpenSeatNumPanel: 0, // 座席数を指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
+        isOpenFrontBackPanel: 1, // 前後で指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
+        isOpenPlaceFixPanel: 1, // 特定の座席に固定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
+        isOpenNearPanel: 1, // 生徒同士を近づけるエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
+        isOpenFarPanel: 1, // 生徒同士を話すエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
+        userPolicy: false, // 利用規約の表示制御フラグ
+        userPolicyWithButton: false, // ボタン付き利用規約の表示制御フラグ
+        privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
+        updateInformation: false, // 更新情報の表示制御フラグ
+        isAcceptedUserPolicy: false, // 利用規約に同意してもらったか
+        isShowStudentsNameDialog: false,
+        testName1: '',
+        testName2: '',
+        testName3: '',
+        error: false,
+        landing: true,
+        sidebarWidth: '52%', // PC用のデフォルト値
+        seatsTableMemory: [['']],
+        genderTableMemory: [['']],
+      },
+      methods: {
+        onlyPC() {
+          if (window.parent.screen.width <= 1439) {
+            // console.log("Mobile");
+            return false
+          } else {
+            // console.log("PC");
+            return true
+          }
+        },
+        onlyTB() {
+          if (window.parent.screen.width <= 1439) {
+            // console.log("Mobile");
+            return true
+          } else {
+            // console.log("PC");
+            return false
+          }
+        },
+        startTutorial() {
+          const vueInstance = this
+          this.drawer = true;
+          const intro = introJs().setOptions({
+            prevLabel: '戻る',
+            nextLabel: '進む',
+            // skipLabel: 'スキップ',
+            doneLabel: '終了',
+            showProgress: true,
+            showStepNumbers: true,
+            showBullets: false
+          });
+          this.$nextTick(function () { // DOM更新が反映されてサイドバーが表示されるのを待ってから
+            intro.onafterchange(function () {
+              console.log(this._currentStep);
+              if (this._currentStep == 1) {
+                if (window.parent.screen.width <= 1439) { // SP・TBのとき
+                  app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
                 }
-              }).start();
-            })
-            intro.oncomplete(function() {
-              app.setBlankData();
-              app.resetNextSeatsTable();
-              if(1440 <= window.parent.screen.width){ // PCのとき
+              } else if (this._currentStep == 2) {
+                app.setSidebarWidth();
                 app.drawer = true;
+                app.setDemoData();
+              } else if (this._currentStep == 4) {
+                app.changeSeatsProcess();
               }
+            }).start();
+          })
+          intro.oncomplete(function () {
+            app.setBlankData();
+            app.resetNextSeatsTable();
+            if (1440 <= window.parent.screen.width) { // PCのとき
+              app.drawer = true;
+            }
+          });
+        },
+        setDemoData() {
+          this.seatsSizeX = 6;
+          this.seatsSizeY = 6;
+          this.seatsTable.splice(0, 1, ['別本', '山田', '平野', '山口', '高松', '寺井']);
+          this.seatsTable.splice(1, 1, ['山村', '坂本', '浦山', '栗原', '谷井', '柳澤']);
+          this.seatsTable.splice(2, 1, ['中川', '安岡', '市川', '門前', '山本', '志鷹']);
+          this.seatsTable.splice(3, 1, ['岡村', '川瀬', '四十住', '金田', '長島', '藤岡']);
+          this.seatsTable.splice(4, 1, ['永瀬', '直江', '倉谷', '瀧山', '角間', '黒田']);
+          this.seatsTable.splice(5, 1, ['濱井', '小野寺', '竹端', '廣瀬', '岩峅', '松倉']);
+          this.genderTable.splice(0, 1, ["female", "male", "female", "male", "female", "male"]);
+          this.genderTable.splice(1, 1, ["male", "female", "male", "female", "male", "female"]);
+          this.genderTable.splice(2, 1, ["female", "male", "female", "male", "female", "male"]);
+          this.genderTable.splice(3, 1, ["male", "female", "male", "female", "male", "female"]);
+          this.genderTable.splice(4, 1, ["female", "male", "female", "male", "female", "male"]);
+          this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
+          this.countSeats();
+        },
+        setBlankData() {
+          this.seatsTable.splice(0, 1, ['', '', '', '', '', '']);
+          this.seatsTable.splice(1, 1, ['', '', '', '', '', '']);
+          this.seatsTable.splice(2, 1, ['', '', '', '', '', '']);
+          this.seatsTable.splice(3, 1, ['', '', '', '', '', '']);
+          this.seatsTable.splice(4, 1, ['', '', '', '', '', '']);
+          this.seatsTable.splice(5, 1, ['', '', '', '', '', '']);
+          this.genderTable.splice(0, 1, ['', '', '', '', '', '']);
+          this.genderTable.splice(1, 1, ['', '', '', '', '', '']);
+          this.genderTable.splice(2, 1, ['', '', '', '', '', '']);
+          this.genderTable.splice(3, 1, ['', '', '', '', '', '']);
+          this.genderTable.splice(4, 1, ['', '', '', '', '', '']);
+          this.genderTable.splice(5, 1, ['', '', '', '', '', '']);
+          this.countSeats();
+        },
+        uniqueKey(value, nextIndexRow, nextIndexCol) {
+          let key
+          if (value == '') {
+            key = `nextSeatsRow${nextIndexRow * this.seatsSizeX + nextIndexCol}`;
+          } else {
+            key = value;
+          }
+          return key;
+        },
+        beforeChangeSeats() { // トランジションのズレをなくすために、スワップされていたら席替え直前に、次の座席テーブルに反映する
+          if (isReverseSeats) {
+            this.reverseSeats();
+            this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
+            this.$nextTick(function () { // DOMに反映されるのを待ち、
+              this.isRenderNextSeatsTable = true; // 描画をオンにする
             });
-          },
-          setDemoData() {
-            this.seatsSizeX = 6;
-            this.seatsSizeY = 6;
-            this.seatsTable.splice(0, 1, ['別本','山田','平野','山口','高松','寺井']);
-            this.seatsTable.splice(1, 1, ['山村','坂本','浦山','栗原','谷井','柳澤']);
-            this.seatsTable.splice(2, 1, ['中川','安岡','市川','門前','山本','志鷹']);
-            this.seatsTable.splice(3, 1, ['岡村','川瀬','四十住','金田','長島','藤岡']);
-            this.seatsTable.splice(4, 1, ['永瀬','直江','倉谷','瀧山','角間','黒田']);
-            this.seatsTable.splice(5, 1, ['濱井','小野寺','竹端','廣瀬','岩峅','松倉']);
-            this.genderTable.splice(0, 1, ["female", "male", "female", "male", "female", "male"]);
-            this.genderTable.splice(1, 1, ["male", "female", "male", "female", "male", "female"]);
-            this.genderTable.splice(2, 1, ["female", "male", "female", "male", "female", "male"]);
-            this.genderTable.splice(3, 1, ["male", "female", "male", "female", "male", "female"]);
-            this.genderTable.splice(4, 1, ["female", "male", "female", "male", "female", "male"]);
-            this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
-            this.countSeats();
-          },
-          setBlankData() {
-            this.seatsTable.splice(0, 1, ['','','','','','']);
-            this.seatsTable.splice(1, 1, ['','','','','','']);
-            this.seatsTable.splice(2, 1, ['','','','','','']);
-            this.seatsTable.splice(3, 1, ['','','','','','']);
-            this.seatsTable.splice(4, 1, ['','','','','','']);
-            this.seatsTable.splice(5, 1, ['','','','','','']);
-            this.genderTable.splice(0, 1, ['','','','','','']);
-            this.genderTable.splice(1, 1, ['','','','','','']);
-            this.genderTable.splice(2, 1, ['','','','','','']);
-            this.genderTable.splice(3, 1, ['','','','','','']);
-            this.genderTable.splice(4, 1, ['','','','','','']);
-            this.genderTable.splice(5, 1, ['','','','','','']);
-            this.countSeats();
-          },
-          uniqueKey(value, nextIndexRow, nextIndexCol) {
-            let key
-            if(value == ''){
-              key = `nextSeatsRow${nextIndexRow*this.seatsSizeX + nextIndexCol}`;
-            }else{
-              key = value;
-            }
-            return key;
-          },
-          beforeChangeSeats() { // トランジションのズレをなくすために、スワップされていたら席替え直前に、次の座席テーブルに反映する
-            if(isReverseSeats){
-              this.reverseSeats();
-              this.isRenderNextSeatsTable = false; // 描画を一度オフにして、
-              this.$nextTick(function(){ // DOMに反映されるのを待ち、
-                this.isRenderNextSeatsTable = true; // 描画をオンにする
-              });
-            }
-            isReverseSeats = false;
-          },
-          delayChangeSeats() { // beforeChangeSeats()の反映を待つために、わずかに遅れてChangeSeats()を呼び出す
-            setTimeout(this.changeSeats,1);
-          },
-          checkUserPolicyAccepted(){ // 利用規約に同意しているかをチェックする
-            if(this.isAcceptedUserPolicy){ // すでに利用規約に同意してもらっていれば
-              this.changeSeatsProcess();
-            }else{ // まだ利用規約に同意してもらっていなければ
-              this.userPolicyWithButton = true;
-            }
-          },
-          changeSeatsProcess() { // 席替えボタンが押されたときの処理
-            this.beforeChangeSeats();
-            this.delayChangeSeats();
-            this.drawer = false
-          },
-          createNewNearConditions(){
-            this.nearConditions.push(['', '', '']);
-          },
-          createNewFarConditions(){
-            this.farConditions.push(['', '', '']);
-          },
-          createNewFixConditions(){
-            this.fixConditions.push(['', '', '']);
-          },
-          createNewFrontConditions(){
-            if(this.frontConditions.length < this.seatsSizeX){
-              this.frontConditions.push('');
-            }
-          },
-          createNewFrontTwoRowsConditions(){
-            if(this.frontTwoRowsConditions.length < this.seatsSizeX * 2){
-              this.frontTwoRowsConditions.push('');
-            }
-          },
-          createNewBackTwoRowsConditions(){
-            if(this.backTwoRowsConditions.length < this.seatsSizeX * 2){
-              this.backTwoRowsConditions.push('');
-            }
-          },
-          createNewBackConditions(){
-            if(this.backConditions.length < this.seatsSizeX){
-              this.backConditions.push('');
-            }
-          },
-          getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
-            let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
-            let gender
-            if(genderIndex === -1){ //
-              gender = ''
-            }else{
-              gender = this.genderArray[genderIndex];
-            }
-            if(gender === '') {
-              if(row==0 && col==0){
-                return 'male-seats'
-              }else if(row==0 && col==1){
-                return 'female-seats'
-              }else {
-                return 'off-seats'
-              }
-            }else if(gender === 'male'){
+          }
+          isReverseSeats = false;
+        },
+        delayChangeSeats() { // beforeChangeSeats()の反映を待つために、わずかに遅れてChangeSeats()を呼び出す
+          setTimeout(this.changeSeats, 1);
+        },
+        checkUserPolicyAccepted() { // 利用規約に同意しているかをチェックする
+          if (this.isAcceptedUserPolicy) { // すでに利用規約に同意してもらっていれば
+            this.changeSeatsProcess();
+          } else { // まだ利用規約に同意してもらっていなければ
+            this.userPolicyWithButton = true;
+          }
+        },
+        changeSeatsProcess() { // 席替えボタンが押されたときの処理
+          this.beforeChangeSeats();
+          this.delayChangeSeats();
+          this.drawer = false
+        },
+        createNewNearConditions() {
+          this.nearConditions.push(['', '', '']);
+        },
+        createNewFarConditions() {
+          this.farConditions.push(['', '', '']);
+        },
+        createNewFixConditions() {
+          this.fixConditions.push(['', '', '']);
+        },
+        createNewFrontConditions() {
+          if (this.frontConditions.length < this.seatsSizeX) {
+            this.frontConditions.push('');
+          }
+        },
+        createNewFrontTwoRowsConditions() {
+          if (this.frontTwoRowsConditions.length < this.seatsSizeX * 2) {
+            this.frontTwoRowsConditions.push('');
+          }
+        },
+        createNewBackTwoRowsConditions() {
+          if (this.backTwoRowsConditions.length < this.seatsSizeX * 2) {
+            this.backTwoRowsConditions.push('');
+          }
+        },
+        createNewBackConditions() {
+          if (this.backConditions.length < this.seatsSizeX) {
+            this.backConditions.push('');
+          }
+        },
+        getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
+          let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
+          let gender
+          if (genderIndex === -1) { //
+            gender = ''
+          } else {
+            gender = this.genderArray[genderIndex];
+          }
+          if (gender === '') {
+            if (row == 0 && col == 0) {
               return 'male-seats'
-            }else if(gender === 'female'){
+            } else if (row == 0 && col == 1) {
               return 'female-seats'
-            }else return 'on-seats'
-          },
-          toggleGender(col, row) {
-            if(this.genderTable[row][col] === 'male'){
-              this.genderTable[row].splice(col, 1, 'female')
-            }else if(this.genderTable[row][col] === 'female'){
-              this.genderTable[row].splice(col, 1, 'male')
-            }
-          },
-          writeStudentName(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
-            this.seatsTable[indexRow].splice(indexCol, 1, name)
-            if(this.genderTable[indexRow][indexCol] === ''){
-              this.genderTable[indexRow].splice(indexCol, 1, 'male')
-            }
-          },
-          makeSeatsTable() { // seatsTableを作成
-            this.seatsTable.splice(0)
-            for(let i = 0; i < this.seatsSizeY; i++) {
-              this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
-            }
-            this.countSeats();
-          },
-          countSeats() { // 有効な座席数をカウント
-            this.seatsNum = 0;
-            this.seatsTable.forEach(seatsRow => {
-              seatsRow.forEach(seat => {
-                if (seat !== '') this.seatsNum += 1
-              })
-            })
-          },
-          remakeSeatsTable() { // seatsTableを作成
-            this.seatsTableMemory = this.seatsTable.splice(0)
-            for(let i = 0; i < this.seatsSizeY; i++) {
-              this.seatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
-            }
-            const minX = Math.min(this.seatsTableMemory[0].length, this.seatsSizeX);
-            const minY = Math.min(this.seatsTableMemory.length, this.seatsSizeY);
-            for(let i = 0; i < minY; i++) {
-              for(let j = 0; j < minX; j++) {
-                this.seatsTable[i][j] = this.seatsTableMemory[i][j] // もともと入力されていた名前をセット
-              }
-            }
-            this.countSeats();
-          },
-          countSeats() { // 有効な座席数をカウント
-            this.seatsNum = 0;
-            this.seatsTable.forEach(seatsRow => {
-              seatsRow.forEach(seat => {
-                if (seat !== '') this.seatsNum += 1
-              })
-            })
-          },
-          makeNextSeatsTable() { // nextSeatsTableを作成
-            this.nextSeatsTable.splice(0)
-            for(let i = 0; i < this.seatsSizeY; i++) {
-              this.nextSeatsTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に名前が未入力な状態でテーブルを作成
-            }
-          },
-          resetNextSeatsTable() { // nextSeatsTableを空白で初期化
-            for(let i = 0; i < this.seatsSizeY; i++) {
-              this.nextSeatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
-            }
-          },
-          changeSeats() { // メイン処理
-            let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
-            do {
-              loopNum += 1;
-              console.log(`----${loopNum}回目のループを開始します----`);
-              this.restartFlag = false;
-              this.calcNum = 0 // エラー用計算量を初期化
-              this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
-              this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
-              this.resetFrontTwoRowsSeatsIndex(); // 前2列インデックス配列を空にする
-              this.resetBackSeatsIndex(); // 最後列インデックス配列を空にする
-              this.resetBackTwoRowsSeatsIndex(); // 後ろ2列インデックス配列を空にする
-              this.makeFrontSeatsIndex(); // 最前列インデックスを作成
-              this.makeFrontTwoRowsSeatsIndex(); // 前2列インデックスを作成
-              this.makeBackSeatsIndex(); // 最後列インデックスを作成
-              this.makeBackTwoRowsSeatsIndex(); // 後ろ2列インデックスを作成
-              this.frontConditions = this.frontConditions.filter(Boolean); // 空白を削除
-              this.frontTwoRowsConditions = this.frontTwoRowsConditions.filter(Boolean); // 空白を削除
-              this.backConditions = this.backConditions.filter(Boolean); // 空白を削除
-              this.backTwoRowsConditions = this.backTwoRowsConditions.filter(Boolean); // 空白を削除
-              this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupBackTwoRowsSeatsIndex = this.backTwoRowsSeatsIndex.slice(0); // 後ろ2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
-              this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
-
-              this.placeFixedSeats(); // 固定する生徒を配置
-              this.changeFrontSeats(); // 最前列に固定する生徒を席替え
-              this.changeBackSeats(); // 最後列に固定する生徒を席替え
-              this.changeFrontTwoRowsSeats(); // 前2列に固定する生徒を席替え
-              this.changeBackTwoRowsSeats(); // 後ろ2列に固定する生徒を席替え
-              this.changeNearFarSeats(); // 近づける/離す生徒を席替え
-              this.shuffleSeats(); // 条件のない生徒を席替え
-
-              this.createNewFrontConditions(); // 次回の準備、最前列のフォームを1つ作成
-              this.createNewFrontTwoRowsConditions(); // 次回の準備、前2列のフォームを1つ作成
-              this.createNewBackTwoRowsConditions(); // 次回の準備、後2列のフォームを1つ作成
-              this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
-              console.log(`----${loopNum}回目のループ終了----`);
-            } while(this.restartFlag && loopNum <= 500)
-            this.$nextTick(function(){ // DOMの更新を待ってからsortableJSをフォームにセット
-              setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
-            });
-            this.setLocalStrage() // 席替え後の座席表のデータをLacalStrageに保存する
-            console.log(`====終了====`);
-            if(loopNum > 500){
-              //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
-              this.error = true;
-            }
-          },
-          pushSeatsTableIndex(indexCol, indexRow) { // 座席テーブルの有効な座席のインデックスをプッシュ
-            this.seatsTableIndex.push([indexCol, indexRow]);
-          },
-          shuffleSeats() { // 条件のない生徒を席替え
-            this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
-            this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
-              let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              while( (this.isFixGender && !this.checkGender(dupStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupStudentName, topIndex)) ){ // 条件を満たさない間、繰り返す
-                if(this.calcNum > this.seatsNum){
-                  this.restartFlag = true;
-                  break;
-                }
-                this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
-                topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                this.calcNum += 1;
-              }
-              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
-              let genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
-              let gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
-              this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender);// 復元用のnextGenderTableに席替え後の性別を保存
-            })
-          },
-          shuffle(array) { // 配列をランダムにシャッフル
-            for (let i = array.length - 1; i >= 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              const tempValue = array[i];
-              array.splice(i, 1, array[j]);
-              array.splice(j, 1, tempValue);
-            }
-          },
-          makeFrontSeatsIndex() {
-            this.seatsTableIndex.forEach(indexArray => {
-              if(indexArray[1] === 0) { // 最前列なら
-                this.frontSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
-              }
-            })
-          },
-          resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
-            this.frontSeatsIndex.splice(0);
-          },
-          makeFrontTwoRowsSeatsIndex() {
-            this.seatsTableIndex.forEach(indexArray => {
-              if(indexArray[1] <= 1) { // 前2列なら
-                this.frontTwoRowsSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
-              }
-            })
-          },
-          resetFrontTwoRowsSeatsIndex() { // 前2列インデックス配列を空にする
-            this.frontTwoRowsSeatsIndex.splice(0);
-          },
-          makeBackSeatsIndex() {
-            this.seatsTableIndex.forEach(indexArray => {
-              if(indexArray[1] === this.seatsSizeY-1) { // 最後列なら
-                this.backSeatsIndex.push(indexArray); // 最後列インデックス配列にインデックスをプッシュ
-              }
-            })
-          },
-          resetBackSeatsIndex() { // 最後列インデックス配列を空にする
-            this.backSeatsIndex.splice(0);
-          },
-          makeBackTwoRowsSeatsIndex() {
-            this.seatsTableIndex.forEach(indexArray => {
-              if(indexArray[1] >= this.seatsSizeY-2) { // 後ろ2列なら
-                this.backTwoRowsSeatsIndex.push(indexArray); // 後ろ2列インデックス配列にインデックスをプッシュ
-              }
-            })
-          },
-          resetBackTwoRowsSeatsIndex() { // 後ろ2列インデックス配列を空にする
-            this.backTwoRowsSeatsIndex.splice(0);
-          },
-          changeFrontSeats() { // 最前列に固定する生徒を席替え
-            this.shuffle(this.dupFrontSeatsIndex);
-            this.frontConditions.forEach(frontStudentName => {
-              let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別/異なる座席チェック----
-              while( !this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
-                if(this.calcNum > this.seatsNum){
-                  this.restartFlag = true;
-                  break;
-                }
-                this.dupFrontSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
-                topIndex = this.dupFrontSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                this.calcNum += 1;
-              }
-              // ----ここまで----
-              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
-              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-              this.delete(frontStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-              this.delete(frontStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
-              this.delete(topIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
-            })
-          },
-          changeFrontTwoRowsSeats() { // 前2列に固定する生徒を席替え
-            this.shuffle(this.dupFrontTwoRowsSeatsIndex);
-            this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
-              let topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別/異なる座席チェック----
-              while( !this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontTwoRowsStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
-                if(this.calcNum > this.seatsNum){
-                  this.restartFlag = true;
-                  break;
-                }
-                this.dupFrontTwoRowsSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
-                topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                this.calcNum += 1;
-              }
-              // ----ここまで----
-              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
-              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-              this.delete(frontTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-              this.delete(frontTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
-            })
-          },
-          changeBackSeats() { // 最後列に固定する生徒を席替え
-            this.shuffle(this.dupBackSeatsIndex);
-            this.backConditions.forEach(backStudentName => {
-              let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別/異なる座席チェック----
-              while( !this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
-                if(this.calcNum > this.seatsNum){
-                  this.restartFlag = true;
-                  break;
-                }
-                this.dupBackSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
-                topIndex = this.dupBackSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                this.calcNum += 1;
-              }
-              // ----ここまで----
-              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
-              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-              this.delete(backStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-              this.delete(backStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
-              this.delete(topIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
-            })
-          },
-          changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
-            this.shuffle(this.dupBackTwoRowsSeatsIndex);
-            this.backTwoRowsConditions.forEach(backTwoRowsStudentName => {
-              if(!this.dupBackTwoRowsSeatsIndex.length){
-                // todo エラーを表示してbreak
-              }
-              let topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別/異なる座席チェック----
-              while( !this.checkNear(backTwoRowsStudentName, topIndex) || !this.checkFar(backTwoRowsStudentName, topIndex) || ( this.isFixGender && !this.checkGender(backTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backTwoRowsStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
-                if(this.calcNum > this.seatsNum){
-                  this.restartFlag = true;
-                  break;
-                }
-                this.dupBackTwoRowsSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
-                topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                this.calcNum += 1;
-              }
-              // ----ここまで----
-              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
-              this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除
-              this.delete(backTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除
-              this.delete(backTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため、生徒名を削除する
-            })
-          },
-          changeNearFarSeats() { // 近づける/離す生徒を席替え
-            this.shuffle(this.dupSeatsTableIndex);
-            this.dupNearFarStudentsName.forEach(dupNearFarStudentName => {
-              let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-              // ----近づける/離す/性別/異なる座席チェック----
-              while( !this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || (this.isFixGender && !this.checkGender(dupNearFarStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupNearFarStudentName, topIndex)) ){ // いずれかの条件を満たさない間、繰り返す
-                if(this.calcNum > this.seatsNum){
-                  this.restartFlag = true;
-                  break;
-                }
-                this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
-                topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
-                this.calcNum += 1;
-              }
-              // ----ここまで----
-              this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupNearFarStudentName); // 取り出したインデックスの位置に生徒名を保存
-              this.delete(dupNearFarStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-            })
-          },
-          placeFixedSeats() { // 固定する生徒を配置
-            this.fixConditions.forEach(fixCondition => {
-              if(fixCondition[0] != ''){ // フォーム表示のため最後に['', '', '']が入ってしまっているので、そのときは処理しない
-                let fixConditionName = fixCondition[0];
-                let fixConditionRow = fixCondition[1]-1; // 入力された値とインデックスのずれを補正
-                let fixConditionCol = fixCondition[2]-1; // 入力された値とインデックスのずれを補正
-                this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
-
-                let fixIndex = [fixConditionCol, fixConditionRow]
-                this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-                this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-                this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
-
-                this.delete(fixIndex, this.dupFrontSeatsIndex); // ここで配置した座標はchangeFrontSeats()で使えないため、座席座標を削除する
-                this.delete(fixIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
-                this.delete(fixIndex, this.dupBackSeatsIndex); // ここで配置した座標はchangeBackSeats()で使えないため、座席座標を削除する
-                this.delete(fixIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
-              }
-            })
-          },
-          minDistance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
-            let x_abs = Math.abs( p1[0] - p2[0] );
-            let y_abs = Math.abs( p1[1] - p2[1] );
-            return Math.min(x_abs, y_abs);
-          },
-          maxDistance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
-            let x_abs = Math.abs( p1[0] - p2[0] );
-            let y_abs = Math.abs( p1[1] - p2[1] );
-            return Math.max(x_abs, y_abs);
-          },
-          checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
-            let return_value = true
-            this.nearConditions.forEach(nearConditionArray => {
-              if( nearConditionArray.includes(studentName) ){ // もし引数の生徒が、近づける条件にいれば
-                // ----近づけたい生徒の名前を取得----
-                let nearStudentName
-                if( nearConditionArray.indexOf(studentName) == 0 ){
-                  nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
-                }else if( nearConditionArray.indexOf(studentName) == 1 ){
-                  nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
-                }
-                // ----ここまで----
-                let distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
-                let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
-                if( this.maxDistance(p, nearStudentPosition) > distance ){ // 距離のmaxが条件distanceより上なら返り値をfalseに更新
-                  return_value = false;
-                }
-              }
-            })
-            return return_value;
-          },
-          checkFar(studentName, p) { // 引数の生徒を座標pに配置しても、離す条件を満たすならtrue、満たさないならfalseを返す
-            let return_value = true
-            this.farConditions.forEach(farConditionArray => {
-              if( farConditionArray.includes(studentName) ){ // もし引数の生徒が、離す条件にいれば
-                // ----離す生徒の名前を取得----
-                let farStudentName
-                if( farConditionArray.indexOf(studentName) == 0 ){
-                  farStudentName = farConditionArray[1]; // 引数の生徒と離す生徒
-                }else if( farConditionArray.indexOf(studentName) == 1 ){
-                  farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
-                }
-                // ----ここまで----
-                let distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
-                let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
-                if( this.maxDistance(p, farStudentPosition) < distance ){ // 距離のminが条件distanceより下なら返り値をfalseに更新
-                  return_value = false;
-                }
-              }
-            })
-            return return_value;
-          },
-          checkGender(studentName, p) { // 引数の生徒を座標pに配置したとき、性別の条件を満たすならtrue、満たさないならfalseを返す
-            let genderIndex = this.studentsName.indexOf(studentName);
-            let currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
-            let nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
-            if(currentGender == nextGender){
-              return true
-            }else{
-              return false
-            }
-          },
-          checkDifferent(studentName, p) { // 引数の生徒を座標pに配置したとき、現在の座席と異なっているならtrue、現在の座席と同じならfalseを返す
-            let studentIndex = this.studentsName.indexOf(studentName);
-            let currentIndex = this.seatsTableIndex[studentIndex];
-            if(currentIndex.toString() == p.toString()) { // 配列を比較するときは厳密比較になるので文字列に変換
-              return false;
-            }else{
-              return true;
-            }
-          },
-          getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
-            let nextSeatsRowNum = 0; // 行インデックス、y座標
-            let return_value = false; // 返す値の初期値をfalse
-            this.nextSeatsTable.forEach(nextSeatsRow => {
-              if( nextSeatsRow.includes(studentName) ){
-                let nextSeatsColNum = nextSeatsRow.indexOf(studentName);
-                return_value = [nextSeatsColNum, nextSeatsRowNum]; // 返す値を座標で更新
-              }
-              nextSeatsRowNum += 1;
-            })
-            return return_value;
-          },
-          makeGenderTable() { // genderTableを作成
-            this.genderTable = []
-            for(let i = 0; i < this.seatsSizeY; i++) {
-              this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
-            }
-          },
-          remakeGenderTable() { // genderTableを作成
-            this.genderTableMemory = this.genderTable.splice(0)
-            for(let i = 0; i < this.seatsSizeY; i++) {
-              this.genderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
-            }
-            const minX = Math.min(this.genderTableMemory[0].length, this.seatsSizeX);
-            const minY = Math.min(this.genderTableMemory.length, this.seatsSizeY);
-            for(let i = 0; i < minY; i++) {
-              for(let j = 0; j < minX; j++) {
-                this.genderTable[i][j] = this.genderTableMemory[i][j] // もともと入力されていた性別をセット
-              }
-            }
-          },
-          makeNextGenderTable() { // nextGenderTableを作成
-            this.nextGenderTable = []
-            for(let i = 0; i < this.seatsSizeY; i++) {
-              this.nextGenderTable.push( Array(this.seatsSizeX).fill('') ) // すべての席に性別が未入力な状態でテーブルを作成
-            }
-          },
-          delete(target, array){
-            let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
-            if(deleteIndex != -1){ // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
-              array.splice(deleteIndex, 1); // arrayからtargetを削除する
-            }
-          },
-          reverseSeats(){
-            for(let i=0; i<fromRows.length; i++){
-              let fromSeat = this.nextSeatsTable[fromRows[i]][fromCols[i]];
-              let toSeat = this.nextSeatsTable[toRows[i]][toCols[i]];
-              this.nextSeatsTable[fromRows[i]].splice(fromCols[i], 1, toSeat);
-              this.nextSeatsTable[toRows[i]].splice(toCols[i], 1, fromSeat);
-              console.log(`${fromSeat}([${fromRows[i]}][${fromCols[i]}])と${toSeat}([${toRows[i]}][${toCols[i]}])をスワップ`);
-            }
-            fromRows.splice(0);
-            fromCols.splice(0);
-            toRows.splice(0);
-            toCols.splice(0);
-          },
-          setSortableJS(){ // sortableJSをフォームにセット
-            for(let row=0; row<this.seatsSizeY; row++) {
-              for(let col=0; col<this.seatsSizeX; col++) {
-                let el = document.getElementById(`nextSeatsRow${row}${col}`);
-                Sortable.create(el, {
-                  group: "nextSeats",
-                  swap: true,
-                  swapClass: 'highlighted',
-                  animation: 400,
-                  onSort: function() { // スワップしたら、
-                    isReverseSeats = true;
-                  },
-                  onEnd: function(evt) {
-                    let fromRow = parseInt(evt.from.id.toString().slice(-2, -1));
-                    let fromCol = parseInt(evt.from.id.toString().slice(-1));
-                    let toRow = parseInt(evt.to.id.toString().slice(-2, -1));
-                    let toCol = parseInt(evt.to.id.toString().slice(-1));
-                    fromRows.push(fromRow);
-                    fromCols.push(fromCol);
-                    toRows.push(toRow);
-                    toCols.push(toCol);
-                  },
-                });
-              }
-            }
-          },
-          setSidebarWidth() {
-            if(window.parent.screen.width <= 1020){ // スマホ・タブレット縦のとき
-              this.sidebarWidth = '95%'
-            } else if (1021 <= window.parent.screen.width && window.parent.screen.width <= 1439) { // タブレット横のとき
-              this.sidebarWidth = '80%'
-            } else { // PCのとき
-              this.sidebarWidth = '52%'
-            }
-          },
-          hideSidebarOnlyTB() {
-            if(window.parent.screen.width <= 1439){ // スマホ・タブレット縦のとき
-              this.drawer = false; // サイドバーを非表示
-            }
-          },
-          fetchLocalStrage() { // LocalStrageに保存されている前回の結果を取り出す
-            // LocalStrageの値を読み込んで、存在すれば反映する
-            let seatsTableLocalStrage = JSON.parse(localStorage.getItem('seatsTable'));
-            let genderTableLocalStrage = JSON.parse(localStorage.getItem('genderTable'));
-            let seatsSizeYLocalStrage = JSON.parse(localStorage.getItem('seatsSizeY'));
-            let seatsSizeXLocalStrage = JSON.parse(localStorage.getItem('seatsSizeX'));
-            let groupSizeYLocalStrage = JSON.parse(localStorage.getItem('groupSizeY'));
-            let groupSizeXLocalStrage = JSON.parse(localStorage.getItem('groupSizeX'));
-
-            if(seatsTableLocalStrage && genderTableLocalStrage && seatsSizeYLocalStrage && seatsSizeXLocalStrage && groupSizeYLocalStrage && groupSizeXLocalStrage){
-              console.log("LocalStrageに値があったので反映させました。");
-              this.seatsTable = seatsTableLocalStrage;
-              this.genderTable = genderTableLocalStrage;
-              this.seatsSizeY = seatsSizeYLocalStrage;
-              this.seatsSizeX = seatsSizeXLocalStrage;
-              this.groupSizeY = groupSizeYLocalStrage;
-              this.groupSizeX = groupSizeXLocalStrage;
             } else {
-              console.log("LocalStrageに値はありませんでした。");
+              return 'off-seats'
             }
-          },
-          setLocalStrage() { // LocalStrageに現在の座席表を書き込む
-            localStorage.setItem('seatsTable', JSON.stringify(this.nextSeatsTable, undefined, 1));
-            localStorage.setItem('genderTable', JSON.stringify(this.nextGenderTable, undefined, 1));
-            localStorage.setItem('seatsSizeX', JSON.stringify(this.seatsSizeX, undefined, 1));
-            localStorage.setItem('seatsSizeY', JSON.stringify(this.seatsSizeY, undefined, 1));
-            localStorage.setItem('groupSizeX', JSON.stringify(this.groupSizeX, undefined, 1));
-            localStorage.setItem('groupSizeY', JSON.stringify(this.groupSizeY, undefined, 1));
-            console.log('LocalStrageに値を書き込みました。');
-          },
+          } else if (gender === 'male') {
+            return 'male-seats'
+          } else if (gender === 'female') {
+            return 'female-seats'
+          } else return 'on-seats'
         },
-        created() {
-          this.makeSeatsTable(); // 最初にseatsTableを作成
-          this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
-          this.makeGenderTable(); // genderTableを作成
-          this.makeNextGenderTable(); // 席替え後用のnextGenderTableを作成
-          this.setSidebarWidth();
-          if(window.parent.screen.width <= 1439){ // SP・TBのとき
-            this.drawer = false; // 初期はサイドバーを非表示
-          } else { // PCのとき
-            this.drawer = true; // 初期はサイドバーを表示
+        toggleGender(col, row) {
+          if (this.genderTable[row][col] === 'male') {
+            this.genderTable[row].splice(col, 1, 'female')
+          } else if (this.genderTable[row][col] === 'female') {
+            this.genderTable[row].splice(col, 1, 'male')
           }
         },
-        mounted() {
-          this.setSortableJS(); // sortableJSをフォームにセット
-          // this.startTutorial();
+        writeStudentName(indexCol, indexRow, name) { // 引数で受け取った座席の有効・無効を切り替える
+          this.seatsTable[indexRow].splice(indexCol, 1, name)
+          if (this.genderTable[indexRow][indexCol] === '') {
+            this.genderTable[indexRow].splice(indexCol, 1, 'male')
+          }
         },
-        watch: {
-          seatsTable: {
-            handler: function(){
-              this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
-              this.studentsName = this.studentsName.filter(function(studentName) { //空白を削除
-                return studentName !== '';
+        makeSeatsTable() { // seatsTableを作成
+          this.seatsTable.splice(0)
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.seatsTable.push(Array(this.seatsSizeX).fill('')) // すべての席に名前が未入力な状態でテーブルを作成
+          }
+          this.countSeats();
+        },
+        countSeats() { // 有効な座席数をカウント
+          this.seatsNum = 0;
+          this.seatsTable.forEach(seatsRow => {
+            seatsRow.forEach(seat => {
+              if (seat !== '') this.seatsNum += 1
+            })
+          })
+        },
+        remakeSeatsTable() { // seatsTableを作成
+          this.seatsTableMemory = this.seatsTable.splice(0)
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.seatsTable.push(Array(this.seatsSizeX).fill('')) // すべての席に名前が未入力な状態でテーブルを作成
+          }
+          const minX = Math.min(this.seatsTableMemory[0].length, this.seatsSizeX);
+          const minY = Math.min(this.seatsTableMemory.length, this.seatsSizeY);
+          for (let i = 0; i < minY; i++) {
+            for (let j = 0; j < minX; j++) {
+              this.seatsTable[i][j] = this.seatsTableMemory[i][j] // もともと入力されていた名前をセット
+            }
+          }
+          this.countSeats();
+        },
+        countSeats() { // 有効な座席数をカウント
+          this.seatsNum = 0;
+          this.seatsTable.forEach(seatsRow => {
+            seatsRow.forEach(seat => {
+              if (seat !== '') this.seatsNum += 1
+            })
+          })
+        },
+        makeNextSeatsTable() { // nextSeatsTableを作成
+          this.nextSeatsTable.splice(0)
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.nextSeatsTable.push(Array(this.seatsSizeX).fill('')) // すべての席に名前が未入力な状態でテーブルを作成
+          }
+        },
+        resetNextSeatsTable() { // nextSeatsTableを空白で初期化
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.nextSeatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
+          }
+        },
+        changeSeats() { // メイン処理
+          let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
+          do {
+            loopNum += 1;
+            console.log(`----${loopNum}回目のループを開始します----`);
+            this.restartFlag = false;
+            this.calcNum = 0 // エラー用計算量を初期化
+            this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
+            this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
+            this.resetFrontTwoRowsSeatsIndex(); // 前2列インデックス配列を空にする
+            this.resetBackSeatsIndex(); // 最後列インデックス配列を空にする
+            this.resetBackTwoRowsSeatsIndex(); // 後ろ2列インデックス配列を空にする
+            this.makeFrontSeatsIndex(); // 最前列インデックスを作成
+            this.makeFrontTwoRowsSeatsIndex(); // 前2列インデックスを作成
+            this.makeBackSeatsIndex(); // 最後列インデックスを作成
+            this.makeBackTwoRowsSeatsIndex(); // 後ろ2列インデックスを作成
+            this.frontConditions = this.frontConditions.filter(Boolean); // 空白を削除
+            this.frontTwoRowsConditions = this.frontTwoRowsConditions.filter(Boolean); // 空白を削除
+            this.backConditions = this.backConditions.filter(Boolean); // 空白を削除
+            this.backTwoRowsConditions = this.backTwoRowsConditions.filter(Boolean); // 空白を削除
+            this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+            this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+            this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+            this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+            this.dupBackTwoRowsSeatsIndex = this.backTwoRowsSeatsIndex.slice(0); // 後ろ2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
+            this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
+            this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
+            this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
+
+            this.placeFixedSeats(); // 固定する生徒を配置
+            this.changeFrontSeats(); // 最前列に固定する生徒を席替え
+            this.changeBackSeats(); // 最後列に固定する生徒を席替え
+            this.changeFrontTwoRowsSeats(); // 前2列に固定する生徒を席替え
+            this.changeBackTwoRowsSeats(); // 後ろ2列に固定する生徒を席替え
+            this.changeNearFarSeats(); // 近づける/離す生徒を席替え
+            this.shuffleSeats(); // 条件のない生徒を席替え
+
+            this.createNewFrontConditions(); // 次回の準備、最前列のフォームを1つ作成
+            this.createNewFrontTwoRowsConditions(); // 次回の準備、前2列のフォームを1つ作成
+            this.createNewBackTwoRowsConditions(); // 次回の準備、後2列のフォームを1つ作成
+            this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
+            console.log(`----${loopNum}回目のループ終了----`);
+          } while (this.restartFlag && loopNum <= 500)
+          this.$nextTick(function () { // DOMの更新を待ってからsortableJSをフォームにセット
+            setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
+          });
+          this.setLocalStrage() // 席替え後の座席表のデータをLacalStrageに保存する
+          console.log(`====終了====`);
+          if (loopNum > 500) {
+            //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
+            this.error = true;
+          }
+        },
+        pushSeatsTableIndex(indexCol, indexRow) { // 座席テーブルの有効な座席のインデックスをプッシュ
+          this.seatsTableIndex.push([indexCol, indexRow]);
+        },
+        shuffleSeats() { // 条件のない生徒を席替え
+          this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
+          this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
+            let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+            while ((this.isFixGender && !this.checkGender(dupStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupStudentName, topIndex))) { // 条件を満たさない間、繰り返す
+              if (this.calcNum > this.seatsNum) {
+                this.restartFlag = true;
+                break;
+              }
+              this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+              topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
+              this.calcNum += 1;
+            }
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
+            let genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
+            let gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
+            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender);// 復元用のnextGenderTableに席替え後の性別を保存
+          })
+        },
+        shuffle(array) { // 配列をランダムにシャッフル
+          for (let i = array.length - 1; i >= 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const tempValue = array[i];
+            array.splice(i, 1, array[j]);
+            array.splice(j, 1, tempValue);
+          }
+        },
+        makeFrontSeatsIndex() {
+          this.seatsTableIndex.forEach(indexArray => {
+            if (indexArray[1] === 0) { // 最前列なら
+              this.frontSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
+            }
+          })
+        },
+        resetFrontSeatsIndex() { // 最前列インデックス配列を空にする
+          this.frontSeatsIndex.splice(0);
+        },
+        makeFrontTwoRowsSeatsIndex() {
+          this.seatsTableIndex.forEach(indexArray => {
+            if (indexArray[1] <= 1) { // 前2列なら
+              this.frontTwoRowsSeatsIndex.push(indexArray); // 最前列インデックス配列にインデックスをプッシュ
+            }
+          })
+        },
+        resetFrontTwoRowsSeatsIndex() { // 前2列インデックス配列を空にする
+          this.frontTwoRowsSeatsIndex.splice(0);
+        },
+        makeBackSeatsIndex() {
+          this.seatsTableIndex.forEach(indexArray => {
+            if (indexArray[1] === this.seatsSizeY - 1) { // 最後列なら
+              this.backSeatsIndex.push(indexArray); // 最後列インデックス配列にインデックスをプッシュ
+            }
+          })
+        },
+        resetBackSeatsIndex() { // 最後列インデックス配列を空にする
+          this.backSeatsIndex.splice(0);
+        },
+        makeBackTwoRowsSeatsIndex() {
+          this.seatsTableIndex.forEach(indexArray => {
+            if (indexArray[1] >= this.seatsSizeY - 2) { // 後ろ2列なら
+              this.backTwoRowsSeatsIndex.push(indexArray); // 後ろ2列インデックス配列にインデックスをプッシュ
+            }
+          })
+        },
+        resetBackTwoRowsSeatsIndex() { // 後ろ2列インデックス配列を空にする
+          this.backTwoRowsSeatsIndex.splice(0);
+        },
+        changeFrontSeats() { // 最前列に固定する生徒を席替え
+          this.shuffle(this.dupFrontSeatsIndex);
+          this.frontConditions.forEach(frontStudentName => {
+            let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+            // ----近づける/離す/性別/異なる座席チェック----
+            while (!this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || (this.isFixGender && !this.checkGender(frontStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
+              if (this.calcNum > this.seatsNum) {
+                this.restartFlag = true;
+                break;
+              }
+              this.dupFrontSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+              topIndex = this.dupFrontSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+              this.calcNum += 1;
+            }
+            // ----ここまで----
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
+            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+            this.delete(frontStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+            this.delete(frontStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+            this.delete(topIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
+          })
+        },
+        changeFrontTwoRowsSeats() { // 前2列に固定する生徒を席替え
+          this.shuffle(this.dupFrontTwoRowsSeatsIndex);
+          this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
+            let topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+            // ----近づける/離す/性別/異なる座席チェック----
+            while (!this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || (this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontTwoRowsStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
+              if (this.calcNum > this.seatsNum) {
+                this.restartFlag = true;
+                break;
+              }
+              this.dupFrontTwoRowsSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+              topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+              this.calcNum += 1;
+            }
+            // ----ここまで----
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
+            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+            this.delete(frontTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+            this.delete(frontTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+          })
+        },
+        changeBackSeats() { // 最後列に固定する生徒を席替え
+          this.shuffle(this.dupBackSeatsIndex);
+          this.backConditions.forEach(backStudentName => {
+            let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+            // ----近づける/離す/性別/異なる座席チェック----
+            while (!this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || (this.isFixGender && !this.checkGender(backStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
+              if (this.calcNum > this.seatsNum) {
+                this.restartFlag = true;
+                break;
+              }
+              this.dupBackSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+              topIndex = this.dupBackSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+              this.calcNum += 1;
+            }
+            // ----ここまで----
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
+            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+            this.delete(backStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+            this.delete(backStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+            this.delete(topIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
+          })
+        },
+        changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
+          this.shuffle(this.dupBackTwoRowsSeatsIndex);
+          this.backTwoRowsConditions.forEach(backTwoRowsStudentName => {
+            if (!this.dupBackTwoRowsSeatsIndex.length) {
+              // todo エラーを表示してbreak
+            }
+            let topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+            // ----近づける/離す/性別/異なる座席チェック----
+            while (!this.checkNear(backTwoRowsStudentName, topIndex) || !this.checkFar(backTwoRowsStudentName, topIndex) || (this.isFixGender && !this.checkGender(backTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backTwoRowsStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
+              if (this.calcNum > this.seatsNum) {
+                this.restartFlag = true;
+                break;
+              }
+              this.dupBackTwoRowsSeatsIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+              topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // 配列先頭のインデックスを再度取り出す
+              this.calcNum += 1;
+            }
+            // ----ここまで----
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
+            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除
+            this.delete(backTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除
+            this.delete(backTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため、生徒名を削除する
+          })
+        },
+        changeNearFarSeats() { // 近づける/離す生徒を席替え
+          this.shuffle(this.dupSeatsTableIndex);
+          this.dupNearFarStudentsName.forEach(dupNearFarStudentName => {
+            let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
+            // ----近づける/離す/性別/異なる座席チェック----
+            while (!this.checkNear(dupNearFarStudentName, topIndex) || !this.checkFar(dupNearFarStudentName, topIndex) || (this.isFixGender && !this.checkGender(dupNearFarStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupNearFarStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
+              if (this.calcNum > this.seatsNum) {
+                this.restartFlag = true;
+                break;
+              }
+              this.dupSeatsTableIndex.push(topIndex); // 取り出したインデックスを配列の最後にプッシュして
+              topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
+              this.calcNum += 1;
+            }
+            // ----ここまで----
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupNearFarStudentName); // 取り出したインデックスの位置に生徒名を保存
+            this.delete(dupNearFarStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+          })
+        },
+        placeFixedSeats() { // 固定する生徒を配置
+          this.fixConditions.forEach(fixCondition => {
+            if (fixCondition[0] != '') { // フォーム表示のため最後に['', '', '']が入ってしまっているので、そのときは処理しない
+              let fixConditionName = fixCondition[0];
+              let fixConditionRow = fixCondition[1] - 1; // 入力された値とインデックスのずれを補正
+              let fixConditionCol = fixCondition[2] - 1; // 入力された値とインデックスのずれを補正
+              this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
+
+              let fixIndex = [fixConditionCol, fixConditionRow]
+              this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+
+              this.delete(fixIndex, this.dupFrontSeatsIndex); // ここで配置した座標はchangeFrontSeats()で使えないため、座席座標を削除する
+              this.delete(fixIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
+              this.delete(fixIndex, this.dupBackSeatsIndex); // ここで配置した座標はchangeBackSeats()で使えないため、座席座標を削除する
+              this.delete(fixIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
+            }
+          })
+        },
+        minDistance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
+          let x_abs = Math.abs(p1[0] - p2[0]);
+          let y_abs = Math.abs(p1[1] - p2[1]);
+          return Math.min(x_abs, y_abs);
+        },
+        maxDistance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
+          let x_abs = Math.abs(p1[0] - p2[0]);
+          let y_abs = Math.abs(p1[1] - p2[1]);
+          return Math.max(x_abs, y_abs);
+        },
+        checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
+          let return_value = true
+          this.nearConditions.forEach(nearConditionArray => {
+            if (nearConditionArray.includes(studentName)) { // もし引数の生徒が、近づける条件にいれば
+              // ----近づけたい生徒の名前を取得----
+              let nearStudentName
+              if (nearConditionArray.indexOf(studentName) == 0) {
+                nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
+              } else if (nearConditionArray.indexOf(studentName) == 1) {
+                nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
+              }
+              // ----ここまで----
+              let distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
+              let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+              if (this.maxDistance(p, nearStudentPosition) > distance) { // 距離のmaxが条件distanceより上なら返り値をfalseに更新
+                return_value = false;
+              }
+            }
+          })
+          return return_value;
+        },
+        checkFar(studentName, p) { // 引数の生徒を座標pに配置しても、離す条件を満たすならtrue、満たさないならfalseを返す
+          let return_value = true
+          this.farConditions.forEach(farConditionArray => {
+            if (farConditionArray.includes(studentName)) { // もし引数の生徒が、離す条件にいれば
+              // ----離す生徒の名前を取得----
+              let farStudentName
+              if (farConditionArray.indexOf(studentName) == 0) {
+                farStudentName = farConditionArray[1]; // 引数の生徒と離す生徒
+              } else if (farConditionArray.indexOf(studentName) == 1) {
+                farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
+              }
+              // ----ここまで----
+              let distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
+              let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+              if (this.maxDistance(p, farStudentPosition) < distance) { // 距離のminが条件distanceより下なら返り値をfalseに更新
+                return_value = false;
+              }
+            }
+          })
+          return return_value;
+        },
+        checkGender(studentName, p) { // 引数の生徒を座標pに配置したとき、性別の条件を満たすならtrue、満たさないならfalseを返す
+          let genderIndex = this.studentsName.indexOf(studentName);
+          let currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
+          let nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
+          if (currentGender == nextGender) {
+            return true
+          } else {
+            return false
+          }
+        },
+        checkDifferent(studentName, p) { // 引数の生徒を座標pに配置したとき、現在の座席と異なっているならtrue、現在の座席と同じならfalseを返す
+          let studentIndex = this.studentsName.indexOf(studentName);
+          let currentIndex = this.seatsTableIndex[studentIndex];
+          if (currentIndex.toString() == p.toString()) { // 配列を比較するときは厳密比較になるので文字列に変換
+            return false;
+          } else {
+            return true;
+          }
+        },
+        getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
+          let nextSeatsRowNum = 0; // 行インデックス、y座標
+          let return_value = false; // 返す値の初期値をfalse
+          this.nextSeatsTable.forEach(nextSeatsRow => {
+            if (nextSeatsRow.includes(studentName)) {
+              let nextSeatsColNum = nextSeatsRow.indexOf(studentName);
+              return_value = [nextSeatsColNum, nextSeatsRowNum]; // 返す値を座標で更新
+            }
+            nextSeatsRowNum += 1;
+          })
+          return return_value;
+        },
+        makeGenderTable() { // genderTableを作成
+          this.genderTable = []
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.genderTable.push(Array(this.seatsSizeX).fill('')) // すべての席に性別が未入力な状態でテーブルを作成
+          }
+        },
+        remakeGenderTable() { // genderTableを作成
+          this.genderTableMemory = this.genderTable.splice(0)
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.genderTable.push(Array(this.seatsSizeX).fill('')) // すべての席に性別が未入力な状態でテーブルを作成
+          }
+          const minX = Math.min(this.genderTableMemory[0].length, this.seatsSizeX);
+          const minY = Math.min(this.genderTableMemory.length, this.seatsSizeY);
+          for (let i = 0; i < minY; i++) {
+            for (let j = 0; j < minX; j++) {
+              this.genderTable[i][j] = this.genderTableMemory[i][j] // もともと入力されていた性別をセット
+            }
+          }
+        },
+        makeNextGenderTable() { // nextGenderTableを作成
+          this.nextGenderTable = []
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.nextGenderTable.push(Array(this.seatsSizeX).fill('')) // すべての席に性別が未入力な状態でテーブルを作成
+          }
+        },
+        delete(target, array) {
+          let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
+          if (deleteIndex != -1) { // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
+            array.splice(deleteIndex, 1); // arrayからtargetを削除する
+          }
+        },
+        reverseSeats() {
+          for (let i = 0; i < fromRows.length; i++) {
+            let fromSeat = this.nextSeatsTable[fromRows[i]][fromCols[i]];
+            let toSeat = this.nextSeatsTable[toRows[i]][toCols[i]];
+            this.nextSeatsTable[fromRows[i]].splice(fromCols[i], 1, toSeat);
+            this.nextSeatsTable[toRows[i]].splice(toCols[i], 1, fromSeat);
+            console.log(`${fromSeat}([${fromRows[i]}][${fromCols[i]}])と${toSeat}([${toRows[i]}][${toCols[i]}])をスワップ`);
+          }
+          fromRows.splice(0);
+          fromCols.splice(0);
+          toRows.splice(0);
+          toCols.splice(0);
+        },
+        setSortableJS() { // sortableJSをフォームにセット
+          for (let row = 0; row < this.seatsSizeY; row++) {
+            for (let col = 0; col < this.seatsSizeX; col++) {
+              let el = document.getElementById(`nextSeatsRow${row}${col}`);
+              Sortable.create(el, {
+                group: "nextSeats",
+                swap: true,
+                swapClass: 'highlighted',
+                animation: 400,
+                onSort: function () { // スワップしたら、
+                  isReverseSeats = true;
+                },
+                onEnd: function (evt) {
+                  let fromRow = parseInt(evt.from.id.toString().slice(-2, -1));
+                  let fromCol = parseInt(evt.from.id.toString().slice(-1));
+                  let toRow = parseInt(evt.to.id.toString().slice(-2, -1));
+                  let toCol = parseInt(evt.to.id.toString().slice(-1));
+                  fromRows.push(fromRow);
+                  fromCols.push(fromCol);
+                  toRows.push(toRow);
+                  toCols.push(toCol);
+                },
               });
-              this.seatsTableIndex.splice(0); // 有効な座席インデックス配列を初期化
-              let row = 0;
-              this.seatsTable.forEach(seats => {
-                let col = 0;
-                seats.forEach(seat => {
-                  if(seat != ''){ // 更新されるごとに有効な座席を判定し、
-                    this.seatsTableIndex.push([col, row]); // 有効な座席インデックス配列にプッシュ
-                  }
-                  if(seat == ''){ // 座席テーブルから名前が消されたら
-                    this.genderTable[row].splice(col, 1, ''); // 性別も消去
-                  }
-                  col += 1;
-                })
-                row += 1;
-              })
-            },
-            deep: true
-          },
-          nearConditions: {
-            handler: function(){
-              this.nearStudentsName.splice(-this.nearStudentsName.length); // 配列を初期化
-              this.nearConditions.forEach( nearCondition => {
-                this.nearStudentsName.push(nearCondition[0], nearCondition[1]);
-              })
-              this.nearStudentsName = Array.from(new Set(this.nearStudentsName)) // 重複している名前を削除
-              this.nearStudentsName = this.nearStudentsName.filter(function(nearStudentsName) { //空白を削除
-                return nearStudentsName !== '';
-              })
             }
-          },
-          farConditions: {
-            handler: function(){
-              this.farStudentsName.splice(-this.farStudentsName.length); // 配列を初期化
-              this.farConditions.forEach( farCondition => {
-                this.farStudentsName.push(farCondition[0], farCondition[1]);
-              })
-              this.farStudentsName = Array.from(new Set(this.farStudentsName)) // 重複している名前を削除
-              this.farStudentsName = this.farStudentsName.filter(function(farStudentsName) { //空白を削除
-                return farStudentsName !== '';
-              })
-            }
-          },
-          genderTable: {
-            handler: function(){
-              this.genderArray = Array.prototype.concat.apply([], this.genderTable); //genderTableを展開
-              this.genderArray = this.genderArray.filter(function(genderArray) { //空白を削除
-                return genderArray !== '';
-              })
-            },
-            deep: true
-          },
-          seatsSizeX: { // テーブルの横座席数が変わったら
-            handler: function(){
-              this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1); // 固定する選択肢を変更
-              const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
-              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i); // 距離の選択肢を変更
-              this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
-              this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
-              this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
-              this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
-              switch(this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
-                case 1:
-                  this.groupSizeOptionsX = ['なし'];
-                  this.groupSizeX = 'なし'
-                  break;
-                case 2:
-                  this.groupSizeOptionsX = ['なし'];
-                  this.groupSizeX = 'なし'
-                  break;
-                case 3:
-                  this.groupSizeOptionsX = ['なし'];
-                  this.groupSizeX = 'なし'
-                  break;
-                case 4:
-                  this.groupSizeOptionsX = ['なし', 2];
-                  this.groupSizeX = 2
-                  break;
-                case 5:
-                  this.groupSizeOptionsX = ['なし'];
-                  this.groupSizeX = 'なし'
-                  break;
-                case 6:
-                  this.groupSizeOptionsX = ['なし', 2, 3];
-                  this.groupSizeX = 2
-                  break;
-                case 7:
-                  this.groupSizeOptionsX = ['なし'];
-                  this.groupSizeX = 'なし'
-                  break;
-                case 8:
-                  this.groupSizeOptionsX = ['なし', 2, 4];
-                  this.groupSizeX = 2
-                  break;
-              }
-              this.$nextTick(function(){ // DOMの更新を待ってから
-                this.setSortableJS(); // sortableJSをフォームにセット
-              })
-            }
-          },
-          seatsSizeY: { // テーブルの縦座席数が変わったら
-            handler: function(){
-              this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1) // 固定する選択肢を変更
-              const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
-              this.distanceOptions = [...Array(maxXY-1)].map((_, i) => i); // 距離の選択肢を変更
-              this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
-              this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
-              this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
-              this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
-              switch(this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
-                case 1:
-                  this.groupSizeOptionsY = ['なし'];
-                  this.groupSizeY = 'なし'
-                  break;
-                case 2:
-                  this.groupSizeOptionsY = ['なし'];
-                  this.groupSizeY = 'なし'
-                  break;
-                case 3:
-                  this.groupSizeOptionsY = ['なし'];
-                  this.groupSizeY = 'なし'
-                  break;
-                case 4:
-                  this.groupSizeOptionsY = ['なし', 2];
-                  this.groupSizeY = 2
-                  break;
-                case 5:
-                  this.groupSizeOptionsY = ['なし'];
-                  this.groupSizeY = 'なし'
-                  break;
-                case 6:
-                  this.groupSizeOptionsY = ['なし', 2, 3];
-                  this.groupSizeY = 3
-                  break;
-                case 7:
-                  this.groupSizeOptionsY = ['なし'];
-                  this.groupSizeY = 'なし'
-                  break;
-                case 8:
-                  this.groupSizeOptionsY = ['なし', 2, 4];
-                  this.groupSizeY = 2
-                  break;
-              }
-              this.$nextTick(function(){ // DOMの更新を待ってから
-                this.setSortableJS(); // sortableJSをフォームにセット
-              })
-            }
-          },
-          frontConditions: {
-            handler: function(){
-              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
-              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
-            }
-          },
-          frontTwoRowsConditions: {
-            handler: function(){
-              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
-              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
-            }
-          },
-          backConditions: {
-            handler: function(){
-              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
-              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
-            }
-          },
-          backTwoRowsConditions: {
-            handler: function(){
-              this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
-              this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
-            }
-          },
+          }
         },
-        computed: {
-          rowConditionsStudentsName() {
-            return this.studentsName.map(studentName => {
-              return {
-                text: studentName,
-                disabled: this.disabledStudentsName.includes(studentName)
-              }
+        setSidebarWidth() {
+          if (window.parent.screen.width <= 1020) { // スマホ・タブレット縦のとき
+            this.sidebarWidth = '95%'
+          } else if (1021 <= window.parent.screen.width && window.parent.screen.width <= 1439) { // タブレット横のとき
+            this.sidebarWidth = '80%'
+          } else { // PCのとき
+            this.sidebarWidth = '52%'
+          }
+        },
+        hideSidebarOnlyTB() {
+          if (window.parent.screen.width <= 1439) { // スマホ・タブレット縦のとき
+            this.drawer = false; // サイドバーを非表示
+          }
+        },
+        fetchLocalStrage() { // LocalStrageに保存されている前回の結果を取り出す
+          // LocalStrageの値を読み込んで、存在すれば反映する
+          let seatsTableLocalStrage = JSON.parse(localStorage.getItem('seatsTable'));
+          let genderTableLocalStrage = JSON.parse(localStorage.getItem('genderTable'));
+          let seatsSizeYLocalStrage = JSON.parse(localStorage.getItem('seatsSizeY'));
+          let seatsSizeXLocalStrage = JSON.parse(localStorage.getItem('seatsSizeX'));
+          let groupSizeYLocalStrage = JSON.parse(localStorage.getItem('groupSizeY'));
+          let groupSizeXLocalStrage = JSON.parse(localStorage.getItem('groupSizeX'));
+
+          if (seatsTableLocalStrage && genderTableLocalStrage && seatsSizeYLocalStrage && seatsSizeXLocalStrage && groupSizeYLocalStrage && groupSizeXLocalStrage) {
+            console.log("LocalStrageに値があったので反映させました。");
+            this.seatsTable = seatsTableLocalStrage;
+            this.genderTable = genderTableLocalStrage;
+            this.seatsSizeY = seatsSizeYLocalStrage;
+            this.seatsSizeX = seatsSizeXLocalStrage;
+            this.groupSizeY = groupSizeYLocalStrage;
+            this.groupSizeX = groupSizeXLocalStrage;
+          } else {
+            console.log("LocalStrageに値はありませんでした。");
+          }
+        },
+        setLocalStrage() { // LocalStrageに現在の座席表を書き込む
+          localStorage.setItem('seatsTable', JSON.stringify(this.nextSeatsTable, undefined, 1));
+          localStorage.setItem('genderTable', JSON.stringify(this.nextGenderTable, undefined, 1));
+          localStorage.setItem('seatsSizeX', JSON.stringify(this.seatsSizeX, undefined, 1));
+          localStorage.setItem('seatsSizeY', JSON.stringify(this.seatsSizeY, undefined, 1));
+          localStorage.setItem('groupSizeX', JSON.stringify(this.groupSizeX, undefined, 1));
+          localStorage.setItem('groupSizeY', JSON.stringify(this.groupSizeY, undefined, 1));
+          console.log('LocalStrageに値を書き込みました。');
+        },
+      },
+      created() {
+        this.makeSeatsTable(); // 最初にseatsTableを作成
+        this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
+        this.makeGenderTable(); // genderTableを作成
+        this.makeNextGenderTable(); // 席替え後用のnextGenderTableを作成
+        this.setSidebarWidth();
+        if (window.parent.screen.width <= 1439) { // SP・TBのとき
+          this.drawer = false; // 初期はサイドバーを非表示
+        } else { // PCのとき
+          this.drawer = true; // 初期はサイドバーを表示
+        }
+      },
+      mounted() {
+        this.setSortableJS(); // sortableJSをフォームにセット
+        // this.startTutorial();
+      },
+      watch: {
+        seatsTable: {
+          handler: function () {
+            this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
+            this.studentsName = this.studentsName.filter(function (studentName) { //空白を削除
+              return studentName !== '';
+            });
+            this.seatsTableIndex.splice(0); // 有効な座席インデックス配列を初期化
+            let row = 0;
+            this.seatsTable.forEach(seats => {
+              let col = 0;
+              seats.forEach(seat => {
+                if (seat != '') { // 更新されるごとに有効な座席を判定し、
+                  this.seatsTableIndex.push([col, row]); // 有効な座席インデックス配列にプッシュ
+                }
+                if (seat == '') { // 座席テーブルから名前が消されたら
+                  this.genderTable[row].splice(col, 1, ''); // 性別も消去
+                }
+                col += 1;
+              })
+              row += 1;
+            })
+          },
+          deep: true
+        },
+        nearConditions: {
+          handler: function () {
+            this.nearStudentsName.splice(-this.nearStudentsName.length); // 配列を初期化
+            this.nearConditions.forEach(nearCondition => {
+              this.nearStudentsName.push(nearCondition[0], nearCondition[1]);
+            })
+            this.nearStudentsName = Array.from(new Set(this.nearStudentsName)) // 重複している名前を削除
+            this.nearStudentsName = this.nearStudentsName.filter(function (nearStudentsName) { //空白を削除
+              return nearStudentsName !== '';
             })
           }
+        },
+        farConditions: {
+          handler: function () {
+            this.farStudentsName.splice(-this.farStudentsName.length); // 配列を初期化
+            this.farConditions.forEach(farCondition => {
+              this.farStudentsName.push(farCondition[0], farCondition[1]);
+            })
+            this.farStudentsName = Array.from(new Set(this.farStudentsName)) // 重複している名前を削除
+            this.farStudentsName = this.farStudentsName.filter(function (farStudentsName) { //空白を削除
+              return farStudentsName !== '';
+            })
+          }
+        },
+        genderTable: {
+          handler: function () {
+            this.genderArray = Array.prototype.concat.apply([], this.genderTable); //genderTableを展開
+            this.genderArray = this.genderArray.filter(function (genderArray) { //空白を削除
+              return genderArray !== '';
+            })
+          },
+          deep: true
+        },
+        seatsSizeX: { // テーブルの横座席数が変わったら
+          handler: function () {
+            this.limitedSeatsOptionsX = [...Array(this.seatsSizeX)].map((_, i) => i + 1); // 固定する選択肢を変更
+            const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
+            this.distanceOptions = [...Array(maxXY - 1)].map((_, i) => i); // 距離の選択肢を変更
+            this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
+            this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
+            this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
+            this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
+            switch (this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
+              case 1:
+                this.groupSizeOptionsX = ['なし'];
+                this.groupSizeX = 'なし'
+                break;
+              case 2:
+                this.groupSizeOptionsX = ['なし'];
+                this.groupSizeX = 'なし'
+                break;
+              case 3:
+                this.groupSizeOptionsX = ['なし'];
+                this.groupSizeX = 'なし'
+                break;
+              case 4:
+                this.groupSizeOptionsX = ['なし', 2];
+                this.groupSizeX = 2
+                break;
+              case 5:
+                this.groupSizeOptionsX = ['なし'];
+                this.groupSizeX = 'なし'
+                break;
+              case 6:
+                this.groupSizeOptionsX = ['なし', 2, 3];
+                this.groupSizeX = 2
+                break;
+              case 7:
+                this.groupSizeOptionsX = ['なし'];
+                this.groupSizeX = 'なし'
+                break;
+              case 8:
+                this.groupSizeOptionsX = ['なし', 2, 4];
+                this.groupSizeX = 2
+                break;
+            }
+            this.$nextTick(function () { // DOMの更新を待ってから
+              this.setSortableJS(); // sortableJSをフォームにセット
+            })
+          }
+        },
+        seatsSizeY: { // テーブルの縦座席数が変わったら
+          handler: function () {
+            this.limitedSeatsOptionsY = [...Array(this.seatsSizeY)].map((_, i) => i + 1) // 固定する選択肢を変更
+            const maxXY = Math.max(this.seatsSizeX, this.seatsSizeY);
+            this.distanceOptions = [...Array(maxXY - 1)].map((_, i) => i); // 距離の選択肢を変更
+            this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
+            this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
+            this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
+            this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
+            switch (this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
+              case 1:
+                this.groupSizeOptionsY = ['なし'];
+                this.groupSizeY = 'なし'
+                break;
+              case 2:
+                this.groupSizeOptionsY = ['なし'];
+                this.groupSizeY = 'なし'
+                break;
+              case 3:
+                this.groupSizeOptionsY = ['なし'];
+                this.groupSizeY = 'なし'
+                break;
+              case 4:
+                this.groupSizeOptionsY = ['なし', 2];
+                this.groupSizeY = 2
+                break;
+              case 5:
+                this.groupSizeOptionsY = ['なし'];
+                this.groupSizeY = 'なし'
+                break;
+              case 6:
+                this.groupSizeOptionsY = ['なし', 2, 3];
+                this.groupSizeY = 3
+                break;
+              case 7:
+                this.groupSizeOptionsY = ['なし'];
+                this.groupSizeY = 'なし'
+                break;
+              case 8:
+                this.groupSizeOptionsY = ['なし', 2, 4];
+                this.groupSizeY = 2
+                break;
+            }
+            this.$nextTick(function () { // DOMの更新を待ってから
+              this.setSortableJS(); // sortableJSをフォームにセット
+            })
+          }
+        },
+        frontConditions: {
+          handler: function () {
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+          }
+        },
+        frontTwoRowsConditions: {
+          handler: function () {
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+          }
+        },
+        backConditions: {
+          handler: function () {
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+          }
+        },
+        backTwoRowsConditions: {
+          handler: function () {
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+          }
+        },
+      },
+      computed: {
+        rowConditionsStudentsName() {
+          return this.studentsName.map(studentName => {
+            return {
+              text: studentName,
+              disabled: this.disabledStudentsName.includes(studentName)
+            }
+          })
         }
-      });
-    </script>
-  </body>
+      }
+    });
+  </script>
+</body>
+
 </html>
