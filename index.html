@@ -1511,14 +1511,6 @@
           }
           this.countSeats();
         },
-        countSeats() { // 有効な座席数をカウント
-          this.seatsNum = 0;
-          this.seatsTable.forEach(seatsRow => {
-            seatsRow.forEach(seat => {
-              if (seat !== '') this.seatsNum += 1
-            })
-          })
-        },
         makeNextSeatsTable() { // nextSeatsTableを作成
           this.nextSeatsTable.splice(0)
           for (let i = 0; i < this.seatsSizeY; i++) {
