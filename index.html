@@ -1020,57 +1020,6 @@
           </v-card>
         </v-dialog>
       </div>
-
-      <!-- セレクトボックスをダイアログに変更するテスト >
-        <div>
-          <div></div>
-          <div>
-            <v-dialog v-model="test" width="300">
-              <template v-slot:activator="{ on, attrs }">
-                <v-textarea v-bind="attrs" v-on="on" v-model="testName" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-              </template>
-              <v-card>
-                <v-list dense>
-                  <v-list-item v-if="studentsName.length==0">
-                    座席に生徒名が入力されていません
-                  </v-list-item>
-                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName=name; test=false;">
-                    {{ name }}
-                  </v-list-item>
-                  <v-list-item>
-                    test
-                  </v-list-item>
-                </v-list>
-              </v-card>
-            </v-dialog>
-          </div-->
-
-      <!-- セレクトボックスをダイアログに変更するテスト　>
-          <div></div>
-          <div>
-            <v-textarea v-model="testName1" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-            <v-textarea v-model="testName2" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-            <v-textarea v-model="testName3" @click="isShowStudentsNameDialog=true" style="width: 200px;" outlined rows="1" no-resize readonly placeholder="Aさん"></v-textarea>
-          </div>
-          <div>
-            <v-dialog v-model="isShowStudentsNameDialog" width="300">
-              <v-card>
-                <v-card-title class="headline grey lighten-2 font-weight-midium" style="display: inherit;">生徒名
-                  <v-icon style="float: right;" @click="error = false">mdi-close</v-icon>
-                </v-card-title>
-                <v-list dense>
-                  <v-list-item v-if="studentsName.length==0">
-                    座席に生徒名が入力されていません
-                  </v-list-item>
-                  <v-list-item v-else v-for="(name, i) in studentsName" :key="i" link @click="testName1=name; isShowStudentsNameDialog=false;">
-                    {{ name }}
-                  </v-list-item>
-                </v-list>
-              </v-card>
-            </v-dialog>
-          </div>
-        </div-->
-
     </v-app>
   </div>
 
