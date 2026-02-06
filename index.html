@@ -581,7 +581,7 @@
                     <v-icon class="icon">mdi-sync</v-icon>席替え
                   </v-btn>
                   <!-- 前回の結果を復元するボタン -->
-                  <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text @click="fetchLocalStrage()"
+                  <v-btn elevation="2" x-large color="#FFFFFF" class="demo-btn" text @click="fetchLocalStorage()"
                     style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px;">
                     <v-icon class="icon">mdi-pencil</v-icon>前回の結果を復元
                   </v-btn>
@@ -696,7 +696,7 @@
                             <a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank"
                               rel="noopener noreferrer">Googleポリシーと規約</a>をご覧ください。
                             <div class="font-weight-bold">第4条（ローカルストレージ）</div>
-                            1.当サービスでは、席替え結果をブラウザに記憶するためにlocalStrage（ローカルストレージ）の機能を使用しています。
+                            1.当サービスでは、席替え結果をブラウザに記憶するためにlocalStorage（ローカルストレージ）の機能を使用しています。
                             2.ローカルストレージを通じて取得した情報は、前回の席替え結果の復元のために限り使用します。
                             <div class="font-weight-bold">第5条（第三者提供）</div>
                             当方は、利用者情報のうち、個人情報については、あらかじめユーザーの同意を得ないで、第三者（日本国外にある者を含みます）に提供しません。
@@ -1396,7 +1396,7 @@
           this.$nextTick(function () { // DOMの更新を待ってからsortableJSをフォームにセット
             setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
           });
-          this.setLocalStrage() // 席替え後の座席表のデータをLacalStrageに保存する
+          this.setLocalStorage() // 席替え後の座席表のデータをLocalStorageに保存する
           console.log(`====終了====`);
           if (loopNum > 500) {
             //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
@@ -1768,35 +1768,35 @@
             this.drawer = false; // サイドバーを非表示
           }
         },
-        fetchLocalStrage() { // LocalStrageに保存されている前回の結果を取り出す
-          // LocalStrageの値を読み込んで、存在すれば反映する
-          let seatsTableLocalStrage = JSON.parse(localStorage.getItem('seatsTable'));
-          let genderTableLocalStrage = JSON.parse(localStorage.getItem('genderTable'));
-          let seatsSizeYLocalStrage = JSON.parse(localStorage.getItem('seatsSizeY'));
-          let seatsSizeXLocalStrage = JSON.parse(localStorage.getItem('seatsSizeX'));
-          let groupSizeYLocalStrage = JSON.parse(localStorage.getItem('groupSizeY'));
-          let groupSizeXLocalStrage = JSON.parse(localStorage.getItem('groupSizeX'));
+        fetchLocalStorage() { // LocalStorageに保存されている前回の結果を取り出す
+          // LocalStorageの値を読み込んで、存在すれば反映する
+          let seatsTableLocalStorage = JSON.parse(localStorage.getItem('seatsTable'));
+          let genderTableLocalStorage = JSON.parse(localStorage.getItem('genderTable'));
+          let seatsSizeYLocalStorage = JSON.parse(localStorage.getItem('seatsSizeY'));
+          let seatsSizeXLocalStorage = JSON.parse(localStorage.getItem('seatsSizeX'));
+          let groupSizeYLocalStorage = JSON.parse(localStorage.getItem('groupSizeY'));
+          let groupSizeXLocalStorage = JSON.parse(localStorage.getItem('groupSizeX'));
 
-          if (seatsTableLocalStrage && genderTableLocalStrage && seatsSizeYLocalStrage && seatsSizeXLocalStrage && groupSizeYLocalStrage && groupSizeXLocalStrage) {
-            console.log("LocalStrageに値があったので反映させました。");
-            this.seatsTable = seatsTableLocalStrage;
-            this.genderTable = genderTableLocalStrage;
-            this.seatsSizeY = seatsSizeYLocalStrage;
-            this.seatsSizeX = seatsSizeXLocalStrage;
-            this.groupSizeY = groupSizeYLocalStrage;
-            this.groupSizeX = groupSizeXLocalStrage;
+          if (seatsTableLocalStorage && genderTableLocalStorage && seatsSizeYLocalStorage && seatsSizeXLocalStorage && groupSizeYLocalStorage && groupSizeXLocalStorage) {
+            console.log("LocalStorageに値があったので反映させました。");
+            this.seatsTable = seatsTableLocalStorage;
+            this.genderTable = genderTableLocalStorage;
+            this.seatsSizeY = seatsSizeYLocalStorage;
+            this.seatsSizeX = seatsSizeXLocalStorage;
+            this.groupSizeY = groupSizeYLocalStorage;
+            this.groupSizeX = groupSizeXLocalStorage;
           } else {
-            console.log("LocalStrageに値はありませんでした。");
+            console.log("LocalStorageに値はありませんでした。");
           }
         },
-        setLocalStrage() { // LocalStrageに現在の座席表を書き込む
+        setLocalStorage() { // LocalStorageに現在の座席表を書き込む
           localStorage.setItem('seatsTable', JSON.stringify(this.nextSeatsTable, undefined, 1));
           localStorage.setItem('genderTable', JSON.stringify(this.nextGenderTable, undefined, 1));
           localStorage.setItem('seatsSizeX', JSON.stringify(this.seatsSizeX, undefined, 1));
           localStorage.setItem('seatsSizeY', JSON.stringify(this.seatsSizeY, undefined, 1));
           localStorage.setItem('groupSizeX', JSON.stringify(this.groupSizeX, undefined, 1));
           localStorage.setItem('groupSizeY', JSON.stringify(this.groupSizeY, undefined, 1));
-          console.log('LocalStrageに値を書き込みました。');
+          console.log('LocalStorageに値を書き込みました。');
         },
       },
       created() {
