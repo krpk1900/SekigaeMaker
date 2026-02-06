@@ -418,7 +418,7 @@
                   </v-btn>
                   <!-- 座席数を指定するエクスパンションパネル -->
                   <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"
-                    　data-position="left" data-title="1. 全体の座席数を決める！"
+                    data-position="left" data-title="1. 全体の座席数を決める！"
                     data-intro="まず全体の座席数を指定します。<br>37人のようにちょうど長方形にならない場合は、6×7のように余裕をもって指定することで対応できます。">
                     <v-expansion-panel>
                       <v-expansion-panel-header><v-icon color="#0c9ea8"
@@ -426,15 +426,15 @@
                       <v-expansion-panel-content>
                         <div class="panel-grid-layout">
                           <div>
-                            全体<v-select :items="seatsOptionsX" label="横" outlined　v-model.number="seatsSizeX"
+                            全体<v-select :items="seatsOptionsX" label="横" outlined v-model.number="seatsSizeX"
                               style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
-                            ✕<v-select :items="seatsOptionsY" label="縦" outlined　v-model.number="seatsSizeY"
+                            ✕<v-select :items="seatsOptionsY" label="縦" outlined v-model.number="seatsSizeY"
                               style="width: 90px;" class="inline-block"></v-select>
                           </div>
                           <div>
-                            班<v-select :items="groupSizeOptionsX" label="横" outlined　v-model.number="groupSizeX"
+                            班<v-select :items="groupSizeOptionsX" label="横" outlined v-model.number="groupSizeX"
                               style="width: 90px; margin-left: 10px;" class="inline-block"></v-select>
-                            ✕<v-select :items="groupSizeOptionsY" label="縦" outlined　v-model.number="groupSizeY"
+                            ✕<v-select :items="groupSizeOptionsY" label="縦" outlined v-model.number="groupSizeY"
                               style="width: 90px;" class="inline-block"></v-select>
                           </div>
                         </div>
@@ -693,7 +693,7 @@
                             2.この機能はCookieを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。
                             この規約に関しての詳細は<a href="https://marketingplatform.google.com/about/analytics/terms/jp/"
                               target="_blank" rel="noopener noreferrer">Googleアナリティクスサービス利用規約</a>や
-                            <a href="https://policies.google.com/technologies/ads?hl=ja" 　target="_blank"
+                            <a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank"
                               rel="noopener noreferrer">Googleポリシーと規約</a>をご覧ください。
                             <div class="font-weight-bold">第4条（ローカルストレージ）</div>
                             1.当サービスでは、席替え結果をブラウザに記憶するためにlocalStrage（ローカルストレージ）の機能を使用しています。
@@ -809,7 +809,7 @@
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text
-                        @click="checkUserPolicyAccepted();" 　v-bind="attrs" v-on="on">
+                        @click="checkUserPolicyAccepted();" v-bind="attrs" v-on="on">
                         <v-icon style="font-size: 32px;">mdi-sync</v-icon>
                       </v-btn>
                     </template>
