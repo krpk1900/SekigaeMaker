@@ -892,11 +892,10 @@
                     <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol"
                       class="sortable-item transition-item square minus-margin-bottom"
                       :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
-                      <input type="text" class="sortable-item"
+                      <input type="text" class="sortable-item" readonly
                         :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
                         style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
-                        :value="nextSeatsTable[nextIndexRow][nextIndexCol]"
-                        @input="testMethod2(nextIndexCol, nextIndexRow, $event.target.value )">
+                        :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
                     </span>
                     <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0 && (nextIndexCol+1)!=seatsSizeX}"
                       :key="'nextSeatsSpan' + (nextIndexRow*seatsSizeX+nextIndexCol)"></span>
@@ -1120,9 +1119,6 @@
         updateInformation: false, // 更新情報の表示制御フラグ
         isAcceptedUserPolicy: false, // 利用規約に同意してもらったか
         isShowStudentsNameDialog: false,
-        testName1: '',
-        testName2: '',
-        testName3: '',
         error: false,
         landing: true,
         sidebarWidth: '52%', // PC用のデフォルト値
