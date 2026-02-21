@@ -41,6 +41,14 @@
         grid-template-rows: 115px;
       }
 
+      .pc-only {
+        display: none;
+      }
+
+      .tb-only {
+        display: block;
+      }
+
       /*.left-card-margin-large { スマホの場合を定義しなおす
           margin: 0 20px 0 40px;
         }
@@ -62,6 +70,14 @@
         display: grid;
         grid-template-columns: 1fr 70px;
         grid-template-rows: 115px;
+      }
+
+      .pc-only {
+        display: none;
+      }
+
+      .tb-only {
+        display: block;
       }
 
       .left-card-margin-large {
@@ -90,6 +106,14 @@
         grid-template-rows: 115px;
       }
 
+      .pc-only {
+        display: none;
+      }
+
+      .tb-only {
+        display: block;
+      }
+
       .left-card-margin-large {
         margin: 0 100px 10px 100px;
       }
@@ -116,6 +140,14 @@
         grid-template-rows: 115px;
       }
 
+      .pc-only {
+        display: block;
+      }
+
+      .tb-only {
+        display: none;
+      }
+
       .left-card-margin-large {
         margin: 0 20px 0 40px;
       }
@@ -140,6 +172,14 @@
         display: grid;
         grid-template-columns: 1fr 1fr 70px;
         grid-template-rows: 115px;
+      }
+
+      .pc-only {
+        display: block;
+      }
+
+      .tb-only {
+        display: none;
       }
 
       .left-card-margin-large {
@@ -390,7 +430,7 @@
           <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;">
           <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
         </div>
-        <div v-if="onlyPC()"></div><!-- グリッドレイアウト調整用 -->
+        <div class="pc-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- サイドバー -->
         <div>
@@ -869,7 +909,7 @@
           <div class="card-bottom"></div>
         </v-card>
 
-        <div v-if="onlyTB()"></div><!-- グリッドレイアウト調整用 -->
+        <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- 席替え後の座席テーブル -->
         <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;"
@@ -1126,24 +1166,6 @@
         genderTableMemory: [['']],
       },
       methods: {
-        onlyPC() {
-          if (window.parent.screen.width <= 1439) {
-            // console.log("Mobile");
-            return false
-          } else {
-            // console.log("PC");
-            return true
-          }
-        },
-        onlyTB() {
-          if (window.parent.screen.width <= 1439) {
-            // console.log("Mobile");
-            return true
-          } else {
-            // console.log("PC");
-            return false
-          }
-        },
         startTutorial() {
           const vueInstance = this
           this.drawer = true;
@@ -1160,7 +1182,7 @@
             intro.onafterchange(function () {
               console.log(this._currentStep);
               if (this._currentStep == 1) {
-                if (window.parent.screen.width <= 1439) { // SP・TBのとき
+                if (window.innerWidth <= 1439) { // SP・TBのとき
                   app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
                 }
               } else if (this._currentStep == 2) {
@@ -1175,7 +1197,7 @@
           intro.oncomplete(function () {
             app.setBlankData();
             app.resetNextSeatsTable();
-            if (1440 <= window.parent.screen.width) { // PCのとき
+            if (1440 <= window.innerWidth) { // PCのとき
               app.drawer = true;
             }
           });
@@ -1755,16 +1777,16 @@
           }
         },
         setSidebarWidth() {
-          if (window.parent.screen.width <= 1020) { // スマホ・タブレット縦のとき
+          if (window.innerWidth <= 1020) { // スマホ・タブレット縦のとき
             this.sidebarWidth = '95%'
-          } else if (1021 <= window.parent.screen.width && window.parent.screen.width <= 1439) { // タブレット横のとき
+          } else if (1021 <= window.innerWidth && window.innerWidth <= 1439) { // タブレット横のとき
             this.sidebarWidth = '80%'
           } else { // PCのとき
             this.sidebarWidth = '52%'
           }
         },
         hideSidebarOnlyTB() {
-          if (window.parent.screen.width <= 1439) { // スマホ・タブレット縦のとき
+          if (window.innerWidth <= 1439) { // スマホ・タブレット縦のとき
             this.drawer = false; // サイドバーを非表示
           }
         },
@@ -1805,11 +1827,22 @@
         this.makeGenderTable(); // genderTableを作成
         this.makeNextGenderTable(); // 席替え後用のnextGenderTableを作成
         this.setSidebarWidth();
-        if (window.parent.screen.width <= 1439) { // SP・TBのとき
+        if (window.innerWidth <= 1439) { // SP・TBのとき
           this.drawer = false; // 初期はサイドバーを非表示
         } else { // PCのとき
           this.drawer = true; // 初期はサイドバーを表示
         }
+        // ウィンドウリサイズ時にサイドバーの幅と表示状態を更新
+        this._onResize = () => {
+          this.setSidebarWidth();
+          if (window.innerWidth <= 1439) {
+            this.drawer = false;
+          }
+        };
+        window.addEventListener('resize', this._onResize);
+      },
+      beforeDestroy() {
+        window.removeEventListener('resize', this._onResize);
       },
       mounted() {
         this.setSortableJS(); // sortableJSをフォームにセット
