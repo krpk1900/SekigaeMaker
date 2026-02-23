@@ -1048,6 +1048,10 @@
   <script src="https://cdn.jsdelivr.net/npm/intro.js@3.3.1/intro.min.js"></script>
 
   <script>
+    // ブレークポイント定数
+    const BREAKPOINT_TB = 1020;
+    const BREAKPOINT_PC = 1440;
+
     // ここからsortableJSで使う変数。sortableJSではVueインスタンスのdataやmethodを認識しないため
     let isReverseSeats = false; // スワップした座席を席替え直前に戻すためのフラグ
     let fromRows = [];
@@ -1161,7 +1165,7 @@
             intro.onafterchange(function () {
               console.log(this._currentStep);
               if (this._currentStep == 1) {
-                if (window.innerWidth <= 1439) { // SP・TBのとき
+                if (window.innerWidth < BREAKPOINT_PC) { // SP・TBのとき
                   app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
                 }
               } else if (this._currentStep == 2) {
@@ -1176,7 +1180,7 @@
           intro.oncomplete(function () {
             app.setBlankData();
             app.resetNextSeatsTable();
-            if (1440 <= window.innerWidth) { // PCのとき
+            if (BREAKPOINT_PC <= window.innerWidth) { // PCのとき
               app.drawer = true;
             }
           });
@@ -1756,16 +1760,16 @@
           }
         },
         setSidebarWidth() {
-          if (window.innerWidth <= 1020) { // スマホ・タブレット縦のとき
+          if (window.innerWidth <= BREAKPOINT_TB) { // スマホ・タブレット縦のとき
             this.sidebarWidth = '95%'
-          } else if (1021 <= window.innerWidth && window.innerWidth <= 1439) { // タブレット横のとき
+          } else if (window.innerWidth < BREAKPOINT_PC) { // タブレット横のとき
             this.sidebarWidth = '80%'
           } else { // PCのとき
             this.sidebarWidth = '52%'
           }
         },
         hideSidebarOnlyTB() {
-          if (window.innerWidth <= 1439) { // スマホ・タブレット縦のとき
+          if (window.innerWidth < BREAKPOINT_PC) { // スマホ・タブレットのとき
             this.drawer = false; // サイドバーを非表示
           }
         },
@@ -1806,7 +1810,7 @@
         this.makeGenderTable(); // genderTableを作成
         this.makeNextGenderTable(); // 席替え後用のnextGenderTableを作成
         this.setSidebarWidth();
-        if (window.innerWidth <= 1439) { // SP・TBのとき
+        if (window.innerWidth < BREAKPOINT_PC) { // SP・TBのとき
           this.drawer = false; // 初期はサイドバーを非表示
         } else { // PCのとき
           this.drawer = true; // 初期はサイドバーを表示
