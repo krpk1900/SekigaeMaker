@@ -57,21 +57,65 @@
       .grid-layout {
         display: grid;
         grid-template-columns: 1fr 70px;
-        grid-template-rows: 115px;
+        grid-template-rows: 70px;
       }
 
-      /*.left-card-margin-large { スマホの場合を定義しなおす
-          margin: 0 20px 0 40px;
-        }
-        .left-card-margin-small {
-          margin: 0 3px 0 6px;
-        }
-        .right-card-margin-large {
-          margin: 0 40px 0 20px;
-        }
-        .right-card-margin-small {
-          margin: 0 6px 0 3px;
-        }*/
+      .left-card-margin-large,
+      .left-card-margin-small {
+        margin: 0 5px 10px 5px;
+      }
+
+      .right-card-margin-large,
+      .right-card-margin-small {
+        margin: 10px 5px 0 5px;
+      }
+
+      /* タイトル */
+      .sp-title {
+        font-size: 24px !important;
+      }
+
+      .sp-logo {
+        width: 35px !important;
+        height: 35px !important;
+        margin-top: 5px !important;
+      }
+
+      /* パネルグリッドを1カラムに */
+      .panel-grid-layout {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* ダイアロググリッドを2カラムに */
+      .dialogs-grid-layout {
+        grid-template-columns: 1fr 1fr !important;
+      }
+
+      /* チュートリアルツールチップ */
+      .introjs-tooltip {
+        min-width: 280px !important;
+        max-width: 300px !important;
+      }
+
+      /* カードタイトル */
+      .v-card__title.text-h4 {
+        font-size: 1.2rem !important;
+      }
+
+      /* サイドバー内のセレクトボックス幅を制限 */
+      .v-navigation-drawer .v-select {
+        max-width: 100% !important;
+      }
+
+      /* サイドバー内のボタンフォントサイズ縮小 */
+      .v-navigation-drawer .v-btn {
+        font-size: 16px !important;
+      }
+
+      /* 条件タイトル */
+      .condition-title {
+        font-size: 28px !important;
+      }
     }
 
     @media screen and (min-width:601px) and (max-width:1020px) {
@@ -261,9 +305,7 @@
 
     .seat {
       height: 80px;
-      /*60px;*/
       width: 80px;
-      /*15%;*/
       display: inline-block;
       border: 3px solid #0BB3BF;
       box-sizing: border-box;
@@ -406,8 +448,8 @@
       <div class="grid-layout background-color">
         <!-- タイトル -->
         <div style="margin: auto;">
-          <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;">
-          <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
+          <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;" class="sp-logo">
+          <span class="sp-title" style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
         </div>
         <div class="pc-only"></div><!-- グリッドレイアウト調整用 -->
 
@@ -607,7 +649,7 @@
                   <div style="float: right; margin: 10px 0 0 0px;">
                     <div>
                       <!-- 利用規約 -->
-                      <v-dialog v-model="userPolicy" width="850" scrollable>
+                      <v-dialog v-model="userPolicy" max-width="850" scrollable>
                         <template v-slot:activator="{ on, attrs }">
                           <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;"
                             v-bind="attrs" v-on="on">利用規約</a>
@@ -680,7 +722,7 @@
                         </v-card>
                       </v-dialog>
                       <!-- プライバシーポリシー -->
-                      <v-dialog v-model="privacyPolicy" width="850" scrollable>
+                      <v-dialog v-model="privacyPolicy" max-width="850" scrollable>
                         <template v-slot:activator="{ on, attrs }">
                           <a style="color: #777777; font-size: 15px; display: inline-block; text-decoration: underline;"
                             v-bind="attrs" v-on="on">プライバシーポリシー</a>
@@ -735,7 +777,7 @@
                     </div>
                     <div>
                       <!-- 更新情報 -->
-                      <v-dialog v-model="updateInformation" width="550">
+                      <v-dialog v-model="updateInformation" max-width="550">
                         <template v-slot:activator="{ on, attrs }">
                           <a style="color: #777777; font-size: 15px; margin-right: 40px; text-decoration: underline;"
                             v-bind="attrs" v-on="on">更新情報</a>
@@ -755,7 +797,8 @@
                             2022.12.11　座席表の大きさを変更してもすでに入力されていた名前が<br>
                             　　　　　　消えないように修正しました。<br>
                             2022.12.20　前回の席替え結果を復元する機能をリリースしました。<br>
-                            2026.02.24　画面を小さくしても座席表が表示されるように修正しました。
+                            2026.02.24　画面を小さくしても座席表が表示されるように修正しました。<br>
+                            2026.02.24　スマートフォンに対応しました。
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -865,21 +908,21 @@
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
+                  :style="seatStyle"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="安藤">
                 <!-- 2つ目のフォームにプレイスホルダーを設定 -->
                 <input type="text" v-else-if="indexRow==0 && indexCol==1"
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
+                  :style="seatStyle"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="石原">
                 <!-- 3つ目以降のフォーム -->
                 <input type="text" v-else
                   :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
-                  style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
+                  :style="seatStyle"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
                 <span :class="{'margin-right': (indexCol+1)%groupSizeX==0 && (indexCol+1)!=seatsSizeX}"></span>
               </span>
@@ -910,11 +953,12 @@
                 <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable">
                   <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
                     <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol"
-                      class="sortable-item transition-item square minus-margin-bottom"
+                      class="sortable-item transition-item minus-margin-bottom"
+                      :style="{ display: 'inline-block', margin: '0 auto', height: seatSize + 'px', width: seatSize + 'px' }"
                       :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
                       <input type="text" class="sortable-item" readonly
                         :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
-                        style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
+                        :style="seatStyle"
                         :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
                     </span>
                     <span :class="{'margin-right': (nextIndexCol+1)%groupSizeX==0 && (nextIndexCol+1)!=seatsSizeX}"
@@ -930,7 +974,7 @@
         </v-card>
 
         <!-- 同意ボタン付き利用規約 -->
-        <v-dialog v-model="userPolicyWithButton" width="850" scrollable>
+        <v-dialog v-model="userPolicyWithButton" max-width="850" scrollable>
           <v-card>
             <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">利用規約
               <v-icon style="float: right;" @click="userPolicyWithButton = false">mdi-close</v-icon>
@@ -1006,7 +1050,7 @@
         </v-dialog>
 
         <!-- エラー文 -->
-        <v-dialog v-model="error" width="500">
+        <v-dialog v-model="error" max-width="500">
           <v-card>
             <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
               <v-icon style="float: right;" @click="error = false">mdi-close</v-icon>
@@ -1020,7 +1064,7 @@
         </v-dialog>
 
         <!-- ランディング -->
-        <v-dialog v-model="landing" width="530" transition="dialog-top-transition" overlay-opacity="0.25">
+        <v-dialog v-model="landing" max-width="530" transition="dialog-top-transition" overlay-opacity="0.25">
           <v-card>
             <v-card-title class="headline teal lighten-2 font-weight-black"
               style="display: inherit; color: #FFFFFF; ">席替えメーカーへようこそ！</v-card-title>
@@ -1028,7 +1072,7 @@
               席替えメーカーは、生徒名と条件を入力するだけで座席の配置案を瞬時に出してくれるサービスです！
             </v-card-text>
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
-              ※現在パソコンとタブレットでのみ使用可能です。スマホへの対応はもうしばらくお待ちください。
+              ※パソコン・タブレット・スマートフォンに対応しています。
             </v-card-text>
             <v-card-actions>
               <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
@@ -1050,6 +1094,7 @@
 
   <script>
     // ブレークポイント定数
+    const BREAKPOINT_SP = 600;
     const BREAKPOINT_TB = 1020;
     const BREAKPOINT_PC = 1440;
 
@@ -1146,6 +1191,7 @@
         error: false,
         landing: true,
         sidebarWidth: '52%', // PC用のデフォルト値
+        windowWidth: window.innerWidth, // レスポンシブ用のウィンドウ幅
         seatsTableMemory: [['']],
         genderTableMemory: [['']],
       },
@@ -1761,7 +1807,9 @@
           }
         },
         setSidebarWidth() {
-          if (window.innerWidth <= BREAKPOINT_TB) { // スマホ・タブレット縦のとき
+          if (window.innerWidth <= BREAKPOINT_SP) { // スマホのとき
+            this.sidebarWidth = '100%'
+          } else if (window.innerWidth <= BREAKPOINT_TB) { // タブレット縦のとき
             this.sidebarWidth = '95%'
           } else if (window.innerWidth < BREAKPOINT_PC) { // タブレット横のとき
             this.sidebarWidth = '80%'
@@ -1818,6 +1866,7 @@
         }
         // ウィンドウリサイズ時にサイドバーの幅を更新
         this.onResize = () => {
+          this.windowWidth = window.innerWidth;
           this.setSidebarWidth();
         };
         window.addEventListener('resize', this.onResize);
@@ -2016,7 +2065,34 @@
               disabled: this.disabledStudentsName.includes(studentName)
             }
           })
-        }
+        },
+        seatSize() {
+          if (this.windowWidth <= BREAKPOINT_SP) {
+            // スマホ: 画面幅から余白を引いて座席数で割る
+            const groupGaps = this.groupSizeX !== 'なし' ? Math.floor((this.seatsSizeX - 1) / this.groupSizeX) * 10 : 0;
+            const availableWidth = this.windowWidth - 90 - groupGaps; // 左右余白 + サイドバーアイコン分
+            return Math.max(36, Math.min(80, Math.floor(availableWidth / this.seatsSizeX)));
+          }
+          return 80;
+        },
+        seatFontSize() {
+          if (this.seatSize <= 45) return 11;
+          if (this.seatSize <= 55) return 14;
+          if (this.seatSize <= 65) return 17;
+          return 22;
+        },
+        seatStyle() {
+          return {
+            textAlign: 'center',
+            resize: 'none',
+            wordBreak: 'keep-all',
+            verticalAlign: 'top',
+            fontSize: this.seatFontSize + 'px',
+            fontWeight: '600',
+            height: this.seatSize + 'px',
+            width: this.seatSize + 'px',
+          };
+        },
       }
     });
   </script>
