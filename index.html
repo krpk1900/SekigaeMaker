@@ -1812,13 +1812,13 @@
           this.drawer = true; // 初期はサイドバーを表示
         }
         // ウィンドウリサイズ時にサイドバーの幅を更新
-        this._onResize = () => {
+        this.onResize = () => {
           this.setSidebarWidth();
         };
-        window.addEventListener('resize', this._onResize);
+        window.addEventListener('resize', this.onResize);
       },
       beforeDestroy() {
-        window.removeEventListener('resize', this._onResize);
+        window.removeEventListener('resize', this.onResize);
       },
       mounted() {
         this.setSortableJS(); // sortableJSをフォームにセット
