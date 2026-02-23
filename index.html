@@ -32,6 +32,25 @@
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.7.2/dist/vuetify.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
   <style>
+    /* グリッドレイアウト調整用スペーサーの表示切り替え */
+    .pc-only {
+      display: none;
+    }
+
+    .tb-only {
+      display: block;
+    }
+
+    @media screen and (min-width:1440px) {
+      .pc-only {
+        display: block;
+      }
+
+      .tb-only {
+        display: none;
+      }
+    }
+
     @media screen and (max-width:600px) {
 
       /* スマホ */
@@ -39,14 +58,6 @@
         display: grid;
         grid-template-columns: 1fr 70px;
         grid-template-rows: 115px;
-      }
-
-      .pc-only {
-        display: none;
-      }
-
-      .tb-only {
-        display: block;
       }
 
       /*.left-card-margin-large { スマホの場合を定義しなおす
@@ -70,14 +81,6 @@
         display: grid;
         grid-template-columns: 1fr 70px;
         grid-template-rows: 115px;
-      }
-
-      .pc-only {
-        display: none;
-      }
-
-      .tb-only {
-        display: block;
       }
 
       .left-card-margin-large {
@@ -106,14 +109,6 @@
         grid-template-rows: 115px;
       }
 
-      .pc-only {
-        display: none;
-      }
-
-      .tb-only {
-        display: block;
-      }
-
       .left-card-margin-large {
         margin: 0 100px 10px 100px;
       }
@@ -140,14 +135,6 @@
         grid-template-rows: 115px;
       }
 
-      .pc-only {
-        display: block;
-      }
-
-      .tb-only {
-        display: none;
-      }
-
       .left-card-margin-large {
         margin: 0 20px 0 40px;
       }
@@ -172,14 +159,6 @@
         display: grid;
         grid-template-columns: 1fr 1fr 70px;
         grid-template-rows: 115px;
-      }
-
-      .pc-only {
-        display: block;
-      }
-
-      .tb-only {
-        display: none;
       }
 
       .left-card-margin-large {
@@ -1832,12 +1811,9 @@
         } else { // PCのとき
           this.drawer = true; // 初期はサイドバーを表示
         }
-        // ウィンドウリサイズ時にサイドバーの幅と表示状態を更新
+        // ウィンドウリサイズ時にサイドバーの幅を更新
         this._onResize = () => {
           this.setSidebarWidth();
-          if (window.innerWidth <= 1439) {
-            this.drawer = false;
-          }
         };
         window.addEventListener('resize', this._onResize);
       },
