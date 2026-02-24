@@ -116,6 +116,12 @@
       .condition-title {
         font-size: 28px !important;
       }
+
+      /* 座席テーブルを横スクロール可能にする */
+      .seat-table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
     }
 
     @media screen and (min-width:601px) and (max-width:1020px) {
@@ -900,7 +906,7 @@
               <div>Tabキーを押すと次の座席に移動することができます</div>
             </v-tooltip>
           </v-card-title>
-          <div>
+          <div class="seat-table-scroll">
             <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: -4px;">
               <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                 <!-- 1つ目のフォームにプレイスホルダーを設定 -->
@@ -948,13 +954,12 @@
             </v-tooltip>
           </v-card-title>
           <template v-if="isRenderNextSeatsTable">
-            <div class="center">
+            <div class="center seat-table-scroll">
               <transition-group name="transition-item" type="transition">
                 <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable">
                   <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
                     <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol"
-                      class="sortable-item transition-item minus-margin-bottom"
-                      :style="{ display: 'inline-block', margin: '0 auto', height: seatSize + 'px', width: seatSize + 'px' }"
+                      class="sortable-item transition-item square minus-margin-bottom"
                       :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)">
                       <input type="text" class="sortable-item" readonly
                         :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
@@ -1191,7 +1196,6 @@
         error: false,
         landing: true,
         sidebarWidth: '52%', // PC用のデフォルト値
-        windowWidth: window.innerWidth, // レスポンシブ用のウィンドウ幅
         seatsTableMemory: [['']],
         genderTableMemory: [['']],
       },
@@ -1866,7 +1870,6 @@
         }
         // ウィンドウリサイズ時にサイドバーの幅を更新
         this.onResize = () => {
-          this.windowWidth = window.innerWidth;
           this.setSidebarWidth();
         };
         window.addEventListener('resize', this.onResize);
@@ -2066,31 +2069,14 @@
             }
           })
         },
-        seatSize() {
-          if (this.windowWidth <= BREAKPOINT_SP) {
-            // スマホ: 画面幅から余白を引いて座席数で割る
-            const groupGaps = this.groupSizeX !== 'なし' ? Math.floor((this.seatsSizeX - 1) / this.groupSizeX) * 10 : 0;
-            const availableWidth = this.windowWidth - 90 - groupGaps; // 左右余白 + サイドバーアイコン分
-            return Math.max(36, Math.min(80, Math.floor(availableWidth / this.seatsSizeX)));
-          }
-          return 80;
-        },
-        seatFontSize() {
-          if (this.seatSize <= 45) return 11;
-          if (this.seatSize <= 55) return 14;
-          if (this.seatSize <= 65) return 17;
-          return 22;
-        },
         seatStyle() {
           return {
             textAlign: 'center',
             resize: 'none',
             wordBreak: 'keep-all',
             verticalAlign: 'top',
-            fontSize: this.seatFontSize + 'px',
+            fontSize: '22px',
             fontWeight: '600',
-            height: this.seatSize + 'px',
-            width: this.seatSize + 'px',
           };
         },
       }
