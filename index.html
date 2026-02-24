@@ -961,6 +961,18 @@
           </v-card>
         </v-dialog>
 
+        <!-- 座席未入力エラー -->
+        <v-dialog v-model="emptySeatsError" width="500">
+          <v-card>
+            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
+              <v-icon style="float: right;" @click="emptySeatsError = false">mdi-close</v-icon>
+            </v-card-title>
+            <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
+              今の座席に生徒の名前を入力してから席替えボタンを押してください。
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+
         <!-- ランディング -->
         <v-dialog v-model="landing" width="530" transition="dialog-top-transition" overlay-opacity="0.25">
           <v-card>
@@ -1086,6 +1098,7 @@
         isAcceptedUserPolicy: false, // 利用規約に同意してもらったか
         isShowStudentsNameDialog: false,
         error: false,
+        emptySeatsError: false,
         landing: true,
         sidebarWidth: '52%', // PC用のデフォルト値
         seatsTableMemory: [['']],
@@ -1190,6 +1203,10 @@
           }
         },
         changeSeatsProcess() { // 席替えボタンが押されたときの処理
+          if (this.seatsNum === 0) {
+            this.emptySeatsError = true;
+            return;
+          }
           this.beforeChangeSeats();
           this.delayChangeSeats();
           this.drawer = false
