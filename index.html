@@ -936,7 +936,8 @@
               <v-icon style="float: right;" @click="userPolicyWithButton = false">mdi-close</v-icon>
             </v-card-title>
             <v-card-text style="margin-top: 20px; font-size: 14px;">
-              <a style="color: #0c9ea8; text-decoration: underline; cursor: pointer;" @click="userPolicy = true">利用規約</a>に同意の上ご利用ください。
+              <a style="color: #0c9ea8; text-decoration: underline; cursor: pointer;"
+                @click="userPolicy = true">利用規約</a>に同意の上ご利用ください。
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -1136,13 +1137,13 @@
           this.seatsTable.splice(2, 1, ['中川', '安岡', '市川', '門前', '山本', '志鷹']);
           this.seatsTable.splice(3, 1, ['岡村', '川瀬', '四十住', '金田', '長島', '藤岡']);
           this.seatsTable.splice(4, 1, ['永瀬', '直江', '倉谷', '瀧山', '角間', '黒田']);
-          this.seatsTable.splice(5, 1, ['濱井', '小野寺', '竹端', '廣瀬', '岩峅', '松倉']);
+          this.seatsTable.splice(5, 1, ['濱井', '小野寺', '竹端', '廣瀬', '松倉', '高橋']);
           this.genderTable.splice(0, 1, ["female", "male", "female", "male", "female", "male"]);
           this.genderTable.splice(1, 1, ["male", "female", "male", "female", "male", "female"]);
           this.genderTable.splice(2, 1, ["female", "male", "female", "male", "female", "male"]);
           this.genderTable.splice(3, 1, ["male", "female", "male", "female", "male", "female"]);
           this.genderTable.splice(4, 1, ["female", "male", "female", "male", "female", "male"]);
-          this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "male"]);
+          this.genderTable.splice(5, 1, ["male", "female", "male", "female", "male", "female"]);
           this.countSeats();
         },
         setBlankData() {
