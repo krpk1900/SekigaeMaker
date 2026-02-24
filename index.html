@@ -435,6 +435,12 @@
                     style="font-size: 20px; font-weight: 900; margin: -20px 0 0 10px; padding-right: 15px;">
                     <v-icon class="icon">mdi-pencil</v-icon>デモデータ
                   </v-btn>
+                  <!-- Excelペーストボタン -->
+                  <v-btn elevation="2" large color="#0c9ea8" class="demo-btn" dark
+                    @click="isShowStudentsNameDialog = true;"
+                    style="font-size: 20px; font-weight: 900; margin: -20px 0 0 10px; padding-right: 15px; text-transform: none;">
+                    <v-icon class="icon">mdi-content-paste</v-icon>Excelから貼り付け
+                  </v-btn>
                   <!-- 座席数を指定するエクスパンションパネル -->
                   <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"
                     data-position="left" data-title="1. 全体の座席数を決める！"
@@ -828,8 +834,8 @@
                   </v-tooltip>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text
-                        @click="changeSeatsProcess();" v-bind="attrs" v-on="on">
+                      <v-btn elevation="2" color="#FFFFFF" class="closed-btn" fab text @click="changeSeatsProcess();"
+                        v-bind="attrs" v-on="on">
                         <v-icon style="font-size: 32px;">mdi-sync</v-icon>
                       </v-btn>
                     </template>
@@ -956,6 +962,40 @@
           </v-card>
         </v-dialog>
 
+        <!-- Excelペーストダイアログ -->
+        <v-dialog v-model="isShowStudentsNameDialog" width="550">
+          <v-card>
+            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: block;">名前を一括入力
+              <v-icon style="float: right;" @click="isShowStudentsNameDialog = false">mdi-close</v-icon>
+            </v-card-title>
+            <v-card-text style="margin-top: 20px;">
+              <div style="color: #555555; font-size: 14px; margin-bottom: 10px;">
+                複数の生徒の名前をまとめて入力してください。<br>
+                スペースや改行で区切られます。<br>
+                Excelからそのまま貼り付けることもできます。
+              </div>
+              <v-textarea v-model="excelPasteText" outlined :placeholder="'寺井   廣瀬   長島\n栗原   黒田   高松'" rows="6"
+                style="font-size: 16px;"></v-textarea>
+              <div v-if="parsedNames.length > 0" style="margin-top: -10px; margin-bottom: 10px;">
+                <div style="color: #0c9ea8; font-weight: 600; font-size: 15px;">
+                  {{ parsedNames.length }}名が入力済みです。
+                  <div v-if="parsedNames.length > seatsSizeX * seatsSizeY" style="color: #b71c1c;">
+                    座席数{{ seatsSizeX * seatsSizeY }}を超えています。先頭{{ seatsSizeX * seatsSizeY }}名のみ反映されます。
+                  </div>
+                </div>
+                <div style="color: #777777; font-size: 13px; margin-top: 5px; max-height: 100px; overflow-y: auto;">
+                  {{ parsedNames.join('、') }}
+                </div>
+              </div>
+              <v-btn elevation="2" large color="#0c9ea8" :dark="parsedNames.length > 0"
+                :disabled="parsedNames.length === 0" @click="applyExcelPasteData()"
+                style="font-size: 18px; font-weight: 900; width: 100%;">
+                <v-icon class="icon">mdi-check</v-icon>座席に反映する
+              </v-btn>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+
         <!-- ランディング -->
         <v-dialog v-model="landing" width="530" transition="dialog-top-transition" overlay-opacity="0.25">
           <v-card>
@@ -1078,6 +1118,7 @@
         privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
         updateInformation: false, // 更新情報の表示制御フラグ
         isShowStudentsNameDialog: false,
+        excelPasteText: '', // Excelペースト用テキストエリアの入力内容
         error: false,
         emptySeatsError: false,
         landing: true,
@@ -1121,6 +1162,32 @@
               app.drawer = true;
             }
           });
+        },
+        applyExcelPasteData() {
+          var names = this.parsedNames;
+          if (names.length === 0) return;
+
+          // 座席と性別をクリア
+          for (var i = 0; i < this.seatsSizeY; i++) {
+            this.seatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
+            this.genderTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
+          }
+
+          // 左上から順に充填
+          var nameIndex = 0;
+          for (var row = 0; row < this.seatsSizeY; row++) {
+            for (var col = 0; col < this.seatsSizeX; col++) {
+              if (nameIndex >= names.length) break;
+              this.seatsTable[row].splice(col, 1, names[nameIndex]);
+              this.genderTable[row].splice(col, 1, 'male');
+              nameIndex++;
+            }
+            if (nameIndex >= names.length) break;
+          }
+
+          this.countSeats();
+          this.excelPasteText = '';
+          this.isShowStudentsNameDialog = false;
         },
         setDemoData() {
           this.seatsSizeX = 6;
@@ -1949,6 +2016,14 @@
               disabled: this.disabledStudentsName.includes(studentName)
             }
           })
+        },
+        parsedNames() {
+          if (!this.excelPasteText || this.excelPasteText.trim() === '') {
+            return [];
+          }
+          return this.excelPasteText
+            .split(/[\s\u3000]+/)
+            .filter(function (name) { return name !== ''; });
         }
       }
     });
