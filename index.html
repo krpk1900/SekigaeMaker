@@ -591,6 +591,26 @@
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
+                    <!-- 班長を指定するエクスパンションパネル -->
+                    <v-expansion-panels accordion class="expansion-panels" :value="isOpenLeaderPanel">
+                      <v-expansion-panel>
+                        <v-expansion-panel-header><v-icon color="#0c9ea8"
+                            class="icon">mdi-account-star</v-icon>班長を指定する</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                          <template v-if="groupSizeX !== 'なし' && groupSizeY !== 'なし'">
+                            <span v-for="(leaderCondition, leaderIndex) in leaderConditions">
+                              <v-select :items="rowConditionsStudentsName" placeholder="班長のAさん" outlined
+                                style="width:190px; display: inline-block" v-model="leaderConditions[leaderIndex]"
+                                @change.once="createNewLeaderConditions"
+                                no-data-text="座席に生徒名が入力されていません"></v-select>
+                            </span>
+                          </template>
+                          <template v-else>
+                            <p style="color: #999; margin: 0;">班サイズを「座席数を指定する」で設定してください</p>
+                          </template>
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
                     <!-- チェックボックス -->
                     <v-card>
                       <v-checkbox label="今の座席から全員移動させる" v-model="isAllDifferent" hide-details color="#0c9ea8"
@@ -784,14 +804,14 @@
                 <!-- サイドバーを閉じたとき -->
                 <template v-else>
                   <v-list-item @click.stop="drawer = !drawer;"
-                    @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                    @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                     <v-icon color="#0c9ea8" class="open-icon" style="font-size: 32px;">mdi-chevron-double-left</v-icon>
                   </v-list-item>
                   <div style="margin-bottom: 20px;"></div>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
                       <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                        @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                        @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
                       </v-list-item>
                     </template>
@@ -800,7 +820,7 @@
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
                       <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=0; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1;">
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=0; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-sort-ascending</v-icon>
                       </v-list-item>
                     </template>
@@ -809,7 +829,7 @@
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
                       <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=0; isOpenNearPanel=1; isOpenFarPanel=1;">
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=0; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-target-variant</v-icon>
                       </v-list-item>
                     </template>
@@ -818,7 +838,7 @@
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
                       <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=0; isOpenFarPanel=1;">
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=0; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-collapse</v-icon>
                       </v-list-item>
                     </template>
@@ -827,11 +847,20 @@
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
                       <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
-                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=0;">
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=0; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
                       </v-list-item>
                     </template>
                     <span>生徒同士を離す</span>
+                  </v-tooltip>
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-list-item @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                        @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=0;">
+                        <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-account-star</v-icon>
+                      </v-list-item>
+                    </template>
+                    <span>班長を指定する</span>
                   </v-tooltip>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
@@ -1103,6 +1132,7 @@
         isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
         isFixGender: true, // 性別を固定するかどうかの制御フラグ
         fixConditions: [['', '', '']], // 近づける条件配列
+        leaderConditions: [''], // 班長に指定する生徒名の配列
         disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
         groupSizeX: 2,
         groupSizeY: 3,
@@ -1115,6 +1145,7 @@
         isOpenPlaceFixPanel: 1, // 特定の座席に固定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
         isOpenNearPanel: 1, // 生徒同士を近づけるエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
         isOpenFarPanel: 1, // 生徒同士を話すエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
+        isOpenLeaderPanel: 1, // 班長を指定するエクスパンションパネルの開閉フラグ、指定したIDのパネルを開く
         userPolicy: false, // 利用規約の表示制御フラグ
         privacyPolicy: false, // プライバシーポリシーの表示制御フラグ
         updateInformation: false, // 更新情報の表示制御フラグ
@@ -1282,6 +1313,13 @@
             this.backConditions.push('');
           }
         },
+        createNewLeaderConditions() {
+          if (this.groupSizeX === 'なし' || this.groupSizeY === 'なし') return;
+          let numGroups = (this.seatsSizeX / this.groupSizeX) * (this.seatsSizeY / this.groupSizeY);
+          if (this.leaderConditions.length < numGroups) {
+            this.leaderConditions.push('');
+          }
+        },
         getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
           let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
           let gender
@@ -1377,6 +1415,7 @@
             this.frontTwoRowsConditions = this.frontTwoRowsConditions.filter(Boolean); // 空白を削除
             this.backConditions = this.backConditions.filter(Boolean); // 空白を削除
             this.backTwoRowsConditions = this.backTwoRowsConditions.filter(Boolean); // 空白を削除
+            this.leaderConditions = this.leaderConditions.filter(Boolean); // 空白を削除
             this.dupSeatsTableIndex = this.seatsTableIndex.slice(0); // 有効な座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
             this.dupFrontSeatsIndex = this.frontSeatsIndex.slice(0); // 最前列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
             this.dupFrontTwoRowsSeatsIndex = this.frontTwoRowsSeatsIndex.slice(0); // 前2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
@@ -1387,6 +1426,7 @@
             this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
 
             this.placeFixedSeats(); // 固定する生徒を配置
+            this.placeLeaders(); // 班長を各班に1人ずつ配置
             this.changeFrontSeats(); // 最前列に固定する生徒を席替え
             this.changeBackSeats(); // 最後列に固定する生徒を席替え
             this.changeFrontTwoRowsSeats(); // 前2列に固定する生徒を席替え
@@ -1398,6 +1438,7 @@
             this.createNewFrontTwoRowsConditions(); // 次回の準備、前2列のフォームを1つ作成
             this.createNewBackTwoRowsConditions(); // 次回の準備、後2列のフォームを1つ作成
             this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
+            this.createNewLeaderConditions(); // 次回の準備、班長のフォームを1つ作成
             console.log(`----${loopNum}回目のループ終了----`);
           } while (this.restartFlag && loopNum <= 500)
           this.$nextTick(function () { // DOMの更新を待ってからsortableJSをフォームにセット
@@ -1607,6 +1648,100 @@
               this.delete(fixIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
             }
           })
+        },
+        getGroupId(col, row) { // 座標から班のIDを返す
+          let numGroupCols = this.seatsSizeX / this.groupSizeX;
+          let groupCol = Math.floor(col / this.groupSizeX);
+          let groupRow = Math.floor(row / this.groupSizeY);
+          return groupRow * numGroupCols + groupCol;
+        },
+        placeLeaders() { // 班長を各班に1人ずつ配置する
+          let leaders = this.leaderConditions.filter(Boolean);
+          if (leaders.length === 0) return;
+          if (this.groupSizeX === 'なし' || this.groupSizeY === 'なし') return;
+
+          let numGroupCols = this.seatsSizeX / this.groupSizeX;
+          let numGroupRows = this.seatsSizeY / this.groupSizeY;
+          let totalGroups = numGroupCols * numGroupRows;
+
+          // placeFixedSeats()で既に配置された班長がいるかチェックし、その班を「配置済み」としてマーク
+          let groupHasLeader = {};
+          let remainingLeaders = [];
+          leaders.forEach(leaderName => {
+            let pos = this.getPositionFromNextSeatsTable(leaderName);
+            if (pos !== false) {
+              // 既にplaceFixedSeats()で配置済み
+              let groupId = this.getGroupId(pos[0], pos[1]);
+              groupHasLeader[groupId] = true;
+            } else {
+              remainingLeaders.push(leaderName);
+            }
+          });
+
+          if (remainingLeaders.length === 0) return;
+
+          // 利用可能な座席を班ごとにグループ化
+          let groupSeats = {};
+          for (let i = 0; i < totalGroups; i++) {
+            groupSeats[i] = [];
+          }
+          this.dupSeatsTableIndex.forEach(seatIndex => {
+            let groupId = this.getGroupId(seatIndex[0], seatIndex[1]);
+            if (groupSeats[groupId] !== undefined) {
+              groupSeats[groupId].push(seatIndex);
+            }
+          });
+
+          // まだ班長がいない班のリストを取得
+          let groupsNeedingLeader = [];
+          for (let i = 0; i < totalGroups; i++) {
+            if (!groupHasLeader[i] && groupSeats[i] && groupSeats[i].length > 0) {
+              groupsNeedingLeader.push(i);
+            }
+          }
+          this.shuffle(groupsNeedingLeader);
+
+          // 各班長を、まだ班長がいない班に配置
+          remainingLeaders.forEach((leaderName, idx) => {
+            if (this.restartFlag) return;
+            if (idx >= groupsNeedingLeader.length) return; // 班長の数が班の数より多い場合はスキップ
+
+            let groupId = groupsNeedingLeader[idx];
+            let availableSeats = groupSeats[groupId].slice(0); // 班内の利用可能な座席をコピー
+            if (availableSeats.length === 0) {
+              this.restartFlag = true;
+              return;
+            }
+            this.shuffle(availableSeats);
+
+            let topIndex = availableSeats.shift();
+            // ----近づける/離す/性別/異なる座席チェック----
+            while (!this.checkNear(leaderName, topIndex) || !this.checkFar(leaderName, topIndex) || (this.isFixGender && !this.checkGender(leaderName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(leaderName, topIndex))) {
+              if (this.calcNum > this.seatsNum || availableSeats.length === 0) {
+                this.restartFlag = true;
+                break;
+              }
+              availableSeats.push(topIndex);
+              topIndex = availableSeats.shift();
+              this.calcNum += 1;
+            }
+            // ----ここまで----
+            if (this.restartFlag) return;
+
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, leaderName); // 取り出したインデックスの位置に班長名を保存
+            let genderIndex = this.studentsName.indexOf(leaderName);
+            let gender = this.genderArray[genderIndex];
+            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender); // 復元用のnextGenderTableに席替え後の性別を保存
+
+            // ここで配置した班長は他の配置処理で配置する必要がないため、各配列から削除する
+            this.delete(topIndex, this.dupSeatsTableIndex);
+            this.delete(leaderName, this.dupStudentsName);
+            this.delete(leaderName, this.dupNearFarStudentsName);
+            this.delete(topIndex, this.dupFrontSeatsIndex);
+            this.delete(topIndex, this.dupFrontTwoRowsSeatsIndex);
+            this.delete(topIndex, this.dupBackSeatsIndex);
+            this.delete(topIndex, this.dupBackTwoRowsSeatsIndex);
+          });
         },
         minDistance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
           let x_abs = Math.abs(p1[0] - p2[0]);
@@ -1986,25 +2121,31 @@
         },
         frontConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
         frontTwoRowsConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
         backConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
         backTwoRowsConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
+            this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+          }
+        },
+        leaderConditions: {
+          handler: function () {
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
