@@ -601,8 +601,7 @@
                             <span v-for="(leaderCondition, leaderIndex) in leaderConditions">
                               <v-select :items="rowConditionsStudentsName" placeholder="班長のAさん" outlined
                                 style="width:190px; display: inline-block" v-model="leaderConditions[leaderIndex]"
-                                @change.once="createNewLeaderConditions"
-                                no-data-text="座席に生徒名が入力されていません"></v-select>
+                                @change.once="createNewLeaderConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
                             </span>
                           </template>
                           <template v-else>
