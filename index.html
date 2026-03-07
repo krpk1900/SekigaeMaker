@@ -593,7 +593,7 @@
                         <v-expansion-panel-content>
                           <template v-if="groupSizeX !== 'なし' && groupSizeY !== 'なし'">
                             <span v-for="(leaderCondition, leaderIndex) in leaderConditions">
-                              <v-select :items="rowConditionsStudentsName" placeholder="班長のAさん" outlined
+                              <v-select :items="leaderStudentsName" placeholder="班長のAさん" outlined
                                 style="width:190px; display: inline-block" v-model="leaderConditions[leaderIndex]"
                                 @change.once="createNewLeaderConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
                             </span>
@@ -1129,7 +1129,8 @@
         isFixGender: true, // 性別を固定するかどうかの制御フラグ
         fixConditions: [['', '', '']], // 近づける条件配列
         leaderConditions: [''], // 班長に指定する生徒名の配列
-        disabledStudentsName: [], // 選択肢の中でdisableにする生徒名
+        disabledStudentsName: [], // 選択肢の中でdisableにする生徒名（行条件用）
+        disabledLeaderStudentsName: [], // 班長セレクトでdisableにする生徒名
         groupSizeX: 2,
         groupSizeY: 3,
         groupSizeOptionsX: ['なし', 2, 3],
@@ -1422,7 +1423,7 @@
             this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
 
             this.placeFixedSeats(); // 固定する生徒を配置
-            this.placeLeaders(); // 班長を各班に1人ずつ配置
+            this.placeLeaders(); // 班長を各班に1人ずつ配置（行条件がある班長はその行内で配置）
             this.changeFrontSeats(); // 最前列に固定する生徒を席替え
             this.changeBackSeats(); // 最後列に固定する生徒を席替え
             this.changeFrontTwoRowsSeats(); // 前2列に固定する生徒を席替え
@@ -1520,6 +1521,7 @@
         changeFrontSeats() { // 最前列に固定する生徒を席替え
           this.shuffle(this.dupFrontSeatsIndex);
           this.frontConditions.forEach(frontStudentName => {
+            if (this.getPositionFromNextSeatsTable(frontStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
             let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
             // ----近づける/離す/性別/異なる座席チェック----
             while (!this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || (this.isFixGender && !this.checkGender(frontStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
@@ -1542,6 +1544,7 @@
         changeFrontTwoRowsSeats() { // 前2列に固定する生徒を席替え
           this.shuffle(this.dupFrontTwoRowsSeatsIndex);
           this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
+            if (this.getPositionFromNextSeatsTable(frontTwoRowsStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
             let topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
             // ----近づける/離す/性別/異なる座席チェック----
             while (!this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || (this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontTwoRowsStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
@@ -1563,6 +1566,7 @@
         changeBackSeats() { // 最後列に固定する生徒を席替え
           this.shuffle(this.dupBackSeatsIndex);
           this.backConditions.forEach(backStudentName => {
+            if (this.getPositionFromNextSeatsTable(backStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
             let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
             // ----近づける/離す/性別/異なる座席チェック----
             while (!this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || (this.isFixGender && !this.checkGender(backStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
@@ -1585,6 +1589,7 @@
         changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
           this.shuffle(this.dupBackTwoRowsSeatsIndex);
           this.backTwoRowsConditions.forEach(backTwoRowsStudentName => {
+            if (this.getPositionFromNextSeatsTable(backTwoRowsStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
             if (!this.dupBackTwoRowsSeatsIndex.length) {
               // todo エラーを表示してbreak
             }
@@ -1695,15 +1700,64 @@
               groupsNeedingLeader.push(i);
             }
           }
-          this.shuffle(groupsNeedingLeader);
 
-          // 各班長を、まだ班長がいない班に配置
-          remainingLeaders.forEach((leaderName, idx) => {
+          // 班長の行条件に基づいて、有効な班のみにフィルタする関数
+          let self = this;
+          function getValidGroups(leaderName, groups) {
+            return groups.filter(gid => {
+              let seats = groupSeats[gid];
+              if (self.frontConditions.includes(leaderName)) {
+                return seats.some(s => s[1] === 0);
+              } else if (self.backConditions.includes(leaderName)) {
+                return seats.some(s => s[1] === self.seatsSizeY - 1);
+              } else if (self.frontTwoRowsConditions.includes(leaderName)) {
+                return seats.some(s => s[1] <= 1);
+              } else if (self.backTwoRowsConditions.includes(leaderName)) {
+                return seats.some(s => s[1] >= self.seatsSizeY - 2);
+              }
+              return true; // 行条件なしの班長はどの班でもOK
+            });
+          }
+
+          // 行条件のある班長を先に配置し、その後に行条件なしの班長を配置する
+          let constrainedLeaders = [];
+          let unconstrainedLeaders = [];
+          remainingLeaders.forEach(name => {
+            if (this.frontConditions.includes(name) || this.backConditions.includes(name) ||
+              this.frontTwoRowsConditions.includes(name) || this.backTwoRowsConditions.includes(name)) {
+              constrainedLeaders.push(name);
+            } else {
+              unconstrainedLeaders.push(name);
+            }
+          });
+
+          let usedGroups = new Set(Object.keys(groupHasLeader).map(Number));
+          let orderedLeaders = constrainedLeaders.concat(unconstrainedLeaders);
+
+          orderedLeaders.forEach(leaderName => {
             if (this.restartFlag) return;
-            if (idx >= groupsNeedingLeader.length) return; // 班長の数が班の数より多い場合はスキップ
 
-            let groupId = groupsNeedingLeader[idx];
-            let availableSeats = groupSeats[groupId].slice(0); // 班内の利用可能な座席をコピー
+            // この班長が配置可能な班のリストを取得（行条件でフィルタ + 使用済み班を除外）
+            let availableGroups = getValidGroups(leaderName, groupsNeedingLeader).filter(gid => !usedGroups.has(gid));
+            if (availableGroups.length === 0) {
+              this.restartFlag = true;
+              return;
+            }
+            this.shuffle(availableGroups);
+            let groupId = availableGroups[0];
+            usedGroups.add(groupId);
+
+            // 班内で行条件に合う座席を取得
+            let availableSeats = groupSeats[groupId].slice(0);
+            if (this.frontConditions.includes(leaderName)) {
+              availableSeats = availableSeats.filter(seat => seat[1] === 0);
+            } else if (this.backConditions.includes(leaderName)) {
+              availableSeats = availableSeats.filter(seat => seat[1] === this.seatsSizeY - 1);
+            } else if (this.frontTwoRowsConditions.includes(leaderName)) {
+              availableSeats = availableSeats.filter(seat => seat[1] <= 1);
+            } else if (this.backTwoRowsConditions.includes(leaderName)) {
+              availableSeats = availableSeats.filter(seat => seat[1] >= this.seatsSizeY - 2);
+            }
             if (availableSeats.length === 0) {
               this.restartFlag = true;
               return;
@@ -2117,32 +2171,31 @@
         },
         frontConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
         frontTwoRowsConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
         backConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
         backTwoRowsConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
+            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions);
             this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
           }
         },
         leaderConditions: {
           handler: function () {
-            this.disabledStudentsName = this.frontConditions.concat(this.frontTwoRowsConditions, this.backTwoRowsConditions, this.backConditions, this.leaderConditions);
-            this.disabledStudentsName = this.disabledStudentsName.filter(Boolean); // 空白を削除
+            this.disabledLeaderStudentsName = this.leaderConditions.filter(Boolean);
           }
         },
       },
@@ -2152,6 +2205,14 @@
             return {
               text: studentName,
               disabled: this.disabledStudentsName.includes(studentName)
+            }
+          })
+        },
+        leaderStudentsName() {
+          return this.studentsName.map(studentName => {
+            return {
+              text: studentName,
+              disabled: this.disabledLeaderStudentsName.includes(studentName)
             }
           })
         },

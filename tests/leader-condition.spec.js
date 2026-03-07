@@ -136,6 +136,72 @@ test.describe('班長を指定する（leaderConditions）', () => {
     }
   });
 
+  test('班長 + 最前列を同じ生徒に指定 → 10回連続で最前列に配置され全員配置される', async ({ page }) => {
+    await page.evaluate(() => {
+      app.frontConditions = ['山田'];
+      app.leaderConditions = ['山田'];
+    });
+    await page.waitForTimeout(50);
+
+    for (let i = 0; i < 10; i++) {
+      const nextSeatsTable = await runChangeSeats(page);
+      const pos = findStudentPosition(nextSeatsTable, '山田');
+      expect(pos).not.toBeNull();
+      expect(pos[1]).toBe(0); // 最前列に配置される
+      let studentCount = 0;
+      for (const row of nextSeatsTable) {
+        for (const cell of row) {
+          if (cell) studentCount++;
+        }
+      }
+      expect(studentCount).toBe(36);
+    }
+  });
+
+  test('班長 + 最後列を同じ生徒に指定 → 10回連続で最後列に配置され全員配置される', async ({ page }) => {
+    await page.evaluate(() => {
+      app.backConditions = ['高橋'];
+      app.leaderConditions = ['高橋'];
+    });
+    await page.waitForTimeout(50);
+
+    for (let i = 0; i < 10; i++) {
+      const nextSeatsTable = await runChangeSeats(page);
+      const pos = findStudentPosition(nextSeatsTable, '高橋');
+      expect(pos).not.toBeNull();
+      expect(pos[1]).toBe(5); // 最後列に配置される
+      let studentCount = 0;
+      for (const row of nextSeatsTable) {
+        for (const cell of row) {
+          if (cell) studentCount++;
+        }
+      }
+      expect(studentCount).toBe(36);
+    }
+  });
+
+  test('複数人を班長 + 最前列に指定 → 10回連続で全員が最前列かつ異なる班に配置される', async ({ page }) => {
+    const leaders = ['山田', '山口', '別本'];
+    await page.evaluate((leaders) => {
+      app.frontConditions = leaders;
+      app.leaderConditions = leaders;
+    }, leaders);
+    await page.waitForTimeout(50);
+
+    for (let i = 0; i < 10; i++) {
+      const nextSeatsTable = await runChangeSeats(page);
+      const leaderGroups = new Set();
+      for (const name of leaders) {
+        const pos = findStudentPosition(nextSeatsTable, name);
+        expect(pos).not.toBeNull();
+        expect(pos[1]).toBe(0); // 最前列に配置される
+        const groupId = getGroupId(pos[0], pos[1], 2, 3, 6);
+        leaderGroups.add(groupId);
+      }
+      expect(leaderGroups.size).toBe(3); // 全員異なる班
+    }
+  });
+
   test('班サイズが「なし」の場合 → 班長配置はスキップされ、エラーなく席替えが完了する', async ({ page }) => {
     await page.evaluate(() => {
       app.groupSizeX = 'なし';
