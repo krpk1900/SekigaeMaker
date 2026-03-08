@@ -18,19 +18,26 @@ function maxDistance(p1, p2) {
   return Math.max(Math.abs(p1[0] - p2[0]), Math.abs(p1[1] - p2[1]));
 }
 
+function getGroupId(col, row, groupSizeX, groupSizeY, seatsSizeX) {
+  let numGroupCols = seatsSizeX / groupSizeX;
+  let groupCol = Math.floor(col / groupSizeX);
+  let groupRow = Math.floor(row / groupSizeY);
+  return groupRow * numGroupCols + groupCol;
+}
+
 async function setupDemoData(page) {
   await page.evaluate(() => { app.setDemoData(); });
   await page.waitForTimeout(100);
 }
 
-test.describe('全9条件の組み合わせテスト', () => {
+test.describe('全10条件の組み合わせテスト', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto(INDEX_HTML, { waitUntil: 'networkidle' });
     await setupDemoData(page);
   });
 
-  test('全9条件を同時に設定 → 10回連続ですべて成立する', async ({ page }) => {
+  test('全10条件を同時に設定 → 10回連続ですべて成立する', async ({ page }) => {
     const originalGenderTable = await page.evaluate(() => app.genderTable);
 
     await page.evaluate(() => {
@@ -52,6 +59,8 @@ test.describe('全9条件の組み合わせテスト', () => {
       app.isAllDifferent = true;
       // 9. 性別の並びを固定
       app.isFixGender = true;
+      // 10. 班長を指定（デモデータ: groupSizeX=2, groupSizeY=3 → 6班）
+      app.leaderConditions = ['別本', '平野'];
     });
     await page.waitForTimeout(50);
 
@@ -125,6 +134,15 @@ test.describe('全9条件の組み合わせテスト', () => {
           }
         }
       }
+
+      // 10. 班長: 別本と平野がそれぞれ異なる班に配置される
+      const posBetsumoto = findStudentPosition(result.afterTable, '別本');
+      const posHirano = findStudentPosition(result.afterTable, '平野');
+      expect(posBetsumoto).not.toBeNull();
+      expect(posHirano).not.toBeNull();
+      const groupBetsumoto = getGroupId(posBetsumoto[0], posBetsumoto[1], 2, 3, 6);
+      const groupHirano = getGroupId(posHirano[0], posHirano[1], 2, 3, 6);
+      expect(groupBetsumoto).not.toBe(groupHirano);
     }
   });
 });
