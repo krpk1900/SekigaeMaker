@@ -1023,8 +1023,46 @@
           </v-card>
         </v-dialog>
 
+        <!-- 新機能紹介 -->
+        <v-dialog v-model="showNewFeatureModal" width="530" overlay-opacity="0.25">
+          <v-card>
+            <v-card-title class="headline teal lighten-2 font-weight-black"
+              style="display: inherit; color: #FFFFFF;">新機能のお知らせ</v-card-title>
+            <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
+              <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #999;">2026.02.28</span>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
+                  コピペで入力できる機能をリリースしました！
+                </div>
+                <div style="font-size: 14px;">
+                  Excelやスプレッドシートから生徒名をコピペして一括入力できるようになりました。
+                </div>
+              </div>
+              <v-divider style="margin-bottom: 20px;"></v-divider>
+              <div>
+                <div style="margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #999;">2026.03.09</span>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
+                  班長指定機能をリリースしました！
+                </div>
+                <div style="font-size: 14px;">
+                  指定された班長たちは班ごとに1人ずつ配置されます。
+                </div>
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile
+                @click="showNewFeatureModal = false">閉じる</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         <!-- ランディング -->
-        <v-dialog v-model="landing" width="530" transition="dialog-top-transition" overlay-opacity="0.25">
+        <v-dialog v-model="landing" width="530" overlay-opacity="0.25">
           <v-card>
             <v-card-title class="headline teal lighten-2 font-weight-black"
               style="display: inherit; color: #FFFFFF; ">席替えメーカーへようこそ！</v-card-title>
@@ -1151,6 +1189,7 @@
         excelPasteText: '', // Excelペースト用テキストエリアの入力内容
         error: false,
         emptySeatsError: false,
+        showNewFeatureModal: false,
         landing: true,
         sidebarWidth: '52%', // PC用のデフォルト値
         seatsTableMemory: [['']],
@@ -2009,6 +2048,19 @@
           this.setSidebarWidth();
         };
         window.addEventListener('resize', this.onResize);
+
+        // 新機能モーダルの表示判定
+        const newFeatureKey = 'newFeatureModal_v1';
+        if (!localStorage.getItem(newFeatureKey)) {
+          // ランディングモーダルが閉じられた後に表示する
+          const unwatch = this.$watch('landing', (newVal) => {
+            if (!newVal) {
+              this.showNewFeatureModal = true;
+              localStorage.setItem(newFeatureKey, 'true');
+              unwatch();
+            }
+          });
+        }
       },
       beforeDestroy() {
         window.removeEventListener('resize', this.onResize);
