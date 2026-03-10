@@ -946,7 +946,7 @@
                         :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
                         style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                         :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
-                      <v-icon v-if="leaderConditions.includes(nextSeatsTable[nextIndexRow][nextIndexCol])"
+                      <v-icon v-if="nextSeatsTable[nextIndexRow][nextIndexCol] && leaderConditions.includes(nextSeatsTable[nextIndexRow][nextIndexCol])"
                         color="#F9A825"
                         style="position: absolute; top: 4px; left: 4px; font-size: 24px;">mdi-star</v-icon>
                     </span>
