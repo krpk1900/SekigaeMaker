@@ -782,7 +782,8 @@
                           2022.12.20　前回の席替え結果を復元する機能をリリースしました。<br>
                           2026.02.24　画面を小さくしても座席表が表示されるように修正しました。<br>
                           2026.02.28　コピペで入力する機能をリリースしました。<br>
-                          2026.03.09　班に1人班長を指定できる機能をリリースしました。
+                          2026.03.09　班に1人班長を指定できる機能をリリースしました。<br>
+                          2026.03.22　座席の縦横の最大値を8から12まで拡張しました。
                         </v-card-text>
                       </v-card>
                     </v-dialog>
@@ -1033,27 +1034,15 @@
             <v-card-title class="headline teal lighten-2 font-weight-black"
               style="display: inherit; color: #FFFFFF;">新機能のお知らせ</v-card-title>
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
-              <div style="margin-bottom: 20px;">
-                <div style="margin-bottom: 8px;">
-                  <span style="font-size: 14px; color: #999;">2026.02.28</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
-                  コピペで入力できる機能をリリースしました！
-                </div>
-                <div style="font-size: 14px;">
-                  Excelやスプレッドシートから生徒名をコピペして一括入力できるようになりました。
-                </div>
-              </div>
-              <v-divider style="margin-bottom: 20px;"></v-divider>
               <div>
                 <div style="margin-bottom: 8px;">
-                  <span style="font-size: 14px; color: #999;">2026.03.09</span>
+                  <span style="font-size: 14px; color: #999;">2026.03.22</span>
                 </div>
                 <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
-                  班長指定機能をリリースしました！
+                  指定できる座席数の最大値を拡張しました！
                 </div>
                 <div style="font-size: 14px;">
-                  指定された班長たちは班ごとに1人ずつ配置されます。
+                  横・縦ともに最大12席まで設定できるようになりました。
                 </div>
               </div>
             </v-card-text>
@@ -2054,7 +2043,7 @@
         window.addEventListener('resize', this.onResize);
 
         // 新機能モーダルの表示判定
-        const newFeatureKey = 'newFeatureModal_v1';
+        const newFeatureKey = 'newFeatureModal_v2';
         if (!localStorage.getItem(newFeatureKey)) {
           // ランディングモーダルが閉じられた後に表示する
           const unwatch = this.$watch('landing', (newVal) => {
