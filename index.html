@@ -943,7 +943,7 @@
               <transition-group name="transition-item" type="transition">
                 <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable">
                   <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
-                    <span :id="'nextSeatsRow' + nextIndexRow + nextIndexCol"
+                    <span :id="'nextSeatsRow-' + nextIndexRow + '-' + nextIndexCol"
                       class="sortable-item transition-item square minus-margin-bottom"
                       :key="uniqueKey(nextSeat, nextIndexRow, nextIndexCol)" style="position: relative;">
                       <input type="text" class="sortable-item" readonly
@@ -1287,7 +1287,7 @@
         uniqueKey(value, nextIndexRow, nextIndexCol) {
           let key
           if (value == '') {
-            key = `nextSeatsRow${nextIndexRow * this.seatsSizeX + nextIndexCol}`;
+            key = `nextSeatsRow-${nextIndexRow}-${nextIndexCol}`;
           } else {
             key = value;
           }
@@ -1957,7 +1957,7 @@
         setSortableJS() { // sortableJSをフォームにセット
           for (let row = 0; row < this.seatsSizeY; row++) {
             for (let col = 0; col < this.seatsSizeX; col++) {
-              let el = document.getElementById(`nextSeatsRow${row}${col}`);
+              let el = document.getElementById(`nextSeatsRow-${row}-${col}`);
               Sortable.create(el, {
                 group: "nextSeats",
                 swap: true,
@@ -1967,10 +1967,12 @@
                   isReverseSeats = true;
                 },
                 onEnd: function (evt) {
-                  let fromRow = parseInt(evt.from.id.toString().slice(-2, -1));
-                  let fromCol = parseInt(evt.from.id.toString().slice(-1));
-                  let toRow = parseInt(evt.to.id.toString().slice(-2, -1));
-                  let toCol = parseInt(evt.to.id.toString().slice(-1));
+                  let fromParts = evt.from.id.split('-');
+                  let fromRow = parseInt(fromParts[1]);
+                  let fromCol = parseInt(fromParts[2]);
+                  let toParts = evt.to.id.split('-');
+                  let toRow = parseInt(toParts[1]);
+                  let toCol = parseInt(toParts[2]);
                   fromRows.push(fromRow);
                   fromCols.push(fromCol);
                   toRows.push(toRow);
