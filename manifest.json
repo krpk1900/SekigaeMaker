@@ -1,0 +1,17 @@
+{
+  "name": "席替えメーカー",
+  "short_name": "席替え",
+  "description": "学校の席替えの原案を瞬時に出力するアプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0c9ea8",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "256x250",
+      "type": "image/png"
+    }
+  ]
+}
