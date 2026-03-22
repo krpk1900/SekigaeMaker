@@ -131,7 +131,7 @@
       /* PC(lg) */
       .grid-layout {
         display: grid;
-        grid-template-columns: 1fr 1fr 70px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 70px;
         grid-template-rows: 115px;
       }
 
@@ -157,7 +157,7 @@
       /* PC(xl) */
       .grid-layout {
         display: grid;
-        grid-template-columns: 1fr 1fr 70px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 70px;
         grid-template-rows: 115px;
       }
 
@@ -261,14 +261,17 @@
 
     .seat {
       height: 80px;
-      /*60px;*/
       width: 80px;
-      /*15%;*/
       display: inline-block;
       border: 3px solid #0BB3BF;
       box-sizing: border-box;
       text-align: center;
       border-radius: 7px;
+    }
+
+    .seats-scroll-container {
+      overflow-x: auto;
+      white-space: nowrap;
     }
 
     .margin-right {
@@ -779,7 +782,8 @@
                           2022.12.20　前回の席替え結果を復元する機能をリリースしました。<br>
                           2026.02.24　画面を小さくしても座席表が表示されるように修正しました。<br>
                           2026.02.28　コピペで入力する機能をリリースしました。<br>
-                          2026.03.09　班に1人班長を指定できる機能をリリースしました。
+                          2026.03.09　班に1人班長を指定できる機能をリリースしました。<br>
+                          2026.03.22　座席の縦横の最大値を8から12まで拡張しました。
                         </v-card-text>
                       </v-card>
                     </v-dialog>
@@ -873,8 +877,8 @@
         <!-- サイドバーここまで -->
 
         <!-- 座席テーブル -->
-        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;"
-          :class="{'left-card-margin-large': seatsSizeX!=8, 'left-card-margin-small': seatsSizeX==8}"
+        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF; min-width: 0;"
+          :class="{'left-card-margin-large': seatsSizeX<8, 'left-card-margin-small': seatsSizeX>=8}"
           data-intro="座席に生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-title="2. 名前を入力！"
           data-position="right" data-step="2">
           <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
@@ -887,7 +891,7 @@
               <div>Tabキーを押すと次の座席に移動することができます</div>
             </v-tooltip>
           </v-card-title>
-          <div>
+          <div class="seats-scroll-container">
             <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: -4px;">
               <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                 <!-- 1つ目のフォームにプレイスホルダーを設定 -->
@@ -922,8 +926,8 @@
         <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- 席替え後の座席テーブル -->
-        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF;"
-          :class="{'right-card-margin-large': seatsSizeX!=8, 'right-card-margin-small': seatsSizeX==8}"
+        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF; min-width: 0;"
+          :class="{'right-card-margin-large': seatsSizeX<8, 'right-card-margin-small': seatsSizeX>=8}"
           data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-title="5. 最終調整！" data-position="left" data-step="5">
           <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
             <v-tooltip top>
@@ -935,7 +939,7 @@
             </v-tooltip>
           </v-card-title>
           <template v-if="isRenderNextSeatsTable">
-            <div class="center">
+            <div class="center seats-scroll-container">
               <transition-group name="transition-item" type="transition">
                 <template v-for="( nextSeats, nextIndexRow ) in nextSeatsTable">
                   <template v-for="( nextSeat, nextIndexCol ) in nextSeats">
@@ -946,7 +950,8 @@
                         :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
                         style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                         :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
-                      <v-icon v-if="nextSeatsTable[nextIndexRow][nextIndexCol] && leaderConditions.includes(nextSeatsTable[nextIndexRow][nextIndexCol])"
+                      <v-icon
+                        v-if="nextSeatsTable[nextIndexRow][nextIndexCol] && leaderConditions.includes(nextSeatsTable[nextIndexRow][nextIndexCol])"
                         color="#F9A825"
                         style="position: absolute; top: 4px; left: 4px; font-size: 24px;">mdi-star</v-icon>
                     </span>
@@ -1029,27 +1034,15 @@
             <v-card-title class="headline teal lighten-2 font-weight-black"
               style="display: inherit; color: #FFFFFF;">新機能のお知らせ</v-card-title>
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
-              <div style="margin-bottom: 20px;">
-                <div style="margin-bottom: 8px;">
-                  <span style="font-size: 14px; color: #999;">2026.02.28</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
-                  コピペで入力できる機能をリリースしました！
-                </div>
-                <div style="font-size: 14px;">
-                  Excelやスプレッドシートから生徒名をコピペして一括入力できるようになりました。
-                </div>
-              </div>
-              <v-divider style="margin-bottom: 20px;"></v-divider>
               <div>
                 <div style="margin-bottom: 8px;">
-                  <span style="font-size: 14px; color: #999;">2026.03.09</span>
+                  <span style="font-size: 14px; color: #999;">2026.03.22</span>
                 </div>
                 <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
-                  班長指定機能をリリースしました！
+                  指定できる座席数の最大値を拡張しました！
                 </div>
                 <div style="font-size: 14px;">
-                  指定された班長たちは班ごとに1人ずつ配置されます。
+                  横・縦ともに最大12席まで設定できるようになりました。
                 </div>
               </div>
             </v-card-text>
@@ -1130,8 +1123,8 @@
         seatsTableIndex: [], // 座席テーブル上の有効な座席のインデックス
         dupSeatsTableIndex: [], // 座席テーブル上の有効な座席のインデックスの複製、席替えの際に破壊的にデータを取り出していく
         seatsNum: 0, // 有効な座席数
-        seatsOptionsX: [1, 2, 3, 4, 5, 6, 7, 8], // よこの座席数入力フォームの選択肢
-        seatsOptionsY: [1, 2, 3, 4, 5, 6, 7, 8], // たての座席数入力フォームの選択肢
+        seatsOptionsX: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // よこの座席数入力フォームの選択肢
+        seatsOptionsY: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // たての座席数入力フォームの選択肢
         limitedSeatsOptionsX: [1, 2, 3, 4, 5, 6], // seatsSizeXのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
         limitedSeatsOptionsY: [1, 2, 3, 4, 5, 6], // seatsSizeYのデフォルト値6に合わせて、選択肢のデフォルト値も6までにする
         distanceOptions: [0, 1, 2, 3, 4], // 近づける・離す距離の選択肢、デフォルト値6に合わせて実現可能な選択肢をデフォルトに設定
@@ -2050,7 +2043,7 @@
         window.addEventListener('resize', this.onResize);
 
         // 新機能モーダルの表示判定
-        const newFeatureKey = 'newFeatureModal_v1';
+        const newFeatureKey = 'newFeatureModal_v2';
         if (!localStorage.getItem(newFeatureKey)) {
           // ランディングモーダルが閉じられた後に表示する
           const unwatch = this.$watch('landing', (newVal) => {
@@ -2169,6 +2162,22 @@
                 this.groupSizeOptionsX = ['なし', 2, 4];
                 this.groupSizeX = 2
                 break;
+              case 9:
+                this.groupSizeOptionsX = ['なし', 3];
+                this.groupSizeX = 3
+                break;
+              case 10:
+                this.groupSizeOptionsX = ['なし', 2, 5];
+                this.groupSizeX = 2
+                break;
+              case 11:
+                this.groupSizeOptionsX = ['なし'];
+                this.groupSizeX = 'なし'
+                break;
+              case 12:
+                this.groupSizeOptionsX = ['なし', 2, 3, 4, 6];
+                this.groupSizeX = 2
+                break;
             }
             this.$nextTick(function () { // DOMの更新を待ってから
               this.setSortableJS(); // sortableJSをフォームにセット
@@ -2215,6 +2224,22 @@
                 break;
               case 8:
                 this.groupSizeOptionsY = ['なし', 2, 4];
+                this.groupSizeY = 2
+                break;
+              case 9:
+                this.groupSizeOptionsY = ['なし', 3];
+                this.groupSizeY = 3
+                break;
+              case 10:
+                this.groupSizeOptionsY = ['なし', 2, 5];
+                this.groupSizeY = 2
+                break;
+              case 11:
+                this.groupSizeOptionsY = ['なし'];
+                this.groupSizeY = 'なし'
+                break;
+              case 12:
+                this.groupSizeOptionsY = ['なし', 2, 3, 4, 6];
                 this.groupSizeY = 2
                 break;
             }
