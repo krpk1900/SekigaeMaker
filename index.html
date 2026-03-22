@@ -27,10 +27,132 @@
   <meta name="twitter:image" content="https://sekigae.jp/new_og_image.png">
   <meta name="twitter:site" content="席替えメーカー">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://sekigae.jp/">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.9.95/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.7.2/dist/vuetify.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
+  <!-- 構造化データ: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "席替えメーカー",
+    "url": "https://sekigae.jp/",
+    "description": "学校の教室の席替えを自動で行う無料のWebアプリケーション。生徒名と条件を入力するだけで、最適な座席配置案を瞬時に出力します。小学校、中学校、高校に対応。",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "inLanguage": "ja",
+    "author": {
+      "@type": "Organization",
+      "name": "席替えメーカー",
+      "url": "https://sekigae.jp/"
+    }
+  }
+  </script>
+  <!-- 構造化データ: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "席替えメーカーとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "席替えメーカーは、学校の教室の席替えを自動で行う無料のWebアプリケーションです。生徒名と条件を入力するだけで、最適な座席配置案を瞬時に出力します。パソコンやタブレットのブラウザからすぐに使えます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "席替えメーカーは無料で使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、席替えメーカーは完全無料でご利用いただけます。会員登録やログインも不要で、ブラウザからすぐにお使いいただけます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのような条件を設定できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "前列・後列の指定、特定の生徒同士を近くまたは離れた席に配置、席の固定、班長の均等配置、男女の配置バランスなど、さまざまな条件を組み合わせて設定できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "対応している学校の種類は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "小学校、中学校、高校など、あらゆる学校種別に対応しています。座席数は列数×行数で自由に設定でき、最大12×12の座席レイアウトまで対応可能です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スマートフォンでも使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "現在はパソコンとタブレットでの使用を推奨しています。スマートフォンへの対応は今後予定しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "席替えメーカーの使い方を教えてください",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "1. 全体の座席数（列数×行数）を設定します。2. 座席に生徒の名前を入力します。3. 必要に応じて席替えの条件（前後指定、近く・離す、固定など）を設定します。4. 席替え実行ボタンを押すと、条件に基づいた座席配置案が表示されます。結果はドラッグ＆ドロップで手動調整も可能です。"
+        }
+      }
+    ]
+  }
+  </script>
+  <!-- 構造化データ: HowTo -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "席替えメーカーの使い方",
+    "description": "席替えメーカーを使って学校の教室の席替えを行う手順を説明します。",
+    "totalTime": "PT3M",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "座席数を設定する",
+        "text": "サイドバーの「座席数を指定する」パネルを開き、クラスの全体の座席数（列数×行数）と班のサイズを設定します。37人のようにちょうど長方形にならない場合は、6×7のように余裕をもって指定することで対応できます。"
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "生徒名を入力する",
+        "text": "座席表の各マスをクリックして生徒の名前を入力します。性別（男・女）も設定できます。デモデータボタンでサンプルデータを入力することも可能です。"
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "条件を設定する",
+        "text": "必要に応じて席替えの条件を設定します。前列・後列の指定、特定の生徒を近くに配置、特定の生徒を離す、席の固定、班長の均等配置、男女バランスなどの条件を組み合わせられます。"
+      },
+      {
+        "@type": "HowToStep",
+        "position": 4,
+        "name": "席替えを実行する",
+        "text": "席替え実行ボタンを押すと、設定した条件に基づいて最適な座席配置案が瞬時に表示されます。結果に満足できない場合は、再度実行するか、ドラッグ＆ドロップで手動調整することもできます。"
+      }
+    ]
+  }
+  </script>
   <style>
     /* グリッドレイアウト調整用スペーサーの表示切り替え */
     .pc-only {
@@ -404,14 +526,34 @@
 </head>
 
 <body>
+  <noscript>
+    <div style="max-width: 800px; margin: 40px auto; padding: 20px; font-family: sans-serif; color: #333;">
+      <h1>席替えメーカー｜学校の席替えを一瞬で行える無料Webアプリ</h1>
+      <p>席替えメーカー（せきがえメーカー）は、学校の教室の席替え（せきがえ）を自動で行う無料のWebアプリケーションです。生徒名と条件を入力するだけで、最適な座席配置案を瞬時に出力します。</p>
+      <h2>主な機能</h2>
+      <ul>
+        <li>クラスの座席数を自由に設定（列数×行数）</li>
+        <li>前列・後列の指定条件</li>
+        <li>特定の生徒を近くに／離れた席に配置</li>
+        <li>席の固定指定</li>
+        <li>班長の均等配置</li>
+        <li>男女の配置バランス調整</li>
+      </ul>
+      <h2>対応学校</h2>
+      <p>小学校、中学校、高校など、あらゆる学校種別に対応しています。教師の業務時間短縮に貢献します。</p>
+      <p>このアプリケーションの使用にはJavaScriptを有効にする必要があります。ブラウザの設定でJavaScriptを有効にしてください。</p>
+    </div>
+  </noscript>
   <div id="app" v-cloak>
     <v-app>
-      <div class="grid-layout background-color">
+      <div class="grid-layout background-color" role="main">
         <!-- タイトル -->
-        <div style="margin: auto;">
-          <img src="logo.png" width="55px" height="55px" style="margin-top: 10px;">
-          <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
-        </div>
+        <header style="margin: auto;">
+          <h1>
+            <img src="logo.png" width="55" height="55" alt="席替えメーカーのロゴ" style="margin-top: 10px;">
+            <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
+          </h1>
+        </header>
         <div class="pc-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- サイドバー -->
@@ -425,8 +567,8 @@
                     <v-icon color="#0c9ea8" class="close-icon"
                       style="font-size: 32px;">mdi-chevron-double-right</v-icon>
                   </v-list-item>
-                  <h1 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon
-                      color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h1>
+                  <h2 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon
+                      color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h2>
                   <!-- 使い方ボタン -->
                   <v-btn elevation="2" large color="#0c9ea8" class="tutorial-btn" dark @click="startTutorial();"
                     style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 15px;">
