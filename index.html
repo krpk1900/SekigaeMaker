@@ -77,9 +77,29 @@
       display: block;
     }
 
+    .save-btn-container-tb {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      grid-column: 1;
+    }
+
+    @media screen and (min-width:1440px) {
+      .save-btn-container-tb {
+        display: none;
+      }
+    }
+
+
     @media screen and (min-width:1440px) {
       .pc-only {
         display: block;
+      }
+
+      .save-btn-container {
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-end;
       }
 
       .tb-only {
@@ -468,7 +488,12 @@
             <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
           </h1>
         </header>
-        <div class="pc-only"></div><!-- グリッドレイアウト調整用 -->
+        <div class="pc-only save-btn-container">
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
+            style="font-size: 20px; font-weight: 900; margin-right: 80px;">
+            <v-icon left>mdi-content-save</v-icon>結果を保存
+          </v-btn>
+        </div>
 
         <!-- サイドバー -->
         <div>
@@ -682,11 +707,6 @@
                     @click="isShowStudentsNameDialog = true;"
                     style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px; text-transform: none;">
                     <v-icon class="icon">mdi-content-paste</v-icon>コピペで入力
-                  </v-btn>
-                  <!-- 結果を保存するボタン -->
-                  <v-btn elevation="2" x-large color="#0c9ea8" class="demo-btn" dark @click="openSaveDialog()"
-                    style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px;">
-                    <v-icon class="icon">mdi-content-save</v-icon>結果を保存
                   </v-btn>
                   <!-- 結果を復元するボタン -->
                   <v-btn elevation="2" x-large color="#0c9ea8" class="demo-btn" dark @click="openRestoreDialog()"
@@ -984,6 +1004,12 @@
           <div class="card-bottom"></div>
         </v-card>
 
+        <div class="save-btn-container-tb">
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
+            style="font-size: 20px; font-weight: 900;">
+            <v-icon left>mdi-content-save</v-icon>結果を保存
+          </v-btn>
+        </div>
         <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- 席替え後の座席テーブル -->
@@ -1122,7 +1148,7 @@
               style="display: inherit; color: #FFFFFF;">結果を保存</v-card-title>
             <v-card-text style="margin-top: 20px;">
               <v-text-field v-model="saveName" label="保存名を入力してください" outlined
-                :error-messages="saveNameError" @keyup.enter="saveWithName()"
+                :error-messages="saveNameError"
                 autofocus></v-text-field>
             </v-card-text>
             <v-card-actions>
@@ -1138,7 +1164,7 @@
         <!-- 上書き確認ダイアログ -->
         <v-dialog v-model="isShowOverwriteConfirm" width="400" overlay-opacity="0.25">
           <v-card>
-            <v-card-title class="headline orange lighten-2 font-weight-black"
+            <v-card-title class="headline red lighten-1 font-weight-black"
               style="display: inherit; color: #FFFFFF;">上書き確認</v-card-title>
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
               「{{ overwriteTargetName }}」は既に存在します。上書きしますか？
@@ -2222,6 +2248,9 @@
           if (data.leaderConditions) this.leaderConditions = data.leaderConditions;
           if (data.isAllDifferent !== undefined) this.isAllDifferent = data.isAllDifferent;
           if (data.isFixGender !== undefined) this.isFixGender = data.isFixGender;
+          this.countSeats();
+          this.makeNextSeatsTable();
+          this.makeNextGenderTable();
           this.isShowRestoreDialog = false;
           console.log('保存データを復元しました。');
         },
