@@ -77,9 +77,29 @@
       display: block;
     }
 
+    .save-btn-container-tb {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      grid-column: 1;
+    }
+
+    @media screen and (min-width:1440px) {
+      .save-btn-container-tb {
+        display: none;
+      }
+    }
+
+
     @media screen and (min-width:1440px) {
       .pc-only {
         display: block;
+      }
+
+      .save-btn-container {
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-end;
       }
 
       .tb-only {
@@ -468,7 +488,12 @@
             <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
           </h1>
         </header>
-        <div class="pc-only"></div><!-- グリッドレイアウト調整用 -->
+        <div class="pc-only save-btn-container">
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
+            style="font-size: 20px; font-weight: 900; margin-right: 80px;">
+            <v-icon left>mdi-content-save</v-icon>結果を保存
+          </v-btn>
+        </div>
 
         <!-- サイドバー -->
         <div>
@@ -683,10 +708,10 @@
                     style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px; text-transform: none;">
                     <v-icon class="icon">mdi-content-paste</v-icon>コピペで入力
                   </v-btn>
-                  <!-- 前回の結果を復元するボタン -->
-                  <v-btn elevation="2" x-large color="#0c9ea8" class="demo-btn" dark @click="fetchLocalStorage()"
+                  <!-- 結果を復元するボタン -->
+                  <v-btn elevation="2" x-large color="#0c9ea8" class="demo-btn" dark @click="openRestoreDialog()"
                     style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px;">
-                    <v-icon class="icon">mdi-pencil</v-icon>前回の結果を復元
+                    <v-icon class="icon">mdi-restore</v-icon>結果を復元
                   </v-btn>
                   <div style="margin-top: 5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                     <!-- 利用規約 -->
@@ -979,6 +1004,12 @@
           <div class="card-bottom"></div>
         </v-card>
 
+        <div class="save-btn-container-tb">
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
+            style="font-size: 20px; font-weight: 900;">
+            <v-icon left>mdi-content-save</v-icon>結果を保存
+          </v-btn>
+        </div>
         <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- 席替え後の座席テーブル -->
@@ -1106,6 +1137,75 @@
               <v-spacer></v-spacer>
               <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile
                 @click="showNewFeatureModal = false">閉じる</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- 保存ダイアログ -->
+        <v-dialog v-model="isShowSaveDialog" width="500" overlay-opacity="0.25">
+          <v-card>
+            <v-card-title class="headline teal lighten-2 font-weight-black"
+              style="display: inherit; color: #FFFFFF;">結果を保存</v-card-title>
+            <v-card-text style="margin-top: 20px;">
+              <v-text-field v-model="saveName" label="保存名を入力してください" outlined
+                :error-messages="saveNameError"
+                autofocus></v-text-field>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="grey" text class="font-weight-bold" outlined tile
+                @click="isShowSaveDialog = false; saveName = ''; saveNameError = '';">キャンセル</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile
+                @click="saveWithName()">保存</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- 上書き確認ダイアログ -->
+        <v-dialog v-model="isShowOverwriteConfirm" width="400" overlay-opacity="0.25">
+          <v-card>
+            <v-card-title class="headline red lighten-1 font-weight-black"
+              style="display: inherit; color: #FFFFFF;">上書き確認</v-card-title>
+            <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
+              「{{ overwriteTargetName }}」は既に存在します。上書きしますか？
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="grey" text class="font-weight-bold" outlined tile
+                @click="isShowOverwriteConfirm = false;">キャンセル</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="orange" text class="font-weight-bold" outlined tile
+                @click="saveWithName(true)">上書き保存</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- 復元ダイアログ -->
+        <v-dialog v-model="isShowRestoreDialog" width="600" overlay-opacity="0.25">
+          <v-card>
+            <v-card-title class="headline teal lighten-2 font-weight-black"
+              style="display: inherit; color: #FFFFFF;">結果を復元</v-card-title>
+            <v-card-text style="margin-top: 20px;">
+              <div v-if="savedList.length === 0" style="color: #999; font-size: 16px; text-align: center; padding: 20px;">
+                保存されたデータはありません
+              </div>
+              <v-list v-else>
+                <v-list-item v-for="(item, index) in savedList" :key="item.id"
+                  style="border-bottom: 1px solid #eee;">
+                  <v-list-item-content>
+                    <v-list-item-title style="font-weight: 700;">{{ item.name }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ formatDate(item.savedAt) }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action style="flex-direction: row; gap: 8px;">
+                    <v-btn small color="#0c9ea8" dark @click="restoreByName(item.id)">復元</v-btn>
+                    <v-btn small color="red" dark @click="deleteSavedData(item.id, item.name)">削除</v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="grey" text class="font-weight-bold" outlined tile
+                @click="isShowRestoreDialog = false">閉じる</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -1243,6 +1343,13 @@
         sidebarWidth: '52%', // PC用のデフォルト値
         seatsTableMemory: [['']],
         genderTableMemory: [['']],
+        isShowSaveDialog: false, // 保存ダイアログの表示制御フラグ
+        isShowRestoreDialog: false, // 復元ダイアログの表示制御フラグ
+        saveName: '', // 保存名の入力値
+        savedList: [], // 保存済みデータの一覧
+        saveNameError: '', // 保存名のエラーメッセージ
+        isShowOverwriteConfirm: false, // 上書き確認の表示制御フラグ
+        overwriteTargetName: '', // 上書き対象の保存名
       },
       methods: {
         startTutorial() {
@@ -1531,7 +1638,6 @@
           this.$nextTick(function () { // DOMの更新を待ってからsortableJSをフォームにセット
             setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
           });
-          this.setLocalStorage() // 席替え後の座席表のデータをLocalStorageに保存する
           console.log(`====終了====`);
           if (loopNum > 500) {
             //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
@@ -2052,35 +2158,121 @@
             this.drawer = false; // サイドバーを非表示
           }
         },
-        fetchLocalStorage() { // LocalStorageに保存されている前回の結果を取り出す
-          // LocalStorageの値を読み込んで、存在すれば反映する
-          let seatsTableLocalStorage = JSON.parse(localStorage.getItem('seatsTable'));
-          let genderTableLocalStorage = JSON.parse(localStorage.getItem('genderTable'));
-          let seatsSizeYLocalStorage = JSON.parse(localStorage.getItem('seatsSizeY'));
-          let seatsSizeXLocalStorage = JSON.parse(localStorage.getItem('seatsSizeX'));
-          let groupSizeYLocalStorage = JSON.parse(localStorage.getItem('groupSizeY'));
-          let groupSizeXLocalStorage = JSON.parse(localStorage.getItem('groupSizeX'));
-
-          if (seatsTableLocalStorage && genderTableLocalStorage && seatsSizeYLocalStorage && seatsSizeXLocalStorage && groupSizeYLocalStorage && groupSizeXLocalStorage) {
-            console.log("LocalStorageに値があったので反映させました。");
-            this.seatsTable = seatsTableLocalStorage;
-            this.genderTable = genderTableLocalStorage;
-            this.seatsSizeY = seatsSizeYLocalStorage;
-            this.seatsSizeX = seatsSizeXLocalStorage;
-            this.groupSizeY = groupSizeYLocalStorage;
-            this.groupSizeX = groupSizeXLocalStorage;
-          } else {
-            console.log("LocalStorageに値はありませんでした。");
-          }
+        getSavedList() { // 保存済みデータの一覧を取得する
+          let list = JSON.parse(localStorage.getItem('sekigae_saved_list'));
+          return list || [];
         },
-        setLocalStorage() { // LocalStorageに現在の座席表を書き込む
-          localStorage.setItem('seatsTable', JSON.stringify(this.nextSeatsTable, undefined, 1));
-          localStorage.setItem('genderTable', JSON.stringify(this.nextGenderTable, undefined, 1));
-          localStorage.setItem('seatsSizeX', JSON.stringify(this.seatsSizeX, undefined, 1));
-          localStorage.setItem('seatsSizeY', JSON.stringify(this.seatsSizeY, undefined, 1));
-          localStorage.setItem('groupSizeX', JSON.stringify(this.groupSizeX, undefined, 1));
-          localStorage.setItem('groupSizeY', JSON.stringify(this.groupSizeY, undefined, 1));
-          console.log('LocalStorageに値を書き込みました。');
+        openSaveDialog() { // 保存ダイアログを開く
+          this.saveName = '';
+          this.saveNameError = '';
+          this.isShowSaveDialog = true;
+        },
+        openRestoreDialog() { // 復元ダイアログを開く
+          this.savedList = this.getSavedList();
+          this.isShowRestoreDialog = true;
+        },
+        saveWithName(forceOverwrite) { // 名前付きでlocalStorageに保存する
+          let name = this.saveName.trim();
+          if (!name) {
+            this.saveNameError = '保存名を入力してください';
+            return;
+          }
+          this.saveNameError = '';
+          let list = this.getSavedList();
+          let existingIndex = list.findIndex(function(item) { return item.name === name; });
+
+          // 同名が存在し、上書き確認がまだの場合
+          if (existingIndex !== -1 && !forceOverwrite) {
+            this.overwriteTargetName = name;
+            this.isShowOverwriteConfirm = true;
+            return;
+          }
+
+          let id;
+          if (existingIndex !== -1) {
+            // 上書きの場合は既存のIDを使う（古いデータを削除）
+            id = list[existingIndex].id;
+            list.splice(existingIndex, 1);
+          } else {
+            id = String(Date.now());
+          }
+
+          let data = {
+            seatsTable: this.nextSeatsTable,
+            genderTable: this.nextGenderTable,
+            seatsSizeX: this.seatsSizeX,
+            seatsSizeY: this.seatsSizeY,
+            groupSizeX: this.groupSizeX,
+            groupSizeY: this.groupSizeY,
+            nearConditions: this.nearConditions,
+            farConditions: this.farConditions,
+            frontConditions: this.frontConditions,
+            frontTwoRowsConditions: this.frontTwoRowsConditions,
+            backConditions: this.backConditions,
+            backTwoRowsConditions: this.backTwoRowsConditions,
+            fixConditions: this.fixConditions,
+            leaderConditions: this.leaderConditions,
+            isAllDifferent: this.isAllDifferent,
+            isFixGender: this.isFixGender,
+          };
+          localStorage.setItem('sekigae_data_' + id, JSON.stringify(data));
+
+          list.push({ id: id, name: name, savedAt: new Date().toISOString() });
+          localStorage.setItem('sekigae_saved_list', JSON.stringify(list));
+
+          this.isShowSaveDialog = false;
+          this.isShowOverwriteConfirm = false;
+          this.saveName = '';
+          console.log('「' + name + '」として保存しました。');
+        },
+        restoreByName(id) { // IDを指定して復元する
+          let dataStr = localStorage.getItem('sekigae_data_' + id);
+          if (!dataStr) {
+            console.log('保存データが見つかりませんでした。');
+            return;
+          }
+          let data = JSON.parse(dataStr);
+          this.seatsTable = data.seatsTable;
+          this.genderTable = data.genderTable;
+          this.seatsSizeY = data.seatsSizeY;
+          this.seatsSizeX = data.seatsSizeX;
+          this.groupSizeY = data.groupSizeY;
+          this.groupSizeX = data.groupSizeX;
+          if (data.nearConditions) this.nearConditions = data.nearConditions;
+          if (data.farConditions) this.farConditions = data.farConditions;
+          if (data.frontConditions) this.frontConditions = data.frontConditions;
+          if (data.frontTwoRowsConditions) this.frontTwoRowsConditions = data.frontTwoRowsConditions;
+          if (data.backConditions) this.backConditions = data.backConditions;
+          if (data.backTwoRowsConditions) this.backTwoRowsConditions = data.backTwoRowsConditions;
+          if (data.fixConditions) this.fixConditions = data.fixConditions;
+          if (data.leaderConditions) this.leaderConditions = data.leaderConditions;
+          if (data.isAllDifferent !== undefined) this.isAllDifferent = data.isAllDifferent;
+          if (data.isFixGender !== undefined) this.isFixGender = data.isFixGender;
+          this.countSeats();
+          this.makeNextSeatsTable();
+          this.makeNextGenderTable();
+          this.isShowRestoreDialog = false;
+          console.log('保存データを復元しました。');
+        },
+        deleteSavedData(id, name) { // 保存データを削除する
+          if (!confirm('「' + name + '」を削除しますか？')) {
+            return;
+          }
+          localStorage.removeItem('sekigae_data_' + id);
+          let list = this.getSavedList();
+          list = list.filter(function(item) { return item.id !== id; });
+          localStorage.setItem('sekigae_saved_list', JSON.stringify(list));
+          this.savedList = list;
+          console.log('「' + name + '」を削除しました。');
+        },
+        formatDate(isoString) { // ISO日付文字列を表示用にフォーマットする
+          let d = new Date(isoString);
+          let year = d.getFullYear();
+          let month = ('0' + (d.getMonth() + 1)).slice(-2);
+          let day = ('0' + d.getDate()).slice(-2);
+          let hours = ('0' + d.getHours()).slice(-2);
+          let minutes = ('0' + d.getMinutes()).slice(-2);
+          return year + '/' + month + '/' + day + ' ' + hours + ':' + minutes;
         },
       },
       created() {
