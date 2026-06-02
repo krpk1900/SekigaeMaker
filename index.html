@@ -1147,16 +1147,14 @@
             <v-card-title class="headline teal lighten-2 font-weight-black"
               style="display: inherit; color: #FFFFFF;">結果を保存</v-card-title>
             <v-card-text style="margin-top: 20px;">
-              <v-text-field v-model="saveName" label="保存名を入力してください" outlined
-                :error-messages="saveNameError"
+              <v-text-field v-model="saveName" label="保存名を入力してください" outlined :error-messages="saveNameError"
                 autofocus></v-text-field>
             </v-card-text>
             <v-card-actions>
               <v-btn color="grey" text class="font-weight-bold" outlined tile
                 @click="isShowSaveDialog = false; saveName = ''; saveNameError = '';">キャンセル</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile
-                @click="saveWithName()">保存</v-btn>
+              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="saveWithName()">保存</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -1185,12 +1183,12 @@
             <v-card-title class="headline teal lighten-2 font-weight-black"
               style="display: inherit; color: #FFFFFF;">結果を復元</v-card-title>
             <v-card-text style="margin-top: 20px;">
-              <div v-if="savedList.length === 0" style="color: #999; font-size: 16px; text-align: center; padding: 20px;">
+              <div v-if="savedList.length === 0"
+                style="color: #999; font-size: 16px; text-align: center; padding: 20px;">
                 保存されたデータはありません
               </div>
               <v-list v-else>
-                <v-list-item v-for="(item, index) in savedList" :key="item.id"
-                  style="border-bottom: 1px solid #eee;">
+                <v-list-item v-for="(item, index) in savedList" :key="item.id" style="border-bottom: 1px solid #eee;">
                   <v-list-item-content>
                     <v-list-item-title style="font-weight: 700;">{{ item.name }}</v-list-item-title>
                     <v-list-item-subtitle>{{ formatDate(item.savedAt) }}</v-list-item-subtitle>
@@ -2179,7 +2177,7 @@
           }
           this.saveNameError = '';
           let list = this.getSavedList();
-          let existingIndex = list.findIndex(function(item) { return item.name === name; });
+          let existingIndex = list.findIndex(function (item) { return item.name === name; });
 
           // 同名が存在し、上書き確認がまだの場合
           if (existingIndex !== -1 && !forceOverwrite) {
@@ -2260,7 +2258,7 @@
           }
           localStorage.removeItem('sekigae_data_' + id);
           let list = this.getSavedList();
-          list = list.filter(function(item) { return item.id !== id; });
+          list = list.filter(function (item) { return item.id !== id; });
           localStorage.setItem('sekigae_saved_list', JSON.stringify(list));
           this.savedList = list;
           console.log('「' + name + '」を削除しました。');
