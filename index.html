@@ -1259,17 +1259,17 @@
     const fromCols = [];
     const toRows = [];
     const toCols = [];
-    // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
-    Array.prototype.originalIndexOf = function (target) {
-      let indexNum = this.length;
-      const dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
-      const temp = dupThis.reverse().some(array => {
+    // indexOf()は厳密比較を行うため、抽象比較で配列要素を探す関数を定義（Array.prototypeは汚染しない）
+    function looseIndexOf(array, target) {
+      let indexNum = array.length;
+      const dupArray = array.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
+      const temp = dupArray.reverse().some(element => {
         indexNum -= 1;
-        return (array.toString() === target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
+        return (element.toString() === target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
       })
       if (!temp) { indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
       return indexNum;
-    };
+    }
     // ここからVueインスタンス
     const app = new Vue({
       el: "#app",
@@ -2095,7 +2095,7 @@
           }
         },
         delete(target, array) {
-          const deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
+          const deleteIndex = looseIndexOf(array, target); // 削除したいtargetがある配列arrayのインデックスを取得
           if (deleteIndex !== -1) { // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
             array.splice(deleteIndex, 1); // arrayからtargetを削除する
           }
