@@ -1255,15 +1255,15 @@
 
     // ここからsortableJSで使う変数。sortableJSではVueインスタンスのdataやmethodを認識しないため
     let isReverseSeats = false; // スワップした座席を席替え直前に戻すためのフラグ
-    let fromRows = [];
-    let fromCols = [];
-    let toRows = [];
-    let toCols = [];
+    const fromRows = [];
+    const fromCols = [];
+    const toRows = [];
+    const toCols = [];
     // indexOf()は厳密比較を行うため、抽象比較を行うメソッドを定義
     Array.prototype.originalIndexOf = function (target) {
       let indexNum = this.length;
-      let dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
-      let temp = dupThis.reverse().some(array => {
+      const dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
+      const temp = dupThis.reverse().some(array => {
         indexNum -= 1;
         return (array.toString() == target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
       })
@@ -1518,13 +1518,13 @@
         },
         createNewLeaderConditions() {
           if (this.groupSizeX === 'なし' || this.groupSizeY === 'なし') return;
-          let numGroups = (this.seatsSizeX / this.groupSizeX) * (this.seatsSizeY / this.groupSizeY);
+          const numGroups = (this.seatsSizeX / this.groupSizeX) * (this.seatsSizeY / this.groupSizeY);
           if (this.leaderConditions.length < numGroups) {
             this.leaderConditions.push('');
           }
         },
         getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
-          let genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
+          const genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
           let gender
           if (genderIndex === -1) { //
             gender = ''
@@ -1670,8 +1670,8 @@
               this.calcNum += 1;
             }
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
-            let genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
-            let gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
+            const genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
+            const gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
             this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender);// 復元用のnextGenderTableに席替え後の性別を保存
           })
         },
@@ -1838,12 +1838,12 @@
         placeFixedSeats() { // 固定する生徒を配置
           this.fixConditions.forEach(fixCondition => {
             if (fixCondition[0] != '') { // フォーム表示のため最後に['', '', '']が入ってしまっているので、そのときは処理しない
-              let fixConditionName = fixCondition[0];
-              let fixConditionRow = fixCondition[1] - 1; // 入力された値とインデックスのずれを補正
-              let fixConditionCol = fixCondition[2] - 1; // 入力された値とインデックスのずれを補正
+              const fixConditionName = fixCondition[0];
+              const fixConditionRow = fixCondition[1] - 1; // 入力された値とインデックスのずれを補正
+              const fixConditionCol = fixCondition[2] - 1; // 入力された値とインデックスのずれを補正
               this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
 
-              let fixIndex = [fixConditionCol, fixConditionRow]
+              const fixIndex = [fixConditionCol, fixConditionRow]
               this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
               this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
               this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
@@ -1856,28 +1856,28 @@
           })
         },
         getGroupId(col, row) { // 座標から班のIDを返す
-          let numGroupCols = this.seatsSizeX / this.groupSizeX;
-          let groupCol = Math.floor(col / this.groupSizeX);
-          let groupRow = Math.floor(row / this.groupSizeY);
+          const numGroupCols = this.seatsSizeX / this.groupSizeX;
+          const groupCol = Math.floor(col / this.groupSizeX);
+          const groupRow = Math.floor(row / this.groupSizeY);
           return groupRow * numGroupCols + groupCol;
         },
         placeLeaders() { // 班長を各班に1人ずつ配置する
-          let leaders = this.leaderConditions.filter(Boolean);
+          const leaders = this.leaderConditions.filter(Boolean);
           if (leaders.length === 0) return;
           if (this.groupSizeX === 'なし' || this.groupSizeY === 'なし') return;
 
-          let numGroupCols = this.seatsSizeX / this.groupSizeX;
-          let numGroupRows = this.seatsSizeY / this.groupSizeY;
-          let totalGroups = numGroupCols * numGroupRows;
+          const numGroupCols = this.seatsSizeX / this.groupSizeX;
+          const numGroupRows = this.seatsSizeY / this.groupSizeY;
+          const totalGroups = numGroupCols * numGroupRows;
 
           // placeFixedSeats()で既に配置された班長がいるかチェックし、その班を「配置済み」としてマーク
-          let groupHasLeader = {};
-          let remainingLeaders = [];
+          const groupHasLeader = {};
+          const remainingLeaders = [];
           leaders.forEach(leaderName => {
-            let pos = this.getPositionFromNextSeatsTable(leaderName);
+            const pos = this.getPositionFromNextSeatsTable(leaderName);
             if (pos !== false) {
               // 既にplaceFixedSeats()で配置済み
-              let groupId = this.getGroupId(pos[0], pos[1]);
+              const groupId = this.getGroupId(pos[0], pos[1]);
               groupHasLeader[groupId] = true;
             } else {
               remainingLeaders.push(leaderName);
@@ -1887,19 +1887,19 @@
           if (remainingLeaders.length === 0) return;
 
           // 利用可能な座席を班ごとにグループ化
-          let groupSeats = {};
+          const groupSeats = {};
           for (let i = 0; i < totalGroups; i++) {
             groupSeats[i] = [];
           }
           this.dupSeatsTableIndex.forEach(seatIndex => {
-            let groupId = this.getGroupId(seatIndex[0], seatIndex[1]);
+            const groupId = this.getGroupId(seatIndex[0], seatIndex[1]);
             if (groupSeats[groupId] !== undefined) {
               groupSeats[groupId].push(seatIndex);
             }
           });
 
           // まだ班長がいない班のリストを取得
-          let groupsNeedingLeader = [];
+          const groupsNeedingLeader = [];
           for (let i = 0; i < totalGroups; i++) {
             if (!groupHasLeader[i] && groupSeats[i] && groupSeats[i].length > 0) {
               groupsNeedingLeader.push(i);
@@ -1907,10 +1907,10 @@
           }
 
           // 班長の行条件に基づいて、有効な班のみにフィルタする関数
-          let self = this;
+          const self = this;
           function getValidGroups(leaderName, groups) {
             return groups.filter(gid => {
-              let seats = groupSeats[gid];
+              const seats = groupSeats[gid];
               if (self.frontConditions.includes(leaderName)) {
                 return seats.some(s => s[1] === 0);
               } else if (self.backConditions.includes(leaderName)) {
@@ -1925,8 +1925,8 @@
           }
 
           // 行条件のある班長を先に配置し、その後に行条件なしの班長を配置する
-          let constrainedLeaders = [];
-          let unconstrainedLeaders = [];
+          const constrainedLeaders = [];
+          const unconstrainedLeaders = [];
           remainingLeaders.forEach(name => {
             if (this.frontConditions.includes(name) || this.backConditions.includes(name) ||
               this.frontTwoRowsConditions.includes(name) || this.backTwoRowsConditions.includes(name)) {
@@ -1936,20 +1936,20 @@
             }
           });
 
-          let usedGroups = new Set(Object.keys(groupHasLeader).map(Number));
-          let orderedLeaders = constrainedLeaders.concat(unconstrainedLeaders);
+          const usedGroups = new Set(Object.keys(groupHasLeader).map(Number));
+          const orderedLeaders = constrainedLeaders.concat(unconstrainedLeaders);
 
           orderedLeaders.forEach(leaderName => {
             if (this.restartFlag) return;
 
             // この班長が配置可能な班のリストを取得（行条件でフィルタ + 使用済み班を除外）
-            let availableGroups = getValidGroups(leaderName, groupsNeedingLeader).filter(gid => !usedGroups.has(gid));
+            const availableGroups = getValidGroups(leaderName, groupsNeedingLeader).filter(gid => !usedGroups.has(gid));
             if (availableGroups.length === 0) {
               this.restartFlag = true;
               return;
             }
             this.shuffle(availableGroups);
-            let groupId = availableGroups[0];
+            const groupId = availableGroups[0];
             usedGroups.add(groupId);
 
             // 班内で行条件に合う座席を取得
@@ -1984,8 +1984,8 @@
             if (this.restartFlag) return;
 
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, leaderName); // 取り出したインデックスの位置に班長名を保存
-            let genderIndex = this.studentsName.indexOf(leaderName);
-            let gender = this.genderArray[genderIndex];
+            const genderIndex = this.studentsName.indexOf(leaderName);
+            const gender = this.genderArray[genderIndex];
             this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender); // 復元用のnextGenderTableに席替え後の性別を保存
 
             // ここで配置した班長は他の配置処理で配置する必要がないため、各配列から削除する
@@ -1999,13 +1999,13 @@
           });
         },
         minDistance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
-          let x_abs = Math.abs(p1[0] - p2[0]);
-          let y_abs = Math.abs(p1[1] - p2[1]);
+          const x_abs = Math.abs(p1[0] - p2[0]);
+          const y_abs = Math.abs(p1[1] - p2[1]);
           return Math.min(x_abs, y_abs);
         },
         maxDistance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
-          let x_abs = Math.abs(p1[0] - p2[0]);
-          let y_abs = Math.abs(p1[1] - p2[1]);
+          const x_abs = Math.abs(p1[0] - p2[0]);
+          const y_abs = Math.abs(p1[1] - p2[1]);
           return Math.max(x_abs, y_abs);
         },
         checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
@@ -2020,8 +2020,8 @@
                 nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
               }
               // ----ここまで----
-              let distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
-              let nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+              const distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
+              const nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
               if (this.maxDistance(p, nearStudentPosition) > distance) { // 距離のmaxが条件distanceより上なら返り値をfalseに更新
                 return_value = false;
               }
@@ -2041,8 +2041,8 @@
                 farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
               }
               // ----ここまで----
-              let distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
-              let farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+              const distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
+              const farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
               if (this.maxDistance(p, farStudentPosition) < distance) { // 距離のminが条件distanceより下なら返り値をfalseに更新
                 return_value = false;
               }
@@ -2051,9 +2051,9 @@
           return return_value;
         },
         checkGender(studentName, p) { // 引数の生徒を座標pに配置したとき、性別の条件を満たすならtrue、満たさないならfalseを返す
-          let genderIndex = this.studentsName.indexOf(studentName);
-          let currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
-          let nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
+          const genderIndex = this.studentsName.indexOf(studentName);
+          const currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
+          const nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
           if (currentGender == nextGender) {
             return true
           } else {
@@ -2061,8 +2061,8 @@
           }
         },
         checkDifferent(studentName, p) { // 引数の生徒を座標pに配置したとき、現在の座席と異なっているならtrue、現在の座席と同じならfalseを返す
-          let studentIndex = this.studentsName.indexOf(studentName);
-          let currentIndex = this.seatsTableIndex[studentIndex];
+          const studentIndex = this.studentsName.indexOf(studentName);
+          const currentIndex = this.seatsTableIndex[studentIndex];
           if (currentIndex.toString() == p.toString()) { // 配列を比較するときは厳密比較になるので文字列に変換
             return false;
           } else {
@@ -2074,7 +2074,7 @@
           let return_value = false; // 返す値の初期値をfalse
           this.nextSeatsTable.forEach(nextSeatsRow => {
             if (nextSeatsRow.includes(studentName)) {
-              let nextSeatsColNum = nextSeatsRow.indexOf(studentName);
+              const nextSeatsColNum = nextSeatsRow.indexOf(studentName);
               return_value = [nextSeatsColNum, nextSeatsRowNum]; // 返す値を座標で更新
             }
             nextSeatsRowNum += 1;
@@ -2107,15 +2107,15 @@
           }
         },
         delete(target, array) {
-          let deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
+          const deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
           if (deleteIndex != -1) { // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
             array.splice(deleteIndex, 1); // arrayからtargetを削除する
           }
         },
         reverseSeats() {
           for (let i = 0; i < fromRows.length; i++) {
-            let fromSeat = this.nextSeatsTable[fromRows[i]][fromCols[i]];
-            let toSeat = this.nextSeatsTable[toRows[i]][toCols[i]];
+            const fromSeat = this.nextSeatsTable[fromRows[i]][fromCols[i]];
+            const toSeat = this.nextSeatsTable[toRows[i]][toCols[i]];
             this.nextSeatsTable[fromRows[i]].splice(fromCols[i], 1, toSeat);
             this.nextSeatsTable[toRows[i]].splice(toCols[i], 1, fromSeat);
             console.log(`${fromSeat}([${fromRows[i]}][${fromCols[i]}])と${toSeat}([${toRows[i]}][${toCols[i]}])をスワップ`);
@@ -2128,7 +2128,7 @@
         setSortableJS() { // sortableJSをフォームにセット
           for (let row = 0; row < this.seatsSizeY; row++) {
             for (let col = 0; col < this.seatsSizeX; col++) {
-              let el = document.getElementById(`nextSeatsRow-${row}-${col}`);
+              const el = document.getElementById(`nextSeatsRow-${row}-${col}`);
               Sortable.create(el, {
                 group: "nextSeats",
                 swap: true,
@@ -2138,12 +2138,12 @@
                   isReverseSeats = true;
                 },
                 onEnd: function (evt) {
-                  let fromParts = evt.from.id.split('-');
-                  let fromRow = parseInt(fromParts[1]);
-                  let fromCol = parseInt(fromParts[2]);
-                  let toParts = evt.to.id.split('-');
-                  let toRow = parseInt(toParts[1]);
-                  let toCol = parseInt(toParts[2]);
+                  const fromParts = evt.from.id.split('-');
+                  const fromRow = parseInt(fromParts[1]);
+                  const fromCol = parseInt(fromParts[2]);
+                  const toParts = evt.to.id.split('-');
+                  const toRow = parseInt(toParts[1]);
+                  const toCol = parseInt(toParts[2]);
                   fromRows.push(fromRow);
                   fromCols.push(fromCol);
                   toRows.push(toRow);
@@ -2168,7 +2168,7 @@
           }
         },
         getSavedList() { // 保存済みデータの一覧を取得する
-          let list = JSON.parse(localStorage.getItem('sekigae_saved_list'));
+          const list = JSON.parse(localStorage.getItem('sekigae_saved_list'));
           return list || [];
         },
         openSaveDialog() { // 保存ダイアログを開く
@@ -2181,14 +2181,14 @@
           this.isShowRestoreDialog = true;
         },
         saveWithName(forceOverwrite) { // 名前付きでlocalStorageに保存する
-          let name = this.saveName.trim();
+          const name = this.saveName.trim();
           if (!name) {
             this.saveNameError = '保存名を入力してください';
             return;
           }
           this.saveNameError = '';
-          let list = this.getSavedList();
-          let existingIndex = list.findIndex(function (item) { return item.name === name; });
+          const list = this.getSavedList();
+          const existingIndex = list.findIndex(function (item) { return item.name === name; });
 
           // 同名が存在し、上書き確認がまだの場合
           if (existingIndex !== -1 && !forceOverwrite) {
@@ -2206,7 +2206,7 @@
             id = String(Date.now());
           }
 
-          let data = {
+          const data = {
             seatsTable: this.nextSeatsTable,
             genderTable: this.nextGenderTable,
             seatsSizeX: this.seatsSizeX,
@@ -2225,12 +2225,12 @@
           console.log('「' + name + '」として保存しました。');
         },
         restoreByName(id) { // IDを指定して復元する
-          let dataStr = localStorage.getItem('sekigae_data_' + id);
+          const dataStr = localStorage.getItem('sekigae_data_' + id);
           if (!dataStr) {
             console.log('保存データが見つかりませんでした。');
             return;
           }
-          let data = JSON.parse(dataStr);
+          const data = JSON.parse(dataStr);
           this.seatsTable = data.seatsTable;
           this.genderTable = data.genderTable;
           this.seatsSizeY = data.seatsSizeY;
@@ -2270,12 +2270,12 @@
           console.log('「' + name + '」を削除しました。');
         },
         formatDate(isoString) { // ISO日付文字列を表示用にフォーマットする
-          let d = new Date(isoString);
-          let year = d.getFullYear();
-          let month = ('0' + (d.getMonth() + 1)).slice(-2);
-          let day = ('0' + d.getDate()).slice(-2);
-          let hours = ('0' + d.getHours()).slice(-2);
-          let minutes = ('0' + d.getMinutes()).slice(-2);
+          const d = new Date(isoString);
+          const year = d.getFullYear();
+          const month = ('0' + (d.getMonth() + 1)).slice(-2);
+          const day = ('0' + d.getDate()).slice(-2);
+          const hours = ('0' + d.getHours()).slice(-2);
+          const minutes = ('0' + d.getMinutes()).slice(-2);
           return year + '/' + month + '/' + day + ' ' + hours + ':' + minutes;
         },
       },
