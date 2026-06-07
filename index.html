@@ -1265,7 +1265,7 @@
       const dupThis = this.slice(0); // reverse()は破壊的なので、引数を破壊しないために複製を作成
       const temp = dupThis.reverse().some(array => {
         indexNum -= 1;
-        return (array.toString() == target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
+        return (array.toString() === target.toString()); // 配列を比較するときは厳密比較になるので文字列に変換
       })
       if (!temp) { indexNum -= 1; } // 最後まで見つからなかったとき、返り値を-1にするための調整
       return indexNum;
@@ -1376,15 +1376,15 @@
           this.$nextTick(function () { // DOM更新が反映されてサイドバーが表示されるのを待ってから
             intro.onafterchange(function () {
               console.log(this._currentStep);
-              if (this._currentStep == 1) {
+              if (this._currentStep === 1) {
                 if (window.innerWidth < BREAKPOINT_PC) { // SP・TBのとき
                   app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
                 }
-              } else if (this._currentStep == 2) {
+              } else if (this._currentStep === 2) {
                 app.setSidebarWidth();
                 app.drawer = true;
                 app.setDemoData();
-              } else if (this._currentStep == 4) {
+              } else if (this._currentStep === 4) {
                 app.changeSeatsProcess();
               }
             }).start();
@@ -1398,19 +1398,19 @@
           });
         },
         applyExcelPasteData() {
-          var names = this.parsedNames;
+          const names = this.parsedNames;
           if (names.length === 0) return;
 
           // 座席と性別をクリア
-          for (var i = 0; i < this.seatsSizeY; i++) {
+          for (let i = 0; i < this.seatsSizeY; i++) {
             this.seatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
             this.genderTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
           }
 
           // 左上から順に充填
-          var nameIndex = 0;
-          for (var row = 0; row < this.seatsSizeY; row++) {
-            for (var col = 0; col < this.seatsSizeX; col++) {
+          let nameIndex = 0;
+          for (let row = 0; row < this.seatsSizeY; row++) {
+            for (let col = 0; col < this.seatsSizeX; col++) {
               if (nameIndex >= names.length) break;
               this.seatsTable[row].splice(col, 1, names[nameIndex]);
               this.genderTable[row].splice(col, 1, 'male');
@@ -1458,7 +1458,7 @@
         },
         uniqueKey(value, nextIndexRow, nextIndexCol) {
           let key
-          if (value == '') {
+          if (value === '') {
             key = `nextSeatsRow-${nextIndexRow}-${nextIndexCol}`;
           } else {
             key = value;
@@ -1532,9 +1532,9 @@
             gender = this.genderArray[genderIndex];
           }
           if (gender === '') {
-            if (row == 0 && col == 0) {
+            if (row === 0 && col === 0) {
               return 'male-seats'
-            } else if (row == 0 && col == 1) {
+            } else if (row === 0 && col === 1) {
               return 'female-seats'
             } else {
               return 'off-seats'
@@ -1837,7 +1837,7 @@
         },
         placeFixedSeats() { // 固定する生徒を配置
           this.fixConditions.forEach(fixCondition => {
-            if (fixCondition[0] != '') { // フォーム表示のため最後に['', '', '']が入ってしまっているので、そのときは処理しない
+            if (fixCondition[0] !== '') { // フォーム表示のため最後に['', '', '']が入ってしまっているので、そのときは処理しない
               const fixConditionName = fixCondition[0];
               const fixConditionRow = fixCondition[1] - 1; // 入力された値とインデックスのずれを補正
               const fixConditionCol = fixCondition[2] - 1; // 入力された値とインデックスのずれを補正
@@ -1998,11 +1998,6 @@
             this.delete(topIndex, this.dupBackTwoRowsSeatsIndex);
           });
         },
-        minDistance(p1, p2) { // 2点の距離のminを返す。p1, p2は座標、たとえばp1=[1,2]
-          const x_abs = Math.abs(p1[0] - p2[0]);
-          const y_abs = Math.abs(p1[1] - p2[1]);
-          return Math.min(x_abs, y_abs);
-        },
         maxDistance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
           const x_abs = Math.abs(p1[0] - p2[0]);
           const y_abs = Math.abs(p1[1] - p2[1]);
@@ -2014,9 +2009,9 @@
             if (nearConditionArray.includes(studentName)) { // もし引数の生徒が、近づける条件にいれば
               // ----近づけたい生徒の名前を取得----
               let nearStudentName
-              if (nearConditionArray.indexOf(studentName) == 0) {
+              if (nearConditionArray.indexOf(studentName) === 0) {
                 nearStudentName = nearConditionArray[1]; // 引数の生徒と近づけたい生徒
-              } else if (nearConditionArray.indexOf(studentName) == 1) {
+              } else if (nearConditionArray.indexOf(studentName) === 1) {
                 nearStudentName = nearConditionArray[0]; // 引数の生徒と近づけたい生徒
               }
               // ----ここまで----
@@ -2035,9 +2030,9 @@
             if (farConditionArray.includes(studentName)) { // もし引数の生徒が、離す条件にいれば
               // ----離す生徒の名前を取得----
               let farStudentName
-              if (farConditionArray.indexOf(studentName) == 0) {
+              if (farConditionArray.indexOf(studentName) === 0) {
                 farStudentName = farConditionArray[1]; // 引数の生徒と離す生徒
-              } else if (farConditionArray.indexOf(studentName) == 1) {
+              } else if (farConditionArray.indexOf(studentName) === 1) {
                 farStudentName = farConditionArray[0]; // 引数の生徒と離す生徒
               }
               // ----ここまで----
@@ -2054,20 +2049,13 @@
           const genderIndex = this.studentsName.indexOf(studentName);
           const currentGender = this.genderArray[genderIndex]; // 引数の生徒の性別
           const nextGender = this.genderTable[p[1]][p[0]]; // 性別テーブルに記憶している性別
-          if (currentGender == nextGender) {
-            return true
-          } else {
-            return false
-          }
+          return currentGender === nextGender;
         },
         checkDifferent(studentName, p) { // 引数の生徒を座標pに配置したとき、現在の座席と異なっているならtrue、現在の座席と同じならfalseを返す
           const studentIndex = this.studentsName.indexOf(studentName);
           const currentIndex = this.seatsTableIndex[studentIndex];
-          if (currentIndex.toString() == p.toString()) { // 配列を比較するときは厳密比較になるので文字列に変換
-            return false;
-          } else {
-            return true;
-          }
+          // 配列を比較するときは厳密比較になるので文字列に変換
+          return currentIndex.toString() !== p.toString();
         },
         getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
           let nextSeatsRowNum = 0; // 行インデックス、y座標
@@ -2108,7 +2096,7 @@
         },
         delete(target, array) {
           const deleteIndex = array.originalIndexOf(target); // 削除したいtargetがある配列arrayのインデックスを取得
-          if (deleteIndex != -1) { // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
+          if (deleteIndex !== -1) { // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
             array.splice(deleteIndex, 1); // arrayからtargetを削除する
           }
         },
@@ -2328,10 +2316,10 @@
             this.seatsTable.forEach(seats => {
               let col = 0;
               seats.forEach(seat => {
-                if (seat != '') { // 更新されるごとに有効な座席を判定し、
+                if (seat !== '') { // 更新されるごとに有効な座席を判定し、
                   this.seatsTableIndex.push([col, row]); // 有効な座席インデックス配列にプッシュ
                 }
-                if (seat == '') { // 座席テーブルから名前が消されたら
+                if (seat === '') { // 座席テーブルから名前が消されたら
                   this.genderTable[row].splice(col, 1, ''); // 性別も消去
                 }
                 col += 1;
