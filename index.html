@@ -864,7 +864,8 @@
                           2026.02.24　画面を小さくしても座席表が表示されるように修正しました。<br>
                           2026.02.28　コピペで入力する機能をリリースしました。<br>
                           2026.03.09　班に1人班長を指定できる機能をリリースしました。<br>
-                          2026.03.22　座席の縦横の最大値を8から12まで拡張しました。
+                          2026.03.22　座席の縦横の最大値を8から12まで拡張しました。<br>
+                          2026.06.08　席替え結果を名前を付けて保存・復元できるようになりました。
                         </v-card-text>
                       </v-card>
                     </v-dialog>
@@ -1123,13 +1124,13 @@
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
               <div>
                 <div style="margin-bottom: 8px;">
-                  <span style="font-size: 14px; color: #999;">2026.03.22</span>
+                  <span style="font-size: 14px; color: #999;">2026.06.08</span>
                 </div>
                 <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
-                  指定できる座席数を増やしました！
+                  席替え結果を名前を付けて保存できるようになりました！
                 </div>
                 <div style="font-size: 14px;">
-                  横・縦ともに最大12席まで設定できるようになりました。
+                  席替えの結果を好きな名前で保存し、同一デバイスでいつでも復元できるようになりました。
                 </div>
               </div>
             </v-card-text>
@@ -2286,7 +2287,7 @@
         window.addEventListener('resize', this.onResize);
 
         // 新機能モーダルの表示判定
-        const newFeatureKey = 'newFeatureModal_v2';
+        const newFeatureKey = 'newFeatureModal_v3';
         if (!localStorage.getItem(newFeatureKey)) {
           // ランディングモーダルが閉じられた後に表示する
           const unwatch = this.$watch('landing', (newVal) => {
