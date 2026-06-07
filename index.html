@@ -2202,16 +2202,6 @@
             seatsSizeY: this.seatsSizeY,
             groupSizeX: this.groupSizeX,
             groupSizeY: this.groupSizeY,
-            nearConditions: this.nearConditions,
-            farConditions: this.farConditions,
-            frontConditions: this.frontConditions,
-            frontTwoRowsConditions: this.frontTwoRowsConditions,
-            backConditions: this.backConditions,
-            backTwoRowsConditions: this.backTwoRowsConditions,
-            fixConditions: this.fixConditions,
-            leaderConditions: this.leaderConditions,
-            isAllDifferent: this.isAllDifferent,
-            isFixGender: this.isFixGender,
           };
           localStorage.setItem('sekigae_data_' + id, JSON.stringify(data));
 
@@ -2236,16 +2226,6 @@
           this.seatsSizeX = data.seatsSizeX;
           this.groupSizeY = data.groupSizeY;
           this.groupSizeX = data.groupSizeX;
-          if (data.nearConditions) this.nearConditions = data.nearConditions;
-          if (data.farConditions) this.farConditions = data.farConditions;
-          if (data.frontConditions) this.frontConditions = data.frontConditions;
-          if (data.frontTwoRowsConditions) this.frontTwoRowsConditions = data.frontTwoRowsConditions;
-          if (data.backConditions) this.backConditions = data.backConditions;
-          if (data.backTwoRowsConditions) this.backTwoRowsConditions = data.backTwoRowsConditions;
-          if (data.fixConditions) this.fixConditions = data.fixConditions;
-          if (data.leaderConditions) this.leaderConditions = data.leaderConditions;
-          if (data.isAllDifferent !== undefined) this.isAllDifferent = data.isAllDifferent;
-          if (data.isFixGender !== undefined) this.isFixGender = data.isFixGender;
           this.countSeats();
           this.makeNextSeatsTable();
           this.makeNextGenderTable();
