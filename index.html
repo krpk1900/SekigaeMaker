@@ -2226,6 +2226,17 @@
           this.seatsSizeX = data.seatsSizeX;
           this.groupSizeY = data.groupSizeY;
           this.groupSizeX = data.groupSizeX;
+          // 条件は保存していないため、復元した座席と整合させるためデフォルトへリセットする
+          this.nearConditions = [['', '', '']];
+          this.farConditions = [['', '', '']];
+          this.frontConditions = [''];
+          this.frontTwoRowsConditions = [''];
+          this.backConditions = [''];
+          this.backTwoRowsConditions = [''];
+          this.fixConditions = [['', '', '']];
+          this.leaderConditions = [''];
+          this.isAllDifferent = true;
+          this.isFixGender = true;
           this.countSeats();
           this.makeNextSeatsTable();
           this.makeNextGenderTable();
