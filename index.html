@@ -2224,8 +2224,12 @@
           this.genderTable = data.genderTable;
           this.seatsSizeY = data.seatsSizeY;
           this.seatsSizeX = data.seatsSizeX;
-          this.groupSizeY = data.groupSizeY;
-          this.groupSizeX = data.groupSizeX;
+          // seatsSizeX/Yのwatcherが班サイズをデフォルトへ上書きするため、
+          // watcher確定後（nextTick）に保存値で再設定して上書きを防ぐ
+          this.$nextTick(() => {
+            this.groupSizeY = data.groupSizeY;
+            this.groupSizeX = data.groupSizeX;
+          });
           // 条件は保存していないため、復元した座席と整合させるためデフォルトへリセットする
           this.nearConditions = [['', '', '']];
           this.farConditions = [['', '', '']];
