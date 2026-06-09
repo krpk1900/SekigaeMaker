@@ -1464,19 +1464,11 @@
           this.countSeats();
           this.leaderConditions = ['別本', '平野', '高松', '岡村', '四十住', '長島'];
         },
-        setBlankData() {
-          this.seatsTable.splice(0, 1, ['', '', '', '', '', '']);
-          this.seatsTable.splice(1, 1, ['', '', '', '', '', '']);
-          this.seatsTable.splice(2, 1, ['', '', '', '', '', '']);
-          this.seatsTable.splice(3, 1, ['', '', '', '', '', '']);
-          this.seatsTable.splice(4, 1, ['', '', '', '', '', '']);
-          this.seatsTable.splice(5, 1, ['', '', '', '', '', '']);
-          this.genderTable.splice(0, 1, ['', '', '', '', '', '']);
-          this.genderTable.splice(1, 1, ['', '', '', '', '', '']);
-          this.genderTable.splice(2, 1, ['', '', '', '', '', '']);
-          this.genderTable.splice(3, 1, ['', '', '', '', '', '']);
-          this.genderTable.splice(4, 1, ['', '', '', '', '', '']);
-          this.genderTable.splice(5, 1, ['', '', '', '', '', '']);
+        setBlankData() { // 座席・性別テーブルを現在のサイズで空にする
+          for (let i = 0; i < this.seatsSizeY; i++) {
+            this.seatsTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
+            this.genderTable.splice(i, 1, Array(this.seatsSizeX).fill(''));
+          }
           this.countSeats();
         },
         uniqueKey(value, nextIndexRow, nextIndexCol) {
