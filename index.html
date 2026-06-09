@@ -562,10 +562,14 @@
                             <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>最前列</v-expansion-panel-header>
                               <v-expansion-panel-content>
-                                <span v-for="(frontCondition, frontIndex) in frontConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
-                                    style="width:190px; display: inline-block" v-model="frontConditions[frontIndex]"
-                                    @change.once="createNewFrontConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                <span v-for="(frontCondition, frontIndex) in frontConditions"
+                                  style="display: inline-flex; align-items: center; margin: 0 26px 6px 0;">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined hide-details
+                                    style="width:190px; margin-bottom: 0;" v-model="frontConditions[frontIndex]"
+                                    @change="createNewFrontConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  <v-btn icon small class="ml-n1" v-if="frontConditions[frontIndex]" title="この条件を削除"
+                                    @click="deleteCondition(frontConditions, frontIndex, '')"><v-icon
+                                      color="grey">mdi-close-circle</v-icon></v-btn>
                                 </span>
                               </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -573,12 +577,17 @@
                             <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>前2列</v-expansion-panel-header>
                               <v-expansion-panel-content>
-                                <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
-                                    style="width:190px; display: inline-block"
+                                <span v-for="(frontTwoRowsCondition, frontTwoRowsIndex) in frontTwoRowsConditions"
+                                  style="display: inline-flex; align-items: center; margin: 0 26px 6px 0;">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined hide-details
+                                    style="width:190px; margin-bottom: 0;"
                                     v-model="frontTwoRowsConditions[frontTwoRowsIndex]"
-                                    @change.once="createNewFrontTwoRowsConditions"
+                                    @change="createNewFrontTwoRowsConditions"
                                     no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  <v-btn icon small class="ml-n1" v-if="frontTwoRowsConditions[frontTwoRowsIndex]"
+                                    title="この条件を削除"
+                                    @click="deleteCondition(frontTwoRowsConditions, frontTwoRowsIndex, '')"><v-icon
+                                      color="grey">mdi-close-circle</v-icon></v-btn>
                                 </span>
                               </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -586,12 +595,16 @@
                             <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>後ろ2列</v-expansion-panel-header>
                               <v-expansion-panel-content>
-                                <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
-                                    style="width:190px; display: inline-block"
+                                <span v-for="(backTwoRowsCondition, backTwoRowsIndex) in backTwoRowsConditions"
+                                  style="display: inline-flex; align-items: center; margin: 0 26px 6px 0;">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined hide-details
+                                    style="width:190px; margin-bottom: 0;"
                                     v-model="backTwoRowsConditions[backTwoRowsIndex]"
-                                    @change.once="createNewBackTwoRowsConditions"
-                                    no-data-text="座席に生徒名が入力されていません"></v-select>
+                                    @change="createNewBackTwoRowsConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  <v-btn icon small class="ml-n1" v-if="backTwoRowsConditions[backTwoRowsIndex]"
+                                    title="この条件を削除"
+                                    @click="deleteCondition(backTwoRowsConditions, backTwoRowsIndex, '')"><v-icon
+                                      color="grey">mdi-close-circle</v-icon></v-btn>
                                 </span>
                               </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -599,10 +612,14 @@
                             <v-expansion-panel style="background-color: #fbfbfb;">
                               <v-expansion-panel-header>最後列</v-expansion-panel-header>
                               <v-expansion-panel-content>
-                                <span v-for="(backCondition, backIndex) in backConditions">
-                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined
-                                    style="width:190px; display: inline-block" v-model="backConditions[backIndex]"
-                                    @change.once="createNewBackConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                <span v-for="(backCondition, backIndex) in backConditions"
+                                  style="display: inline-flex; align-items: center; margin: 0 26px 6px 0;">
+                                  <v-select :items="rowConditionsStudentsName" placeholder="Aさん" outlined hide-details
+                                    style="width:190px; margin-bottom: 0;" v-model="backConditions[backIndex]"
+                                    @change="createNewBackConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                                  <v-btn icon small class="ml-n1" v-if="backConditions[backIndex]" title="この条件を削除"
+                                    @click="deleteCondition(backConditions, backIndex, '')"><v-icon
+                                      color="grey">mdi-close-circle</v-icon></v-btn>
                                 </span>
                               </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -619,14 +636,18 @@
                           <div v-for="(fixCondition, fixIndex) in fixConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined
                               style="width:185px; display: inline-block" v-model="fixConditions[fixIndex][0]"
-                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                              @change="createNewFixConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
                             を、前から
                             <v-select :items="limitedSeatsOptionsY" outlined style="width:65px; display: inline-block"
                               v-model="fixConditions[fixIndex][1]"></v-select>
                             列目、左から
                             <v-select :items="limitedSeatsOptionsX" outlined style="width:65px; display: inline-block"
-                              v-model="fixConditions[fixIndex][2]" @change.once="createNewFixConditions"></v-select>
+                              v-model="fixConditions[fixIndex][2]" @change="createNewFixConditions"></v-select>
                             列目に固定する
+                            <v-btn icon small v-if="fixConditions[fixIndex][0]" title="この条件を削除"
+                              style="transform: translateY(-3px);"
+                              @click="deleteCondition(fixConditions, fixIndex, ['', '', ''])"><v-icon
+                                color="grey">mdi-close-circle</v-icon></v-btn>
                           </div>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
@@ -640,15 +661,19 @@
                           <div v-for="(nearCondition, nearIndex) in nearConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined
                               style="width:185px; display: inline-block" v-model="nearConditions[nearIndex][0]"
-                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                              @change="createNewNearConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
                             と
                             <v-select :items="studentsName" placeholder="Bさん" outlined
                               style="width:185px; display: inline-block" v-model="nearConditions[nearIndex][1]"
-                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                              @change="createNewNearConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
                             の間を
                             <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
-                              v-model="nearConditions[nearIndex][2]" @change.once="createNewNearConditions"></v-select>
+                              v-model="nearConditions[nearIndex][2]" @change="createNewNearConditions"></v-select>
                             席以下にする
+                            <v-btn icon small v-if="nearConditions[nearIndex][0] || nearConditions[nearIndex][1]"
+                              title="この条件を削除" style="transform: translateY(-3px);"
+                              @click="deleteCondition(nearConditions, nearIndex, ['', '', ''])"><v-icon
+                                color="grey">mdi-close-circle</v-icon></v-btn>
                           </div>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
@@ -662,15 +687,19 @@
                           <div v-for="(farCondition, farIndex) in farConditions">
                             <v-select :items="studentsName" placeholder="Aさん" outlined
                               style="width:185px; display: inline-block" v-model="farConditions[farIndex][0]"
-                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                              @change="createNewFarConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
                             と
                             <v-select :items="studentsName" placeholder="Bさん" outlined
                               style="width:185px; display: inline-block" v-model="farConditions[farIndex][1]"
-                              no-data-text="座席に生徒名が入力されていません"></v-select>
+                              @change="createNewFarConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
                             の間を
                             <v-select :items="distanceOptions" outlined style="width:65px; display: inline-block"
-                              v-model="farConditions[farIndex][2]" @change.once="createNewFarConditions"></v-select>
+                              v-model="farConditions[farIndex][2]" @change="createNewFarConditions"></v-select>
                             席以上空ける
+                            <v-btn icon small v-if="farConditions[farIndex][0] || farConditions[farIndex][1]"
+                              title="この条件を削除" style="transform: translateY(-3px);"
+                              @click="deleteCondition(farConditions, farIndex, ['', '', ''])"><v-icon
+                                color="grey">mdi-close-circle</v-icon></v-btn>
                           </div>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
@@ -682,10 +711,14 @@
                             class="icon">mdi-account-star</v-icon>班長を指定する</v-expansion-panel-header>
                         <v-expansion-panel-content>
                           <template v-if="groupSizeX !== 'なし' && groupSizeY !== 'なし'">
-                            <span v-for="(leaderCondition, leaderIndex) in leaderConditions">
-                              <v-select :items="leaderStudentsName" placeholder="班長のAさん" outlined
-                                style="width:190px; display: inline-block" v-model="leaderConditions[leaderIndex]"
-                                @change.once="createNewLeaderConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                            <span v-for="(leaderCondition, leaderIndex) in leaderConditions"
+                              style="display: inline-flex; align-items: center; margin: 0 26px 6px 0;">
+                              <v-select :items="leaderStudentsName" placeholder="班長のAさん" outlined hide-details
+                                style="width:190px; margin-bottom: 0;" v-model="leaderConditions[leaderIndex]"
+                                @change="createNewLeaderConditions" no-data-text="座席に生徒名が入力されていません"></v-select>
+                              <v-btn icon small class="ml-n1" v-if="leaderConditions[leaderIndex]" title="この条件を削除"
+                                @click="deleteCondition(leaderConditions, leaderIndex, '')"><v-icon
+                                  color="grey">mdi-close-circle</v-icon></v-btn>
                             </span>
                           </template>
                           <template v-else>
@@ -1296,12 +1329,7 @@
         studentsName: [], // 生徒の名前配列、席替えボタンが2回以上押されたときに元の生徒名を記憶しておくため
         dupStudentsName: [], // 生徒の名前配列の複製、席替えの際に破壊的にデータを取り出していく
         nearConditions: [['', '', '']], // 近づける条件配列
-        nearStudentsName: [], // 近づける生徒の名前
-        dupNearStudentsName: [], // 近づける生徒の名前の複製
         farConditions: [['', '', '']], // 離す条件用配列
-        farStudentsName: [], // 離す生徒の名前
-        dupFarStudentsName: [], // 離す生徒の名前の複製
-        nearFarStudentsName: [], // 近づける/離す生徒の名前
         dupNearFarStudentsName: [], // 近づける/離す生徒の名前の複製
         frontConditions: [''], // 最前列に固定する生徒
         frontSeatsIndex: [], // 最前列のインデックス
@@ -1487,39 +1515,63 @@
           this.delayChangeSeats();
           this.drawer = false
         },
+        collectConditionStudents(conditions) { // [生徒A, 生徒B, 距離]の配列から、空でない生徒名を重複なく集める
+          const names = [];
+          conditions.forEach(condition => {
+            if (condition[0]) names.push(condition[0]);
+            if (condition[1]) names.push(condition[1]);
+          });
+          return Array.from(new Set(names));
+        },
+        deleteCondition(conditions, index, emptyValue) { // 選択済みの条件を1行削除する。入力用に最低1行は残す（emptyValueは呼び出し側が毎回新しい値を渡す）
+          conditions.splice(index, 1);
+          if (conditions.length === 0) {
+            conditions.push(emptyValue);
+          }
+        },
+        // 以下の createNew系メソッドは、末尾の行が埋まっているときだけ空行を1つ足す（冪等）。@change から毎回呼ばれても余分な行を増やさず、削除後の再選択でも欄が追加される
         createNewNearConditions() {
-          this.nearConditions.push(['', '', '']);
+          const last = this.nearConditions[this.nearConditions.length - 1];
+          if (last && (last[0] || last[1])) {
+            this.nearConditions.push(['', '', '']);
+          }
         },
         createNewFarConditions() {
-          this.farConditions.push(['', '', '']);
+          const last = this.farConditions[this.farConditions.length - 1];
+          if (last && (last[0] || last[1])) {
+            this.farConditions.push(['', '', '']);
+          }
         },
         createNewFixConditions() {
-          this.fixConditions.push(['', '', '']);
+          const last = this.fixConditions[this.fixConditions.length - 1];
+          if (last && last[0]) {
+            this.fixConditions.push(['', '', '']);
+          }
         },
         createNewFrontConditions() {
-          if (this.frontConditions.length < this.seatsSizeX) {
+          if (this.frontConditions.length < this.seatsSizeX && this.frontConditions.every(Boolean)) {
             this.frontConditions.push('');
           }
         },
         createNewFrontTwoRowsConditions() {
-          if (this.frontTwoRowsConditions.length < this.seatsSizeX * 2) {
+          if (this.frontTwoRowsConditions.length < this.seatsSizeX * 2 && this.frontTwoRowsConditions.every(Boolean)) {
             this.frontTwoRowsConditions.push('');
           }
         },
         createNewBackTwoRowsConditions() {
-          if (this.backTwoRowsConditions.length < this.seatsSizeX * 2) {
+          if (this.backTwoRowsConditions.length < this.seatsSizeX * 2 && this.backTwoRowsConditions.every(Boolean)) {
             this.backTwoRowsConditions.push('');
           }
         },
         createNewBackConditions() {
-          if (this.backConditions.length < this.seatsSizeX) {
+          if (this.backConditions.length < this.seatsSizeX && this.backConditions.every(Boolean)) {
             this.backConditions.push('');
           }
         },
         createNewLeaderConditions() {
           if (this.groupSizeX === 'なし' || this.groupSizeY === 'なし') return;
           const numGroups = (this.seatsSizeX / this.groupSizeX) * (this.seatsSizeY / this.groupSizeY);
-          if (this.leaderConditions.length < numGroups) {
+          if (this.leaderConditions.length < numGroups && this.leaderConditions.every(Boolean)) {
             this.leaderConditions.push('');
           }
         },
@@ -1625,8 +1677,10 @@
             this.dupBackSeatsIndex = this.backSeatsIndex.slice(0); // 最後列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
             this.dupBackTwoRowsSeatsIndex = this.backTwoRowsSeatsIndex.slice(0); // 後ろ2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
             this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
-            this.dupNearFarStudentsName = this.nearStudentsName.concat(this.farStudentsName); // 近づける生徒名と離す生徒名を結合、席替えの際にこの配列から破壊的にデータを取り出していく
-            this.dupNearFarStudentsName = Array.from(new Set(this.dupNearFarStudentsName)) // 重複している名前を削除
+            // 近づける/離す条件の生徒名を席替え直前に条件配列から集める（重複は除く）。席替えの際にこの配列から破壊的にデータを取り出していく
+            const nearStudents = this.collectConditionStudents(this.nearConditions);
+            const farStudents = this.collectConditionStudents(this.farConditions);
+            this.dupNearFarStudentsName = Array.from(new Set(nearStudents.concat(farStudents)));
 
             this.placeFixedSeats(); // 固定する生徒を配置
             this.placeLeaders(); // 班長を各班に1人ずつ配置（行条件がある班長はその行内で配置）
@@ -2328,30 +2382,6 @@
             })
           },
           deep: true
-        },
-        nearConditions: {
-          handler: function () {
-            this.nearStudentsName.splice(-this.nearStudentsName.length); // 配列を初期化
-            this.nearConditions.forEach(nearCondition => {
-              this.nearStudentsName.push(nearCondition[0], nearCondition[1]);
-            })
-            this.nearStudentsName = Array.from(new Set(this.nearStudentsName)) // 重複している名前を削除
-            this.nearStudentsName = this.nearStudentsName.filter(function (nearStudentsName) { //空白を削除
-              return nearStudentsName !== '';
-            })
-          }
-        },
-        farConditions: {
-          handler: function () {
-            this.farStudentsName.splice(-this.farStudentsName.length); // 配列を初期化
-            this.farConditions.forEach(farCondition => {
-              this.farStudentsName.push(farCondition[0], farCondition[1]);
-            })
-            this.farStudentsName = Array.from(new Set(this.farStudentsName)) // 重複している名前を削除
-            this.farStudentsName = this.farStudentsName.filter(function (farStudentsName) { //空白を削除
-              return farStudentsName !== '';
-            })
-          }
         },
         genderTable: {
           handler: function () {
