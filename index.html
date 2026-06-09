@@ -2055,6 +2055,7 @@
               // ----ここまで----
               const distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
               const nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+              if (nearStudentPosition === false) return; // 相手がまだ配置されていなければ、ここでは距離を判定しない（相手を配置する際に改めてチェックされる）
               if (this.maxDistance(p, nearStudentPosition) > distance) { // 距離のmaxが条件distanceより上なら返り値をfalseに更新
                 returnValue = false;
               }
@@ -2076,6 +2077,7 @@
               // ----ここまで----
               const distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
               const farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
+              if (farStudentPosition === false) return; // 相手がまだ配置されていなければ、ここでは距離を判定しない（相手を配置する際に改めてチェックされる）
               if (this.maxDistance(p, farStudentPosition) < distance) { // 距離のminが条件distanceより下なら返り値をfalseに更新
                 returnValue = false;
               }
