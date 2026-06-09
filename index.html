@@ -1472,13 +1472,19 @@
           this.countSeats();
         },
         uniqueKey(value, nextIndexRow, nextIndexCol) {
-          let key
           if (value === '') {
-            key = `nextSeatsRow-${nextIndexRow}-${nextIndexCol}`;
-          } else {
-            key = value;
+            return `nextSeatsRow-${nextIndexRow}-${nextIndexCol}`; // 空席は座標でキーを作る
           }
-          return key;
+          // 同名の生徒がいてもキーが衝突しないよう、この座席までに同名が何回出現したかを付与する。
+          // 一意な名前なら常に「名前#0」になり、席替え前後でキーが安定するため移動アニメーションがそのまま効く。
+          let occurrence = 0;
+          for (let row = 0; row <= nextIndexRow; row++) {
+            const lastCol = row === nextIndexRow ? nextIndexCol : this.nextSeatsTable[row].length;
+            for (let col = 0; col < lastCol; col++) {
+              if (this.nextSeatsTable[row][col] === value) occurrence += 1;
+            }
+          }
+          return `${value}#${occurrence}`;
         },
         beforeChangeSeats() { // トランジションのズレをなくすために、スワップされていたら席替え直前に、次の座席テーブルに反映する
           if (isReverseSeats) {
