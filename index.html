@@ -1833,8 +1833,9 @@
           this.shuffle(this.dupBackTwoRowsSeatsIndex);
           this.backTwoRowsConditions.forEach(backTwoRowsStudentName => {
             if (this.getPositionFromNextSeatsTable(backTwoRowsStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
-            if (!this.dupBackTwoRowsSeatsIndex.length) {
-              // todo エラーを表示してbreak
+            if (!this.dupBackTwoRowsSeatsIndex.length) { // 後ろ2列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
+              this.restartFlag = true;
+              return;
             }
             let topIndex = this.dupBackTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
             // ----近づける/離す/性別/異なる座席チェック----
