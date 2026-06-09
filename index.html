@@ -1344,8 +1344,6 @@
         backTwoRowsSeatsIndex: [], // 後ろ2列のインデックス
         dupBackTwoRowsSeatsIndex: [], // 後ろ2列のインデックスの複製、席替えの際に破壊的にデータを取り出していく
         nextSeatsTable: [], // 席替え後の座席テーブル、生徒名が入る二次元配列
-        tempRow: '', // 2次元配列をリアクティブに更新するために、2次元配列の要素である1次元配列を退避
-        calcNum: 0, // 計算回数、無限ループに入ったときに抜け出す用
         restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
         genderTable: [], // 生徒の性別テーブル、性別が入る二次元配列
         genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
@@ -1378,8 +1376,6 @@
         showNewFeatureModal: false,
         landing: true,
         sidebarWidth: '52%', // PC用のデフォルト値
-        seatsTableMemory: [['']],
-        genderTableMemory: [['']],
         isShowSaveDialog: false, // 保存ダイアログの表示制御フラグ
         isShowRestoreDialog: false, // 復元ダイアログの表示制御フラグ
         saveName: '', // 保存名の入力値
@@ -1403,7 +1399,6 @@
           });
           this.$nextTick(function () { // DOM更新が反映されてサイドバーが表示されるのを待ってから
             intro.onafterchange(function () {
-              console.log(this._currentStep);
               if (this._currentStep === 1) {
                 if (window.innerWidth < BREAKPOINT_PC) { // SP・TBのとき
                   app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
@@ -1626,15 +1621,15 @@
           })
         },
         remakeSeatsTable() { // seatsTableを作成
-          this.seatsTableMemory = this.seatsTable.splice(0)
+          const seatsTableMemory = this.seatsTable.splice(0)
           for (let i = 0; i < this.seatsSizeY; i++) {
             this.seatsTable.push(Array(this.seatsSizeX).fill('')) // すべての席に名前が未入力な状態でテーブルを作成
           }
-          const minX = Math.min(this.seatsTableMemory[0].length, this.seatsSizeX);
-          const minY = Math.min(this.seatsTableMemory.length, this.seatsSizeY);
+          const minX = Math.min(seatsTableMemory[0].length, this.seatsSizeX);
+          const minY = Math.min(seatsTableMemory.length, this.seatsSizeY);
           for (let i = 0; i < minY; i++) {
             for (let j = 0; j < minX; j++) {
-              this.seatsTable[i][j] = this.seatsTableMemory[i][j] // もともと入力されていた名前をセット
+              this.seatsTable[i][j] = seatsTableMemory[i][j] // もともと入力されていた名前をセット
             }
           }
           this.countSeats();
@@ -1654,9 +1649,8 @@
           let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
           do {
             loopNum += 1;
-            console.log(`----${loopNum}回目のループを開始します----`);
             this.restartFlag = false;
-            this.calcNum = 0 // エラー用計算量を初期化
+            this.calcNum = 0 // 無限ループ検出用の計算回数カウンタ（描画に使わないので非リアクティブな内部状態）
             this.resetNextSeatsTable(); // 席替え後座席テーブルを初期化する
             this.resetFrontSeatsIndex(); // 最前列インデックス配列を空にする
             this.resetFrontTwoRowsSeatsIndex(); // 前2列インデックス配列を空にする
@@ -1696,12 +1690,10 @@
             this.createNewBackTwoRowsConditions(); // 次回の準備、後2列のフォームを1つ作成
             this.createNewBackConditions(); // 次回の準備、最後列のフォームを1つ作成
             this.createNewLeaderConditions(); // 次回の準備、班長のフォームを1つ作成
-            console.log(`----${loopNum}回目のループ終了----`);
           } while (this.restartFlag && loopNum <= 500)
           this.$nextTick(function () { // DOMの更新を待ってからsortableJSをフォームにセット
             setTimeout(this.setSortableJS, 100); // setTimeout()で処理しないとセットされない
           });
-          console.log(`====終了====`);
           if (loopNum > 500) {
             //window.alert('条件を満たす席替えを実現できませんでした。\n何回か試してもエラーが出るようでしたら、条件を変更してください。');
             this.error = true;
@@ -1794,10 +1786,10 @@
             }
             // ----ここまで----
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontStudentName); // 取り出したインデックスの位置に生徒名を保存
-            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-            this.delete(frontStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-            this.delete(frontStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
-            this.delete(topIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
+            this.removeFromArray(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+            this.removeFromArray(frontStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(frontStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(topIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
           })
         },
         changeFrontTwoRowsSeats() { // 前2列に固定する生徒を席替え
@@ -1817,9 +1809,9 @@
             }
             // ----ここまで----
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, frontTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
-            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-            this.delete(frontTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-            this.delete(frontTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+            this.removeFromArray(frontTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(frontTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
           })
         },
         changeBackSeats() { // 最後列に固定する生徒を席替え
@@ -1839,10 +1831,10 @@
             }
             // ----ここまで----
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backStudentName); // 取り出したインデックスの位置に生徒名を保存
-            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-            this.delete(backStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-            this.delete(backStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
-            this.delete(topIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
+            this.removeFromArray(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+            this.removeFromArray(backStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(backStudentName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(topIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
           })
         },
         changeBackTwoRowsSeats() { // 後ろ2列に固定する生徒を席替え
@@ -1865,9 +1857,9 @@
             }
             // ----ここまで----
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, backTwoRowsStudentName); // 取り出したインデックスの位置に生徒名を保存
-            this.delete(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除
-            this.delete(backTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除
-            this.delete(backTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(topIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除
+            this.removeFromArray(backTwoRowsStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除
+            this.removeFromArray(backTwoRowsStudentName, this.dupNearFarStudentsName); // ここで配置した生徒は、changeNearFarSeats()で配置する必要がないため、生徒名を削除する
           })
         },
         changeNearFarSeats() { // 近づける/離す生徒を席替え
@@ -1886,7 +1878,7 @@
             }
             // ----ここまで----
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupNearFarStudentName); // 取り出したインデックスの位置に生徒名を保存
-            this.delete(dupNearFarStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+            this.removeFromArray(dupNearFarStudentName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
           })
         },
         placeFixedSeats() { // 固定する生徒を配置
@@ -1898,14 +1890,14 @@
               this.nextSeatsTable[fixConditionRow].splice(fixConditionCol, 1, fixConditionName); // 固定する場所に配置
 
               const fixIndex = [fixConditionCol, fixConditionRow]
-              this.delete(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
-              this.delete(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
-              this.delete(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
+              this.removeFromArray(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
+              this.removeFromArray(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
+              this.removeFromArray(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
 
-              this.delete(fixIndex, this.dupFrontSeatsIndex); // ここで配置した座標はchangeFrontSeats()で使えないため、座席座標を削除する
-              this.delete(fixIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
-              this.delete(fixIndex, this.dupBackSeatsIndex); // ここで配置した座標はchangeBackSeats()で使えないため、座席座標を削除する
-              this.delete(fixIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
+              this.removeFromArray(fixIndex, this.dupFrontSeatsIndex); // ここで配置した座標はchangeFrontSeats()で使えないため、座席座標を削除する
+              this.removeFromArray(fixIndex, this.dupFrontTwoRowsSeatsIndex); // ここで配置した座標はchangeFrontTwoRowsSeats()で使えないため、座席座標を削除する
+              this.removeFromArray(fixIndex, this.dupBackSeatsIndex); // ここで配置した座標はchangeBackSeats()で使えないため、座席座標を削除する
+              this.removeFromArray(fixIndex, this.dupBackTwoRowsSeatsIndex); // ここで配置した座標はchangeBackTwoRowsSeats()で使えないため、座席座標を削除する
             }
           })
         },
@@ -2043,22 +2035,22 @@
             this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender); // 復元用のnextGenderTableに席替え後の性別を保存
 
             // ここで配置した班長は他の配置処理で配置する必要がないため、各配列から削除する
-            this.delete(topIndex, this.dupSeatsTableIndex);
-            this.delete(leaderName, this.dupStudentsName);
-            this.delete(leaderName, this.dupNearFarStudentsName);
-            this.delete(topIndex, this.dupFrontSeatsIndex);
-            this.delete(topIndex, this.dupFrontTwoRowsSeatsIndex);
-            this.delete(topIndex, this.dupBackSeatsIndex);
-            this.delete(topIndex, this.dupBackTwoRowsSeatsIndex);
+            this.removeFromArray(topIndex, this.dupSeatsTableIndex);
+            this.removeFromArray(leaderName, this.dupStudentsName);
+            this.removeFromArray(leaderName, this.dupNearFarStudentsName);
+            this.removeFromArray(topIndex, this.dupFrontSeatsIndex);
+            this.removeFromArray(topIndex, this.dupFrontTwoRowsSeatsIndex);
+            this.removeFromArray(topIndex, this.dupBackSeatsIndex);
+            this.removeFromArray(topIndex, this.dupBackTwoRowsSeatsIndex);
           });
         },
         maxDistance(p1, p2) { // 2点の距離のmaxを返す。p1, p2は座標、たとえばp1=[1,2]
-          const x_abs = Math.abs(p1[0] - p2[0]);
-          const y_abs = Math.abs(p1[1] - p2[1]);
-          return Math.max(x_abs, y_abs);
+          const xAbs = Math.abs(p1[0] - p2[0]);
+          const yAbs = Math.abs(p1[1] - p2[1]);
+          return Math.max(xAbs, yAbs);
         },
         checkNear(studentName, p) { // 引数の生徒を座標pに配置しても、近づける条件を満たすならtrue、満たさないならfalseを返す
-          let return_value = true
+          let returnValue = true
           this.nearConditions.forEach(nearConditionArray => {
             if (nearConditionArray.includes(studentName)) { // もし引数の生徒が、近づける条件にいれば
               // ----近づけたい生徒の名前を取得----
@@ -2072,14 +2064,14 @@
               const distance = nearConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
               const nearStudentPosition = this.getPositionFromNextSeatsTable(nearStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
               if (this.maxDistance(p, nearStudentPosition) > distance) { // 距離のmaxが条件distanceより上なら返り値をfalseに更新
-                return_value = false;
+                returnValue = false;
               }
             }
           })
-          return return_value;
+          return returnValue;
         },
         checkFar(studentName, p) { // 引数の生徒を座標pに配置しても、離す条件を満たすならtrue、満たさないならfalseを返す
-          let return_value = true
+          let returnValue = true
           this.farConditions.forEach(farConditionArray => {
             if (farConditionArray.includes(studentName)) { // もし引数の生徒が、離す条件にいれば
               // ----離す生徒の名前を取得----
@@ -2093,11 +2085,11 @@
               const distance = farConditionArray[2] + 1; // 距離、表記とのズレを修正するために+1
               const farStudentPosition = this.getPositionFromNextSeatsTable(farStudentName); // すでに配置されていればその座標、まだ配置されてなければfalse
               if (this.maxDistance(p, farStudentPosition) < distance) { // 距離のminが条件distanceより下なら返り値をfalseに更新
-                return_value = false;
+                returnValue = false;
               }
             }
           })
-          return return_value;
+          return returnValue;
         },
         checkGender(studentName, p) { // 引数の生徒を座標pに配置したとき、性別の条件を満たすならtrue、満たさないならfalseを返す
           const genderIndex = this.studentsName.indexOf(studentName);
@@ -2113,15 +2105,15 @@
         },
         getPositionFromNextSeatsTable(studentName) { // 引数の生徒が席替え後座席テーブルにすでにいればその座標を、いなければfalseを返す
           let nextSeatsRowNum = 0; // 行インデックス、y座標
-          let return_value = false; // 返す値の初期値をfalse
+          let returnValue = false; // 返す値の初期値をfalse
           this.nextSeatsTable.forEach(nextSeatsRow => {
             if (nextSeatsRow.includes(studentName)) {
               const nextSeatsColNum = nextSeatsRow.indexOf(studentName);
-              return_value = [nextSeatsColNum, nextSeatsRowNum]; // 返す値を座標で更新
+              returnValue = [nextSeatsColNum, nextSeatsRowNum]; // 返す値を座標で更新
             }
             nextSeatsRowNum += 1;
           })
-          return return_value;
+          return returnValue;
         },
         makeGenderTable() { // genderTableを作成
           this.genderTable = []
@@ -2130,15 +2122,15 @@
           }
         },
         remakeGenderTable() { // genderTableを作成
-          this.genderTableMemory = this.genderTable.splice(0)
+          const genderTableMemory = this.genderTable.splice(0)
           for (let i = 0; i < this.seatsSizeY; i++) {
             this.genderTable.push(Array(this.seatsSizeX).fill('')) // すべての席に性別が未入力な状態でテーブルを作成
           }
-          const minX = Math.min(this.genderTableMemory[0].length, this.seatsSizeX);
-          const minY = Math.min(this.genderTableMemory.length, this.seatsSizeY);
+          const minX = Math.min(genderTableMemory[0].length, this.seatsSizeX);
+          const minY = Math.min(genderTableMemory.length, this.seatsSizeY);
           for (let i = 0; i < minY; i++) {
             for (let j = 0; j < minX; j++) {
-              this.genderTable[i][j] = this.genderTableMemory[i][j] // もともと入力されていた性別をセット
+              this.genderTable[i][j] = genderTableMemory[i][j] // もともと入力されていた性別をセット
             }
           }
         },
@@ -2148,7 +2140,7 @@
             this.nextGenderTable.push(Array(this.seatsSizeX).fill('')) // すべての席に性別が未入力な状態でテーブルを作成
           }
         },
-        delete(target, array) {
+        removeFromArray(target, array) {
           const deleteIndex = looseIndexOf(array, target); // 削除したいtargetがある配列arrayのインデックスを取得
           if (deleteIndex !== -1) { // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
             array.splice(deleteIndex, 1); // arrayからtargetを削除する
@@ -2160,7 +2152,6 @@
             const toSeat = this.nextSeatsTable[toRows[i]][toCols[i]];
             this.nextSeatsTable[fromRows[i]].splice(fromCols[i], 1, toSeat);
             this.nextSeatsTable[toRows[i]].splice(toCols[i], 1, fromSeat);
-            console.log(`${fromSeat}([${fromRows[i]}][${fromCols[i]}])と${toSeat}([${toRows[i]}][${toCols[i]}])をスワップ`);
           }
           fromRows.splice(0);
           fromCols.splice(0);
@@ -2264,12 +2255,10 @@
           this.isShowSaveDialog = false;
           this.isShowOverwriteConfirm = false;
           this.saveName = '';
-          console.log('「' + name + '」として保存しました。');
         },
         restoreByName(id) { // IDを指定して復元する
           const dataStr = localStorage.getItem('sekigae_data_' + id);
           if (!dataStr) {
-            console.log('保存データが見つかりませんでした。');
             return;
           }
           const data = JSON.parse(dataStr);
@@ -2298,7 +2287,6 @@
           this.makeNextSeatsTable();
           this.makeNextGenderTable();
           this.isShowRestoreDialog = false;
-          console.log('保存データを復元しました。');
         },
         deleteSavedData(id, name) { // 保存データを削除する
           if (!confirm('「' + name + '」を削除しますか？')) {
@@ -2309,7 +2297,6 @@
           list = list.filter(function (item) { return item.id !== id; });
           localStorage.setItem('sekigae_saved_list', JSON.stringify(list));
           this.savedList = list;
-          console.log('「' + name + '」を削除しました。');
         },
         formatDate(isoString) { // ISO日付文字列を表示用にフォーマットする
           const d = new Date(isoString);
