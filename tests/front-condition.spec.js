@@ -62,6 +62,25 @@ test.describe('前に固定（frontConditions）', () => {
       }
     }
   });
+
+  test('最前列の座席数を超える人数を固定 → クラッシュせずエラー扱いになる', async ({ page }) => {
+    // 6×6では最前列は6席。7人を固定すると配置不能になり、
+    // 修正前は空配列をshiftしてundefinedを参照しクラッシュしていた。
+    const names = ['別本', '山田', '平野', '山口', '高松', '寺井', '山村'];
+    const result = await page.evaluate((names) => {
+      app.frontConditions = names;
+      let threw = false;
+      try {
+        app.changeSeats();
+      } catch (e) {
+        threw = true;
+      }
+      return { threw, error: app.error };
+    }, names);
+
+    expect(result.threw).toBe(false);
+    expect(result.error).toBe(true);
+  });
 });
 
 test.describe('前から2列目以内に固定（frontTwoRowsConditions）', () => {
@@ -99,5 +118,24 @@ test.describe('前から2列目以内に固定（frontTwoRowsConditions）', () 
         expect(pos[1]).toBeLessThanOrEqual(1);
       }
     }
+  });
+
+  test('前2列の座席数を超える人数を固定 → クラッシュせずエラー扱いになる', async ({ page }) => {
+    // 6×6では前2列の座席は12席。13人を固定すると配置不能になり、
+    // 修正前は空配列をshiftしてundefinedを参照しクラッシュしていた。
+    const names = ['別本', '山田', '平野', '山口', '高松', '寺井', '山村', '坂本', '浦山', '栗原', '谷井', '柳澤', '中川'];
+    const result = await page.evaluate((names) => {
+      app.frontTwoRowsConditions = names;
+      let threw = false;
+      try {
+        app.changeSeats();
+      } catch (e) {
+        threw = true;
+      }
+      return { threw, error: app.error };
+    }, names);
+
+    expect(result.threw).toBe(false);
+    expect(result.error).toBe(true);
   });
 });

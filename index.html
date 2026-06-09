@@ -1765,6 +1765,10 @@
           this.shuffle(this.dupFrontSeatsIndex);
           this.frontConditions.forEach(frontStudentName => {
             if (this.getPositionFromNextSeatsTable(frontStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
+            if (!this.dupFrontSeatsIndex.length) { // 最前列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
+              this.restartFlag = true;
+              return;
+            }
             let topIndex = this.dupFrontSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
             // ----近づける/離す/性別/異なる座席チェック----
             while (!this.checkNear(frontStudentName, topIndex) || !this.checkFar(frontStudentName, topIndex) || (this.isFixGender && !this.checkGender(frontStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
@@ -1788,6 +1792,10 @@
           this.shuffle(this.dupFrontTwoRowsSeatsIndex);
           this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
             if (this.getPositionFromNextSeatsTable(frontTwoRowsStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
+            if (!this.dupFrontTwoRowsSeatsIndex.length) { // 前2列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
+              this.restartFlag = true;
+              return;
+            }
             let topIndex = this.dupFrontTwoRowsSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
             // ----近づける/離す/性別/異なる座席チェック----
             while (!this.checkNear(frontTwoRowsStudentName, topIndex) || !this.checkFar(frontTwoRowsStudentName, topIndex) || (this.isFixGender && !this.checkGender(frontTwoRowsStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(frontTwoRowsStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す
@@ -1810,6 +1818,10 @@
           this.shuffle(this.dupBackSeatsIndex);
           this.backConditions.forEach(backStudentName => {
             if (this.getPositionFromNextSeatsTable(backStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
+            if (!this.dupBackSeatsIndex.length) { // 最後列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
+              this.restartFlag = true;
+              return;
+            }
             let topIndex = this.dupBackSeatsIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
             // ----近づける/離す/性別/異なる座席チェック----
             while (!this.checkNear(backStudentName, topIndex) || !this.checkFar(backStudentName, topIndex) || (this.isFixGender && !this.checkGender(backStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(backStudentName, topIndex))) { // いずれかの条件を満たさない間、繰り返す

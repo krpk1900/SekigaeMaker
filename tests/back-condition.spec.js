@@ -64,6 +64,25 @@ test.describe('後ろに固定（backConditions）', () => {
       }
     }
   });
+
+  test('最後列の座席数を超える人数を固定 → クラッシュせずエラー扱いになる', async ({ page }) => {
+    // 6×6では最後列は6席。7人を固定すると配置不能になり、
+    // 修正前は空配列をshiftしてundefinedを参照しクラッシュしていた。
+    const names = ['別本', '山田', '平野', '山口', '高松', '寺井', '山村'];
+    const result = await page.evaluate((names) => {
+      app.backConditions = names;
+      let threw = false;
+      try {
+        app.changeSeats();
+      } catch (e) {
+        threw = true;
+      }
+      return { threw, error: app.error };
+    }, names);
+
+    expect(result.threw).toBe(false);
+    expect(result.error).toBe(true);
+  });
 });
 
 test.describe('後ろから2列目以内に固定（backTwoRowsConditions）', () => {
