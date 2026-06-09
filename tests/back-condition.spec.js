@@ -83,6 +83,23 @@ test.describe('後ろに固定（backConditions）', () => {
     expect(result.threw).toBe(false);
     expect(result.error).toBe(true);
   });
+
+  test('配置不能で出たエラーが、次の実現可能な席替えで解除される', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      // まず配置不能な条件（最後列6席に7人）でエラーを出す
+      app.backConditions = ['別本', '山田', '平野', '山口', '高松', '寺井', '山村'];
+      app.changeSeats();
+      const errorAfterInfeasible = app.error;
+      // 次に実現可能な条件で席替えする
+      app.backConditions = ['山田'];
+      app.changeSeats();
+      const errorAfterFeasible = app.error;
+      return { errorAfterInfeasible, errorAfterFeasible };
+    });
+
+    expect(result.errorAfterInfeasible).toBe(true);  // 配置不能時はエラー
+    expect(result.errorAfterFeasible).toBe(false);   // 修正前はtrueのまま残っていた
+  });
 });
 
 test.describe('後ろから2列目以内に固定（backTwoRowsConditions）', () => {
