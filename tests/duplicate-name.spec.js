@@ -43,4 +43,28 @@ test.describe('同名の生徒（uniqueKey）', () => {
     expect(result.sato).toBe('佐藤#0');
     expect(result.empty).toBe('nextSeatsRow-0-1'); // 空席は座標ベース
   });
+
+  test('同名の生徒でも座席ごとにクリックで性別の色が切り替わる', async ({ page }) => {
+    // 2行目に「田中」を2人並べる（左上のデモ色セルを避ける）
+    await page.evaluate(() => {
+      app.seatsTable.splice(1, 1, ['田中', '田中', '', '', '', '']);
+      app.genderTable.splice(1, 1, ['male', 'male', '', '', '', '']);
+      app.countSeats();
+    });
+    await page.waitForTimeout(100);
+
+    // クリック相当：2人目（col=1, row=1）の性別をトグル
+    await page.evaluate(() => { app.toggleGender(1, 1); });
+    await page.waitForTimeout(100);
+
+    // 描画された入力テーブル2行目の各座席の色クラスを取得
+    const classes = await page.evaluate(() => {
+      const rows = document.querySelectorAll('.seats-scroll-container li');
+      const inputs = rows[1].querySelectorAll('input.seat');
+      return [inputs[0].className, inputs[1].className];
+    });
+
+    expect(classes[0]).toContain('male-seats');   // 1人目は変わらない
+    expect(classes[1]).toContain('female-seats'); // 修正前は male-seats のまま（1人目を参照していた）
+  });
 });
