@@ -1638,6 +1638,7 @@
           }
         },
         changeSeats() { // メイン処理
+          this.error = false; // 前回の実行で出したエラー表示を解除し、毎回クリーンな状態から始める
           let loopNum = 0; // changeSeats()の処理を指定された回数繰り返す際に制御する変数
           do {
             loopNum += 1;
