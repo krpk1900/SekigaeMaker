@@ -1568,28 +1568,6 @@
             this.leaderConditions.push('');
           }
         },
-        getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
-          const genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
-          let gender
-          if (genderIndex === -1) { //
-            gender = ''
-          } else {
-            gender = this.genderArray[genderIndex];
-          }
-          if (gender === '') {
-            if (row === 0 && col === 0) {
-              return 'male-seats'
-            } else if (row === 0 && col === 1) {
-              return 'female-seats'
-            } else {
-              return 'off-seats'
-            }
-          } else if (gender === 'male') {
-            return 'male-seats'
-          } else if (gender === 'female') {
-            return 'female-seats'
-          } else return 'on-seats'
-        },
         getColorBySeat(col, row) { // 入力テーブルの座席色を、その座席の性別（座標）から直接決める。同名の生徒がいても座席ごとに正しく判定できる
           const gender = this.genderTable[row][col];
           if (gender === 'male') {
@@ -1605,19 +1583,23 @@
           }
         },
         getColorByNextSeat(name, col, row) { // 席替え後（結果テーブル）の座席色を返す
+          let gender;
           if (this.isFixGender) {
-            // 性別固定中は、その席に座る生徒の性別＝その席に設定された性別なので座標から判定する。
+            // 性別固定中は「その席に座る生徒の性別＝その席に設定された性別」なので座標から判定する。
             // これなら同名の生徒（例: 男の山田と女の山田）でも席ごとに正しい色になる。
-            const gender = this.genderTable[row][col];
-            if (gender === 'male') {
-              return 'male-seats'
-            } else if (gender === 'female') {
-              return 'female-seats'
-            } else {
-              return 'off-seats'
-            }
+            gender = this.genderTable[row][col];
+          } else {
+            // 性別固定OFF時は座席で性別が決まらないため、生徒の性別を名前から引く（同名は1人目基準）。
+            const genderIndex = this.studentsName.indexOf(name);
+            gender = genderIndex === -1 ? '' : this.genderArray[genderIndex];
           }
-          return this.getColorByName(name, 1, 1); // 性別固定OFF時は生徒の性別を名前から引く（従来どおり）
+          if (gender === 'male') {
+            return 'male-seats'
+          } else if (gender === 'female') {
+            return 'female-seats'
+          } else {
+            return 'off-seats'
+          }
         },
         toggleGender(col, row) {
           if (this.genderTable[row][col] === 'male') {
