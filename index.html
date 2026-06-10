@@ -1717,9 +1717,24 @@
         },
         shuffleSeats() { // 条件のない生徒を席替え
           this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
-          this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
+          // 残った生徒に、元の並び（studentsName/genderArray/seatsTableIndex）から性別と元座席を割り当てる。
+          // 同名の生徒がいても元インデックスを1人ずつ消費するので、性別や元座席を取り違えない（例: 男の山田と女の山田）。
+          const usedOriginalIndex = new Set();
+          const remainingStudents = this.dupStudentsName.map(name => {
+            let originalIndex = -1;
+            for (let i = 0; i < this.studentsName.length; i++) {
+              if (!usedOriginalIndex.has(i) && this.studentsName[i] === name) {
+                usedOriginalIndex.add(i);
+                originalIndex = i;
+                break;
+              }
+            }
+            return { name, gender: this.genderArray[originalIndex], originalSeat: this.seatsTableIndex[originalIndex] };
+          });
+          remainingStudents.forEach(student => { // 生徒を一人取り出す
             let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-            while ((this.isFixGender && !this.checkGender(dupStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupStudentName, topIndex))) { // 条件を満たさない間、繰り返す
+            // 性別固定: 座席の性別が生徒の性別と一致するか／異なる席: 元の座席と違うか。満たさない間、別の座席を試す
+            while ((this.isFixGender && this.genderTable[topIndex[1]][topIndex[0]] !== student.gender) || (this.isAllDifferent && student.originalSeat.toString() === topIndex.toString())) {
               if (this.calcNum > this.seatsNum) {
                 this.restartFlag = true;
                 break;
@@ -1728,10 +1743,8 @@
               topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
               this.calcNum += 1;
             }
-            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
-            const genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
-            const gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
-            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender);// 復元用のnextGenderTableに席替え後の性別を保存
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, student.name); // 取り出したインデックスの位置に生徒名を保存
+            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, student.gender); // 復元用のnextGenderTableに席替え後の性別を保存
           })
         },
         shuffle(array) { // 配列をランダムにシャッフル
