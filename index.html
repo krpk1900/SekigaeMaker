@@ -1017,21 +1017,21 @@
               <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                 <!-- 1つ目のフォームにプレイスホルダーを設定 -->
                 <input type="text" v-if="indexRow==0 && indexCol==0"
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
+                  :class="['seat', getColorBySeat(indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="安藤">
                 <!-- 2つ目のフォームにプレイスホルダーを設定 -->
                 <input type="text" v-else-if="indexRow==0 && indexCol==1"
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
+                  :class="['seat', getColorBySeat(indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="石原">
                 <!-- 3つ目以降のフォーム -->
                 <input type="text" v-else
-                  :class="['seat', getColorByName(seatsTable[indexRow][indexCol], indexCol, indexRow)]"
+                  :class="['seat', getColorBySeat(indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
@@ -1077,7 +1077,7 @@
                            こうしないとSortableJSのswapでinputだけが入れ替わり、星が取り残されてしまう -->
                       <div class="sortable-item square" style="position: relative;">
                         <input type="text" class="sortable-item" readonly
-                          :class="['seat', getColorByName(nextSeatsTable[nextIndexRow][nextIndexCol], 1, 1)]"
+                          :class="['seat', getColorByNextSeat(nextSeatsTable[nextIndexRow][nextIndexCol], nextIndexCol, nextIndexRow)]"
                           style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                           :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
                         <v-icon
@@ -1472,13 +1472,19 @@
           this.countSeats();
         },
         uniqueKey(value, nextIndexRow, nextIndexCol) {
-          let key
           if (value === '') {
-            key = `nextSeatsRow-${nextIndexRow}-${nextIndexCol}`;
-          } else {
-            key = value;
+            return `nextSeatsRow-${nextIndexRow}-${nextIndexCol}`; // 空席は座標でキーを作る
           }
-          return key;
+          // 同名の生徒がいてもキーが衝突しないよう、この座席までに同名が何回出現したかを付与する。
+          // 一意な名前なら常に「名前#0」になり、席替え前後でキーが安定するため移動アニメーションがそのまま効く。
+          let occurrence = 0;
+          for (let row = 0; row <= nextIndexRow; row++) {
+            const lastCol = row === nextIndexRow ? nextIndexCol : this.nextSeatsTable[row].length;
+            for (let col = 0; col < lastCol; col++) {
+              if (this.nextSeatsTable[row][col] === value) occurrence += 1;
+            }
+          }
+          return `${value}#${occurrence}`;
         },
         beforeChangeSeats() { // トランジションのズレをなくすために、スワップされていたら席替え直前に、次の座席テーブルに反映する
           if (isReverseSeats) {
@@ -1562,27 +1568,38 @@
             this.leaderConditions.push('');
           }
         },
-        getColorByName(studentName, col, row) { // 座席の種類に応じた色を返す
-          const genderIndex = this.studentsName.indexOf(studentName); // 生徒名に対応する性別を取得
-          let gender
-          if (genderIndex === -1) { //
-            gender = ''
-          } else {
-            gender = this.genderArray[genderIndex];
-          }
-          if (gender === '') {
-            if (row === 0 && col === 0) {
-              return 'male-seats'
-            } else if (row === 0 && col === 1) {
-              return 'female-seats'
-            } else {
-              return 'off-seats'
-            }
-          } else if (gender === 'male') {
+        getColorBySeat(col, row) { // 入力テーブルの座席色を、その座席の性別（座標）から直接決める。同名の生徒がいても座席ごとに正しく判定できる
+          const gender = this.genderTable[row][col];
+          if (gender === 'male') {
             return 'male-seats'
           } else if (gender === 'female') {
             return 'female-seats'
-          } else return 'on-seats'
+          } else if (row === 0 && col === 0) { // 空席のうち左上はデモ用に男子色
+            return 'male-seats'
+          } else if (row === 0 && col === 1) { // その隣はデモ用に女子色
+            return 'female-seats'
+          } else {
+            return 'off-seats'
+          }
+        },
+        getColorByNextSeat(name, col, row) { // 席替え後（結果テーブル）の座席色を返す
+          let gender;
+          if (this.isFixGender) {
+            // 性別固定中は「その席に座る生徒の性別＝その席に設定された性別」なので座標から判定する。
+            // これなら同名の生徒（例: 男の山田と女の山田）でも席ごとに正しい色になる。
+            gender = this.genderTable[row][col];
+          } else {
+            // 性別固定OFF時は座席で性別が決まらないため、生徒の性別を名前から引く（同名は1人目基準）。
+            const genderIndex = this.studentsName.indexOf(name);
+            gender = genderIndex === -1 ? '' : this.genderArray[genderIndex];
+          }
+          if (gender === 'male') {
+            return 'male-seats'
+          } else if (gender === 'female') {
+            return 'female-seats'
+          } else {
+            return 'off-seats'
+          }
         },
         toggleGender(col, row) {
           if (this.genderTable[row][col] === 'male') {
@@ -1697,9 +1714,24 @@
         },
         shuffleSeats() { // 条件のない生徒を席替え
           this.shuffle(this.dupSeatsTableIndex); // インデックスをシャッフル
-          this.dupStudentsName.forEach(dupStudentName => { // 生徒を一人取り出す
+          // 残った生徒に、元の並び（studentsName/genderArray/seatsTableIndex）から性別と元座席を割り当てる。
+          // 同名の生徒がいても元インデックスを1人ずつ消費するので、性別や元座席を取り違えない（例: 男の山田と女の山田）。
+          const usedOriginalIndex = new Set();
+          const remainingStudents = this.dupStudentsName.map(name => {
+            let originalIndex = -1;
+            for (let i = 0; i < this.studentsName.length; i++) {
+              if (!usedOriginalIndex.has(i) && this.studentsName[i] === name) {
+                usedOriginalIndex.add(i);
+                originalIndex = i;
+                break;
+              }
+            }
+            return { name, gender: this.genderArray[originalIndex], originalSeat: this.seatsTableIndex[originalIndex] };
+          });
+          remainingStudents.forEach(student => { // 生徒を一人取り出す
             let topIndex = this.dupSeatsTableIndex.shift(); // シャッフルしたインデックスを格納した配列の先頭を取り出す
-            while ((this.isFixGender && !this.checkGender(dupStudentName, topIndex)) || (this.isAllDifferent && !this.checkDifferent(dupStudentName, topIndex))) { // 条件を満たさない間、繰り返す
+            // 性別固定: 座席の性別が生徒の性別と一致するか／異なる席: 元の座席と違うか。満たさない間、別の座席を試す
+            while ((this.isFixGender && this.genderTable[topIndex[1]][topIndex[0]] !== student.gender) || (this.isAllDifferent && student.originalSeat.toString() === topIndex.toString())) {
               if (this.calcNum > this.seatsNum) {
                 this.restartFlag = true;
                 break;
@@ -1708,10 +1740,8 @@
               topIndex = this.dupSeatsTableIndex.shift(); // 配列先頭のインデックスを再度取り出す
               this.calcNum += 1;
             }
-            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, dupStudentName); // 取り出したインデックスの位置に生徒名を保存
-            const genderIndex = this.studentsName.indexOf(dupStudentName); // 生徒名に対応する性別のインデックスを取得
-            const gender = this.genderArray[genderIndex]; // 生徒名に対応する性別を取得
-            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender);// 復元用のnextGenderTableに席替え後の性別を保存
+            this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, student.name); // 取り出したインデックスの位置に生徒名を保存
+            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, student.gender); // 復元用のnextGenderTableに席替え後の性別を保存
           })
         },
         shuffle(array) { // 配列をランダムにシャッフル
