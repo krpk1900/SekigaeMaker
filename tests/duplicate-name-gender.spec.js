@@ -45,4 +45,34 @@ test.describe('同名・異性別の生徒（性別固定）', () => {
       expect(result.names).toEqual(['佐藤', '山田', '山田', '鈴木'].sort());
     }
   });
+
+  test('席替え後の結果テーブルで、2人の山田が男女それぞれの色で表示される', async ({ page }) => {
+    await page.evaluate(() => {
+      app.seatsTable.splice(0, 1, ['山田', '佐藤', '', '', '', '']);
+      app.seatsTable.splice(1, 1, ['山田', '鈴木', '', '', '', '']);
+      app.genderTable.splice(0, 1, ['male', 'female', '', '', '', '']);
+      app.genderTable.splice(1, 1, ['female', 'male', '', '', '', '']);
+      app.countSeats();
+    });
+    await page.waitForTimeout(150);
+
+    for (let i = 0; i < 10; i++) {
+      const result = await page.evaluate(() => {
+        app.error = false;
+        app.changeSeats();
+        // 結果テーブルの山田2人の色クラスを、配置座標から取得
+        const colors = [];
+        for (let r = 0; r < 2; r++) {
+          for (let c = 0; c < 2; c++) {
+            if (app.nextSeatsTable[r][c] === '山田') {
+              colors.push(app.getColorByNextSeat('山田', c, r));
+            }
+          }
+        }
+        return colors.sort();
+      });
+      // 修正前は ['male-seats','male-seats']（両方とも1人目=男で表示）になっていた
+      expect(result).toEqual(['female-seats', 'male-seats']);
+    }
+  });
 });
