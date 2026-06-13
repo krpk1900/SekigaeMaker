@@ -1002,15 +1002,24 @@
           :class="{'left-card-margin-large': seatsSizeX<8, 'left-card-margin-small': seatsSizeX>=8}"
           data-intro="座席に生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-title="2. 名前を入力！"
           data-position="right" data-step="2">
-          <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">今の座席
-            <v-tooltip top>
-              <template v-slot:activator="{ on, attrs }">
-                <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs"
-                  v-on="on">mdi-information-outline</v-icon>
-              </template>
-              <div>クリックで性別を切り替えることができます</div>
-              <div>Tabキーを押すと次の座席に移動することができます</div>
-            </v-tooltip>
+          <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 25px;">
+            <!-- 「今の座席」＋情報アイコンを中央寄せの基準にし、ボタンは絶対配置で右にぶら下げる
+                 （ボタンは通常フローの外なので、文字の幅・中央寄せに一切影響しない） -->
+            <span style="position: relative; display: inline-flex; align-items: center; white-space: nowrap;">今の座席
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon color="#005b69" style="margin-left: 5px; padding-bottom: 10px;" v-bind="attrs"
+                    v-on="on">mdi-information-outline</v-icon>
+                </template>
+                <div>クリックで性別を切り替えることができます</div>
+                <div>Tabキーを押すと次の座席に移動することができます</div>
+              </v-tooltip>
+              <!-- 一括入力ボタン（文字のすぐ右に絶対配置） -->
+              <v-btn elevation="2" height="40" color="white"
+                @click="isShowStudentsNameDialog = true;"
+                style="position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 14px; font-size: 1.5rem; line-height: 1; font-weight: 900; text-transform: none; color: #0c9ea8;">一括入力
+              </v-btn>
+            </span>
           </v-card-title>
           <div class="seats-scroll-container">
             <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: -4px;">
