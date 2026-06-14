@@ -1175,6 +1175,17 @@
             <v-card-title class="headline teal lighten-2 font-weight-black"
               style="display: inherit; color: #FFFFFF;">新機能のお知らせ</v-card-title>
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
+              <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #999;">2026.06.10</span>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
+                  一度入力した条件を削除できるようになりました！
+                </div>
+                <div style="font-size: 14px;">
+                  前後・固定・近づける・離す・班長などの条件を、行ごとに削除ボタン（✕）で取り消せるようになりました。
+                </div>
+              </div>
               <div>
                 <div style="margin-bottom: 8px;">
                   <span style="font-size: 14px; color: #999;">2026.06.08</span>
@@ -2374,7 +2385,7 @@
         window.addEventListener('resize', this.onResize);
 
         // 新機能モーダルの表示判定
-        const newFeatureKey = 'newFeatureModal_v3';
+        const newFeatureKey = 'newFeatureModal_v4';
         if (!localStorage.getItem(newFeatureKey)) {
           // ランディングモーダルが閉じられた後に表示する
           const unwatch = this.$watch('landing', (newVal) => {
