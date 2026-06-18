@@ -1390,7 +1390,6 @@
         restartFlag: false, // 条件を満たしていないとき、changeSeats()の最初からリスタートする制御用フラグ
         genderTable: [], // 生徒の性別テーブル、性別が入る二次元配列
         genderArray: [], // 生徒の性別配列、テーブルを展開したもの、studentsName[]と順番が対応
-        nextGenderTable: [], // 席替え後の生徒の性別テーブル、性別が入る二次元配列
         isAllDifferent: true, // 前回の座席と異なる配置にするかどうかの制御フラグ
         isFixGender: true, // 性別を固定するかどうかの制御フラグ
         fixConditions: [['', '', '']], // 近づける条件配列
@@ -1625,17 +1624,18 @@
             return 'off-seats'
           }
         },
-        getColorByNextSeat(name, col, row) { // 席替え後（結果テーブル）の座席色を返す
-          let gender;
+        genderAtNextSeat(name, col, row) { // 席替え後（結果テーブル）の座席(col,row)に座る生徒の性別を返す。色表示と保存で共通利用する単一の判定ロジック
           if (this.isFixGender) {
             // 性別固定中は「その席に座る生徒の性別＝その席に設定された性別」なので座標から判定する。
             // これなら同名の生徒（例: 男の山田と女の山田）でも席ごとに正しい色になる。
-            gender = this.genderTable[row][col];
-          } else {
-            // 性別固定OFF時は座席で性別が決まらないため、生徒の性別を名前から引く（同名は1人目基準）。
-            const genderIndex = this.studentsName.indexOf(name);
-            gender = genderIndex === -1 ? '' : this.genderArray[genderIndex];
+            return this.genderTable[row][col];
           }
+          // 性別固定OFF時は座席で性別が決まらないため、生徒の性別を名前から引く（同名は1人目基準）。
+          const genderIndex = this.studentsName.indexOf(name);
+          return genderIndex === -1 ? '' : this.genderArray[genderIndex];
+        },
+        getColorByNextSeat(name, col, row) { // 席替え後（結果テーブル）の座席色を返す
+          const gender = this.genderAtNextSeat(name, col, row);
           if (gender === 'male') {
             return 'male-seats'
           } else if (gender === 'female') {
@@ -1784,7 +1784,6 @@
               this.calcNum += 1;
             }
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, student.name); // 取り出したインデックスの位置に生徒名を保存
-            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, student.gender); // 復元用のnextGenderTableに席替え後の性別を保存
           })
         },
         shuffle(array) { // 配列をランダムにシャッフル
@@ -2109,9 +2108,6 @@
             if (this.restartFlag) return;
 
             this.nextSeatsTable[topIndex[1]].splice(topIndex[0], 1, leaderName); // 取り出したインデックスの位置に班長名を保存
-            const genderIndex = this.studentsName.indexOf(leaderName);
-            const gender = this.genderArray[genderIndex];
-            this.nextGenderTable[topIndex[1]].splice(topIndex[0], 1, gender); // 復元用のnextGenderTableに席替え後の性別を保存
 
             // ここで配置した班長は他の配置処理で配置する必要がないため、各配列から削除する
             this.removeFromArray(topIndex, this.dupSeatsTableIndex);
@@ -2215,12 +2211,6 @@
             }
           }
         },
-        makeNextGenderTable() { // nextGenderTableを作成
-          this.nextGenderTable = []
-          for (let i = 0; i < this.seatsSizeY; i++) {
-            this.nextGenderTable.push(Array(this.seatsSizeX).fill('')) // すべての席に性別が未入力な状態でテーブルを作成
-          }
-        },
         removeFromArray(target, array) {
           const deleteIndex = looseIndexOf(array, target); // 削除したいtargetがある配列arrayのインデックスを取得
           if (deleteIndex !== -1) { // targetが配列arrayになければ返り値が-1となるので、そのときは削除しない
@@ -2320,9 +2310,14 @@
             id = String(Date.now());
           }
 
+          // 結果テーブルの各席の性別を表示と同じロジックで組み立てる。
+          // 固定/前後列/近づける/離す等で配置された生徒の性別も漏れなく保存できる
+          const savedGenderTable = this.nextSeatsTable.map((seatsRow, row) =>
+            seatsRow.map((name, col) => name === '' ? '' : this.genderAtNextSeat(name, col, row))
+          );
           const data = {
             seatsTable: this.nextSeatsTable,
-            genderTable: this.nextGenderTable,
+            genderTable: savedGenderTable,
             seatsSizeX: this.seatsSizeX,
             seatsSizeY: this.seatsSizeY,
             groupSizeX: this.groupSizeX,
@@ -2366,7 +2361,6 @@
           this.isFixGender = true;
           this.countSeats();
           this.makeNextSeatsTable();
-          this.makeNextGenderTable();
           this.isShowRestoreDialog = false;
         },
         deleteSavedData(id, name) { // 保存データを削除する
@@ -2393,7 +2387,6 @@
         this.makeSeatsTable(); // 最初にseatsTableを作成
         this.makeNextSeatsTable(); // 席替え後用のnextSeatsTableを空白で作成
         this.makeGenderTable(); // genderTableを作成
-        this.makeNextGenderTable(); // 席替え後用のnextGenderTableを作成
         this.setSidebarWidth();
         if (window.innerWidth < BREAKPOINT_PC) { // SP・TBのとき
           this.drawer = false; // 初期はサイドバーを非表示
@@ -2468,7 +2461,6 @@
             this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
             this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
             this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
-            this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
             switch (this.seatsSizeX) { // 班の大きさとデフォルト値を変更する
               case 1:
                 this.groupSizeOptionsX = ['なし'];
@@ -2532,7 +2524,6 @@
             this.remakeSeatsTable(); // 現在の座席テーブルを新しい大きさで作り直す
             this.makeNextSeatsTable() // 次の座席テーブルを新しい大きさで作り直す
             this.remakeGenderTable() // 性別テーブルを新しい大きさで作り直す
-            this.makeNextGenderTable() // 次の性別テーブルを新しい大きさで作り直す
             switch (this.seatsSizeY) { // 班の大きさとデフォルト値を変更する
               case 1:
                 this.groupSizeOptionsY = ['なし'];

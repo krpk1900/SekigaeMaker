@@ -10,10 +10,22 @@ async function setupDemoData(page) {
 
 async function runChangeSeats(page) {
   return await page.evaluate(() => {
+    // 席替え前に「生徒名→本来の性別」を入力テーブルから記録する（genderTableはchangeSeatsで変化しない）
+    const studentGenderMap = {};
+    for (let row = 0; row < app.seatsTable.length; row++) {
+      for (let col = 0; col < app.seatsTable[row].length; col++) {
+        const name = app.seatsTable[row][col];
+        if (name) studentGenderMap[name] = app.genderTable[row][col];
+      }
+    }
     app.changeSeats();
     return {
       nextSeatsTable: app.nextSeatsTable,
-      nextGenderTable: app.nextGenderTable,
+      // 結果の各席に「実際に配置された生徒の本来の性別」を割り当てる。
+      // 席の固定性別(genderTable)ではなく生徒由来の値なので、誤配置があれば検出できる
+      placedGenderTable: app.nextSeatsTable.map(rowArr =>
+        rowArr.map(name => name === '' ? '' : studentGenderMap[name])
+      ),
     };
   });
 }
@@ -34,10 +46,11 @@ test.describe('性別の並びを固定（isFixGender）', () => {
     await page.waitForTimeout(50);
 
     for (let i = 0; i < 10; i++) {
-      const { nextGenderTable } = await runChangeSeats(page);
+      // 各席に配置された生徒の本来の性別が、その席に固定された性別と一致していることを検証する
+      const { placedGenderTable } = await runChangeSeats(page);
       for (let row = 0; row < originalGenderTable.length; row++) {
         for (let col = 0; col < originalGenderTable[row].length; col++) {
-          expect(nextGenderTable[row][col]).toBe(originalGenderTable[row][col]);
+          expect(placedGenderTable[row][col]).toBe(originalGenderTable[row][col]);
         }
       }
     }
