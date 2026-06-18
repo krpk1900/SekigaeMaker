@@ -462,6 +462,25 @@
       min-width: 400px;
       max-width: 400px;
     }
+
+    /* ボタン右上に浮かせる「NEW」バッジ */
+    .new-badge {
+      position: absolute;
+      top: -18px;
+      right: -18px;
+      padding: 2px 7px;
+      border-radius: 9px;
+      background-color: #ff4081;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      line-height: 1.4;
+      letter-spacing: 0.5px;
+      text-transform: none;
+      pointer-events: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
   </style>
 </head>
 
@@ -497,6 +516,7 @@
         <div class="pc-only save-btn-container">
           <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
             style="font-size: 20px; font-weight: 900; margin-right: 80px;">
+            <span class="new-badge" style="right: -32px;">NEW</span>
             <v-icon left>mdi-content-save</v-icon>結果を保存
           </v-btn>
         </div>
@@ -745,11 +765,13 @@
                   <v-btn elevation="2" x-large color="#0c9ea8" class="demo-btn" dark
                     @click="isShowStudentsNameDialog = true;"
                     style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px; text-transform: none;">
+                    <span class="new-badge">NEW</span>
                     <v-icon class="icon">mdi-content-paste</v-icon>コピペで入力
                   </v-btn>
                   <!-- 結果を復元するボタン -->
                   <v-btn elevation="2" x-large color="#0c9ea8" class="demo-btn" dark @click="openRestoreDialog()"
                     style="font-size: 20px; font-weight: 900; margin-left: 10px; padding-right: 15px;">
+                    <span class="new-badge">NEW</span>
                     <v-icon class="icon">mdi-restore</v-icon>結果を復元
                   </v-btn>
                   <div style="margin-top: 5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
@@ -1016,9 +1038,9 @@
                 <div>Tabキーを押すと次の座席に移動することができます</div>
               </v-tooltip>
               <!-- 一括入力ボタン（文字のすぐ右に絶対配置） -->
-              <v-btn elevation="2" height="40" color="white"
-                @click="isShowStudentsNameDialog = true;"
-                style="position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 14px; font-size: 1.5rem; line-height: 1; font-weight: 900; text-transform: none; color: #0c9ea8;">一括入力
+              <v-btn elevation="2" height="40" color="white" @click="isShowStudentsNameDialog = true;"
+                style="position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 14px; font-size: 1.5rem; line-height: 1; font-weight: 900; text-transform: none; color: #0c9ea8;">
+                <span class="new-badge" style="top: -14px; right: -24px;">NEW</span>一括入力
               </v-btn>
             </span>
           </v-card-title>
@@ -1040,8 +1062,7 @@
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="石原">
                 <!-- 3つ目以降のフォーム -->
-                <input type="text" v-else
-                  :class="['seat', getColorBySeat(indexCol, indexRow)]"
+                <input type="text" v-else :class="['seat', getColorBySeat(indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow.toString() + indexCol.toString()"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
@@ -1057,6 +1078,7 @@
         <div class="save-btn-container-tb">
           <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
             style="font-size: 20px; font-weight: 900;">
+            <span class="new-badge">NEW</span>
             <v-icon left>mdi-content-save</v-icon>結果を保存
           </v-btn>
         </div>
