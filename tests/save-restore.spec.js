@@ -51,4 +51,35 @@ test.describe('保存・復元', () => {
 
     expect(missingGender).toBe(0); // 旧実装ではA・Bの2席が''になり 2 になる
   });
+
+  test('復元直後、空の「席替え後」テーブルの各席は無色（off-seats）で表示される', async ({ page }) => {
+    // restoreByNameはnextSeatsTableを空にするが、getColorByNextSeatが空席にも
+    // genderTableの色を付けていたため、「名前なし＋色つき」のセルが残っていた。
+    const coloredEmptySeats = await page.evaluate(() => {
+      app.seatsTable.splice(0, 1, ['A', 'B', '', '', '', '']);
+      app.genderTable.splice(0, 1, ['male', 'female', '', '', '', '']);
+      app.countSeats();
+      app.isFixGender = true;
+      app.changeSeats();
+
+      app.saveName = 'テスト保存';
+      app.saveWithName(true);
+      const list = app.getSavedList();
+      app.restoreByName(list[0].id); // nextSeatsTableは空になる
+
+      // 空の結果テーブルの全席が off-seats（無色）であること
+      let colored = 0;
+      for (let row = 0; row < app.seatsSizeY; row++) {
+        for (let col = 0; col < app.seatsSizeX; col++) {
+          const name = app.nextSeatsTable[row][col];
+          if (name === '' && app.getColorByNextSeat(name, col, row) !== 'off-seats') {
+            colored += 1;
+          }
+        }
+      }
+      return colored;
+    });
+
+    expect(coloredEmptySeats).toBe(0); // 旧実装では色が残り 0 より大きくなる
+  });
 });

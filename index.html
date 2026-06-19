@@ -1624,7 +1624,8 @@
             return 'off-seats'
           }
         },
-        genderAtNextSeat(name, col, row) { // 席替え後（結果テーブル）の座席(col,row)に座る生徒の性別を返す。色表示と保存で共通利用する単一の判定ロジック
+        genderAtNextSeat(name, col, row) { // 席替え後（結果テーブル）の座席(col,row)に座る生徒の性別を返す。空席（生徒なし）は''。色表示と保存で共通利用する単一の判定ロジック
+          if (name === '') return ''; // 空席は性別なし。結果テーブルが空のとき（復元直後や席替え前）に色だけ残るのを防ぐ
           if (this.isFixGender) {
             // 性別固定中は「その席に座る生徒の性別＝その席に設定された性別」なので座標から判定する。
             // これなら同名の生徒（例: 男の山田と女の山田）でも席ごとに正しい色になる。
@@ -2313,7 +2314,7 @@
           // 結果テーブルの各席の性別を表示と同じロジックで組み立てる。
           // 固定/前後列/近づける/離す等で配置された生徒の性別も漏れなく保存できる
           const savedGenderTable = this.nextSeatsTable.map((seatsRow, row) =>
-            seatsRow.map((name, col) => name === '' ? '' : this.genderAtNextSeat(name, col, row))
+            seatsRow.map((name, col) => this.genderAtNextSeat(name, col, row))
           );
           const data = {
             seatsTable: this.nextSeatsTable,
