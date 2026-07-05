@@ -1051,20 +1051,20 @@
                 <input type="text" v-if="indexRow==0 && indexCol==0"
                   :class="['seat', getColorBySeat(indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  :key="indexRow.toString() + indexCol.toString()"
+                  :key="indexRow + '-' + indexCol"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="安藤">
                 <!-- 2つ目のフォームにプレイスホルダーを設定 -->
                 <input type="text" v-else-if="indexRow==0 && indexCol==1"
                   :class="['seat', getColorBySeat(indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  :key="indexRow.toString() + indexCol.toString()"
+                  :key="indexRow + '-' + indexCol"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="石原">
                 <!-- 3つ目以降のフォーム -->
                 <input type="text" v-else :class="['seat', getColorBySeat(indexCol, indexRow)]"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
-                  :key="indexRow.toString() + indexCol.toString()"
+                  :key="indexRow + '-' + indexCol"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)">
                 <span :class="{'margin-right': (indexCol+1)%groupSizeX==0 && (indexCol+1)!=seatsSizeX}"></span>
