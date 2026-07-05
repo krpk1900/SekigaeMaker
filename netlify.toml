@@ -1,13 +1,25 @@
 [build]
   publish = "."
 
+# セキュリティヘッダーは全パスに適用する
+# ("/*.html" だとトップページのパス "/" にマッチせず、ヘッダーが付与されない)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# トップページはパス "/" で配信されるため、"/*.html" とは別に指定が必要
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "DENY"
-    Referrer-Policy = "strict-origin-when-cross-origin"
 
 [[headers]]
   for = "/*.js"
