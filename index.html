@@ -112,22 +112,140 @@
       /* スマホ */
       .grid-layout {
         display: grid;
-        grid-template-columns: 1fr 70px;
-        grid-template-rows: 115px;
+        /* 閉じたサイドバー（レール）を細くする分、座席表側を広げる。
+           56pxは下の.v-navigation-drawer--mini-variantの幅と必ず揃えること。
+           行の高さは指定なし＝内容に合わせる（縮小したタイトルが1行で収まる） */
+        grid-template-columns: 1fr 56px;
       }
 
-      /*.left-card-margin-large { スマホの場合を定義しなおす
-          margin: 0 20px 0 40px;
+      /* 閉じたサイドバー（レール）をmini-variant-width指定の73pxより細くする。
+         56pxは上の.grid-layoutのgrid-template-columns第2列と必ず揃えること */
+      .v-navigation-drawer--mini-variant {
+        width: 56px !important;
+      }
+
+      /* レール内のアイコンとボタンも幅56pxに収まるよう縮小する */
+      .v-navigation-drawer--mini-variant .v-icon {
+        font-size: 26px !important;
+      }
+
+      .v-navigation-drawer--mini-variant .closed-btn {
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      /* iOS Safariでは100%(=100vh相当)だと下部ツールバーにサイドバー下部の
+         ボタンが隠れるため、表示領域に追従する動的ビューポート高さを使う */
+      @supports (height: 100dvh) {
+        .v-navigation-drawer {
+          height: 100dvh !important;
         }
-        .left-card-margin-small {
-          margin: 0 3px 0 6px;
-        }
-        .right-card-margin-large {
-          margin: 0 40px 0 20px;
-        }
-        .right-card-margin-small {
-          margin: 0 6px 0 3px;
-        }*/
+      }
+
+      /* タイトルが折り返して座席カードに隠れるため、1行に収まるサイズまで縮小する */
+      .site-logo {
+        width: 32px;
+        height: 32px;
+        margin-top: 6px !important;
+      }
+
+      .site-title {
+        font-size: 26px !important;
+      }
+
+      .left-card-margin-large,
+      .left-card-margin-small {
+        margin: 0 6px 10px 6px;
+      }
+
+      .right-card-margin-large,
+      .right-card-margin-small {
+        margin: 10px 6px 0 6px;
+      }
+
+      /* カードタイトル（今の座席・席替え後）を縮小し、中央寄せ用の左マージンも解除する */
+      .grid-layout .v-card__title {
+        font-size: 1.5rem !important;
+        margin-left: 0 !important;
+      }
+
+      /* 絶対配置のままだと画面外にはみ出すため、タイトル横の通常フローに戻す。
+         staticではなくrelativeにするのは、子のNEWバッジ（絶対配置）の基準を
+         このボタンのまま保つため（staticだと基準が外側のタイトルspanに変わってずれる）。
+         relativeはインラインのleft/topをオフセットとして適用してしまうため、両方打ち消す */
+      .bulk-input-btn {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+        margin-left: 10px !important;
+        font-size: 1rem !important;
+      }
+
+      /* 座席マスを縮小し、横スクロールなしで6列全体が見えるようにする
+         （後方で定義される単体クラスのルールに勝つため .grid-layout で詳細度を上げる） */
+      .grid-layout .seat {
+        height: 46px;
+        width: 46px;
+        border-width: 2px;
+        font-size: 13px !important;
+      }
+
+      .grid-layout .square {
+        height: 46px;
+        width: 46px;
+      }
+
+      /* 班長の星マークも座席の縮小に合わせる */
+      .grid-layout .square .v-icon {
+        font-size: 14px !important;
+        top: 2px !important;
+        left: 2px !important;
+      }
+
+      /* 班同士の間隔も座席の縮小に合わせて詰める */
+      .grid-layout .margin-right {
+        margin-right: 6px;
+      }
+
+      .grid-layout .margin-bottom {
+        padding-bottom: 6px;
+      }
+
+      .grid-layout .card-bottom {
+        padding-bottom: 14px;
+      }
+
+      /* サイドバーの「条件」見出しを縮小し、使い方・デモデータと1行に収まりやすくする */
+      .grid-layout .condition-title {
+        font-size: 26px !important;
+        margin: 12px 0 20px;
+      }
+
+      .grid-layout .condition-title .v-icon {
+        font-size: 34px !important;
+      }
+
+      /* 下部固定領域が画面を占有しすぎないよう、ボタンをコンパクトにして間隔を空ける */
+      .sidebar-bottom-sticky .v-btn {
+        height: 44px !important;
+        font-size: 16px !important;
+        margin: 4px 8px 4px 0 !important;
+      }
+
+      /* 全体・班の2カラムだと折り返して崩れるため、縦に積む
+         （後方で定義される .panel-grid-layout 単体のルールに勝つため詳細度を上げる） */
+      .grid-layout .panel-grid-layout {
+        grid-template-columns: 1fr;
+      }
+
+      /* チュートリアルの吹き出しが画面幅を超えないようにする
+         （後方で定義される基底の.introjs-tooltipルールに勝つためクラスを重ねて詳細度を上げる。
+           intro.jsは吹き出しをbody直下に追加するため.grid-layoutプレフィックスは使えない） */
+      .introjs-tooltip.introjs-tooltip {
+        min-width: 0;
+        max-width: 90vw;
+      }
     }
 
     @media screen and (min-width:601px) and (max-width:1020px) {
@@ -371,7 +489,8 @@
       color: black;
     }
 
-    /* vuetifyのスタイルをオーバーライド、サイドメニューの開閉速度を設定 */
+    /* vuetifyのスタイルをオーバーライド、サイドメニューの開閉速度を設定。
+       変更するときはJSのDRAWER_TRANSITION_MSも合わせて変更すること */
     .v-navigation-drawer {
       transition-duration: 0.4s;
     }
@@ -518,8 +637,9 @@
         <!-- タイトル -->
         <header style="margin: auto;">
           <h1>
-            <img src="logo.png" width="55" height="55" alt="席替えメーカーのロゴ" style="margin-top: 10px;">
-            <span style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
+            <img src="logo.png" width="55" height="55" alt="席替えメーカーのロゴ" class="site-logo" style="margin-top: 10px;">
+            <span class="site-title"
+              style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
           </h1>
         </header>
         <div class="pc-only save-btn-container">
@@ -939,7 +1059,8 @@
                           2026.03.22　座席の縦横の最大値を8から12まで拡張しました。<br>
                           2026.06.08　席替え結果を名前を付けて保存・復元できるようになりました。<br>
                           2026.06.10　一度入力した条件を削除できるようになりました。<br>
-                          2026.07.08　席替えボタンを画面下部に固定しました。
+                          2026.07.08　席替えボタンを画面下部に固定しました。<br>
+                          2026.07.08　スマホに対応しました。
                         </v-card-text>
                       </v-card>
                     </v-dialog>
@@ -1051,7 +1172,8 @@
                 <div>Tabキーを押すと次の座席に移動することができます</div>
               </v-tooltip>
               <!-- 一括入力ボタン（文字のすぐ右に絶対配置） -->
-              <v-btn elevation="2" height="40" color="white" @click="isShowStudentsNameDialog = true;"
+              <v-btn elevation="2" height="40" color="white" class="bulk-input-btn"
+                @click="isShowStudentsNameDialog = true;"
                 style="position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 14px; font-size: 1.5rem; line-height: 1; font-weight: 900; text-transform: none; color: #0c9ea8;">
                 <span class="new-badge" style="top: -14px; right: -24px;">NEW</span>一括入力
               </v-btn>
@@ -1098,7 +1220,8 @@
         <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- 席替え後の座席テーブル -->
-        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF; min-width: 0;"
+        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" id="next-seats-card"
+          style="color: #FFFFFF; min-width: 0;"
           :class="{'right-card-margin-large': seatsSizeX<8, 'right-card-margin-small': seatsSizeX>=8}"
           data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-title="5. 最終調整！" data-position="left" data-step="5">
           <v-card-title class="justify-center text-h4" style="font-weight: 900; margin-left: 20px;">席替え後
@@ -1316,9 +1439,6 @@
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 20px; font-weight: 600;">
               席替えメーカーは、生徒名と条件を入力するだけで座席の配置案を瞬時に出してくれるサービスです！
             </v-card-text>
-            <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
-              ※現在パソコンとタブレットでのみ使用可能です。スマホへの対応はもうしばらくお待ちください。
-            </v-card-text>
             <v-card-actions>
               <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
               <v-spacer></v-spacer>
@@ -1338,11 +1458,26 @@
 
   <script>
     // ブレークポイント定数
+    const BREAKPOINT_SP = 600;
     const BREAKPOINT_TB = 1020;
     const BREAKPOINT_PC = 1440;
+    // CSSの.v-navigation-drawerのtransition-duration: 0.4sと合わせる。変更するときは両方変更すること
+    const DRAWER_TRANSITION_MS = 400;
+
+    // スマホ判定。window.innerWidthはiOSのピンチズーム中に視覚ビューポートを返して
+    // CSSメディアクエリと食い違うため、同じレイアウトビューポート基準のmatchMediaで判定する。
+    // MediaQueryListの生成はコストがあるため一度だけ生成して使い回す（resizeのたびに呼ばれる）
+    const spMediaQuery = window.matchMedia(`(max-width: ${BREAKPOINT_SP}px)`);
+    function isSpViewport() {
+      return spMediaQuery.matches;
+    }
+
+    let scrollToResultTimer; // スマホで席替え後カードへスクロールするタイマーのID。連打時に古い予約をキャンセルするために保持する
 
     // ここからsortableJSで使う変数。sortableJSではVueインスタンスのdataやmethodを認識しないため
     let isReverseSeats = false; // スワップした座席を席替え直前に戻すためのフラグ
+    let sortableInstances = []; // 生成済みのSortableインスタンス。再生成時に破棄して二重バインドを防ぐ
+    let isSortableCreatedForSp = false; // Sortableをスマホ用設定で生成したかどうか。画面幅が600px境界をまたいだときの再生成判定に使う
     const fromRows = [];
     const fromCols = [];
     const toRows = [];
@@ -1561,6 +1696,18 @@
           this.beforeChangeSeats();
           this.delayChangeSeats();
           this.drawer = false
+          if (isSpViewport()) { // スマホでは結果カードが画面外（下）にあるため、サイドバーが閉じてからスクロールして見せる
+            clearTimeout(scrollToResultTimer); // 連打時に古い予約が残って後からビューポートを引き戻さないよう、常に最後の1回だけ実行する
+            scrollToResultTimer = setTimeout(() => {
+              if (!isSpViewport()) return; // 予約後に回転・リサイズでスマホ幅を離れていたらスクロールしない
+              if (this.error) return; // 席替えに失敗してエラーダイアログが出ているときはスクロールしない
+              if (document.querySelector('.introjs-overlay')) return; // チュートリアル中はintro.js自身のスクロール・ハイライトに任せる
+              const nextSeatsCard = document.getElementById('next-seats-card');
+              if (nextSeatsCard) {
+                nextSeatsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }, DRAWER_TRANSITION_MS + 50); // サイドバーが閉じ終わってからスクロールを開始する
+          }
         },
         collectConditionStudents(conditions) { // [生徒A, 生徒B, 距離]の配列から、空でない生徒名を重複なく集める
           const names = [];
@@ -2243,30 +2390,41 @@
           toCols.splice(0);
         },
         setSortableJS() { // sortableJSをフォームにセット
+          // 前回生成したインスタンスを破棄する。座席数変更時は古いDOMごと消えるが、
+          // 画面幅の境界またぎによる再生成では同じDOM要素に再セットするため、破棄しないと二重バインドになる
+          sortableInstances.forEach(instance => instance.destroy());
+          sortableInstances = [];
+          isSortableCreatedForSp = isSpViewport();
+          const sortableOptions = {
+            group: "nextSeats",
+            swap: true,
+            swapClass: 'highlighted',
+            animation: 400,
+            onSort: function () { // スワップしたら、
+              isReverseSeats = true;
+            },
+            onEnd: function (evt) {
+              const fromParts = evt.from.id.split('-');
+              const fromRow = parseInt(fromParts[1]);
+              const fromCol = parseInt(fromParts[2]);
+              const toParts = evt.to.id.split('-');
+              const toRow = parseInt(toParts[1]);
+              const toCol = parseInt(toParts[2]);
+              fromRows.push(fromRow);
+              fromCols.push(fromCol);
+              toRows.push(toRow);
+              toCols.push(toCol);
+            },
+          };
+          if (isSortableCreatedForSp) { // スマホでは指でのスクロールとドラッグが衝突するため、長押しでドラッグ開始にする
+            sortableOptions.delay = 150;
+            sortableOptions.delayOnTouchOnly = true; // マウス操作には遅延をかけない
+            sortableOptions.touchStartThreshold = 5; // 長押し判定中に指が5pxを超えて動いたらスクロールとみなしてドラッグを中止
+          }
           for (let row = 0; row < this.seatsSizeY; row++) {
             for (let col = 0; col < this.seatsSizeX; col++) {
               const el = document.getElementById(`nextSeatsRow-${row}-${col}`);
-              Sortable.create(el, {
-                group: "nextSeats",
-                swap: true,
-                swapClass: 'highlighted',
-                animation: 400,
-                onSort: function () { // スワップしたら、
-                  isReverseSeats = true;
-                },
-                onEnd: function (evt) {
-                  const fromParts = evt.from.id.split('-');
-                  const fromRow = parseInt(fromParts[1]);
-                  const fromCol = parseInt(fromParts[2]);
-                  const toParts = evt.to.id.split('-');
-                  const toRow = parseInt(toParts[1]);
-                  const toCol = parseInt(toParts[2]);
-                  fromRows.push(fromRow);
-                  fromCols.push(fromCol);
-                  toRows.push(toRow);
-                  toCols.push(toCol);
-                },
-              });
+              sortableInstances.push(Sortable.create(el, sortableOptions));
             }
           }
         },
@@ -2409,6 +2567,14 @@
         // ウィンドウリサイズ時にサイドバーの幅を更新
         this.onResize = () => {
           this.setSidebarWidth();
+          // 画面回転などで600px境界をまたいだら、長押しドラッグ設定を切り替えるためSortableを再生成する。
+          // instance.option()での差し替えではなく再生成なのは、生成時と同じ正規化
+          // （touchStartThresholdのクランプ等）を通すため。境界をまたいだ瞬間に1回だけ実行される。
+          // ドラッグ中に破棄するとゴースト要素が画面に残るため、ドラッグ中はスキップする
+          // （設定は次のresizeイベントか席替え時の再生成で追従する）
+          if (!Sortable.active && isSpViewport() !== isSortableCreatedForSp) {
+            this.setSortableJS();
+          }
         };
         window.addEventListener('resize', this.onResize);
 
