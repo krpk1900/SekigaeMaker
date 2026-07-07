@@ -113,10 +113,9 @@
       .grid-layout {
         display: grid;
         /* 閉じたサイドバー（レール）を細くする分、座席表側を広げる。
-           56pxは下の.v-navigation-drawer--mini-variantの幅と必ず揃えること */
+           56pxは下の.v-navigation-drawer--mini-variantの幅と必ず揃えること。
+           行の高さは指定なし＝内容に合わせる（縮小したタイトルが1行で収まる） */
         grid-template-columns: 1fr 56px;
-        /* タイトルを縮小しても高さが余るため、115px固定ではなく内容に合わせる */
-        grid-template-rows: auto;
       }
 
       /* 閉じたサイドバー（レール）をmini-variant-width指定の73pxより細くする。
@@ -190,12 +189,6 @@
         width: 46px;
         border-width: 2px;
         font-size: 13px !important;
-      }
-
-      /* iOS Safariはフォーカスした入力欄が16px未満だと画面ごとズームするため、
-         フォーカス中だけ16pxに引き上げてズームを防ぐ */
-      .grid-layout .seat:focus {
-        font-size: 16px !important;
       }
 
       .grid-layout .square {
@@ -1472,9 +1465,11 @@
     const DRAWER_TRANSITION_MS = 400;
 
     // スマホ判定。window.innerWidthはiOSのピンチズーム中に視覚ビューポートを返して
-    // CSSメディアクエリと食い違うため、同じレイアウトビューポート基準のmatchMediaで判定する
+    // CSSメディアクエリと食い違うため、同じレイアウトビューポート基準のmatchMediaで判定する。
+    // MediaQueryListの生成はコストがあるため一度だけ生成して使い回す（resizeのたびに呼ばれる）
+    const spMediaQuery = window.matchMedia(`(max-width: ${BREAKPOINT_SP}px)`);
     function isSpViewport() {
-      return window.matchMedia(`(max-width: ${BREAKPOINT_SP}px)`).matches;
+      return spMediaQuery.matches;
     }
 
     let scrollToResultTimer; // スマホで席替え後カードへスクロールするタイマーのID。連打時に古い予約をキャンセルするために保持する
@@ -1704,6 +1699,7 @@
           if (isSpViewport()) { // スマホでは結果カードが画面外（下）にあるため、サイドバーが閉じてからスクロールして見せる
             clearTimeout(scrollToResultTimer); // 連打時に古い予約が残って後からビューポートを引き戻さないよう、常に最後の1回だけ実行する
             scrollToResultTimer = setTimeout(() => {
+              if (!isSpViewport()) return; // 予約後に回転・リサイズでスマホ幅を離れていたらスクロールしない
               if (this.error) return; // 席替えに失敗してエラーダイアログが出ているときはスクロールしない
               if (document.querySelector('.introjs-overlay')) return; // チュートリアル中はintro.js自身のスクロール・ハイライトに任せる
               const nextSeatsCard = document.getElementById('next-seats-card');
@@ -2571,8 +2567,12 @@
         // ウィンドウリサイズ時にサイドバーの幅を更新
         this.onResize = () => {
           this.setSidebarWidth();
-          // 画面回転などで600px境界をまたいだら、長押しドラッグ設定を切り替えるためSortableを再生成する
-          if (isSpViewport() !== isSortableCreatedForSp) {
+          // 画面回転などで600px境界をまたいだら、長押しドラッグ設定を切り替えるためSortableを再生成する。
+          // instance.option()での差し替えではなく再生成なのは、生成時と同じ正規化
+          // （touchStartThresholdのクランプ等）を通すため。境界をまたいだ瞬間に1回だけ実行される。
+          // ドラッグ中に破棄するとゴースト要素が画面に残るため、ドラッグ中はスキップする
+          // （設定は次のresizeイベントか席替え時の再生成で追従する）
+          if (!Sortable.active && isSpViewport() !== isSortableCreatedForSp) {
             this.setSortableJS();
           }
         };
