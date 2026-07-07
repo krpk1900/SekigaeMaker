@@ -382,6 +382,15 @@
       border-width: 0 1px 0 1px;
     }
 
+    /* サイドバー下部のボタン・リンク領域はスクロールしても画面下部に表示され続ける */
+    .sidebar-bottom-sticky {
+      position: sticky;
+      bottom: 0;
+      z-index: 2; /* 必須。ないと背後を流れる展開パネルが前面に来てクリックを奪う */
+      background: #ededed; /* v-navigation-drawerのcolorと同色にして背後のスクロールを隠す */
+      padding-bottom: 6px;
+    }
+
     .box-shadow {
       box-shadow: 0 0 3px 3px rgba(170, 170, 170, 0.5);
     }
@@ -755,6 +764,8 @@
                         style="margin:10px 0 10px 17px; padding-bottom: 15px;"></v-checkbox>
                     </v-card>
                   </span>
+                  <!-- 下部ブロック（スクロールしても画面下部に表示され続ける）。stickyで固定するため、サイドバー内の最後の要素に置くこと -->
+                  <div class="sidebar-bottom-sticky">
                   <!-- 席替えボタン -->
                   <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text @click="changeSeatsProcess();"
                     style="font-size: 20px; font-weight: 900;" data-intro="席替えボタンを押すと座席が移動します。" data-title="4. 席替え！"
@@ -942,6 +953,7 @@
                     <!-- 著作権表記 -->
                     <span style="color: #777777; font-size: 15px;">©2026席替えメーカー</span>
                   </div>
+                  </div><!-- /下部ブロック -->
                 </template>
                 <!-- サイドバーを閉じたとき -->
                 <template v-else>
