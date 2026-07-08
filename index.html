@@ -226,11 +226,89 @@
         font-size: 34px !important;
       }
 
-      /* 下部固定領域が画面を占有しすぎないよう、ボタンをコンパクトにして間隔を空ける */
+      /* 使い方・デモデータボタンを縮小する（インラインstyleに勝つため!important）。
+         マイナスマージンはPC用の大きいタイトルに合わせた値のため、縮小後の高さに合わせて調整する */
+      .v-navigation-drawer .sidebar-top-btn {
+        height: 36px !important;
+        font-size: 14px !important;
+        margin: -10px 0 0 8px !important;
+        padding: 0 12px !important;
+      }
+
+      .v-navigation-drawer .sidebar-top-btn .v-icon {
+        font-size: 20px !important;
+      }
+
+      /* 条件パネルの見出しをコンパクトにする */
+      .v-navigation-drawer .v-expansion-panel-header {
+        font-size: 14px;
+        min-height: 42px;
+        padding: 10px 16px;
+      }
+
+      /* サイドバー内のセレクトボックスをVuetifyのdense相当（高さ40px）に縮小する */
+      .v-navigation-drawer .v-text-field--enclosed .v-input__slot {
+        min-height: 40px !important;
+      }
+
+      /* ドロップダウン矢印の縦位置を縮小後の高さの中央に合わせる */
+      .v-navigation-drawer .v-text-field--enclosed .v-input__append-inner {
+        margin-top: 8px !important;
+      }
+
+      /* 未選択時のラベル（横・縦）を縮小後の高さの中央に合わせる */
+      .v-navigation-drawer .v-text-field--outlined .v-label {
+        top: 10px;
+      }
+
+      /* 選択済みで枠上に浮いたラベルの位置も縮小後の高さに合わせる */
+      .v-navigation-drawer .v-text-field--outlined .v-label--active {
+        transform: translateY(-16px) scale(.75);
+      }
+
+      .v-navigation-drawer .v-select__selections {
+        font-size: 14px;
+      }
+
+      /* 下部固定領域が画面を占有しすぎないよう、ボタンをコンパクトにして間隔を空ける。
+         justify-self: startは、グリッド配置でボタンがセル幅いっぱいに引き伸ばされるのを防ぐ */
       .sidebar-bottom-sticky .v-btn {
         height: 44px !important;
-        font-size: 16px !important;
+        font-size: 14px !important;
         margin: 4px 8px 4px 0 !important;
+        padding: 0 12px !important;
+        justify-self: start;
+      }
+
+      /* 1列目:コピペで入力・結果を復元 / 2列目:席替え の並びにする。
+         DOM順は席替えが先頭のため、グリッドの明示配置で席替えだけ2行目に送る。
+         2列目を1frにするのは、全幅スパンするリンク行の内容幅が
+         max-content列に分配されてグリッド全体がはみ出すのを防ぐため */
+      .sidebar-bottom-sticky {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        align-items: center;
+        /* 1行目のボタンのNEWバッジが領域上端からはみ出し、
+           背後を流れるコンテンツに重なるのを防ぐためののりしろ */
+        padding-top: 6px;
+      }
+
+      .sidebar-bottom-sticky .open-btn {
+        grid-row: 2;
+        grid-column: 1 / -1;
+      }
+
+      /* 利用規約などのリンク行は全幅で最下段に置く。
+         padding-leftは折り返した行（フィードバック等）の左端も利用規約と揃えるための共通余白 */
+      .sidebar-bottom-sticky > div {
+        grid-column: 1 / -1;
+        min-width: 0;
+        padding-left: 10px;
+      }
+
+      /* 利用規約のインラインmargin-leftを打ち消す（左余白は上のpadding-leftで共通化） */
+      .sidebar-bottom-sticky > div a {
+        margin-left: 0 !important;
       }
 
       /* 全体・班の2カラムだと折り返して崩れるため、縦に積む
@@ -664,12 +742,13 @@
                   <h2 style="font-size: 40px; color: #555555; display: inline-block;" class="condition-title"><v-icon
                       color="#0c9ea8" style="font-size: 52px;">mdi-file-document-box-plus-outline</v-icon>条件</h2>
                   <!-- 使い方ボタン -->
-                  <v-btn elevation="2" large color="#0c9ea8" class="tutorial-btn" dark @click="startTutorial();"
+                  <v-btn elevation="2" large color="#0c9ea8" class="tutorial-btn sidebar-top-btn" dark
+                    @click="startTutorial();"
                     style="font-size: 20px; font-weight: 900; margin: -20px 0 0 20px; padding-right: 15px;">
                     <v-icon class="icon" style="padding-top: 4px;">mdi-magnify</v-icon>使い方
                   </v-btn>
                   <!-- デモデータのセットボタン -->
-                  <v-btn elevation="2" large color="#0c9ea8" class="demo-btn" dark
+                  <v-btn elevation="2" large color="#0c9ea8" class="demo-btn sidebar-top-btn" dark
                     @click="setDemoData(); hideSidebarOnlyTB();"
                     style="font-size: 20px; font-weight: 900; margin: -20px 0 0 10px; padding-right: 15px;">
                     <v-icon class="icon">mdi-pencil</v-icon>デモデータ
