@@ -288,6 +288,9 @@
         display: grid;
         grid-template-columns: max-content 1fr;
         align-items: center;
+        /* 1行目のボタンのNEWバッジが領域上端からはみ出し、
+           背後を流れるコンテンツに重なるのを防ぐためののりしろ */
+        padding-top: 6px;
       }
 
       .sidebar-bottom-sticky .open-btn {
