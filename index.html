@@ -1966,9 +1966,10 @@
             this.dupBackTwoRowsSeatsIndex = this.backTwoRowsSeatsIndex.slice(0); // 後ろ2列の座席のインデックスを複製、席替えの際にこの配列から破壊的にデータを取り出していく
             this.dupStudentsName = this.studentsName.slice(0); // 生徒名を複製、席替えの際にこの配列から破壊的にデータを取り出していく
             // 近づける/離す条件の生徒名を席替え直前に条件配列から集める（重複は除く）。席替えの際にこの配列から破壊的にデータを取り出していく
+            // 座席表から削除された生徒が条件に残っていても配置対象にしない（存在しない相手との距離判定は、相手が未配置扱いになるため自然にスキップされる）
             const nearStudents = this.collectConditionStudents(this.nearConditions);
             const farStudents = this.collectConditionStudents(this.farConditions);
-            this.dupNearFarStudentsName = Array.from(new Set(nearStudents.concat(farStudents)));
+            this.dupNearFarStudentsName = Array.from(new Set(nearStudents.concat(farStudents))).filter(name => this.dupStudentsName.includes(name));
 
             this.placeFixedSeats(); // 固定する生徒を配置
             this.placeLeaders(); // 班長を各班に1人ずつ配置（行条件がある班長はその行内で配置）
@@ -2083,6 +2084,7 @@
           this.shuffle(this.dupFrontSeatsIndex);
           this.frontConditions.forEach(frontStudentName => {
             if (this.getPositionFromWorkNextSeatsTable(frontStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
+            if (!this.dupStudentsName.includes(frontStudentName)) return; // 座席表から削除された生徒の条件が残っている場合はスキップ
             if (!this.dupFrontSeatsIndex.length) { // 最前列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
               this.restartFlag = true;
               return;
@@ -2110,6 +2112,7 @@
           this.shuffle(this.dupFrontTwoRowsSeatsIndex);
           this.frontTwoRowsConditions.forEach(frontTwoRowsStudentName => {
             if (this.getPositionFromWorkNextSeatsTable(frontTwoRowsStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
+            if (!this.dupStudentsName.includes(frontTwoRowsStudentName)) return; // 座席表から削除された生徒の条件が残っている場合はスキップ
             if (!this.dupFrontTwoRowsSeatsIndex.length) { // 前2列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
               this.restartFlag = true;
               return;
@@ -2136,6 +2139,7 @@
           this.shuffle(this.dupBackSeatsIndex);
           this.backConditions.forEach(backStudentName => {
             if (this.getPositionFromWorkNextSeatsTable(backStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
+            if (!this.dupStudentsName.includes(backStudentName)) return; // 座席表から削除された生徒の条件が残っている場合はスキップ
             if (!this.dupBackSeatsIndex.length) { // 最後列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
               this.restartFlag = true;
               return;
@@ -2163,6 +2167,7 @@
           this.shuffle(this.dupBackTwoRowsSeatsIndex);
           this.backTwoRowsConditions.forEach(backTwoRowsStudentName => {
             if (this.getPositionFromWorkNextSeatsTable(backTwoRowsStudentName) !== false) return; // 既にplaceLeaders()等で配置済みならスキップ
+            if (!this.dupStudentsName.includes(backTwoRowsStudentName)) return; // 座席表から削除された生徒の条件が残っている場合はスキップ
             if (!this.dupBackTwoRowsSeatsIndex.length) { // 後ろ2列に空き座席が残っていなければ配置できないので、restartFlagを立てて最初からやり直す（undefinedをshiftしてクラッシュするのを防ぐ）
               this.restartFlag = true;
               return;
@@ -2210,9 +2215,13 @@
               const fixConditionName = fixCondition[0];
               const fixConditionRow = fixCondition[1] - 1; // 入力された値とインデックスのずれを補正
               const fixConditionCol = fixCondition[2] - 1; // 入力された値とインデックスのずれを補正
+              // 座席表から削除された生徒の条件が残っている場合はスキップ（存在しない生徒が配置されたり、座席だけが空振り消費されて席が足りなくなるのを防ぐ）
+              if (!this.dupStudentsName.includes(fixConditionName)) return;
+              const fixIndex = [fixConditionCol, fixConditionRow]
+              // 指定座席が有効な空き座席でない場合はスキップ（座席数の縮小で範囲外になった・行/列が未入力・無効な座席・他の条件と重複、のいずれか）
+              if (looseIndexOf(this.dupSeatsTableIndex, fixIndex) === -1) return;
               this.workNextSeatsTable[fixConditionRow][fixConditionCol] = fixConditionName; // 固定する場所に配置
 
-              const fixIndex = [fixConditionCol, fixConditionRow]
               this.removeFromArray(fixIndex, this.dupSeatsTableIndex); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、有効な座席座標を削除する
               this.removeFromArray(fixConditionName, this.dupStudentsName); // ここで配置した生徒はshuffleSeats()で配置する必要がないため、生徒名を削除する
               this.removeFromArray(fixConditionName, this.dupNearFarStudentsName); // ここで配置した生徒はchangeNearFarSeats()で配置する必要がないため、生徒名を削除する
@@ -2248,9 +2257,11 @@
               // 既にplaceFixedSeats()で配置済み
               const groupId = this.getGroupId(pos[0], pos[1]);
               groupHasLeader[groupId] = true;
-            } else {
+            } else if (this.dupStudentsName.includes(leaderName)) {
               remainingLeaders.push(leaderName);
             }
+            // 座席表から削除された生徒が班長条件に残っている場合は配置対象にしない
+            // （存在しない生徒でcheckDifferent等がクラッシュしたり、条件を満たせず無限リスタートになるのを防ぐ）
           });
 
           if (remainingLeaders.length === 0) return;
