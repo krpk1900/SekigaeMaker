@@ -274,38 +274,34 @@
         font-size: 14px;
       }
 
-      /* 下部固定領域が画面を占有しすぎないよう、ボタンをコンパクトにして間隔を空ける。
-         justify-self: startは、グリッド配置でボタンがセル幅いっぱいに引き伸ばされるのを防ぐ */
+      /* 席替え・コピペで入力・結果を復元の3ボタンを1行に収めるためコンパクトに縮小する
+         （使い方ボタンと同じ大きさ。狭い画面でも折り返さないよう間隔・余白も詰める） */
       .sidebar-bottom-sticky .v-btn {
-        height: 44px !important;
-        font-size: 14px !important;
-        margin: 4px 8px 4px 0 !important;
-        padding: 0 12px !important;
-        justify-self: start;
+        height: 34px !important;
+        font-size: 13px !important;
+        margin: 4px 4px 4px 0 !important;
+        padding: 0 6px !important;
       }
 
-      /* 1列目:コピペで入力・結果を復元 / 2列目:席替え の並びにする。
-         DOM順は席替えが先頭のため、グリッドの明示配置で席替えだけ2行目に送る。
-         2列目を1frにするのは、全幅スパンするリンク行の内容幅が
-         max-content列に分配されてグリッド全体がはみ出すのを防ぐため */
+      .sidebar-bottom-sticky .v-btn .v-icon {
+        font-size: 17px !important;
+      }
+
+      /* 席替え・コピペで入力・結果を復元を横1行に並べ、その下にリンク行を全幅で置く。
+         DOM順（席替え→コピペ→復元→リンク行）のままflexで並べる */
       .sidebar-bottom-sticky {
-        display: grid;
-        grid-template-columns: max-content 1fr;
+        display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        /* 1行目のボタンのNEWバッジが領域上端からはみ出し、
+        /* ボタンのNEWバッジが領域上端からはみ出し、
            背後を流れるコンテンツに重なるのを防ぐためののりしろ */
         padding-top: 6px;
       }
 
-      .sidebar-bottom-sticky .open-btn {
-        grid-row: 2;
-        grid-column: 1 / -1;
-      }
-
-      /* 利用規約などのリンク行は全幅で最下段に置く。
+      /* 利用規約などのリンク行は全幅で最下段に置く（ボタンの下に折り返す）。
          padding-leftは折り返した行（フィードバック等）の左端も利用規約と揃えるための共通余白 */
       .sidebar-bottom-sticky > div {
-        grid-column: 1 / -1;
+        flex-basis: 100%;
         min-width: 0;
         padding-left: 10px;
       }
@@ -313,6 +309,12 @@
       /* 利用規約のインラインmargin-leftを打ち消す（左余白は上のpadding-leftで共通化） */
       .sidebar-bottom-sticky > div a {
         margin-left: 0 !important;
+      }
+
+      /* フッターの文字（利用規約などのリンク・著作権表記）も使い方ボタンに合わせて縮小する */
+      .sidebar-bottom-sticky > div a,
+      .sidebar-bottom-sticky > div span {
+        font-size: 13px !important;
       }
 
       /* 全体・班の2カラムだと折り返して崩れるため、縦に積む
