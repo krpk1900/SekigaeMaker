@@ -531,7 +531,7 @@
       height: 80px;
       width: 80px;
       display: inline-block;
-      border: 3px solid #0BB3BF;
+      border: 3px solid #0AA1AC;
       box-sizing: border-box;
       text-align: center;
       border-radius: 7px;
@@ -692,7 +692,7 @@
       right: -18px;
       padding: 2px 7px;
       border-radius: 9px;
-      background-color: #ff4081;
+      background-color: #D4356B;
       color: #ffffff;
       font-size: 11px;
       font-weight: 900;
@@ -702,6 +702,11 @@
       pointer-events: none;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       z-index: 1;
+    }
+
+    /* ダイアログ見出しの teal を少し濃くして白文字とのコントラストを確保（Vuetifyの teal lighten-2 を上書き） */
+    .v-card__title.teal.lighten-2 {
+      background-color: #44A097 !important;
     }
   </style>
 </head>
@@ -1253,7 +1258,7 @@
         <!-- サイドバーここまで -->
 
         <!-- 座席テーブル -->
-        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" style="color: #FFFFFF; min-width: 0;"
+        <v-card outlined color="#0AA1AC" class="box-shadow rounded-xl" style="color: #FFFFFF; min-width: 0;"
           :class="{'left-card-margin-large': seatsSizeX<8, 'left-card-margin-small': seatsSizeX>=8}"
           data-intro="座席に生徒名を入力します。<br>Tabキーを押すと右の座席に移動できます。<br>座席をクリックすると性別を切り替えることができます。" data-title="2. 名前を入力！"
           data-position="right" data-step="2">
@@ -1272,7 +1277,7 @@
               <!-- 一括入力ボタン（文字のすぐ右に絶対配置） -->
               <v-btn elevation="2" height="40" color="white" class="bulk-input-btn"
                 @click="isShowStudentsNameDialog = true;"
-                style="position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 14px; font-size: 1.5rem; line-height: 1; font-weight: 900; text-transform: none; color: #0c9ea8;">
+                style="position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 14px; font-size: 1.5rem; line-height: 1; font-weight: 900; text-transform: none; color: #0a8189;">
                 <span class="new-badge" style="top: -14px; right: -24px;">NEW</span>一括入力
               </v-btn>
             </span>
@@ -1323,7 +1328,7 @@
         <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
         <!-- 席替え後の座席テーブル -->
-        <v-card outlined color="#0BB3BF" class="box-shadow rounded-xl" id="next-seats-card"
+        <v-card outlined color="#0AA1AC" class="box-shadow rounded-xl" id="next-seats-card"
           style="color: #FFFFFF; min-width: 0;"
           :class="{'right-card-margin-large': seatsSizeX<8, 'right-card-margin-small': seatsSizeX>=8}"
           data-intro="調整が必要であれば、座席をつかんで入れ替えることができます。" data-title="5. 最終調整！" data-position="left" data-step="5">
@@ -1462,7 +1467,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile
+              <v-btn color="#0a8189" text class="font-weight-bold" outlined tile
                 @click="showNewFeatureModal = false">閉じる</v-btn>
             </v-card-actions>
           </v-card>
@@ -1481,7 +1486,7 @@
               <v-btn color="grey" text class="font-weight-bold" outlined tile
                 @click="isShowSaveDialog = false; saveName = ''; saveNameError = '';">キャンセル</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="saveWithName()">保存</v-btn>
+              <v-btn color="#0a8189" text class="font-weight-bold" outlined tile @click="saveWithName()">保存</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -1544,9 +1549,9 @@
               席替えメーカーは、生徒名と条件を入力するだけで座席の配置案を瞬時に出してくれるサービスです！
             </v-card-text>
             <v-card-actions>
-              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
+              <v-btn color="#0a8189" text class="font-weight-bold" outlined tile @click="landing=false;">スキップ</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="#0c9ea8" text class="font-weight-bold" outlined tile
+              <v-btn color="#0a8189" text class="font-weight-bold" outlined tile
                 @click="startTutorial(); landing=false;">使い方を確認</v-btn>
             </v-card-actions>
           </v-card>
