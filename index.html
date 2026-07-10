@@ -2657,6 +2657,16 @@
           const minutes = ('0' + d.getMinutes()).slice(-2);
           return year + '/' + month + '/' + day + ' ' + hours + ':' + minutes;
         },
+        labelActiveDialogs() { // Vuetify2のv-dialogはrole="dialog"要素へ名前を付与する手段がないため、開いているダイアログにv-card__titleからアクセシブルネームを補う
+          this.$nextTick(function () {
+            document.querySelectorAll('.v-dialog__content--active[role="dialog"]').forEach(function (el) {
+              if (el.getAttribute('aria-label') || el.getAttribute('aria-labelledby')) return; // 既に名前があれば触らない
+              const title = el.querySelector('.v-card__title');
+              const name = title && title.textContent.trim();
+              if (name) el.setAttribute('aria-label', name);
+            });
+          });
+        },
       },
       created() {
         // 席替え計算専用の作業領域。data()に置くとVueのリアクティブ配列になり、
@@ -2719,9 +2729,13 @@
       },
       mounted() {
         this.setSortableJS(); // sortableJSをフォームにセット
+        this.labelActiveDialogs(); // 初期表示されるようこそダイアログにアクセシブルネームを付与
         // this.startTutorial();
       },
       watch: {
+        landing: function (val) { // ようこそダイアログが開いたらアクセシブルネームを付与
+          if (val) this.labelActiveDialogs();
+        },
         seatsTable: {
           handler: function () {
             this.studentsName = Array.prototype.concat.apply([], this.seatsTable); //seatsTableを展開
