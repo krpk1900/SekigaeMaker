@@ -39,10 +39,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.9.95/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap" rel="stylesheet">
+  </noscript>
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.9.95/css/materialdesignicons.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.9.95/css/materialdesignicons.min.css" rel="stylesheet">
+  </noscript>
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.7.2/dist/vuetify.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.3.1/introjs.min.css" rel="stylesheet" type="text/css">
+  </noscript>
   <!-- 構造化データ: WebApplication -->
   <script type="application/ld+json">
   {
@@ -721,7 +730,10 @@
         <!-- タイトル -->
         <header style="margin: auto;">
           <h1>
-            <img src="logo.png" width="55" height="55" alt="席替えメーカーのロゴ" class="site-logo" style="margin-top: 10px;">
+            <picture>
+              <source srcset="logo-sm.webp" type="image/webp">
+              <img src="logo-sm.png" width="55" height="55" alt="席替えメーカーのロゴ" class="site-logo" style="margin-top: 10px;">
+            </picture>
             <span class="site-title"
               style="color: #0c9ea8; font-size: 50px;font-weight: 900; vertical-align: top;">席替えメーカー</span>
           </h1>
@@ -1265,11 +1277,13 @@
             </span>
           </v-card-title>
           <div class="seats-scroll-container">
+            <ul style="margin: 0; padding: 0; list-style: none;">
             <li v-for="( seats, indexRow ) in seatsTable" style="margin-left: -4px;">
               <span v-for="( seat, indexCol ) in seats" class="minus-margin-right">
                 <!-- 1つ目のフォームにプレイスホルダーを設定 -->
                 <input type="text" v-if="indexRow==0 && indexCol==0"
                   :class="['seat', getColorBySeat(indexCol, indexRow)]"
+                  :aria-label="(indexRow+1) + '行' + (indexCol+1) + '列 生徒名'"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow + '-' + indexCol"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
@@ -1277,12 +1291,14 @@
                 <!-- 2つ目のフォームにプレイスホルダーを設定 -->
                 <input type="text" v-else-if="indexRow==0 && indexCol==1"
                   :class="['seat', getColorBySeat(indexCol, indexRow)]"
+                  :aria-label="(indexRow+1) + '行' + (indexCol+1) + '列 生徒名'"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow + '-' + indexCol"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                   :value="seatsTable[indexRow][indexCol]" @click="toggleGender(indexCol,indexRow)" placeholder="石原">
                 <!-- 3つ目以降のフォーム -->
                 <input type="text" v-else :class="['seat', getColorBySeat(indexCol, indexRow)]"
+                  :aria-label="(indexRow+1) + '行' + (indexCol+1) + '列 生徒名'"
                   @input="writeStudentName( indexCol, indexRow, $event.target.value ); countSeats();"
                   :key="indexRow + '-' + indexCol"
                   style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
@@ -1291,6 +1307,7 @@
               </span>
               <div :class="{'margin-bottom': (indexRow+1)%groupSizeY==0}"></div>
             </li>
+            </ul>
           </div>
           <div class="card-bottom"></div>
         </v-card>
@@ -1331,6 +1348,7 @@
                       <div class="sortable-item square" style="position: relative;">
                         <input type="text" class="sortable-item" readonly
                           :class="['seat', getColorByNextSeat(nextSeatsTable[nextIndexRow][nextIndexCol], nextIndexCol, nextIndexRow)]"
+                          :aria-label="'席替え後 ' + (nextIndexRow+1) + '行' + (nextIndexCol+1) + '列'"
                           style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                           :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
                         <v-icon
