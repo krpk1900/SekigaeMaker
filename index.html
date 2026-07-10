@@ -1183,7 +1183,7 @@
                   <div style="margin-bottom: 20px;"></div>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-list-item aria-label="座席数を指定する" @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                      <v-list-item aria-label="座席数を指定する" @click.stop="drawer = !drawer;" v-on="on"
                         @click="isOpenSeatNumPanel=0; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-grid</v-icon>
                       </v-list-item>
@@ -1192,7 +1192,7 @@
                   </v-tooltip>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-list-item aria-label="前後で指定する" @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                      <v-list-item aria-label="前後で指定する" @click.stop="drawer = !drawer;" v-on="on"
                         @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=0; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-sort-ascending</v-icon>
                       </v-list-item>
@@ -1201,7 +1201,7 @@
                   </v-tooltip>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-list-item aria-label="特定の座席に固定する" @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                      <v-list-item aria-label="特定の座席に固定する" @click.stop="drawer = !drawer;" v-on="on"
                         @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=0; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-target-variant</v-icon>
                       </v-list-item>
@@ -1210,7 +1210,7 @@
                   </v-tooltip>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-list-item aria-label="生徒同士を近づける" @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                      <v-list-item aria-label="生徒同士を近づける" @click.stop="drawer = !drawer;" v-on="on"
                         @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=0; isOpenFarPanel=1; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-collapse</v-icon>
                       </v-list-item>
@@ -1219,7 +1219,7 @@
                   </v-tooltip>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-list-item aria-label="生徒同士を離す" @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                      <v-list-item aria-label="生徒同士を離す" @click.stop="drawer = !drawer;" v-on="on"
                         @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=0; isOpenLeaderPanel=1;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-arrow-expand</v-icon>
                       </v-list-item>
@@ -1228,7 +1228,7 @@
                   </v-tooltip>
                   <v-tooltip left>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-list-item aria-label="班長を指定する" @click.stop="drawer = !drawer;" v-bind="attrs" v-on="on"
+                      <v-list-item aria-label="班長を指定する" @click.stop="drawer = !drawer;" v-on="on"
                         @click="isOpenSeatNumPanel=1; isOpenFrontBackPanel=1; isOpenPlaceFixPanel=1; isOpenNearPanel=1; isOpenFarPanel=1; isOpenLeaderPanel=0;">
                         <v-icon color="#0c9ea8" class="closed-icon" style="font-size: 32px;">mdi-account-star</v-icon>
                       </v-list-item>
