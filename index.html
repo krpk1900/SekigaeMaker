@@ -309,14 +309,16 @@
         /* ボタンのNEWバッジが領域上端からはみ出し、
            背後を流れるコンテンツに重なるのを防ぐためののりしろ */
         padding-top: 6px;
+        /* 席替えボタンの左端を、下段のリンク行や上部の条件カードと同じ位置に揃える
+           （first-childのv-btnはmargin-left:0のため、左余白はここでまとめて確保する） */
+        padding-left: 10px;
       }
 
       /* 利用規約などのリンク行は全幅で最下段に置く（ボタンの下に折り返す）。
-         padding-leftは折り返した行（フィードバック等）の左端も利用規約と揃えるための共通余白 */
+         左余白は親.sidebar-bottom-stickyのpadding-leftで席替えボタンと共通化している */
       .sidebar-bottom-sticky>div {
         flex-basis: 100%;
         min-width: 0;
-        padding-left: 10px;
       }
 
       /* 利用規約のインラインmargin-leftを打ち消す（左余白は上のpadding-leftで共通化） */
