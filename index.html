@@ -615,6 +615,13 @@
       transition-duration: 0.4s;
     }
 
+    /* チュートリアル中はサイドバーの開閉を即時にする。名前入力ステップで閉じ→条件ステップで
+       開き直す際、トランジション待ちの間だけ吹き出しが崩れて見えるのを防ぐ（body.introjs-active
+       はチュートリアル開始〜終了の間だけ付与される） */
+    body.introjs-active .v-navigation-drawer {
+      transition-duration: 0s;
+    }
+
     /* サイドバーのボーダーを設定 */
     .v-navigation-drawer__content {
       border: solid #747474;
@@ -1703,6 +1710,8 @@
         startTutorial() {
           const vueInstance = this
           this.drawer = true;
+          // チュートリアル中はサイドバーの開閉を即時にする（開き直し時の再配置のちらつき防止）
+          document.body.classList.add('introjs-active');
           const intro = introJs.tour().setOptions({
             prevLabel: '戻る',
             nextLabel: '進む',
@@ -1718,13 +1727,18 @@
               // 現在ステップはクロージャの intro.getCurrentStep() で取得する（0始まり）。
               const step = intro.getCurrentStep();
               if (step === 1) {
-                if (window.innerWidth < BREAKPOINT_PC) { // SP・TBのとき
-                  app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
-                }
+                app.hideSidebarOnlyTB(); // スマホ・タブレットではサイドバーを閉じ、座席表(名前入力)を主役にする
               } else if (step === 2) {
                 app.setSidebarWidth();
                 app.drawer = true;
                 app.setDemoData();
+                // 「名前入力」でサイドバーを閉じた直後は、サイドバーが閉じたまま配置されるため
+                // 「条件」のハイライト・吹き出しがずれる。開いた後に refresh(true) でステップを
+                // 作り直して正しい位置に再配置する（v8のみ可能）。introjs-active でトランジションを
+                // 無効化しているので短い待ちで開き切る。
+                if (window.innerWidth < BREAKPOINT_PC) {
+                  setTimeout(function () { intro.refresh(true); }, 100);
+                }
               } else if (step === 4) {
                 app.changeSeatsProcess();
               }
@@ -1737,6 +1751,13 @@
             if (BREAKPOINT_PC <= window.innerWidth) { // PCのとき
               app.drawer = true;
             }
+          });
+          // 完了・中断（×/Esc/スキップ）いずれの終了でも、閉じたサイドバーを開いた状態に戻し、
+          // トランジション無効化を解除する（名前入力ステップで中断すると閉じたまま残るのを防ぐ）
+          intro.onexit(function () {
+            app.setSidebarWidth();
+            app.drawer = true;
+            document.body.classList.remove('introjs-active');
           });
         },
         applyExcelPasteData() {
