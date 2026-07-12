@@ -51,10 +51,10 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.9.95/css/materialdesignicons.min.css" rel="stylesheet">
   </noscript>
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.7.2/dist/vuetify.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css" rel="stylesheet" type="text/css"
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/8.3.2/introjs.min.css" rel="stylesheet" type="text/css"
     media="print" onload="this.media='all'">
   <noscript>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/8.3.2/introjs.min.css" rel="stylesheet" type="text/css">
   </noscript>
   <!-- 構造化データ: WebApplication -->
   <script type="application/ld+json">
@@ -347,8 +347,9 @@
       }
 
       /* スマホで、画面端の要素を指すステップ(座席数・席替え)は intro.js が吹き出しを
-         画面外に置いたり極端に細く潰す。JS側で付けた専用クラスの吹き出しだけを画面中央に固定し、
-         読みやすい幅にする（要素のハイライトは intro.js の配置のまま維持される）。
+         画面外に置いたり極端に細く潰す。該当要素の data-tooltip-class="sp-tooltip-center" で
+         付与されるこのクラスの吹き出しだけを画面中央に固定し、読みやすい幅にする
+         （要素のハイライトは intro.js の配置のまま維持される）。
          intro.jsがインラインで付与する位置・幅に勝つため!importantが必須。 */
       .introjs-tooltip.sp-tooltip-center {
         position: fixed !important;
@@ -808,7 +809,7 @@
                   </v-btn>
                   <!-- 座席数を指定するエクスパンションパネル -->
                   <v-expansion-panels accordion class="expansion-panels" :value="isOpenSeatNumPanel" data-step="1"
-                    data-position="left" data-title="1. 全体の座席数を決める！"
+                    data-position="left" data-title="1. 全体の座席数を決める！" data-tooltip-class="sp-tooltip-center"
                     data-intro="まず全体の座席数を指定します。<br>37人のようにちょうど長方形にならない場合は、6×7のように余裕をもって指定することで対応できます。">
                     <v-expansion-panel>
                       <v-expansion-panel-header><v-icon color="#0c9ea8"
@@ -1021,7 +1022,7 @@
                     <!-- 席替えボタン -->
                     <v-btn elevation="2" x-large color="#FFFFFF" class="open-btn" text @click="changeSeatsProcess();"
                       style="font-size: 20px; font-weight: 900;" data-intro="席替えボタンを押すと座席が移動します。" data-title="4. 席替え！"
-                      data-position="left" data-step="4">
+                      data-position="left" data-step="4" data-tooltip-class="sp-tooltip-center">
                       <v-icon class="icon">mdi-sync</v-icon>席替え
                     </v-btn>
                     <!-- Excelペーストボタン -->
@@ -1592,7 +1593,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.7.2/dist/vuetify.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.7/Sortable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intro.js@8.3.2/intro.min.js"></script>
 
   <script>
     // ブレークポイント定数
@@ -1702,7 +1703,7 @@
         startTutorial() {
           const vueInstance = this
           this.drawer = true;
-          const intro = introJs().setOptions({
+          const intro = introJs.tour().setOptions({
             prevLabel: '戻る',
             nextLabel: '進む',
             // skipLabel: 'スキップ',
@@ -1713,28 +1714,22 @@
           });
           this.$nextTick(function () { // DOM更新が反映されてサイドバーが表示されるのを待ってから
             intro.onafterchange(function () {
-              if (this._currentStep === 1) {
+              // v8ではコールバック内のthisがtourインスタンスとは限らないため、
+              // 現在ステップはクロージャの intro.getCurrentStep() で取得する（0始まり）。
+              const step = intro.getCurrentStep();
+              if (step === 1) {
                 if (window.innerWidth < BREAKPOINT_PC) { // SP・TBのとき
                   app.sidebarWidth = '8%'; // サイドバーを非表示にしてしまうとDOMが消えてサイドバー上のチュートリアルが正しい位置で表示できなくなる
                 }
-              } else if (this._currentStep === 2) {
+              } else if (step === 2) {
                 app.setSidebarWidth();
                 app.drawer = true;
                 app.setDemoData();
-              } else if (this._currentStep === 4) {
+              } else if (step === 4) {
                 app.changeSeatsProcess();
               }
-            }).start();
-            // 「座席数」(1番目)「席替え」(4番目)は画面端の要素を指すため、スマホでは intro.js が
-            // 吹き出しを画面外に置いたり極端に細く潰す。専用クラスを付け、実際に中央へ寄せるかは
-            // CSSのメディアクエリ(max-width:600px)に委ねる。こうすると画面幅（回転・リサイズ）に
-            // 自動で追従する（要素のハイライトは intro.js の配置のまま維持される）。
-            [0, 3].forEach(function (i) {
-              if (intro._introItems[i]) intro._introItems[i].tooltipClass = 'sp-tooltip-center';
             });
-            // tooltipClass は表示済みの1番目のステップには反映されないため直接付与する
-            const shownTooltip = document.querySelector('.introjs-tooltip');
-            if (shownTooltip) shownTooltip.classList.add('sp-tooltip-center');
+            intro.start(); // v8のonafterchangeはthisを返さないためチェーンせず個別に呼ぶ
           })
           intro.oncomplete(function () {
             app.setBlankData();
