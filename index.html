@@ -345,6 +345,26 @@
         min-width: 0;
         max-width: 90vw;
       }
+
+      /* スマホで、画面端の要素を指すステップ(座席数・席替え)は intro.js が吹き出しを
+         画面外に置いたり極端に細く潰す。JS側で付けた専用クラスの吹き出しだけを画面中央に固定し、
+         読みやすい幅にする（要素のハイライトは intro.js の配置のまま維持される）。
+         intro.jsがインラインで付与する位置・幅に勝つため!importantが必須。 */
+      .introjs-tooltip.sp-tooltip-center {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        margin: 0 !important;
+        transform: translate(-50%, -50%) !important;
+        width: 300px !important;
+        max-width: 90vw !important;
+      }
+
+      /* 中央に寄せた吹き出しの矢印は対象要素を指せないので隠す */
+      .introjs-tooltip.sp-tooltip-center .introjs-arrow {
+        display: none !important;
+      }
+
     }
 
     @media screen and (min-width:601px) and (max-width:1020px) {
@@ -1705,6 +1725,16 @@
                 app.changeSeatsProcess();
               }
             }).start();
+            // 「座席数」(1番目)「席替え」(4番目)は画面端の要素を指すため、スマホでは intro.js が
+            // 吹き出しを画面外に置いたり極端に細く潰す。専用クラスを付け、実際に中央へ寄せるかは
+            // CSSのメディアクエリ(max-width:600px)に委ねる。こうすると画面幅（回転・リサイズ）に
+            // 自動で追従する（要素のハイライトは intro.js の配置のまま維持される）。
+            [0, 3].forEach(function (i) {
+              if (intro._introItems[i]) intro._introItems[i].tooltipClass = 'sp-tooltip-center';
+            });
+            // tooltipClass は表示済みの1番目のステップには反映されないため直接付与する
+            const shownTooltip = document.querySelector('.introjs-tooltip');
+            if (shownTooltip) shownTooltip.classList.add('sp-tooltip-center');
           })
           intro.oncomplete(function () {
             app.setBlankData();
