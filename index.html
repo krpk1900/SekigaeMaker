@@ -1721,23 +1721,44 @@
             showStepNumbers: true,
             showBullets: false
           });
+          // 「条件」ステップ再配置の予約（rAF）。ステップ変更・終了時にキャンセルできるよう保持する。
+          let replaceRafId = null;
+          const cancelConditionReplace = function () {
+            if (replaceRafId !== null) {
+              cancelAnimationFrame(replaceRafId);
+              replaceRafId = null;
+            }
+          };
           this.$nextTick(function () { // DOM更新が反映されてサイドバーが表示されるのを待ってから
             intro.onafterchange(function () {
               // v8ではコールバック内のthisがtourインスタンスとは限らないため、
               // 現在ステップはクロージャの intro.getCurrentStep() で取得する（0始まり）。
               const step = intro.getCurrentStep();
+              cancelConditionReplace(); // ステップが変わったら前の再配置予約は破棄する
               if (step === 1) {
                 app.hideSidebarOnlyTB(); // スマホ・タブレットではサイドバーを閉じ、座席表(名前入力)を主役にする
               } else if (step === 2) {
                 app.setSidebarWidth();
                 app.drawer = true;
                 app.setDemoData();
-                // 「名前入力」でサイドバーを閉じた直後は、サイドバーが閉じたまま配置されるため
-                // 「条件」のハイライト・吹き出しがずれる。開いた後に refresh(true) でステップを
-                // 作り直して正しい位置に再配置する（v8のみ可能）。introjs-active でトランジションを
-                // 無効化しているので短い待ちで開き切る。
+                // 「名前入力」で閉じたサイドバーを開き直した後、対象要素がサイズを持つ（＝開き切る）
+                // フレームで refresh(true) してハイライト・吹き出しを正しく再配置する。実際のサイズを
+                // 見て待つので、端末の速度差やトランジション設定に依存しない（v8のみ可能）。
                 if (window.innerWidth < BREAKPOINT_PC) {
-                  setTimeout(function () { intro.refresh(true); }, 100);
+                  const conditionEl = document.querySelector('[data-step="3"]');
+                  let frames = 0;
+                  const replaceWhenReady = function () {
+                    replaceRafId = null;
+                    if (!intro.isActive() || intro.getCurrentStep() !== 2) return; // 終了/別ステップなら中止
+                    const opened = conditionEl && conditionEl.getBoundingClientRect().width > 0;
+                    if (opened || frames >= 30) { // 開き切ったら（保険で最大30フレーム後にも）再配置
+                      intro.refresh(true);
+                    } else {
+                      frames += 1;
+                      replaceRafId = requestAnimationFrame(replaceWhenReady);
+                    }
+                  };
+                  replaceRafId = requestAnimationFrame(replaceWhenReady);
                 }
               } else if (step === 4) {
                 app.changeSeatsProcess();
@@ -1752,11 +1773,14 @@
               app.drawer = true;
             }
           });
-          // 完了・中断（×/Esc/スキップ）いずれの終了でも、閉じたサイドバーを開いた状態に戻し、
-          // トランジション無効化を解除する（名前入力ステップで中断すると閉じたまま残るのを防ぐ）
+          // 完了・中断（×/Esc/スキップ）いずれの終了でも、再配置予約を止め、閉じたままのサイドバーを
+          // 開き直し、トランジション無効化を解除する（名前入力ステップで中断すると閉じたまま残るのを防ぐ）
           intro.onexit(function () {
-            app.setSidebarWidth();
-            app.drawer = true;
+            cancelConditionReplace();
+            if (!app.drawer) { // 閉じたままのときだけ開き直す（完了時などに勝手に開かない）
+              app.setSidebarWidth();
+              app.drawer = true;
+            }
             document.body.classList.remove('introjs-active');
           });
         },
