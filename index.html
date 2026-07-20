@@ -185,14 +185,23 @@
       /* 絶対配置のままだと画面外にはみ出すため、タイトル横の通常フローに戻す。
          staticではなくrelativeにするのは、子のNEWバッジ（絶対配置）の基準を
          このボタンのまま保つため（staticだと基準が外側のタイトルspanに変わってずれる）。
-         relativeはインラインのleft/topをオフセットとして適用してしまうため、両方打ち消す */
+         relativeはインラインのleft/topをオフセットとして適用してしまうため、両方打ち消す。
+         大きさはサイドバー下部のボタンと同じに縮小する */
       .bulk-input-btn {
         position: relative !important;
         left: 0 !important;
         top: 0 !important;
         transform: none !important;
         margin-left: 10px !important;
-        font-size: 1rem !important;
+        height: 34px !important;
+        font-size: 13px !important;
+        padding: 0 8px !important;
+      }
+
+      /* NEWバッジの位置も縮小したボタンの右上角（デフォルト位置）に合わせる */
+      .bulk-input-btn .new-badge {
+        top: -18px !important;
+        right: -18px !important;
       }
 
       /* 座席マスを縮小し、横スクロールなしで6列全体が見えるようにする
@@ -298,6 +307,29 @@
 
       .sidebar-bottom-sticky .v-btn .v-icon {
         font-size: 17px !important;
+      }
+
+      /* 結果を保存・印刷ボタンも、サイドバー下部のボタンと同じ大きさに縮小する
+         （インラインstyleに勝つため!important） */
+      .save-btn-container-tb .v-btn {
+        height: 34px !important;
+        font-size: 13px !important;
+        padding: 0 8px !important;
+      }
+
+      .save-btn-container-tb .v-btn .v-icon {
+        font-size: 17px !important;
+      }
+
+      /* ボタン間隔もPC用の20pxから縮小後のサイズに合わせて詰める */
+      .save-btn-container-tb .v-btn+.v-btn {
+        margin-left: 10px !important;
+      }
+
+      /* NEWバッジの位置もサイドバー下部のボタン（デフォルト位置）に合わせる。
+         右へ32pxはみ出すタブレット用の位置のままだと、縮小したボタンから離れすぎて隣に重なる */
+      .save-btn-container-tb .new-badge {
+        right: -18px !important;
       }
 
       /* 席替え・コピペで入力・結果を復元を横1行に並べ、その下にリンク行を全幅で置く。
@@ -743,6 +775,119 @@
     .v-card__title.teal.lighten-2 {
       background-color: #0c9ea8 !important;
     }
+
+    /* ===== 印刷機能 ===== */
+    /* 印刷専用レイアウトは画面には一切表示しない（印刷時のみ表示される） */
+    #print-area {
+      display: none;
+    }
+
+    @media print {
+
+      /* アプリ画面全体を隠し、印刷専用レイアウトだけを印刷する */
+      .v-application {
+        display: none !important;
+      }
+
+      /* 座席表は横長になりやすいためA4横向きで印刷する。
+         余白を0にすると、ブラウザがヘッダー・フッターとして印字する
+         ページタイトル（席替えメーカー…）やURL・日付が消える。
+         紙端の余白は代わりに.print-pageのpaddingで確保する */
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      #print-area {
+        display: block;
+        text-align: center;
+        font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+        color: #000000;
+        /* プリンタの「背景を印刷しない」設定でも性別の座席色を出力する */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* 1ページ＝1枚の座席表。@pageのmargin 0の代わりにここで紙端の余白を確保する */
+      .print-page {
+        padding: 10mm 10mm 0;
+      }
+
+      .print-page:not(:last-of-type) {
+        page-break-after: always;
+      }
+
+      .print-title {
+        font-size: 20pt;
+        font-weight: 900;
+        margin-bottom: 5mm;
+      }
+
+      /* 教室の向きが分かるように、最前列側に黒板を表示する */
+      .print-blackboard {
+        width: 60%;
+        margin: 0 auto 7mm;
+        padding: 1.5mm 0;
+        border: 0.5mm solid #333333;
+        border-radius: 1.5mm;
+        font-size: 12pt;
+        font-weight: 700;
+        letter-spacing: 3mm;
+        text-indent: 3mm; /* letter-spacingで最後の文字の右に付く余白を相殺して中央に見せる */
+      }
+
+      /* 教壇側から見た図（2ページ目）では最前列が下端に来るため、黒板も下端に表示する */
+      .print-blackboard-bottom {
+        margin: 7mm auto 0;
+      }
+
+      /* ページ右下の小さなクレジット。position: fixedのため印刷時は全ページに入る */
+      .print-credit {
+        position: fixed;
+        bottom: 5mm;
+        right: 7mm;
+        font-size: 8pt;
+        color: #888888;
+      }
+
+      .print-row {
+        white-space: nowrap;
+      }
+
+      .print-seat {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        /* 列数・行数が多いときも1ページに収まるように自動で縮める */
+        width: min(30mm, calc(240mm / var(--print-cols, 6)));
+        height: min(14mm, calc(140mm / var(--print-rows, 6)));
+        margin: 0.8mm;
+        border: 0.5mm solid #333333;
+        border-radius: 1.5mm;
+        font-size: 12pt;
+        font-weight: 600;
+        overflow: hidden;
+      }
+
+      /* 班の区切り（画面のmargin-right・margin-bottomに対応） */
+      .print-group-gap-right {
+        margin-right: 4mm;
+      }
+
+      .print-group-gap-bottom {
+        height: 4mm;
+      }
+
+      /* 班長の星マーク（画面のmdi-starに対応） */
+      .print-leader-star {
+        position: absolute;
+        top: 0;
+        left: 1mm;
+        font-size: 9pt;
+        color: #F9A825;
+      }
+    }
   </style>
 </head>
 
@@ -782,9 +927,14 @@
         </header>
         <div class="pc-only save-btn-container">
           <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
-            style="font-size: 20px; font-weight: 900; margin-right: 80px;">
+            style="font-size: 20px; font-weight: 900;">
             <span class="new-badge" style="right: -32px;">NEW</span>
             <v-icon left>mdi-content-save</v-icon>結果を保存
+          </v-btn>
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="printSeats()"
+            style="font-size: 20px; font-weight: 900; margin-left: 20px; margin-right: 80px;">
+            <span class="new-badge" style="right: -32px;">NEW</span>
+            <v-icon left>mdi-printer</v-icon>印刷
           </v-btn>
         </div>
 
@@ -1200,7 +1350,8 @@
                             2026.06.08　席替え結果を名前を付けて保存・復元できるようになりました。<br>
                             2026.06.10　一度入力した条件を削除できるようになりました。<br>
                             2026.07.08　席替えボタンを画面下部に固定しました。<br>
-                            2026.07.08　スマホに対応しました。
+                            2026.07.08　スマホに対応しました。<br>
+                            2026.07.21　席替え後の座席表を印刷できるようになりました。
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -1361,6 +1512,11 @@
             <span class="new-badge" style="right: -32px;">NEW</span>
             <v-icon left>mdi-content-save</v-icon>結果を保存
           </v-btn>
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="printSeats()"
+            style="font-size: 20px; font-weight: 900; margin-left: 20px;">
+            <span class="new-badge" style="right: -32px;">NEW</span>
+            <v-icon left>mdi-printer</v-icon>印刷
+          </v-btn>
         </div>
         <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
@@ -1439,6 +1595,18 @@
           </v-card>
         </v-dialog>
 
+        <!-- 印刷時の席替え結果未生成エラー -->
+        <v-dialog v-model="printEmptyError" width="500">
+          <v-card>
+            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
+              <v-icon style="float: right;" @click="printEmptyError = false">mdi-close</v-icon>
+            </v-card-title>
+            <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
+              席替えを行ってから印刷ボタンを押してください。
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+
         <!-- Excelペーストダイアログ -->
         <v-dialog v-model="isShowStudentsNameDialog" width="550">
           <v-card>
@@ -1481,6 +1649,17 @@
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
               <div style="margin-bottom: 20px;">
                 <div style="margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #999;">2026.07.21</span>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
+                  席替え結果を印刷できるようになりました！
+                </div>
+                <div style="font-size: 14px;">
+                  印刷ボタンを押すと、生徒側から見た座席表と教壇側から見た座席表をまとめて印刷できます。PDFとして保存することもできます。
+                </div>
+              </div>
+              <div>
+                <div style="margin-bottom: 8px;">
                   <span style="font-size: 14px; color: #999;">2026.06.10</span>
                 </div>
                 <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
@@ -1488,17 +1667,6 @@
                 </div>
                 <div style="font-size: 14px;">
                   入力した条件の右側に表示される削除ボタンを押すことで、条件を個別に削除できるようになりました。
-                </div>
-              </div>
-              <div>
-                <div style="margin-bottom: 8px;">
-                  <span style="font-size: 14px; color: #999;">2026.06.08</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
-                  席替え結果を名前を付けて保存できるようになりました！
-                </div>
-                <div style="font-size: 14px;">
-                  席替えの結果を好きな名前で保存し、同一デバイスでいつでも復元できるようになりました。
                 </div>
               </div>
             </v-card-text>
@@ -1595,6 +1763,51 @@
         </v-dialog>
       </div>
     </v-app>
+
+    <!-- 印刷専用の座席表レイアウト。画面には表示されず、印刷時のみ表示される（CSSの#print-area参照）。
+         Vuetifyのコンポーネントはv-appの外では動かないため、素のHTMLで組む -->
+    <div id="print-area" aria-hidden="true"
+      :style="{ '--print-cols': String(seatsSizeX), '--print-rows': String(seatsSizeY) }">
+      <!-- 1ページ目: 生徒側から見た図。最前列（nextSeatsTableの0行目）が上端なので、上端に黒板を表示する -->
+      <section class="print-page">
+        <div class="print-title">生徒側から見た座席表</div>
+        <div class="print-blackboard">黒板</div>
+        <template v-for="( printSeatsRow, printIndexRow ) in nextSeatsTable">
+          <div class="print-row" :key="'printRow' + printIndexRow">
+            <span v-for="( printSeat, printIndexCol ) in printSeatsRow" class="print-seat"
+              :class="[getColorByNextSeat(printSeat, printIndexCol, printIndexRow),
+                       {'print-group-gap-right': (printIndexCol+1)%groupSizeX==0 && (printIndexCol+1)!=seatsSizeX}]"
+              :key="'printSeat' + printIndexRow + '-' + printIndexCol">
+              <span v-if="printSeat && leaderConditions.includes(printSeat)" class="print-leader-star">★</span>
+              {{ printSeat }}
+            </span>
+          </div>
+          <div v-if="(printIndexRow+1)%groupSizeY==0 && (printIndexRow+1)!=seatsSizeY" class="print-group-gap-bottom"
+            :key="'printGap' + printIndexRow"></div>
+        </template>
+      </section>
+      <!-- 2ページ目: 教壇側から見た図。1ページ目を180度回転した配置（printTeacherViewTable）で、
+           最前列が下端に来るため黒板も下端に表示する -->
+      <section class="print-page">
+        <div class="print-title">教壇側から見た座席表</div>
+        <template v-for="( printSeatsRow2, printIndexRow2 ) in printTeacherViewTable">
+          <div class="print-row" :key="'printRowT' + printIndexRow2">
+            <span v-for="printCell in printSeatsRow2" class="print-seat"
+              :class="[getColorByNextSeat(printCell.name, printCell.col, printCell.row),
+                       {'print-group-gap-right': printCell.col%groupSizeX==0 && printCell.col!=0}]"
+              :key="'printSeatT' + printCell.row + '-' + printCell.col">
+              <span v-if="printCell.name && leaderConditions.includes(printCell.name)" class="print-leader-star">★</span>
+              {{ printCell.name }}
+            </span>
+          </div>
+          <div v-if="printSeatsRow2[0].row%groupSizeY==0 && printSeatsRow2[0].row!=0" class="print-group-gap-bottom"
+            :key="'printGapT' + printIndexRow2"></div>
+        </template>
+        <div class="print-blackboard print-blackboard-bottom">黒板</div>
+      </section>
+      <!-- ページ右下の小さなクレジット -->
+      <div class="print-credit">©席替えメーカー</div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
@@ -1705,6 +1918,7 @@
         saveNameError: '', // 保存名のエラーメッセージ
         isShowOverwriteConfirm: false, // 上書き確認の表示制御フラグ
         overwriteTargetName: '', // 上書き対象の保存名
+        printEmptyError: false, // 席替え結果がない状態で印刷ボタンが押されたときのエラー表示制御フラグ
       },
       methods: {
         startTutorial() {
@@ -2645,6 +2859,14 @@
           const list = JSON.parse(localStorage.getItem('sekigae_saved_list'));
           return list || [];
         },
+        printSeats() { // 席替え後の座席表を印刷する（印刷内容は#print-areaで組み立てる）
+          const hasResult = this.nextSeatsTable.some(seatsRow => seatsRow.some(seat => seat !== ''));
+          if (!hasResult) {
+            this.printEmptyError = true; // 席替え結果がまだ無いときはエラーを表示
+            return;
+          }
+          window.print();
+        },
         openSaveDialog() { // 保存ダイアログを開く
           this.saveName = '';
           this.saveNameError = '';
@@ -2807,7 +3029,7 @@
         window.addEventListener('resize', this.onResize);
 
         // 新機能モーダルの表示判定
-        const newFeatureKey = 'newFeatureModal_v3';
+        const newFeatureKey = 'newFeatureModal_v4';
         if (!localStorage.getItem(newFeatureKey)) {
           // ランディングモーダルが閉じられた後に表示する
           const unwatch = this.$watch('landing', (newVal) => {
@@ -3044,6 +3266,20 @@
           return this.excelPasteText
             .split(/[\s\u3000]+/)
             .filter(function (name) { return name !== ''; });
+        },
+        printTeacherViewTable() { // \u5370\u52372\u30da\u30fc\u30b8\u76ee\u7528\u3002\u6559\u58c7\u5074\u304b\u3089\u898b\u305f\u5ea7\u5e2d\u8868\uff1dnextSeatsTable\u3092180\u5ea6\u56de\u8ee2\uff08\u884c\u30fb\u5217\u3068\u3082\u9006\u9806\uff09\u3057\u305f\u914d\u7f6e\u3002
+          // col/row\u306b\u306f\u5143\u30c6\u30fc\u30d6\u30eb\u306e\u5ea7\u6a19\u3092\u6b8b\u3057\u3001\u6027\u5225\u8272\u306e\u5224\u5b9a\uff08getColorByNextSeat\uff09\u3068\u73ed\u306e\u533a\u5207\u308a\u306e\u8a08\u7b97\u306b\u4f7f\u3046\u3002
+          // \u73ed\u306e\u533a\u5207\u308a\u306f1\u30da\u30fc\u30b8\u76ee\u306e\u300c(index+1)%groupSize==0\u304b\u3064\u672b\u5c3e\u4ee5\u5916\u300d\u306e\u93e1\u6620\u3057\u3067\u3001
+          // \u5143\u306e\u5ea7\u6a19\u3067\u306f\u300cindex%groupSize==0\u304b\u3064\u5148\u982d\u4ee5\u5916\u300d\u306e\u30bb\u30eb\u306e\u5f8c\u308d\u306b\u6765\u308b
+          const rows = [];
+          for (let row = this.seatsSizeY - 1; row >= 0; row--) {
+            const cells = [];
+            for (let col = this.seatsSizeX - 1; col >= 0; col--) {
+              cells.push({ name: this.nextSeatsTable[row][col], col: col, row: row });
+            }
+            rows.push(cells);
+          }
+          return rows;
         }
       }
     });
