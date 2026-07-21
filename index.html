@@ -182,6 +182,23 @@
         margin-left: 0 !important;
       }
 
+      /* スマホでは各所のボタン（一括入力・使い方/デモデータ・席替え/コピペ/復元・保存/印刷）を
+         共通のコンパクトサイズに統一する（インラインstyleやVuetifyのサイズ指定に勝つため!important）。
+         margin・paddingは配置の都合が異なるため各ボタンのルールで個別に指定する */
+      .bulk-input-btn,
+      .v-navigation-drawer .sidebar-top-btn,
+      .sidebar-bottom-sticky .v-btn,
+      .save-btn-container-tb .v-btn {
+        height: 34px !important;
+        font-size: 13px !important;
+      }
+
+      .v-navigation-drawer .sidebar-top-btn .v-icon,
+      .sidebar-bottom-sticky .v-btn .v-icon,
+      .save-btn-container-tb .v-btn .v-icon {
+        font-size: 17px !important;
+      }
+
       /* 絶対配置のままだと画面外にはみ出すため、タイトル横の通常フローに戻す。
          staticではなくrelativeにするのは、子のNEWバッジ（絶対配置）の基準を
          このボタンのまま保つため（staticだと基準が外側のタイトルspanに変わってずれる）。
@@ -192,7 +209,13 @@
         top: 0 !important;
         transform: none !important;
         margin-left: 10px !important;
-        font-size: 1rem !important;
+        padding: 0 8px !important;
+      }
+
+      /* NEWバッジの位置も縮小したボタンの右上角（デフォルト位置）に合わせる */
+      .bulk-input-btn .new-badge {
+        top: -18px !important;
+        right: -18px !important;
       }
 
       /* 座席マスを縮小し、横スクロールなしで6列全体が見えるようにする
@@ -239,17 +262,11 @@
         font-size: 30px !important;
       }
 
-      /* 使い方・デモデータボタンを縮小する（インラインstyleに勝つため!important）。
-         マイナスマージンはPC用の大きいタイトルに合わせた値のため、縮小後の高さに合わせて調整する */
+      /* 使い方・デモデータボタンのマイナスマージンはPC用の大きいタイトルに合わせた値のため、
+         縮小後の高さに合わせて調整する */
       .v-navigation-drawer .sidebar-top-btn {
-        height: 34px !important;
-        font-size: 13px !important;
         margin: -8px 0 0 6px !important;
         padding: 0 8px !important;
-      }
-
-      .v-navigation-drawer .sidebar-top-btn .v-icon {
-        font-size: 17px !important;
       }
 
       .v-navigation-drawer .sidebar-top-btn .icon {
@@ -287,17 +304,26 @@
         font-size: 14px;
       }
 
-      /* 席替え・コピペで入力・結果を復元の3ボタンを1行に収めるためコンパクトに縮小する
-         （使い方ボタンと同じ大きさ。狭い画面でも折り返さないよう間隔・余白も詰める） */
+      /* 席替え・コピペで入力・結果を復元の3ボタンを1行に収めるため、
+         狭い画面でも折り返さないよう間隔・余白を詰める */
       .sidebar-bottom-sticky .v-btn {
-        height: 34px !important;
-        font-size: 13px !important;
         margin: 4px 10px 4px 0 !important;
         padding: 0 5px !important;
       }
 
-      .sidebar-bottom-sticky .v-btn .v-icon {
-        font-size: 17px !important;
+      .save-btn-container-tb .v-btn {
+        padding: 0 8px !important;
+      }
+
+      /* 結果を保存・印刷のボタン間隔もPC用の20pxから縮小後のサイズに合わせて詰める */
+      .save-btn-container-tb .v-btn+.v-btn {
+        margin-left: 10px !important;
+      }
+
+      /* NEWバッジの位置もサイドバー下部のボタン（デフォルト位置）に合わせる。
+         右へ32pxはみ出すタブレット用の位置のままだと、縮小したボタンから離れすぎて隣に重なる */
+      .save-btn-container-tb .new-badge {
+        right: -18px !important;
       }
 
       /* 席替え・コピペで入力・結果を復元を横1行に並べ、その下にリンク行を全幅で置く。
@@ -743,6 +769,133 @@
     .v-card__title.teal.lighten-2 {
       background-color: #0c9ea8 !important;
     }
+
+    /* ===== 印刷機能 ===== */
+    /* 印刷専用レイアウトは画面には一切表示しない（印刷時のみ表示される） */
+    #print-area {
+      display: none;
+    }
+
+    @media print {
+
+      /* アプリ画面全体を隠し、印刷専用レイアウトだけを印刷する */
+      .v-application {
+        display: none !important;
+      }
+
+      /* 座席表は横長になりやすいためA4横向きで印刷する。
+         余白を0にすると、ブラウザがヘッダー・フッターとして印字する
+         ページタイトル（席替えメーカー…）やURL・日付が消える。
+         紙端の余白は代わりに.print-pageのpaddingで確保する */
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      #print-area {
+        display: block;
+        text-align: center;
+        font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+        color: #000000;
+        /* プリンタの「背景を印刷しない」設定でも性別の座席色を出力する */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* 1ページ＝1枚の座席表。@pageのmargin 0の代わりにここで紙端の余白を確保する */
+      .print-page {
+        padding: 10mm 10mm 0;
+      }
+
+      .print-page:not(:last-of-type) {
+        page-break-after: always;
+      }
+
+      .print-title {
+        font-size: 20pt;
+        font-weight: 900;
+        margin-bottom: 5mm;
+      }
+
+      /* 教室の向きが分かるように、最前列側に黒板を表示する */
+      .print-blackboard {
+        width: 60%;
+        margin: 0 auto 7mm;
+        padding: 1.5mm 0;
+        border: 0.5mm solid #333333;
+        border-radius: 1.5mm;
+        font-size: 12pt;
+        font-weight: 700;
+        letter-spacing: 3mm;
+        text-indent: 3mm; /* letter-spacingで最後の文字の右に付く余白を相殺して中央に見せる */
+      }
+
+      /* 教壇側から見た図（2ページ目）では最前列が下端に来るため、黒板も下端に表示する */
+      .print-blackboard-bottom {
+        margin: 7mm auto 0;
+      }
+
+      /* ページ右下の小さなクレジット。position: fixedのため印刷時は全ページに入る。
+         @pageのmargin 0によりプリンタの印刷不可領域（紙端4〜6mm程度）に掛かると欠けるため、
+         .print-pageのpaddingと同じ10mmだけ紙端から離す */
+      .print-credit {
+        position: fixed;
+        bottom: 10mm;
+        right: 10mm;
+        font-size: 8pt;
+        color: #888888;
+      }
+
+      /* チュートリアル表示中に印刷しても、body直下（.v-applicationの外）に追加される
+         intro.jsのオーバーレイ・吹き出しが座席表に重ならないようにする */
+      .introjs-overlay,
+      .introjs-helperLayer,
+      .introjs-tooltipReferenceLayer,
+      .introjs-tooltip,
+      .introjs-hints {
+        display: none !important;
+      }
+
+      .print-row {
+        white-space: nowrap;
+      }
+
+      .print-seat {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        /* 列数・行数が多いときも1ページに収まるように自動で縮める。
+           高さは1行あたりの上下margin（1.6mm）を差し引き、タイトル・黒板・班間ギャップ
+           （最悪ケース：12行・班縦2で20mm）を見込んだ145mmを予算にする */
+        width: min(30mm, calc(240mm / var(--print-cols, 6)));
+        height: min(14mm, calc(145mm / var(--print-rows, 6) - 1.6mm));
+        margin: 0.8mm;
+        border: 0.5mm solid #333333;
+        border-radius: 1.5mm;
+        font-size: 12pt;
+        font-weight: 600;
+        overflow: hidden;
+      }
+
+      /* 班の区切り（画面のmargin-right・margin-bottomに対応） */
+      .print-group-gap-right {
+        margin-right: 4mm;
+      }
+
+      .print-group-gap-bottom {
+        height: 4mm;
+      }
+
+      /* 班長の星マーク（画面のmdi-starに対応） */
+      .print-leader-star {
+        position: absolute;
+        top: 0;
+        left: 1mm;
+        font-size: 9pt;
+        color: #F9A825;
+      }
+    }
   </style>
 </head>
 
@@ -782,9 +935,14 @@
         </header>
         <div class="pc-only save-btn-container">
           <v-btn elevation="2" x-large color="#0c9ea8" dark @click="openSaveDialog()"
-            style="font-size: 20px; font-weight: 900; margin-right: 80px;">
+            style="font-size: 20px; font-weight: 900;">
             <span class="new-badge" style="right: -32px;">NEW</span>
             <v-icon left>mdi-content-save</v-icon>結果を保存
+          </v-btn>
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="printSeats()"
+            style="font-size: 20px; font-weight: 900; margin-left: 20px; margin-right: 80px;">
+            <span class="new-badge" style="right: -32px;">NEW</span>
+            <v-icon left>mdi-printer</v-icon>印刷
           </v-btn>
         </div>
 
@@ -1200,7 +1358,8 @@
                             2026.06.08　席替え結果を名前を付けて保存・復元できるようになりました。<br>
                             2026.06.10　一度入力した条件を削除できるようになりました。<br>
                             2026.07.08　席替えボタンを画面下部に固定しました。<br>
-                            2026.07.08　スマホに対応しました。
+                            2026.07.08　スマホに対応しました。<br>
+                            2026.07.21　席替え後の座席表を印刷できるようになりました。
                           </v-card-text>
                         </v-card>
                       </v-dialog>
@@ -1361,6 +1520,11 @@
             <span class="new-badge" style="right: -32px;">NEW</span>
             <v-icon left>mdi-content-save</v-icon>結果を保存
           </v-btn>
+          <v-btn elevation="2" x-large color="#0c9ea8" dark @click="printSeats()"
+            style="font-size: 20px; font-weight: 900; margin-left: 20px;">
+            <span class="new-badge" style="right: -32px;">NEW</span>
+            <v-icon left>mdi-printer</v-icon>印刷
+          </v-btn>
         </div>
         <div class="tb-only"></div><!-- グリッドレイアウト調整用 -->
 
@@ -1394,9 +1558,7 @@
                           :aria-label="'席替え後 ' + (nextIndexRow+1) + '行' + (nextIndexCol+1) + '列'"
                           style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                           :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
-                        <v-icon
-                          v-if="nextSeatsTable[nextIndexRow][nextIndexCol] && leaderConditions.includes(nextSeatsTable[nextIndexRow][nextIndexCol])"
-                          color="#F9A825"
+                        <v-icon v-if="isLeader(nextSeatsTable[nextIndexRow][nextIndexCol])" color="#F9A825"
                           style="position: absolute; top: 4px; left: 4px; font-size: 24px; pointer-events: none;">mdi-star</v-icon>
                       </div>
                     </span>
@@ -1435,6 +1597,18 @@
             </v-card-title>
             <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
               今の座席に生徒の名前を入力してから席替えボタンを押してください。
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+
+        <!-- 印刷時の席替え結果未生成エラー -->
+        <v-dialog v-model="printEmptyError" width="500">
+          <v-card>
+            <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
+              <v-icon style="float: right;" @click="printEmptyError = false">mdi-close</v-icon>
+            </v-card-title>
+            <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
+              席替えを行ってから印刷ボタンを押してください。
             </v-card-text>
           </v-card>
         </v-dialog>
@@ -1481,6 +1655,17 @@
             <v-card-text style="margin-top: 20px; color: #5a5a5a; font-size: 16px; font-weight: 600;">
               <div style="margin-bottom: 20px;">
                 <div style="margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #999;">2026.07.21</span>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
+                  席替え結果を印刷できるようになりました！
+                </div>
+                <div style="font-size: 14px;">
+                  印刷ボタンを押すと、生徒側から見た座席表と教壇側から見た座席表をまとめて印刷できます。PDFとして保存することもできます。
+                </div>
+              </div>
+              <div>
+                <div style="margin-bottom: 8px;">
                   <span style="font-size: 14px; color: #999;">2026.06.10</span>
                 </div>
                 <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
@@ -1488,17 +1673,6 @@
                 </div>
                 <div style="font-size: 14px;">
                   入力した条件の右側に表示される削除ボタンを押すことで、条件を個別に削除できるようになりました。
-                </div>
-              </div>
-              <div>
-                <div style="margin-bottom: 8px;">
-                  <span style="font-size: 14px; color: #999;">2026.06.08</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
-                  席替え結果を名前を付けて保存できるようになりました！
-                </div>
-                <div style="font-size: 14px;">
-                  席替えの結果を好きな名前で保存し、同一デバイスでいつでも復元できるようになりました。
                 </div>
               </div>
             </v-card-text>
@@ -1595,6 +1769,51 @@
         </v-dialog>
       </div>
     </v-app>
+
+    <!-- 印刷専用の座席表レイアウト。画面には表示されず、印刷時のみ表示される（CSSの#print-area参照）。
+         印刷元はnextSeatsTable（席替え後の座席表）。
+         Vuetifyのコンポーネントはv-appの外では動かないため、素のHTMLで組む -->
+    <div id="print-area" aria-hidden="true"
+      :style="{ '--print-cols': String(seatsSizeX), '--print-rows': String(seatsSizeY) }">
+      <!-- 1ページ目: 生徒側から見た図。最前列（テーブルの0行目）が上端なので、上端に黒板を表示する -->
+      <section class="print-page">
+        <div class="print-title">生徒側から見た座席表</div>
+        <div class="print-blackboard">黒板</div>
+        <template v-for="( printSeatsRow, printIndexRow ) in nextSeatsTable">
+          <div class="print-row" :key="'printRow' + printIndexRow">
+            <span v-for="( printSeat, printIndexCol ) in printSeatsRow" class="print-seat"
+              :class="[getColorByNextSeat(printSeat, printIndexCol, printIndexRow),
+                       {'print-group-gap-right': (printIndexCol+1)%groupSizeX==0 && (printIndexCol+1)!=seatsSizeX}]"
+              :key="'printSeat' + printIndexRow + '-' + printIndexCol">
+              <span v-if="isLeader(printSeat)" class="print-leader-star">★</span>
+              {{ printSeat }}
+            </span>
+          </div>
+          <div v-if="(printIndexRow+1)%groupSizeY==0 && (printIndexRow+1)!=seatsSizeY" class="print-group-gap-bottom"
+            :key="'printGap' + printIndexRow"></div>
+        </template>
+      </section>
+      <!-- 2ページ目: 教壇側から見た図。1ページ目を180度回転した配置（printTeacherViewTable）で、
+           最前列が下端に来るため黒板も下端に表示する -->
+      <section class="print-page">
+        <div class="print-title">教壇側から見た座席表</div>
+        <template v-for="( printRow2, printIndexRow2 ) in printTeacherViewTable">
+          <div class="print-row" :key="'printRowT' + printIndexRow2">
+            <span v-for="printCell in printRow2.cells" class="print-seat"
+              :class="[getColorByNextSeat(printCell.name, printCell.col, printCell.row),
+                       {'print-group-gap-right': printCell.gapRight}]"
+              :key="'printSeatT' + printCell.row + '-' + printCell.col">
+              <span v-if="isLeader(printCell.name)" class="print-leader-star">★</span>
+              {{ printCell.name }}
+            </span>
+          </div>
+          <div v-if="printRow2.gapBelow" class="print-group-gap-bottom" :key="'printGapT' + printIndexRow2"></div>
+        </template>
+        <div class="print-blackboard print-blackboard-bottom">黒板</div>
+      </section>
+      <!-- ページ右下の小さなクレジット -->
+      <div class="print-credit">©席替えメーカー</div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
@@ -1705,6 +1924,7 @@
         saveNameError: '', // 保存名のエラーメッセージ
         isShowOverwriteConfirm: false, // 上書き確認の表示制御フラグ
         overwriteTargetName: '', // 上書き対象の保存名
+        printEmptyError: false, // 席替え結果がない状態で印刷ボタンが押されたときのエラー表示制御フラグ
       },
       methods: {
         startTutorial() {
@@ -1979,6 +2199,9 @@
             return 'off-seats'
           }
         },
+        isLeader(name) { // その生徒が班長かどうか。画面と印刷の両方の星表示で使う
+          return name !== '' && this.leaderConditions.includes(name);
+        },
         toggleGender(col, row) {
           if (this.genderTable[row][col] === 'male') {
             this.genderTable[row].splice(col, 1, 'female')
@@ -2021,7 +2244,17 @@
           }
           this.countSeats();
         },
+        clearPendingSwaps() { // ドラッグ調整の未反映キューを破棄する。
+          // 座席テーブルを作り直すとキュー内の座標が新しいテーブルの範囲外になり得るため、
+          // そのままreverseSeats()が走ると範囲外参照でクラッシュする
+          fromRows.splice(0);
+          fromCols.splice(0);
+          toRows.splice(0);
+          toCols.splice(0);
+          isReverseSeats = false;
+        },
         makeNextSeatsTable() { // nextSeatsTableを作成
+          this.clearPendingSwaps(); // 作り直し前の座標を指すドラッグ未反映キューを無効化
           this.nextSeatsTable.splice(0)
           for (let i = 0; i < this.seatsSizeY; i++) {
             this.nextSeatsTable.push(Array(this.seatsSizeX).fill('')) // すべての席に名前が未入力な状態でテーブルを作成
@@ -2645,6 +2878,32 @@
           const list = JSON.parse(localStorage.getItem('sekigae_saved_list'));
           return list || [];
         },
+        printSeats() { // 席替え後の座席表を印刷する（印刷内容は#print-areaで組み立てる）
+          if (!this.hasNextSeatsResult) {
+            this.printEmptyError = true; // 席替え結果がまだ無いときはエラーを表示
+            return;
+          }
+          // ドラッグでの手動調整はDOMだけが入れ替わりnextSeatsTableには未反映のため、
+          // 席替えボタンと同じ同期処理（データ反映＋再描画）を通してから印刷する。
+          // beforeChangeSeats()がフラグを消すため、調整があったかどうかは先に控えておく
+          const hasPendingSwaps = isReverseSeats;
+          this.beforeChangeSeats();
+          if (!hasPendingSwaps) {
+            window.print(); // 調整がなければ#print-areaは描画済みなのでそのまま印刷する
+            return;
+          }
+          // beforeChangeSeats()の再描画（isRenderNextSeatsTableのオフ→オン）が画面に反映されるのを
+          // 待ってから印刷する。1段目のnextTickでオンが予約され、2段目でその描画が完了する。
+          // これを待たないと、印刷ダイアログの背後で席替え後テーブルが空に見えてしまう
+          this.$nextTick(function () {
+            this.$nextTick(function () {
+              window.print();
+              // 再描画で座席のDOMが作り直されているため、席替えフロー（changeSeats）と同様に
+              // SortableJSを再セットする。これをしないと印刷後にドラッグできなくなる
+              setTimeout(this.setSortableJS, 100);
+            });
+          });
+        },
         openSaveDialog() { // 保存ダイアログを開く
           this.saveName = '';
           this.saveNameError = '';
@@ -2708,6 +2967,9 @@
             return;
           }
           const data = JSON.parse(dataStr);
+          // 座席数が変わらない復元ではwatcher経由のmakeNextSeatsTable()が走らないため、
+          // 復元前のドラッグ未反映キューが残って復元結果に適用されないよう、ここで破棄する
+          this.clearPendingSwaps();
           this.seatsTable = data.seatsTable;
           this.genderTable = data.genderTable;
           this.seatsSizeY = data.seatsSizeY;
@@ -2717,6 +2979,13 @@
           this.$nextTick(() => {
             this.groupSizeY = data.groupSizeY;
             this.groupSizeX = data.groupSizeX;
+            // 復元した結果を席替え後テーブルにも反映する。印刷と再保存は席替え後テーブルを
+            // 参照するため、ここに入れないと復元した結果を印刷・再保存できない。
+            // watcherのmakeNextSeatsTable()が空テーブルを作った後に上書きする必要があるので、
+            // 班サイズと同じくnextTickの中で行う（行はコピーして今の座席テーブルと切り離す）
+            for (let i = 0; i < data.seatsTable.length; i++) {
+              this.nextSeatsTable.splice(i, 1, data.seatsTable[i].slice());
+            }
           });
           // 条件は保存していないため、復元した座席と整合させるためデフォルトへリセットする
           this.nearConditions = [['', '', '']];
@@ -2807,7 +3076,7 @@
         window.addEventListener('resize', this.onResize);
 
         // 新機能モーダルの表示判定
-        const newFeatureKey = 'newFeatureModal_v3';
+        const newFeatureKey = 'newFeatureModal_v4';
         if (!localStorage.getItem(newFeatureKey)) {
           // ランディングモーダルが閉じられた後に表示する
           const unwatch = this.$watch('landing', (newVal) => {
@@ -3044,6 +3313,29 @@
           return this.excelPasteText
             .split(/[\s\u3000]+/)
             .filter(function (name) { return name !== ''; });
+        },
+        hasNextSeatsResult() { // \u5e2d\u66ff\u3048\u7d50\u679c\u304c\u5b58\u5728\u3059\u308b\u304b\u3069\u3046\u304b\u3002\u5e2d\u66ff\u3048\u524d\u30fb\u5ea7\u5e2d\u6570\u5909\u66f4\u76f4\u5f8c\u306ffalse
+          return this.nextSeatsTable.some(seatsRow => seatsRow.some(seat => seat !== ''));
+        },
+        printTeacherViewTable() { // \u5370\u52372\u30da\u30fc\u30b8\u76ee\u7528\u3002\u6559\u58c7\u5074\u304b\u3089\u898b\u305f\u5ea7\u5e2d\u8868\uff1dnextSeatsTable\u3092180\u5ea6\u56de\u8ee2\uff08\u884c\u30fb\u5217\u3068\u3082\u9006\u9806\uff09\u3057\u305f\u914d\u7f6e\u3002
+          // col/row\u306b\u306f\u5143\u30c6\u30fc\u30d6\u30eb\u306e\u5ea7\u6a19\u3092\u6b8b\u3057\u3001\u6027\u5225\u8272\u306e\u5224\u5b9a\uff08getColorByNextSeat\uff09\u306b\u4f7f\u3046\u3002
+          // \u73ed\u306e\u533a\u5207\u308a\u306f1\u30da\u30fc\u30b8\u76ee\u306e\u300c(index+1)%groupSize==0\u304b\u3064\u672b\u5c3e\u4ee5\u5916\u300d\u306e\u93e1\u6620\u3057\u3067\u3001
+          // \u5143\u306e\u5ea7\u6a19\u3067\u306f\u300cindex%groupSize==0\u304b\u3064\u5148\u982d\u4ee5\u5916\u300d\u306e\u30bb\u30eb\u306e\u5f8c\u308d\u306b\u6765\u308b\uff08groupSize\u304c\u300c\u306a\u3057\u300d\u306e\u3068\u304d\u306f\u5e38\u306bfalse\uff09
+          const sourceTable = this.nextSeatsTable;
+          const rows = [];
+          for (let row = this.seatsSizeY - 1; row >= 0; row--) {
+            const cells = [];
+            for (let col = this.seatsSizeX - 1; col >= 0; col--) {
+              cells.push({
+                name: sourceTable[row][col],
+                col: col,
+                row: row,
+                gapRight: col % this.groupSizeX === 0 && col !== 0,
+              });
+            }
+            rows.push({ cells: cells, gapBelow: row % this.groupSizeY === 0 && row !== 0 });
+          }
+          return rows;
         }
       }
     });
