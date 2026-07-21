@@ -182,19 +182,33 @@
         margin-left: 0 !important;
       }
 
+      /* スマホでは各所のボタン（一括入力・使い方/デモデータ・席替え/コピペ/復元・保存/印刷）を
+         共通のコンパクトサイズに統一する（インラインstyleやVuetifyのサイズ指定に勝つため!important）。
+         margin・paddingは配置の都合が異なるため各ボタンのルールで個別に指定する */
+      .bulk-input-btn,
+      .v-navigation-drawer .sidebar-top-btn,
+      .sidebar-bottom-sticky .v-btn,
+      .save-btn-container-tb .v-btn {
+        height: 34px !important;
+        font-size: 13px !important;
+      }
+
+      .v-navigation-drawer .sidebar-top-btn .v-icon,
+      .sidebar-bottom-sticky .v-btn .v-icon,
+      .save-btn-container-tb .v-btn .v-icon {
+        font-size: 17px !important;
+      }
+
       /* 絶対配置のままだと画面外にはみ出すため、タイトル横の通常フローに戻す。
          staticではなくrelativeにするのは、子のNEWバッジ（絶対配置）の基準を
          このボタンのまま保つため（staticだと基準が外側のタイトルspanに変わってずれる）。
-         relativeはインラインのleft/topをオフセットとして適用してしまうため、両方打ち消す。
-         大きさはサイドバー下部のボタンと同じに縮小する */
+         relativeはインラインのleft/topをオフセットとして適用してしまうため、両方打ち消す */
       .bulk-input-btn {
         position: relative !important;
         left: 0 !important;
         top: 0 !important;
         transform: none !important;
         margin-left: 10px !important;
-        height: 34px !important;
-        font-size: 13px !important;
         padding: 0 8px !important;
       }
 
@@ -248,17 +262,11 @@
         font-size: 30px !important;
       }
 
-      /* 使い方・デモデータボタンを縮小する（インラインstyleに勝つため!important）。
-         マイナスマージンはPC用の大きいタイトルに合わせた値のため、縮小後の高さに合わせて調整する */
+      /* 使い方・デモデータボタンのマイナスマージンはPC用の大きいタイトルに合わせた値のため、
+         縮小後の高さに合わせて調整する */
       .v-navigation-drawer .sidebar-top-btn {
-        height: 34px !important;
-        font-size: 13px !important;
         margin: -8px 0 0 6px !important;
         padding: 0 8px !important;
-      }
-
-      .v-navigation-drawer .sidebar-top-btn .v-icon {
-        font-size: 17px !important;
       }
 
       .v-navigation-drawer .sidebar-top-btn .icon {
@@ -296,32 +304,18 @@
         font-size: 14px;
       }
 
-      /* 席替え・コピペで入力・結果を復元の3ボタンを1行に収めるためコンパクトに縮小する
-         （使い方ボタンと同じ大きさ。狭い画面でも折り返さないよう間隔・余白も詰める） */
+      /* 席替え・コピペで入力・結果を復元の3ボタンを1行に収めるため、
+         狭い画面でも折り返さないよう間隔・余白を詰める */
       .sidebar-bottom-sticky .v-btn {
-        height: 34px !important;
-        font-size: 13px !important;
         margin: 4px 10px 4px 0 !important;
         padding: 0 5px !important;
       }
 
-      .sidebar-bottom-sticky .v-btn .v-icon {
-        font-size: 17px !important;
-      }
-
-      /* 結果を保存・印刷ボタンも、サイドバー下部のボタンと同じ大きさに縮小する
-         （インラインstyleに勝つため!important） */
       .save-btn-container-tb .v-btn {
-        height: 34px !important;
-        font-size: 13px !important;
         padding: 0 8px !important;
       }
 
-      .save-btn-container-tb .v-btn .v-icon {
-        font-size: 17px !important;
-      }
-
-      /* ボタン間隔もPC用の20pxから縮小後のサイズに合わせて詰める */
+      /* 結果を保存・印刷のボタン間隔もPC用の20pxから縮小後のサイズに合わせて詰める */
       .save-btn-container-tb .v-btn+.v-btn {
         margin-left: 10px !important;
       }
@@ -841,13 +835,25 @@
         margin: 7mm auto 0;
       }
 
-      /* ページ右下の小さなクレジット。position: fixedのため印刷時は全ページに入る */
+      /* ページ右下の小さなクレジット。position: fixedのため印刷時は全ページに入る。
+         @pageのmargin 0によりプリンタの印刷不可領域（紙端4〜6mm程度）に掛かると欠けるため、
+         .print-pageのpaddingと同じ10mmだけ紙端から離す */
       .print-credit {
         position: fixed;
-        bottom: 5mm;
-        right: 7mm;
+        bottom: 10mm;
+        right: 10mm;
         font-size: 8pt;
         color: #888888;
+      }
+
+      /* チュートリアル表示中に印刷しても、body直下（.v-applicationの外）に追加される
+         intro.jsのオーバーレイ・吹き出しが座席表に重ならないようにする */
+      .introjs-overlay,
+      .introjs-helperLayer,
+      .introjs-tooltipReferenceLayer,
+      .introjs-tooltip,
+      .introjs-hints {
+        display: none !important;
       }
 
       .print-row {
@@ -859,9 +865,11 @@
         align-items: center;
         justify-content: center;
         position: relative;
-        /* 列数・行数が多いときも1ページに収まるように自動で縮める */
+        /* 列数・行数が多いときも1ページに収まるように自動で縮める。
+           高さは1行あたりの上下margin（1.6mm）を差し引き、タイトル・黒板・班間ギャップ
+           （最悪ケース：12行・班縦2で20mm）を見込んだ145mmを予算にする */
         width: min(30mm, calc(240mm / var(--print-cols, 6)));
-        height: min(14mm, calc(140mm / var(--print-rows, 6)));
+        height: min(14mm, calc(145mm / var(--print-rows, 6) - 1.6mm));
         margin: 0.8mm;
         border: 0.5mm solid #333333;
         border-radius: 1.5mm;
@@ -1550,9 +1558,7 @@
                           :aria-label="'席替え後 ' + (nextIndexRow+1) + '行' + (nextIndexCol+1) + '列'"
                           style="text-align: center;  resize: none; word-break: keep-all; vertical-align: top; font-size: 22px; font-weight: 600;"
                           :value="nextSeatsTable[nextIndexRow][nextIndexCol]">
-                        <v-icon
-                          v-if="nextSeatsTable[nextIndexRow][nextIndexCol] && leaderConditions.includes(nextSeatsTable[nextIndexRow][nextIndexCol])"
-                          color="#F9A825"
+                        <v-icon v-if="isLeader(nextSeatsTable[nextIndexRow][nextIndexCol])" color="#F9A825"
                           style="position: absolute; top: 4px; left: 4px; font-size: 24px; pointer-events: none;">mdi-star</v-icon>
                       </div>
                     </span>
@@ -1595,14 +1601,14 @@
           </v-card>
         </v-dialog>
 
-        <!-- 印刷時の席替え結果未生成エラー -->
+        <!-- 印刷時の座席未入力エラー -->
         <v-dialog v-model="printEmptyError" width="500">
           <v-card>
             <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
               <v-icon style="float: right;" @click="printEmptyError = false">mdi-close</v-icon>
             </v-card-title>
             <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
-              席替えを行ってから印刷ボタンを押してください。
+              座席に生徒の名前を入力してから印刷ボタンを押してください。
             </v-card-text>
           </v-card>
         </v-dialog>
@@ -1765,20 +1771,21 @@
     </v-app>
 
     <!-- 印刷専用の座席表レイアウト。画面には表示されず、印刷時のみ表示される（CSSの#print-area参照）。
+         印刷元はprintSourceTable（席替え結果、なければ今の座席）。
          Vuetifyのコンポーネントはv-appの外では動かないため、素のHTMLで組む -->
     <div id="print-area" aria-hidden="true"
       :style="{ '--print-cols': String(seatsSizeX), '--print-rows': String(seatsSizeY) }">
-      <!-- 1ページ目: 生徒側から見た図。最前列（nextSeatsTableの0行目）が上端なので、上端に黒板を表示する -->
+      <!-- 1ページ目: 生徒側から見た図。最前列（テーブルの0行目）が上端なので、上端に黒板を表示する -->
       <section class="print-page">
         <div class="print-title">生徒側から見た座席表</div>
         <div class="print-blackboard">黒板</div>
-        <template v-for="( printSeatsRow, printIndexRow ) in nextSeatsTable">
+        <template v-for="( printSeatsRow, printIndexRow ) in printSourceTable">
           <div class="print-row" :key="'printRow' + printIndexRow">
             <span v-for="( printSeat, printIndexCol ) in printSeatsRow" class="print-seat"
-              :class="[getColorByNextSeat(printSeat, printIndexCol, printIndexRow),
+              :class="[getColorByPrintSeat(printSeat, printIndexCol, printIndexRow),
                        {'print-group-gap-right': (printIndexCol+1)%groupSizeX==0 && (printIndexCol+1)!=seatsSizeX}]"
               :key="'printSeat' + printIndexRow + '-' + printIndexCol">
-              <span v-if="printSeat && leaderConditions.includes(printSeat)" class="print-leader-star">★</span>
+              <span v-if="isLeader(printSeat)" class="print-leader-star">★</span>
               {{ printSeat }}
             </span>
           </div>
@@ -1790,18 +1797,17 @@
            最前列が下端に来るため黒板も下端に表示する -->
       <section class="print-page">
         <div class="print-title">教壇側から見た座席表</div>
-        <template v-for="( printSeatsRow2, printIndexRow2 ) in printTeacherViewTable">
+        <template v-for="( printRow2, printIndexRow2 ) in printTeacherViewTable">
           <div class="print-row" :key="'printRowT' + printIndexRow2">
-            <span v-for="printCell in printSeatsRow2" class="print-seat"
-              :class="[getColorByNextSeat(printCell.name, printCell.col, printCell.row),
-                       {'print-group-gap-right': printCell.col%groupSizeX==0 && printCell.col!=0}]"
+            <span v-for="printCell in printRow2.cells" class="print-seat"
+              :class="[getColorByPrintSeat(printCell.name, printCell.col, printCell.row),
+                       {'print-group-gap-right': printCell.gapRight}]"
               :key="'printSeatT' + printCell.row + '-' + printCell.col">
-              <span v-if="printCell.name && leaderConditions.includes(printCell.name)" class="print-leader-star">★</span>
+              <span v-if="isLeader(printCell.name)" class="print-leader-star">★</span>
               {{ printCell.name }}
             </span>
           </div>
-          <div v-if="printSeatsRow2[0].row%groupSizeY==0 && printSeatsRow2[0].row!=0" class="print-group-gap-bottom"
-            :key="'printGapT' + printIndexRow2"></div>
+          <div v-if="printRow2.gapBelow" class="print-group-gap-bottom" :key="'printGapT' + printIndexRow2"></div>
         </template>
         <div class="print-blackboard print-blackboard-bottom">黒板</div>
       </section>
@@ -2192,6 +2198,23 @@
           } else {
             return 'off-seats'
           }
+        },
+        getColorByPrintSeat(name, col, row) { // 印刷用の座席色を返す。印刷元がどちらのテーブルかで判定を切り替える
+          if (!this.hasNextSeatsResult) {
+            // 今の座席を印刷するとき：座席の性別はgenderTableの座標そのもの（デモ用の空席色は印刷しない）
+            const gender = name === '' ? '' : this.genderTable[row][col];
+            if (gender === 'male') {
+              return 'male-seats'
+            } else if (gender === 'female') {
+              return 'female-seats'
+            } else {
+              return 'off-seats'
+            }
+          }
+          return this.getColorByNextSeat(name, col, row);
+        },
+        isLeader(name) { // その生徒が班長かどうか。画面と印刷の両方の星表示で使う
+          return name !== '' && this.leaderConditions.includes(name);
         },
         toggleGender(col, row) {
           if (this.genderTable[row][col] === 'male') {
@@ -2859,13 +2882,18 @@
           const list = JSON.parse(localStorage.getItem('sekigae_saved_list'));
           return list || [];
         },
-        printSeats() { // 席替え後の座席表を印刷する（印刷内容は#print-areaで組み立てる）
-          const hasResult = this.nextSeatsTable.some(seatsRow => seatsRow.some(seat => seat !== ''));
-          if (!hasResult) {
-            this.printEmptyError = true; // 席替え結果がまだ無いときはエラーを表示
+        printSeats() { // 座席表を印刷する（印刷内容は#print-areaで組み立てる）
+          const hasStudents = this.printSourceTable.some(seatsRow => seatsRow.some(seat => seat !== ''));
+          if (!hasStudents) {
+            this.printEmptyError = true; // 印刷できる座席表がまだ無いときはエラーを表示
             return;
           }
-          window.print();
+          // ドラッグでの手動調整はDOMだけが入れ替わりnextSeatsTableには未反映のため、
+          // 席替えボタンと同じ同期処理を通してから印刷する（未調整なら何もしない）
+          this.beforeChangeSeats();
+          this.$nextTick(function () { // 同期した内容が#print-areaに描画されるのを待ってから印刷する
+            window.print();
+          });
         },
         openSaveDialog() { // 保存ダイアログを開く
           this.saveName = '';
@@ -3267,17 +3295,29 @@
             .split(/[\s\u3000]+/)
             .filter(function (name) { return name !== ''; });
         },
-        printTeacherViewTable() { // \u5370\u52372\u30da\u30fc\u30b8\u76ee\u7528\u3002\u6559\u58c7\u5074\u304b\u3089\u898b\u305f\u5ea7\u5e2d\u8868\uff1dnextSeatsTable\u3092180\u5ea6\u56de\u8ee2\uff08\u884c\u30fb\u5217\u3068\u3082\u9006\u9806\uff09\u3057\u305f\u914d\u7f6e\u3002
-          // col/row\u306b\u306f\u5143\u30c6\u30fc\u30d6\u30eb\u306e\u5ea7\u6a19\u3092\u6b8b\u3057\u3001\u6027\u5225\u8272\u306e\u5224\u5b9a\uff08getColorByNextSeat\uff09\u3068\u73ed\u306e\u533a\u5207\u308a\u306e\u8a08\u7b97\u306b\u4f7f\u3046\u3002
+        hasNextSeatsResult() { // \u5e2d\u66ff\u3048\u7d50\u679c\u304c\u5b58\u5728\u3059\u308b\u304b\u3069\u3046\u304b\u3002\u5e2d\u66ff\u3048\u524d\u30fb\u5fa9\u5143\u76f4\u5f8c\u30fb\u5ea7\u5e2d\u6570\u5909\u66f4\u76f4\u5f8c\u306ffalse
+          return this.nextSeatsTable.some(seatsRow => seatsRow.some(seat => seat !== ''));
+        },
+        printSourceTable() { // \u5370\u5237\u3059\u308b\u5ea7\u5e2d\u8868\u3002\u5e2d\u66ff\u3048\u7d50\u679c\u304c\u3042\u308c\u3070\u305d\u308c\u3092\u3001\u306a\u3051\u308c\u3070\u4eca\u306e\u5ea7\u5e2d\uff08\u5fa9\u5143\u76f4\u5f8c\u3084\u5e2d\u66ff\u3048\u524d\uff09\u3092\u5370\u5237\u3059\u308b
+          return this.hasNextSeatsResult ? this.nextSeatsTable : this.seatsTable;
+        },
+        printTeacherViewTable() { // \u5370\u52372\u30da\u30fc\u30b8\u76ee\u7528\u3002\u6559\u58c7\u5074\u304b\u3089\u898b\u305f\u5ea7\u5e2d\u8868\uff1dprintSourceTable\u3092180\u5ea6\u56de\u8ee2\uff08\u884c\u30fb\u5217\u3068\u3082\u9006\u9806\uff09\u3057\u305f\u914d\u7f6e\u3002
+          // col/row\u306b\u306f\u5143\u30c6\u30fc\u30d6\u30eb\u306e\u5ea7\u6a19\u3092\u6b8b\u3057\u3001\u6027\u5225\u8272\u306e\u5224\u5b9a\uff08getColorByPrintSeat\uff09\u306b\u4f7f\u3046\u3002
           // \u73ed\u306e\u533a\u5207\u308a\u306f1\u30da\u30fc\u30b8\u76ee\u306e\u300c(index+1)%groupSize==0\u304b\u3064\u672b\u5c3e\u4ee5\u5916\u300d\u306e\u93e1\u6620\u3057\u3067\u3001
-          // \u5143\u306e\u5ea7\u6a19\u3067\u306f\u300cindex%groupSize==0\u304b\u3064\u5148\u982d\u4ee5\u5916\u300d\u306e\u30bb\u30eb\u306e\u5f8c\u308d\u306b\u6765\u308b
+          // \u5143\u306e\u5ea7\u6a19\u3067\u306f\u300cindex%groupSize==0\u304b\u3064\u5148\u982d\u4ee5\u5916\u300d\u306e\u30bb\u30eb\u306e\u5f8c\u308d\u306b\u6765\u308b\uff08groupSize\u304c\u300c\u306a\u3057\u300d\u306e\u3068\u304d\u306f\u5e38\u306bfalse\uff09
+          const sourceTable = this.printSourceTable;
           const rows = [];
           for (let row = this.seatsSizeY - 1; row >= 0; row--) {
             const cells = [];
             for (let col = this.seatsSizeX - 1; col >= 0; col--) {
-              cells.push({ name: this.nextSeatsTable[row][col], col: col, row: row });
+              cells.push({
+                name: sourceTable[row][col],
+                col: col,
+                row: row,
+                gapRight: col % this.groupSizeX === 0 && col !== 0,
+              });
             }
-            rows.push(cells);
+            rows.push({ cells: cells, gapBelow: row % this.groupSizeY === 0 && row !== 0 });
           }
           return rows;
         }
