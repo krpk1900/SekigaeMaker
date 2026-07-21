@@ -274,6 +274,36 @@ test.describe('印刷', () => {
     expect(afterSecond.seatAtC).toBe('B');
   });
 
+  test('ドラッグ直後に同じ座席数の保存を復元しても、古いドラッグが復元結果に適用されない', async ({ page }) => {
+    await setupFourStudents(page);
+    await page.evaluate(() => { app.changeSeats(); return null; });
+    await page.waitForTimeout(300);
+
+    // 保存してから、別の配置へドラッグ調整（未反映キューが残る状態を作る）
+    const savedTable = await page.evaluate(() => {
+      app.saveName = 'テスト保存';
+      app.saveWithName(true);
+      return app.nextSeatsTable.map(row => row.slice());
+    });
+    const posA = await findSeatPos(page, 'A');
+    const posD = await findSeatPos(page, 'D');
+    await simulateDragSwap(page, posA, posD);
+
+    // 同じ座席数（6x6）の保存を復元 → 復元前のドラッグは破棄されるべき
+    await page.evaluate(() => {
+      const list = app.getSavedList();
+      app.restoreByName(list[0].id);
+      return null;
+    });
+    await page.waitForTimeout(300);
+
+    const result = await stubAndPrint(page);
+    expect(result.printCalled).toBe(true);
+    // 印刷後も席替え後テーブルは保存時の配置のまま（古いドラッグが混入していない）
+    const restored = await page.evaluate(() => app.nextSeatsTable.map(row => row.slice()));
+    expect(restored).toEqual(savedTable);
+  });
+
   test('ドラッグ直後に座席数を変えても、印刷がクラッシュせずエラー表示になる', async ({ page }) => {
     const pageErrors = [];
     page.on('pageerror', (error) => { pageErrors.push(String(error)); });

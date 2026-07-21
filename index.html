@@ -2967,6 +2967,9 @@
             return;
           }
           const data = JSON.parse(dataStr);
+          // 座席数が変わらない復元ではwatcher経由のmakeNextSeatsTable()が走らないため、
+          // 復元前のドラッグ未反映キューが残って復元結果に適用されないよう、ここで破棄する
+          this.clearPendingSwaps();
           this.seatsTable = data.seatsTable;
           this.genderTable = data.genderTable;
           this.seatsSizeY = data.seatsSizeY;
