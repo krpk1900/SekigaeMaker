@@ -1601,14 +1601,14 @@
           </v-card>
         </v-dialog>
 
-        <!-- 印刷時の座席未入力エラー -->
+        <!-- 印刷時の席替え結果未生成エラー -->
         <v-dialog v-model="printEmptyError" width="500">
           <v-card>
             <v-card-title class="headline grey lighten-2 font-weight-black" style="display: inherit;">エラー
               <v-icon style="float: right;" @click="printEmptyError = false">mdi-close</v-icon>
             </v-card-title>
             <v-card-text style="margin-top: 20px; color: #000000;" class="font-weight-regular">
-              座席に生徒の名前を入力してから印刷ボタンを押してください。
+              席替えを行ってから印刷ボタンを押してください。
             </v-card-text>
           </v-card>
         </v-dialog>
@@ -1771,7 +1771,7 @@
     </v-app>
 
     <!-- 印刷専用の座席表レイアウト。画面には表示されず、印刷時のみ表示される（CSSの#print-area参照）。
-         印刷元はprintSourceTable（席替え結果、なければ今の座席）。
+         印刷元はnextSeatsTable（席替え後の座席表）。
          Vuetifyのコンポーネントはv-appの外では動かないため、素のHTMLで組む -->
     <div id="print-area" aria-hidden="true"
       :style="{ '--print-cols': String(seatsSizeX), '--print-rows': String(seatsSizeY) }">
@@ -1779,10 +1779,10 @@
       <section class="print-page">
         <div class="print-title">生徒側から見た座席表</div>
         <div class="print-blackboard">黒板</div>
-        <template v-for="( printSeatsRow, printIndexRow ) in printSourceTable">
+        <template v-for="( printSeatsRow, printIndexRow ) in nextSeatsTable">
           <div class="print-row" :key="'printRow' + printIndexRow">
             <span v-for="( printSeat, printIndexCol ) in printSeatsRow" class="print-seat"
-              :class="[getColorByPrintSeat(printSeat, printIndexCol, printIndexRow),
+              :class="[getColorByNextSeat(printSeat, printIndexCol, printIndexRow),
                        {'print-group-gap-right': (printIndexCol+1)%groupSizeX==0 && (printIndexCol+1)!=seatsSizeX}]"
               :key="'printSeat' + printIndexRow + '-' + printIndexCol">
               <span v-if="isLeader(printSeat)" class="print-leader-star">★</span>
@@ -1800,7 +1800,7 @@
         <template v-for="( printRow2, printIndexRow2 ) in printTeacherViewTable">
           <div class="print-row" :key="'printRowT' + printIndexRow2">
             <span v-for="printCell in printRow2.cells" class="print-seat"
-              :class="[getColorByPrintSeat(printCell.name, printCell.col, printCell.row),
+              :class="[getColorByNextSeat(printCell.name, printCell.col, printCell.row),
                        {'print-group-gap-right': printCell.gapRight}]"
               :key="'printSeatT' + printCell.row + '-' + printCell.col">
               <span v-if="isLeader(printCell.name)" class="print-leader-star">★</span>
@@ -2199,20 +2199,6 @@
             return 'off-seats'
           }
         },
-        getColorByPrintSeat(name, col, row) { // 印刷用の座席色を返す。印刷元がどちらのテーブルかで判定を切り替える
-          if (!this.hasNextSeatsResult) {
-            // 今の座席を印刷するとき：座席の性別はgenderTableの座標そのもの（デモ用の空席色は印刷しない）
-            const gender = name === '' ? '' : this.genderTable[row][col];
-            if (gender === 'male') {
-              return 'male-seats'
-            } else if (gender === 'female') {
-              return 'female-seats'
-            } else {
-              return 'off-seats'
-            }
-          }
-          return this.getColorByNextSeat(name, col, row);
-        },
         isLeader(name) { // その生徒が班長かどうか。画面と印刷の両方の星表示で使う
           return name !== '' && this.leaderConditions.includes(name);
         },
@@ -2258,7 +2244,17 @@
           }
           this.countSeats();
         },
+        clearPendingSwaps() { // ドラッグ調整の未反映キューを破棄する。
+          // 座席テーブルを作り直すとキュー内の座標が新しいテーブルの範囲外になり得るため、
+          // そのままreverseSeats()が走ると範囲外参照でクラッシュする
+          fromRows.splice(0);
+          fromCols.splice(0);
+          toRows.splice(0);
+          toCols.splice(0);
+          isReverseSeats = false;
+        },
         makeNextSeatsTable() { // nextSeatsTableを作成
+          this.clearPendingSwaps(); // 作り直し前の座標を指すドラッグ未反映キューを無効化
           this.nextSeatsTable.splice(0)
           for (let i = 0; i < this.seatsSizeY; i++) {
             this.nextSeatsTable.push(Array(this.seatsSizeX).fill('')) // すべての席に名前が未入力な状態でテーブルを作成
@@ -2882,17 +2878,30 @@
           const list = JSON.parse(localStorage.getItem('sekigae_saved_list'));
           return list || [];
         },
-        printSeats() { // 座席表を印刷する（印刷内容は#print-areaで組み立てる）
-          const hasStudents = this.printSourceTable.some(seatsRow => seatsRow.some(seat => seat !== ''));
-          if (!hasStudents) {
-            this.printEmptyError = true; // 印刷できる座席表がまだ無いときはエラーを表示
+        printSeats() { // 席替え後の座席表を印刷する（印刷内容は#print-areaで組み立てる）
+          if (!this.hasNextSeatsResult) {
+            this.printEmptyError = true; // 席替え結果がまだ無いときはエラーを表示
             return;
           }
           // ドラッグでの手動調整はDOMだけが入れ替わりnextSeatsTableには未反映のため、
-          // 席替えボタンと同じ同期処理を通してから印刷する（未調整なら何もしない）
+          // 席替えボタンと同じ同期処理（データ反映＋再描画）を通してから印刷する。
+          // beforeChangeSeats()がフラグを消すため、調整があったかどうかは先に控えておく
+          const hasPendingSwaps = isReverseSeats;
           this.beforeChangeSeats();
-          this.$nextTick(function () { // 同期した内容が#print-areaに描画されるのを待ってから印刷する
-            window.print();
+          if (!hasPendingSwaps) {
+            window.print(); // 調整がなければ#print-areaは描画済みなのでそのまま印刷する
+            return;
+          }
+          // beforeChangeSeats()の再描画（isRenderNextSeatsTableのオフ→オン）が画面に反映されるのを
+          // 待ってから印刷する。1段目のnextTickでオンが予約され、2段目でその描画が完了する。
+          // これを待たないと、印刷ダイアログの背後で席替え後テーブルが空に見えてしまう
+          this.$nextTick(function () {
+            this.$nextTick(function () {
+              window.print();
+              // 再描画で座席のDOMが作り直されているため、席替えフロー（changeSeats）と同様に
+              // SortableJSを再セットする。これをしないと印刷後にドラッグできなくなる
+              setTimeout(this.setSortableJS, 100);
+            });
           });
         },
         openSaveDialog() { // 保存ダイアログを開く
@@ -2967,6 +2976,13 @@
           this.$nextTick(() => {
             this.groupSizeY = data.groupSizeY;
             this.groupSizeX = data.groupSizeX;
+            // 復元した結果を席替え後テーブルにも反映する。印刷と再保存は席替え後テーブルを
+            // 参照するため、ここに入れないと復元した結果を印刷・再保存できない。
+            // watcherのmakeNextSeatsTable()が空テーブルを作った後に上書きする必要があるので、
+            // 班サイズと同じくnextTickの中で行う（行はコピーして今の座席テーブルと切り離す）
+            for (let i = 0; i < data.seatsTable.length; i++) {
+              this.nextSeatsTable.splice(i, 1, data.seatsTable[i].slice());
+            }
           });
           // 条件は保存していないため、復元した座席と整合させるためデフォルトへリセットする
           this.nearConditions = [['', '', '']];
@@ -3295,17 +3311,14 @@
             .split(/[\s\u3000]+/)
             .filter(function (name) { return name !== ''; });
         },
-        hasNextSeatsResult() { // \u5e2d\u66ff\u3048\u7d50\u679c\u304c\u5b58\u5728\u3059\u308b\u304b\u3069\u3046\u304b\u3002\u5e2d\u66ff\u3048\u524d\u30fb\u5fa9\u5143\u76f4\u5f8c\u30fb\u5ea7\u5e2d\u6570\u5909\u66f4\u76f4\u5f8c\u306ffalse
+        hasNextSeatsResult() { // \u5e2d\u66ff\u3048\u7d50\u679c\u304c\u5b58\u5728\u3059\u308b\u304b\u3069\u3046\u304b\u3002\u5e2d\u66ff\u3048\u524d\u30fb\u5ea7\u5e2d\u6570\u5909\u66f4\u76f4\u5f8c\u306ffalse
           return this.nextSeatsTable.some(seatsRow => seatsRow.some(seat => seat !== ''));
         },
-        printSourceTable() { // \u5370\u5237\u3059\u308b\u5ea7\u5e2d\u8868\u3002\u5e2d\u66ff\u3048\u7d50\u679c\u304c\u3042\u308c\u3070\u305d\u308c\u3092\u3001\u306a\u3051\u308c\u3070\u4eca\u306e\u5ea7\u5e2d\uff08\u5fa9\u5143\u76f4\u5f8c\u3084\u5e2d\u66ff\u3048\u524d\uff09\u3092\u5370\u5237\u3059\u308b
-          return this.hasNextSeatsResult ? this.nextSeatsTable : this.seatsTable;
-        },
-        printTeacherViewTable() { // \u5370\u52372\u30da\u30fc\u30b8\u76ee\u7528\u3002\u6559\u58c7\u5074\u304b\u3089\u898b\u305f\u5ea7\u5e2d\u8868\uff1dprintSourceTable\u3092180\u5ea6\u56de\u8ee2\uff08\u884c\u30fb\u5217\u3068\u3082\u9006\u9806\uff09\u3057\u305f\u914d\u7f6e\u3002
-          // col/row\u306b\u306f\u5143\u30c6\u30fc\u30d6\u30eb\u306e\u5ea7\u6a19\u3092\u6b8b\u3057\u3001\u6027\u5225\u8272\u306e\u5224\u5b9a\uff08getColorByPrintSeat\uff09\u306b\u4f7f\u3046\u3002
+        printTeacherViewTable() { // \u5370\u52372\u30da\u30fc\u30b8\u76ee\u7528\u3002\u6559\u58c7\u5074\u304b\u3089\u898b\u305f\u5ea7\u5e2d\u8868\uff1dnextSeatsTable\u3092180\u5ea6\u56de\u8ee2\uff08\u884c\u30fb\u5217\u3068\u3082\u9006\u9806\uff09\u3057\u305f\u914d\u7f6e\u3002
+          // col/row\u306b\u306f\u5143\u30c6\u30fc\u30d6\u30eb\u306e\u5ea7\u6a19\u3092\u6b8b\u3057\u3001\u6027\u5225\u8272\u306e\u5224\u5b9a\uff08getColorByNextSeat\uff09\u306b\u4f7f\u3046\u3002
           // \u73ed\u306e\u533a\u5207\u308a\u306f1\u30da\u30fc\u30b8\u76ee\u306e\u300c(index+1)%groupSize==0\u304b\u3064\u672b\u5c3e\u4ee5\u5916\u300d\u306e\u93e1\u6620\u3057\u3067\u3001
           // \u5143\u306e\u5ea7\u6a19\u3067\u306f\u300cindex%groupSize==0\u304b\u3064\u5148\u982d\u4ee5\u5916\u300d\u306e\u30bb\u30eb\u306e\u5f8c\u308d\u306b\u6765\u308b\uff08groupSize\u304c\u300c\u306a\u3057\u300d\u306e\u3068\u304d\u306f\u5e38\u306bfalse\uff09
-          const sourceTable = this.printSourceTable;
+          const sourceTable = this.nextSeatsTable;
           const rows = [];
           for (let row = this.seatsSizeY - 1; row >= 0; row--) {
             const cells = [];
