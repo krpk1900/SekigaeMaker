@@ -864,6 +864,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        /* 空席（中身なし）はベースラインがボックス下端になり、名前入りの席とベースラインが
+           ずれて縦にガタつく。上端揃えにして中身の有無に関係なく行を揃える */
+        vertical-align: top;
         position: relative;
         /* 列数・行数が多いときも1ページに収まるように自動で縮める。
            高さは1行あたりの上下margin（1.6mm）を差し引き、タイトル・黒板・班間ギャップ
